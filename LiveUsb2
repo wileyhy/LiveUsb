@@ -106,6 +106,7 @@ then
 fi
 
 : 'git config, assigning'
+unset ii
 for ii in "${git_keys[@]}"
 do
   #if ! grep --quiet "${git_keys[$ii]}" <<< "${git_conf_sys[@]}"
