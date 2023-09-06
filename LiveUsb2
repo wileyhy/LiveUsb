@@ -6,12 +6,12 @@
 
 # <> Debugging
 set -aCuTeo pipefail # <>
-
 umask 077
 hash -r
 
 : 'Environment'
 declare -n nL=L\INENO
+readonly nL
 PATH='/usr/bin:/usr/sbin' || exit "${nL}"
 scr_repo_nm=scf
 fn_bndry=' ~~~ ~~~ ~~~ '
@@ -34,10 +34,10 @@ else
   sudo --validate || exit "${nL}"
 fi
 
+## Bug? section "Network" is also present in LiveUsb1
+
 : 'Network'
-
-## Note: `ping` doesn't have any long options. `ping -c` is "count;" `ping -W` is "timeout."
-
+## Note: \x60ping\x60 doesn't have any long options. \x60ping -c\x60 is "count;" \x60ping -W\x60 is "timeout."
 if ! sudo -- ping -c 1 -W 15 -- 8.8.8.8 > /dev/null
 then
   sudo -- systemctl start NetworkManager.service
@@ -46,44 +46,21 @@ then
   sudo -- ping -c 1 -W 15 -- 8.8.8.8 > /dev/null || exit "${nL}"
 fi
 
-## Note: git ui colors: normal black red green yellow blue
-#+     magenta cyan white
+## Note: git ui colors: normal black red green yellow blue magenta cyan white
 #+  git ui attributes: bold dim ul (underline blink reverse)
+## Note: In vim, since 'expandtab' is set in .vimrc, to make some actual tabs, press Ctrl-v-[tab]
 
-## Bug? in vim, when quoting 'EOF', $tmpd changes color, but bash still expands the redirection
-  #+ destination file.
-
-## Note: In vim, since 'expandtab` is set in .vimrc, to make some actual tabs,
-#+  press Ctrl-v-[tab]
+## Bug? in vim, when quoting 'EOF', $git_tempd changes color, but bash still expands the redirection
+#+ destination file.
 
 : 'Git'
 
-: 'Permissions'
-unset git_files_a ff
-
+: 'Git parameters, dependency level 1'
+git_conf_sys=''
+git_config_sys_conf_file=/etc/gitconfig
 git_files_a=( /etc/git* /etc/.git* )
-
-for ff in "${git_files_a[@]}"
-do
-  [[ -e ${ff} ]] && sudo -- chmod 0604 -- "${ff}"
-done
-unset git_files_a ff
-
-: 'Config'
-unset git_conf_sys git_keys
-
-git_conf_sys=$( sudo -- git config --system )
-
-unset gitmesg gitignr
-gitmesg=/etc/.gitmessage_system
-gitignr=/etc/.gitignore_system
-
-: 'Git: config -- unsetting'
-if sudo -- git config --system --list | grep -q gpg.format
-then
-  sudo -- git config --system --unset gpg.format 
-fi
-
+git_files_b=( ~/.git*_system )
+git_ignr=/etc/.gitignore_system
 git_keys=(
   [user.name]='Wiley Young'
   [user.email]='84648683+wileyhy@users.noreply.github.com'
@@ -99,11 +76,35 @@ git_keys=(
   [color.interactive]='always'
   [color.ui]='true'
   [color.ui]='auto'
-  [commit.template]="${gitmesg}"
-  [core.excludesfile]="${gitignr}"
+)
+git_mesg=/etc/.gitmessage_system
+git_tempd=$( TMPDIR='' mktemp --directory ) 
+readonly git_tempd
+
+: 'Git parameters, dependency level 2'
+if [[ -f $git_config_sys_conf_file ]]
+then
+  git_conf_sys=$( sudo -- git config --system --list )
+fi
+git_keys+=(
+  [commit.template]="${git_mesg}"
+  [core.excludesfile]="${git_ignr}"
 )
 
-: 'Git: config -- assigning'
+: 'Permissions'
+for ff in "${git_files_a[@]}"
+do
+  [[ -e ${ff} ]] && sudo -- chmod 0604 -- "${ff}"
+done
+unset ff
+
+: 'git config, remove a config if present'
+if grep -q gpg.format <<< "${git_config_sys[@]}"
+then
+  sudo -- git config --system --unset gpg.format 
+fi
+
+: 'git config, assigning'
 for ii in "${git_keys[@]}"
 do
   if ! grep --quiet "${git_keys[$ii]}" <<< "${git_conf_sys[@]}"
@@ -111,14 +112,13 @@ do
     sudo -- git config --system "${ii}" "${git_keys[$ii]}"
   fi
 done
-unset ii git_keys git_conf_sys
+unset ii
 
-: 'gitmessage'
-unset TMPDIR tmpd
-tmpd=$( mktemp --directory )
-if ! [[ -f ${gitmesg} ]]
+: 'gitmessage (system)'
+if ! [[ -f ${git_mesg} ]]
 then
-  cat <<- \EOF > "${tmpd}/msg"
+  : 'Heredoc: gitmessage'
+  cat <<- \EOF > "${git_tempd}/msg"
 	Subject line (try to keep under 50 characters)
 
 	Multi-line description of commit,
@@ -130,15 +130,16 @@ then
 
   # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
 
-  sudo -- tee -- "${gitmesg}" < "${tmpd}/msg" > /dev/null || exit "${nL}"
+  sudo -- tee -- "${git_mesg}" < "${git_tempd}/msg" > /dev/null || exit "${nL}"
 fi
 
   set -x # <>
 
 : 'gitignore (system)'
-if ! [[ -f ${gitignr} ]] || ! grep --quiet swp "${gitignr}"
+if ! [[ -f ${git_ignr} ]] || ! grep --quiet swp "${git_ignr}"
 then
-  cat <<- \EOF > "${tmpd}/ign"
+  : 'Heredoc: gitignore'
+  cat <<- \EOF > "${git_tempd}/ign"
 	*~
 	.*.swp
 	.DS_Store
@@ -147,38 +148,43 @@ then
 
   # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
 
-sudo -- tee -- "${gitignr}" < "${tmpd}/ign" > /dev/null || exit "${nL}"
+sudo -- tee -- "${git_ignr}" < "${git_tempd}/ign" > /dev/null || exit "${nL}"
 fi
 
   #exit $LINENO # <>     # <> ### ###
 
-
 : 'Copy root-user files to $USER'
-unset ff
-
-for ff in "${gitmesg}" "${gitignr}"
+for ff in "${git_mesg}" "${git_ignr}"
 do
   sudo -- rsync --checksum --archive -- "${ff}" ~
   sudo -- chown "${UID}:${UID}" -- ~/"${ff##*/}"
   chmod 0400 -- ~/"${ff##*/}"
 done
-unset gitmesg gitignr ff
+unset ff
 
 : 'Rename files'
-unset git_files_b ff
-git_files_b=( ~/.git*_system )
 
 for ff in "${git_files_b[@]}"
 do
-  sudo -- mv --force -- "${ff}" "${ff%_system}"
+  if [[ -e $ff ]]
+  then
+    sudo -- mv --force -- "${ff}" "${ff%_system}"
+  fi
 done
-unset git_files_a git_files_b ff
+unset ff
+
+## Clean up after section "Git"
+unset git_files_a git_config_sys_conf_file git_conf_sys git_mesg git_ignr git_keys git_files_b
 
 : 'Make and change into directories'
+
+: 'Make dirs'
 umask 077
-unset dev_d1 dev_d2 dd
+## Note: these vars, dev_d{1,2}, will be used throughout the rest of this script
 dev_d1=~/MYPROJECTS
 dev_d2=~/OTHERSPROJECTS
+readonly dev_d1
+readonly dev_d2
 
 for dd in "${dev_d1}" "${dev_d2}"
 do
@@ -187,34 +193,33 @@ do
     mkdir --parents "${dd}" || exit "${nL}"
   fi
 done
-unset dev_d1 dev_d2 dd
+unset dd
 
-## Note: in order to clone into any repo, and keep
-#+  multiple repos separate, `cd` is required, or `pushd` / `popd`
+## Note: in order to clone into any repo, and keep multiple repos separate, \x60cd\x60 is required, or \x60pushd\x60 / 
+#+  \x60popd\x60
 
 : 'Change dirs'
 pushd "${dev_d1}" || exit "${nL}"
 
 : 'gh -- github CLI'
-unset gh_config_list_out
-gh_config_list_out=$( gh config list )
+gh_config_list_out=$( gh config list | tr -d '\n' )
 
-if ! [[ ${gh_config_list_out} =~ vim ]]
+if ! [[ ${gh_config_list_out} =~ editor=vim ]]
 then
   gh config set editor 'vim'
 fi
 
-if ! [[ ${gh_config_list_out} =~ firefox ]]
+if ! [[ ${gh_config_list_out} =~ browser=firefox ]]
 then
   gh config set browser 'firefox'
 fi
 
-if ! [[ ${gh_config_list_out} =~ less ]]
+if ! [[ ${gh_config_list_out} =~ pager=less ]]
 then
   gh config set pager 'less'
 fi
 
-if ! [[ ${gh_config_list_out} =~ ssh ]]
+if ! [[ ${gh_config_list_out} =~ git_protocol=ssh ]]
 then
   gh config set git_protocol 'ssh' --host 'github.com'
 fi
@@ -251,8 +256,6 @@ gh gpg-key list
 gh auth status --show-token
 
 : 'SSH'
-unset ssh_d ssh_system_conf ssh_user_conf ssh_agent_pids ssh_agent_o ps_o awk_o pp
-
 ssh_d=~/.ssh
 ssh_system_conf=/etc/ssh_config
 ssh_user_conf=~/.ssh/config
@@ -276,12 +279,22 @@ fi
 
 ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
+: $'Collect output of \x60ps\x60'
+xon=''
+if [[ -o xtrace ]]
+then
+  xon=yes
+  set -
+  echo Color code is assigned and xtrace is re-enabled
+  ps_o=$( ps aux )
+  readonly ps_o
+fi
+
 if [[ -z ${SSH_AUTH_SOCK} ]] || [[ -z ${SSH_AGENT_PID} ]]
 then
 
   # shellcheck disable=SC2154
 
-  ps_o=$( ps aux )
   awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /startx/ { print $2 }' <<< "${ps_o}" )
 
   if [[ -n ${awk_o} ]]
@@ -295,7 +308,7 @@ then
       1)  if [[ -v SSH_AGENT_PID ]]
           then
 
-            ## Note: `ssh-agent` doesn't have any long options. `ssh-agent -k` is "kill the current agent."
+            ## Note: \x60ssh-agent\x60 doesn't have any long options. \x60ssh-agent -k\x60 is "kill the current agent."
 
             ssh-agent -k
           else
@@ -310,12 +323,12 @@ then
     esac
   fi
 
-  ## Note: `ssh-agent -s` is "generate Bourne shell commands on stdout."
+  ## Note: \x60ssh-agent -s\x60 is "generate Bourne shell commands on stdout."
 
   ssh_agent_o=$( ssh-agent -s )
   eval "${ssh_agent_o}"
 
-  ## Note: `ssh-add` and `ssh` don't have long options. `ssh-add -L` is "list;" `ssh -T` is "disable
+  ## Note: \x60ssh-add\x60 and \x60ssh\x60 don't have long options. \x60ssh-add -L\x60 is "list;" \x60ssh -T\x60 is "disable
   #+ pseudo-terminal allocation.
 
   ## Bug? hardcoded filename
@@ -325,8 +338,10 @@ then
   ssh -T git@github.com
 fi
 
+## Clean up from section "Ssh"
+unset xon
+
 : 'GPG'
-unset gpg_d
 gpg_d=~/.gnupg
 sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
 sudo -- chmod --recursive 700 "${gpg_d}"
@@ -355,5 +370,6 @@ then
 fi
 
 : 'Clean up & exit'
-command rm --force --recursive "${tmpd}"
+command rm --force --recursive "${git_tempd}"
 exit 00
+
