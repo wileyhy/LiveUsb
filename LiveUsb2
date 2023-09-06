@@ -105,9 +105,6 @@ then
   sudo -- git config --system --unset gpg.format 
 fi
 
-  declare -p git_keys
-  exit $nL
-
 : 'git config, assigning'
 unset ii
 for ii in "${!git_keys[@]}"
