@@ -109,7 +109,10 @@ fi
 unset ii
 for ii in "${!git_keys[@]}"
 do
+  echo "ii:$ii"
+
   #if ! grep --quiet "${git_keys[$ii]}" <<< "${git_conf_sys[@]}"
+  
   if ! grep "${git_keys[$ii]}" <<< "${git_conf_sys[@]}"
   then
     sudo -- git config --system "${ii}" "${git_keys[$ii]}"
