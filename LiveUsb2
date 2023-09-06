@@ -61,6 +61,7 @@ git_config_sys_conf_file=/etc/gitconfig
 git_files_a=( /etc/git* /etc/.git* )
 git_files_b=( ~/.git*_system )
 git_ignr=/etc/.gitignore_system
+declare -A git_keys
 git_keys=(
   [user.name]='Wiley Young'
   [user.email]='84648683+wileyhy@users.noreply.github.com'
@@ -94,12 +95,13 @@ git_keys+=(
 : 'Permissions'
 for ff in "${git_files_a[@]}"
 do
-  [[ -e ${ff} ]] && sudo -- chmod 0604 -- "${ff}"
+  [[ -e ${ff} ]] && sudo -- chmod --verbose 0604 -- "${ff}"
 done
 unset ff
 
 : 'git config, remove a config if present'
-if grep -q gpg.format <<< "${git_config_sys[@]}"
+#if grep --quiet gpg.format <<< "${git_config_sys[@]}"
+if grep gpg.format <<< "${git_config_sys[@]}"
 then
   sudo -- git config --system --unset gpg.format 
 fi
@@ -107,7 +109,8 @@ fi
 : 'git config, assigning'
 for ii in "${git_keys[@]}"
 do
-  if ! grep --quiet "${git_keys[$ii]}" <<< "${git_conf_sys[@]}"
+  #if ! grep --quiet "${git_keys[$ii]}" <<< "${git_conf_sys[@]}"
+  if ! grep "${git_keys[$ii]}" <<< "${git_conf_sys[@]}"
   then
     sudo -- git config --system "${ii}" "${git_keys[$ii]}"
   fi
@@ -136,7 +139,8 @@ fi
   set -x # <>
 
 : 'gitignore (system)'
-if ! [[ -f ${git_ignr} ]] || ! grep --quiet swp "${git_ignr}"
+#if ! [[ -f ${git_ignr} ]] || ! grep --quiet swp "${git_ignr}"
+if ! [[ -f ${git_ignr} ]] || ! grep swp "${git_ignr}"
 then
   : 'Heredoc: gitignore'
   cat <<- \EOF > "${git_tempd}/ign"
@@ -156,8 +160,10 @@ fi
 : 'Copy root-user files to $USER'
 for ff in "${git_mesg}" "${git_ignr}"
 do
-  sudo -- rsync --checksum --archive -- "${ff}" ~
-  sudo -- chown "${UID}:${UID}" -- ~/"${ff##*/}"
+  #sudo -- rsync --checksum --archive -- "${ff}" ~
+  #sudo -- chown "${UID}:${UID}" -- ~/"${ff##*/}"
+  sudo -- rsync --verbose --checksum --archive -- "${ff}" ~
+  sudo -- chown --verbose "${UID}:${UID}" -- ~/"${ff##*/}"
   chmod 0400 -- ~/"${ff##*/}"
 done
 unset ff
@@ -168,7 +174,8 @@ for ff in "${git_files_b[@]}"
 do
   if [[ -e $ff ]]
   then
-    sudo -- mv --force -- "${ff}" "${ff%_system}"
+    #sudo -- mv --force -- "${ff}" "${ff%_system}"
+    sudo -- mv --verbose --force -- "${ff}" "${ff%_system}"
   fi
 done
 unset ff
@@ -190,7 +197,8 @@ for dd in "${dev_d1}" "${dev_d2}"
 do
   if ! [[ -d ${dd} ]]
   then
-    mkdir --parents "${dd}" || exit "${nL}"
+    #mkdir --parents "${dd}" || exit "${nL}"
+    mkdir --verbose --parents "${dd}" || exit "${nL}"
   fi
 done
 unset dd
