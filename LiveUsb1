@@ -437,6 +437,9 @@ done
 
 : 'Alter the array files_for_use_with_bash'
 write_bashrc_strings "bashrc_strings_1"
+
+  exit $nL # <>
+
 write_bashrc_strings "bashrc_strings_2"
 
 ## Clean up from section Bash
