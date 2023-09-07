@@ -287,8 +287,9 @@ ssh_d=~/.ssh
 ssh_system_conf=/etc/ssh_config
 ssh_user_conf=~/.ssh/config
 
-sudo -- chown "${UID}:${UID}" "${verb[@]}" "${ssh_d}" || er_x "${nL}"
-sudo -- chmod --recursive 700 "${verb[@]}" "${ssh_d}"
+sudo -- chown --recursive "${UID}:${UID}" "${verb[@]}" "${ssh_d}" || er_x "${nL}"
+sudo -- chmod 700 "${verb[@]}" "${ssh_d}"
+sudo -- chmod --recursive 700 "${verb[@]}" "${ssh_d}"/*
 
 if [[ -f ${ssh_user_conf} ]]
 then
