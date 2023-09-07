@@ -340,7 +340,7 @@ unset -f test_dns
 sudo -- timedatectl set-local-rtc 0
 sudo -- timedatectl set-timezone America/Vancouver
 sudo -- nice --adjustment=-20 -- systemctl start chronyd.service 
-sudo -- chronyc makestep > /dev/null
+sudo -- chronyc makestepp > /dev/null
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
