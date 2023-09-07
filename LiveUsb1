@@ -191,20 +191,20 @@ function write_bashrc_strings(){ :
 
   for ff
   do
-  :;: 'For each set of strings to append into bashrc - loop A'
+  :;: 'Loop A - For each set of strings to append into bashrc'
     
     local -n nr="$1"
 
     for file_x in "${files_for_use_with_bash[@]}"
     do
-    :;: 'For each .bashrc - loop B'
-      
+    :;: 'Loop B - For each .bashrc'
+
       : "file_x: ${file_x}"
-      
+
       for Aa_index in "${!nr[@]}"
       do
-      :;: 'For each definition (function or parameter) - loop C'
-        
+      :;: 'Loop C - For each definition (function or parameter)'
+
         : "Aa_index: ${Aa_index}"
         Aa_element="${nr[${Aa_index}]}"
 
@@ -222,7 +222,7 @@ function write_bashrc_strings(){ :
         :;: '(2) If there is an alias by the same name, then delete it from the bashrc file at hand...'
         sudo -- sed -i "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
-        :;: 'Close loop C'
+        :;: 'Loop C - shut'
       done
       unset Aa_element
       :;: 'For each definition - loop complete'
@@ -234,7 +234,7 @@ function write_bashrc_strings(){ :
           sudo -- tee --append -- "${file_x}" > /dev/null
       fi
       
-      :;: 'Close loop B'
+      :;: 'Loop B - shut'
     done
     
     :;: 'Reset for the next loop, assuming there is one'
@@ -242,7 +242,7 @@ function write_bashrc_strings(){ :
     unset -n rn
     shift
     
-    :;: 'Close loop A'
+    :;: 'Loop A - shut'
   done
 }
 
