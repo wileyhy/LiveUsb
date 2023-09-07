@@ -532,7 +532,7 @@ case "${#arr_vrc[@]}" in
     ;;#
 esac
 
-  exit $nL # <>
+  #exit $nL # <>
 
 : 'Write .vimrc'
 if [[ ${write2fs} = yes ]]
