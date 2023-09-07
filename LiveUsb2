@@ -246,9 +246,11 @@ function gh_auth_login_command(){ :
   ## Note: do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
   if gh auth status 
   then
-    gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
-      exit "${nL}"
+    gh auth logout
   fi
+  
+  gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
+    exit "${nL}"
 }
 
 : 'Login to github'
