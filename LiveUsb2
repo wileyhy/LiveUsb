@@ -247,9 +247,9 @@ gh auth setup-git --hostname 'github.com'
 :;: 'Define a login command'
 function gh_auth_login_command(){ :
   ## Note: do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
-  if gh auth status 
+  if gh auth status 2> /dev/null 1>&2
   then
-    gh auth logout
+    gh auth logout 2> /dev/null 1>&2
   fi
   
   gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
