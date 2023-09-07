@@ -850,7 +850,7 @@ then
         :
         qq="${a_pids[pp]}"
 
-        (( ${qq} == 1 )) && continue 002
+        (( qq == 1 )) && continue 002
         sleep 1
 
         for ss in HUP USR1 TERM KILL
