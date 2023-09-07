@@ -343,6 +343,8 @@ sudo -- chronyc makestep > /dev/null
 ## Note: this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
 ## Note: \x60set [-|-x]\x60: letting xtrace expand this \x60tput\x60 command alters all xtrace colorization
 
+: 'Env vars for bashrc'
+
 : 'Color code assigned to PS0, ducking xtrace'
 if [[ -o xtrace ]]
 then
@@ -352,10 +354,8 @@ then
 else
   PS0=$( tput setaf 43 )
 fi
-
-: 'Env vars for bashrc'
 PS1="[\\u@\\h]\\\$ "
-declare -a PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
+PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
