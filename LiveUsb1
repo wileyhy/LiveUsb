@@ -110,7 +110,7 @@ function get_pids_for_restarting(){ \
 function must_be_root(){ \
   local -
   set -
-  if [[ ${UID} = 0 ]]
+  if (( ${UID} == 0 ))
   then
     er_x Must be a regular user and use sudo
   else
@@ -424,7 +424,7 @@ do
 done
 unset nn
 
-if [[ ${#missing_fns[@]} -gt 0 ]]
+if (( ${#missing_fns[@]} > 0 ))
 then
   er_x "${nL}", "${missing_fns[@]}"
 fi
@@ -587,7 +587,7 @@ readarray -d '' -t fsos3 < <( find "${dirs2[@]}" -type f -size +2048b '(' ! -ipa
 
   #declare -p fsos3 # <>
 
-if [[ ${#fsos3[@]} -gt 0 ]]
+if (( ${#fsos3[@]} > 0 ))
 then
   readarray -d '' -t fsos4 < <( {
     for ff in "${fsos3[@]}" ; do
@@ -821,7 +821,7 @@ then
 
     ## Note: \x60[[ ... =\x60: this second test, \x22[[ ${a_pids[*]} = 1 ]]\x22 is correct
     : 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
-    if [[ -n ${a_pids[*]: -1:1} ]] && ! [[ ${a_pids[*]} = 1 ]]
+    if [[ -n ${a_pids[*]: -1:1} ]] && ! (( ${a_pids[*]} == 1 ))
     then
       ii=0
       nn="${#a_pids[@]}"
