@@ -202,9 +202,8 @@ function write_bashrc_strings(){ :
       :;: 'For each definition (function or parameter) - loop'
       for Aa_index in "${!nr[@]}"
       do
-        ## Note: use  unset  so that values from previous loops will not interfere with the current loop
-        Aa_element="${nr[${Aa_index}]}"
         : "Aa_index: ${Aa_index}"
+        Aa_element="${nr[${Aa_index}]}"
 
         :;: 'If the definition is not yet written into the file'
         if ! sudo -- grep --quiet --fixed-strings "## ${Aa_index}" -- "${file_x}"
@@ -230,6 +229,7 @@ function write_bashrc_strings(){ :
     done
     
     :;: 'Reset for the next loop, assuming there is one'
+    ## Note: ?? use  unset  so that values from previous loops will not interfere with the current loop
     unset -n rn
     shift
   done
