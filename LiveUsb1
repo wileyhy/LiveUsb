@@ -42,11 +42,7 @@ functions_for_appending_into_bashrc=(
   'rm'
   ) 
 ## Note: functions exported from a calling interactive shell can cause errors during debugging
-for uu in "${functions_for_appending_into_bashrc[@]}"
-do 
-  unset -f "$uu"
-done
-unset uu
+for uu in "${functions_for_appending_into_bashrc[@]}" ; do unset -f "$uu" ; done ; unset uu
 
 function __vte_osc7(){ \
   local - cmd urlencode_o
