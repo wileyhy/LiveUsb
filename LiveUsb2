@@ -218,15 +218,14 @@ pushd "${dev_d1}" || exit "${nL}"
   set -x # <>
 
 : 'gh -- github CLI'
-gh_config_list_out=$( gh config list | tr -d '\n' )
-
 declare -A github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
+gh_config_list_out=$( gh config list | tr -d '\n' )
 
 for ii in "${!github_configs[@]}"
 do 
-  if ! [[ ${gh_config_list_out} =~ "${github_configs[$ii]}=${ii}" ]]
+  if ! [[ ${gh_config_list_out} =~ "${ii}=${github_configs[$ii]}" ]]
   then
-    gh config set "${github_configs[$ii]}" "${ii}"
+    gh config set "${ii}" "${github_configs[$ii]}"
   fi
 done
 unset gh_config_list_out github_configs
