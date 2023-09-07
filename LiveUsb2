@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 ## LiveUsb2
 
 ## Note: Online Git Pro book:
@@ -153,8 +153,7 @@ then
 
 	EOF
 
-  # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
-
+# shellcheck disable=SC2024
 sudo -- tee -- "${git_ignr}" < "${git_tempd}/ign" > /dev/null || exit "${nL}"
 fi
 
@@ -211,6 +210,8 @@ unset dd
 
 : 'Change dirs'
 pushd "${dev_d1}" || exit "${nL}"
+
+  set -x # <>
 
 : 'gh -- github CLI'
 gh_config_list_out=$( gh config list | tr -d '\n' )
