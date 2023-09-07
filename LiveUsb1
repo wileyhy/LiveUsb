@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 ## LiveUsb1
   # shellcheck disable=SC2206,SC2317,SC2312
 
