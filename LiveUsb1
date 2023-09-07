@@ -334,6 +334,8 @@ unset -f test_dns
 ## Note: \x60bash -c\x60 has no long option
 ## Note: \x60bash -c\x60 requires for any relevant vars to have been \x60export\x60ed
 
+  set -x # <>
+
 sudo -- timedatectl set-local-rtc 0
 sudo -- timedatectl set-timezone America/Vancouver
 false
