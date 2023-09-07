@@ -339,7 +339,7 @@ sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line:$
 sudo -- chronyc makestep > /dev/null
 
   #ec=101 nn="$nL" exit # <>
-  #set -x # <>
+  set -x # <>
 
 : 'Bash'
 ## Note: this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
