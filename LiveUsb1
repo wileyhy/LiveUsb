@@ -412,17 +412,16 @@ bashrc_strings_2+=(                      ['function rm']="function $( declare -p
   declare -p files_for_use_with_bash # <>
 
 : 'Do some backups'
+## Note:  sudo  cannot find  [[  and  [  requires quotes internally
 for ff in "${files_for_use_with_bash[@]}"
 do
+  : 'File must exist'
   if ! sudo -- [ -f "${ff}" ]
   then
     er_x "line:${nL}, ${ff}"
   fi
 
   : '...of the array files_for_use_with_bash'
-
-  ## Note:  sudo  cannot find  [[  and  [  requires quotes internally
-
   if ! sudo -- [ -e "${ff}.orig" ]
   then
     sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
@@ -431,9 +430,7 @@ do
   fi
 
   : '...per script-execution'
-
-  ## Note: quoted tildas do not expand
-
+  ## Note: ~: quoted tildas do not expand
   sudo -- cp --archive -- "${ff}" "${ff}~" || er_x "line:${nL}, ${ff}"
 done
 
