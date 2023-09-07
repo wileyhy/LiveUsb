@@ -44,7 +44,7 @@ functions_for_appending_into_bashrc=(
 
   functions_for_appending_into_bashrc+=( foo ) # <>
 
-for nn in "${functions_for_appending_into_bashrc[@]}" ; do unset -f "$nn" ; done
+for nn in "${functions_for_appending_into_bashrc[@]}" ; do unset -f "$nn" ; done ; unset nn
 
 function __vte_osc7(){ \
   local - cmd urlencode_o
