@@ -41,10 +41,12 @@ functions_for_appending_into_bashrc=(
   '__vte_prompt_command'
   'rm'
   ) 
-
-  functions_for_appending_into_bashrc+=( foo ) # <>
-
-for uu in "${functions_for_appending_into_bashrc[@]}" ; do unset -f "$uu" ; done ; unset uu
+## Note: functions exported from a calling interactive shell can cause errors during debugging
+for uu in "${functions_for_appending_into_bashrc[@]}"
+do 
+  unset -f "$uu"
+done
+unset uu
 
 function __vte_osc7(){ \
   local - cmd urlencode_o
@@ -341,6 +343,7 @@ sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line:$
 sudo -- chronyc makestep > /dev/null
 
   #ec=101 nn="$nL" exit # <>
+  #set -x # <>
 
 : 'Bash'
 ## Note: this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
@@ -375,11 +378,6 @@ EDITOR=$( command -v vim )
 declare -A bashrc_strings_1 bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_fns=()
-
-  set -x # <>
-  #declare -pF foo # <>
-  #declare -F foo # <>
-  #declare -pf foo # <>
 
 : 'Append user variables and functions into .bashrc.'
 ## Note: these arrays include some command substitutions which depend on some function definitions, which in
