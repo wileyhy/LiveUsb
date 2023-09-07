@@ -181,38 +181,46 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
 }
 
 function write_bashrc_strings(){ :
-  local - file_x Aa_index Aa_element
-  local -n nr="$1"
+  local - ff file_x Aa_index Aa_element
+  
+  [[ $# -eq 0 ]] && er_x "line:${nL}"
+  [[ ${#files_for_use_with_bash[@]} -eq 0 ]] && er_x "line:${nL}"
 
-    set -x # <>
-
-  : 'For each .bashrc'
-  for file_x in "${files_for_use_with_bash[@]}"
+  for ff
   do
-    : 'For each definition - loop'
-    for Aa_index in "${!nr[@]}"
+    local -n nr="$1"
+
+      set -x # <>
+
+    : 'For each .bashrc'
+    for file_x in "${files_for_use_with_bash[@]}"
     do
-      : 'If the definition is not yet written into the file'
-      if ! sudo -- grep --quiet --fixed-strings --regexp="## ${Aa_index}" -- "${file_x}"
-      then
+      : 'For each definition - loop'
+      for Aa_index in "${!nr[@]}"
+      do
+        : 'If the definition is not yet written into the file'
+        if ! sudo -- grep --quiet --fixed-strings --regexp="## ${Aa_index}" -- "${file_x}"
+        then
 
-        ## Note: use \x60unset\x60 so that values from previous loops will not interfere with the current loop
+          ## Note: use \x60unset\x60 so that values from previous loops will not interfere with the current loop
 
-        Aa_element="${nr[${Aa_index}]}"
+          Aa_element="${nr[${Aa_index}]}"
         
-        : 'Then write the definition into the file, and if the write fails, exit print the line number to xtrace'
-        printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" | 
-          sudo -- tee --append -- "${file_x}" > /dev/null || er_x "${nL}"
-      fi
-    done
-    : 'For each definition - loop complete'
+          : 'Then write the definition into the file, and if the write fails, exit print the line number to xtrace'
+          printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" | 
+            sudo -- tee --append -- "${file_x}" > /dev/null || er_x "${nL}"
+        fi
+      done
+      : 'For each definition - loop complete'
 
-    : 'For each file, if absent add a newline at EOF'
-    if sudo -- tail --lines 1 -- "${file_x}" | grep --quiet --extended-regexp '[[:graph:]]'
-    then
-      printf '\n' | 
-        sudo -- tee --append -- "${file_x}" > /dev/null
-    fi
+      : 'For each file, if absent add a newline at EOF'
+      if sudo -- tail --lines 1 -- "${file_x}" | grep --quiet --extended-regexp '[[:graph:]]'
+      then
+        printf '\n' | 
+          sudo -- tee --append -- "${file_x}" > /dev/null
+      fi
+    unset -n rn
+    shift
   done
 }
 
