@@ -96,7 +96,7 @@ git_keys+=(
 : 'Permissions'
 for ff in "${git_files_a[@]}"
 do
-  [[ -e ${ff} ]] && sudo -- chmod --verbose 0604 -- "${ff}"
+  [[ -e ${ff} ]] && sudo -- chmod 0604 --verbose -- "${ff}"
 done
 unset ff
 
@@ -165,10 +165,8 @@ fi
 : 'Copy root-user files to USER'
 for ff in "${git_mesg}" "${git_ignr}"
 do
-  #sudo -- rsync --checksum --archive -- "${ff}" ~
-  #sudo -- chown "${UID}:${UID}" -- ~/"${ff##*/}"
-  sudo -- rsync --verbose --checksum --archive -- "${ff}" ~
-  sudo -- chown --verbose "${UID}:${UID}" -- ~/"${ff##*/}"
+  sudo -- rsync --checksum --archive --verbose -- "${ff}" ~
+  sudo -- chown "${UID}:${UID}" --verbose -- ~/"${ff##*/}"
   chmod 0400 -- ~/"${ff##*/}"
 done
 unset ff
@@ -179,8 +177,7 @@ for ff in "${git_files_b[@]}"
 do
   if [[ -e $ff ]]
   then
-    #sudo -- mv --force -- "${ff}" "${ff%_system}"
-    sudo -- mv --verbose --force -- "${ff}" "${ff%_system}"
+    sudo -- mv --force --verbose -- "${ff}" "${ff%_system}"
   fi
 done
 unset ff
@@ -202,8 +199,7 @@ for dd in "${dev_d1}" "${dev_d2}"
 do
   if ! [[ -d ${dd} ]]
   then
-    #mkdir --parents "${dd}" || exit "${nL}"
-    mkdir --verbose --parents "${dd}" || exit "${nL}"
+    mkdir --parents --verbose "${dd}" || exit "${nL}"
   fi
 done
 unset dd
