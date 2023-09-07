@@ -189,7 +189,7 @@ function write_bashrc_strings(){ :
   : 'For each .bashrc'
   for file_x in "${files_for_use_with_bash[@]}"
   do
-    : 'For each definition'
+    : 'For each definition - loop'
     for Aa_index in "${!nr[@]}"
     do
       : 'If the definition is not yet written into the file'
@@ -205,6 +205,7 @@ function write_bashrc_strings(){ :
           sudo -- tee --append -- "${file_x}" > /dev/null || er_x "${nL}"
       fi
     done
+    : 'For each definition - loop complete'
 
     : 'For each file, if absent add a newline at EOF'
     if sudo -- tail --lines 1 -- "${file_x}" | grep --quiet --extended-regexp '[[:graph:]]'
