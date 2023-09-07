@@ -713,6 +713,7 @@ rpm_count_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
 rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
 
 # shellcheck disable=SC2206
+{
 rpms=(  ${for_admin:=}        ncdu pwgen )
 rpms+=( ${for_bash:=}         bash bash-completion )
 rpms+=( ${for_bashdb:=}       bash-devel make autoconf )
@@ -734,6 +735,7 @@ rpms+=( ${for_strings:=}      binutils )
 rpms+=( ${for_term_tests:=}   gnome-terminal )
 rpms+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
 rpms+=( ${for_security:=}     orca protonvpn-cli )
+}
 
 : 'Start with removing any unnecessary RPMs'
 
