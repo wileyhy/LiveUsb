@@ -183,7 +183,7 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
 function write_bashrc_strings(){ :
   local - ff file_x Aa_index Aa_element
 
-    set -x # <>
+    #set -x # <>
 
   :;: 'Certain parameters must be defined and have non-zero values'
   [[ $# -eq 0 ]] && er_x "line:${nL}"
