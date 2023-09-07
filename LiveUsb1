@@ -393,7 +393,7 @@ do
 done
 unset nn
 
-if [[ "${#missing_fns[@]}" -gt 0 ]]
+if [[ ${#missing_fns[@]} -gt 0 ]]
 then
   er_x "${nL}", "${missing_fns[@]}"
 fi
