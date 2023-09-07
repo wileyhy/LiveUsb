@@ -32,6 +32,7 @@ fn_lvl=0
   #+	'must_be_root()'
   #+	'rm()'
   #+	'test_dns()'
+  #+  'trap_exit()'
   #+	'write_bashrc_strings()'
   #+)
 functions_for_appending_into_bashrc=(
@@ -156,6 +157,22 @@ function test_dns(){ \
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
+function trap_exit(){ exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
+  set - 
+  if [[ -e ${tmpd} ]]
+  then
+    command rm --one-file-system --preserve-root=all --force --recursive -- "${tmpd}"
+  fi
+  trap - EXIT
+  if [[ $exit_trap_ec = "00" ]]
+  then
+    echo "End of script, line:${lineno}"
+  else
+    echo "End of EXIT trap, line:${lineno}"
+  fi
+  builtin exit "${exit_trap_ec}"
+}
+
 function write_bashrc_strings(){ :
   local - file_x Aa_index Aa_element
   local -n nr="$1"
@@ -224,21 +241,7 @@ tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 ## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of \x60trap\x60 "args section" ??
   # shellcheck disable=SC2154 #(warning): ec|exit_trap_ec|lineno|nn is referenced but not assigned.
 
-trap 'exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
-  set - 
-  if [[ -e ${tmpd} ]]
-  then
-    command rm --one-file-system --preserve-root=all --force --recursive -- "${tmpd}"
-  fi
-  trap - EXIT
-  if [[ $exit_trap_ec = "00" ]]
-  then
-    echo "End of script, line:${lineno}"
-  else
-    echo "End of EXIT trap, line:${lineno}"
-  fi
-  builtin exit "${exit_trap_ec}"
-' EXIT
+trap trap_exit EXIT
 
 : 'Other environment variables'
 LC_ALL=''
