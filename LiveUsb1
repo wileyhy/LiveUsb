@@ -180,7 +180,7 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
   builtin exit "${exit_trap_ec}"
 }
 
-  declare -A bash_strings_{1,2} # <>
+  declare -A bashrc_strings_{1,2} # <>
 
 # shellcheck disable=SC2034,SC2016
 bashrc_strings_1=(            ['function __vte_osc7']="function $( declare -pf __vte_osc7 )")
