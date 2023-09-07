@@ -68,7 +68,7 @@ function __vte_prompt_command(){ \
     pwd="${PWD/#"${HOME}"\//\~\/}" pwd="${pwd//[[:cntrl:]]}"
   fi
   
-  ## Bug: what does this \x60printf\x60 actually do???
+  ## Bug: what does this  printf  actually do???
   printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${pwd}"
   __vte_osc7
 }
