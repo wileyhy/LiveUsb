@@ -167,7 +167,10 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
   trap - EXIT
   if [[ $exit_trap_ec = "00" ]]
   then
-    echo "End of script, line:${lineno}"
+    : "End of script, line:${lineno}"
+
+      #echo "End of script, line:${lineno}" # <>
+
   else
     echo "End of EXIT trap, line:${lineno}"
   fi
