@@ -226,7 +226,7 @@ gh_config_list_out=$( gh config list | tr '\n' ' ' )
 
 for ii in "${!github_configs[@]}"
 do 
-  if ! [[ ${gh_config_list_out} =~ "${ii}=${github_configs[$ii]}" ]]
+  if ! [[ ${gh_config_list_out} = "${ii}=${github_configs[$ii]}" ]]
   then
     gh config set "${ii}" "${github_configs[$ii]}"
   fi
