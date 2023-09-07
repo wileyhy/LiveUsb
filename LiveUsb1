@@ -140,9 +140,7 @@ function rm(){ :
       
       if [[ -e ${fd} ]]
       then
-
         ## Note:  mv  is commonly a default alias
-
         command mv --backup --suffix="${time_sfx}" -- "${fd}" "${delete_d}" || return 3
       fi
     else
