@@ -385,19 +385,22 @@ do
     missing_fns+=( "${nn}" )
   fi
 done
+unset nn
+
 if [[ "${#missing_fns[@]}" -gt 0 ]]
 then
   er_x "${nL}", "${missing_fns[@]}"
 fi
 
+
 # shellcheck disable=SC2034,SC2016
 bashrc_strings_1=(               ['function __vte_osc7']="function $( declare -pf __vte_osc7              )")
 bashrc_strings_1+=(    ['function __vte_prompt_command']="function $( declare -pf __vte_prompt_command    )")
+
+# shellcheck disable=SC2034,SC2016
 bashrc_strings_2=(   ['export "${bashrc_strings_2[@]}"']=$(           declare -p BROWSER EDITOR           ) )
 bashrc_strings_2+=(  ['export "${bashrc_strings_2[@]}"']=$(           declare -p PROMPT_COMMAND PS0       ) )
 bashrc_strings_2+=(                      ['function rm']="function $( declare -pf rm                      )")
-
-  exit $nL
 
 : 'Do some backups'
 for ff in "${files_for_use_with_bash[@]}"
