@@ -340,16 +340,16 @@ unset -f test_dns
 function set_the_time(){ \
   local -
   set +e
-  timedatectl set-local-rtc 0
-  timedatectl set-timezone America/Vancouver
-  nice --adjustment=-20 -- systemctl start -- chronyd.service
-  chronyc makestepp > /dev/null
+  sudo -- timedatectl set-local-rtc 0
+  sudo -- timedatectl set-timezone America/Vancouver
+  nice --adjustment=-20 -- sudo -- systemctl start -- chronyd.service
+  sudo -- chronyc makestepp > /dev/null
 }
 export -f set_the_time
 
   declare -pF set_the_time
 
-sudo -- bash -c 'set_the_time' || er_x "line:${nL}"
+bash -c 'set_the_time' || er_x "line:${nL}"
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
