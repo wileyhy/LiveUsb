@@ -425,7 +425,7 @@ do
       sudo -- chmod 400 -- "${ff}.orig"
       sudo -- chattr +i -- "${ff}.orig"
     else
-      er_x "line:${nL}"
+      er_x "line:${nL}, ${ff}"
     fi
   fi
 
