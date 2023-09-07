@@ -1,6 +1,5 @@
 #!/bin/bash -x
 ## LiveUsb1
-  # hellcheck disable=SC2206,SC2317,SC2312
 
 ## TODO: make re-entrant: add atomicity to all changes
 ## TODO: add function boundary comments to all functions that will be used in-script. Functions that will 
@@ -83,8 +82,6 @@ function er_x(){ \
   true "${fn_bndry} er_x() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
   exit "${exit_code}"
 } 
-
-  # hellcheck disable=SC2034 # (warning): pipeline1 appears unused
 
 function get_pids_for_restarting(){ :
   # shellcheck disable=SC2034
@@ -284,7 +281,6 @@ tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 : 'trap on EXIT'
 
 ## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
-  # hellcheck disable=SC2154 #(warning): ec|exit_trap_ec|lineno|nn is referenced but not assigned.
 
 trap trap_exit EXIT
 
@@ -325,8 +321,6 @@ dns_srv_1=8.8.8.8
 dns_srv_A=75.75.75.75
 
 ## Note:  ping  doesn't have long options
-  # hellcheck disable=SC2310 # (info): This function is invoked in a ! condition so set -e will be disabled.
-
 if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
 then
   printf '\n%s: Attempting to connect to the internet... \n\n' "$scr_nm"
@@ -359,8 +353,6 @@ then
       er_x "line:${nL}, Multiple network devices available"
       ;;#
   esac
-
-    # hellcheck disable=SC2310
 
   if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
   then
@@ -436,12 +428,9 @@ fi
 
 : 'Define bashrc_strings_*'
 ## Note: you want for these array values to each represent just one parameter or function
-# hellcheck disable=SC2034,SC2016
 bashrc_strings_1=(            ['function __vte_osc7']="function $(  declare -pf __vte_osc7 )")
 bashrc_strings_1+=( ['function __vte_prompt_command']="function $(  declare -pf __vte_prompt_command )")
 bashrc_strings_1+=(                   ['function rm']="function $(  declare -pf rm )")
-
-# hellcheck disable=SC2016
 bashrc_strings_2=(                 ['export BROWSER']=$(            declare -p BROWSER ) )
 bashrc_strings_2+=(                 ['export EDITOR']=$(            declare -p EDITOR ) )
 bashrc_strings_2+=(         ['export PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
@@ -660,8 +649,6 @@ then
               ;;#
           y|t)  printf '  %s %b %s %s \n' 'Script:' ' \x60rm -i\x60 ' 'requires a typed [yN] response:' \
                   'it defaults to do-not-delete if a user just presses [enter].'
-
-                  # hellcheck disable=SC2310 # (info): This function is invoked in an 'if' condition so set -e...
 
                 if sudo -- command rm --one-file-system --preserve-root=all --interactive -- "${xx}"
                 then
