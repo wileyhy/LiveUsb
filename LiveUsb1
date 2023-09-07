@@ -390,10 +390,11 @@ then
   er_x "${nL}", "${missing_fns[@]}"
 fi
 
+unset bashrc_strings_1 bashrc_strings_2
 # shellcheck disable=SC2034,SC2016
-bashrc_strings_1=(               ['function __vte_osc7']="function $( declare -pf __vte_osc7              )")
+bashrc_strings_1+=(               ['function __vte_osc7']="function $( declare -pf __vte_osc7              )")
 bashrc_strings_1+=(    ['function __vte_prompt_command']="function $( declare -pf __vte_prompt_command    )")
-bashrc_strings_2=(   ['export "${bashrc_strings_2[@]}"']=$(           declare -p BROWSER EDITOR           ) )
+bashrc_strings_2+=(   ['export "${bashrc_strings_2[@]}"']=$(           declare -p BROWSER EDITOR           ) )
 bashrc_strings_2+=(  ['export "${bashrc_strings_2[@]}"']=$(           declare -p PROMPT_COMMAND PS0       ) )
 bashrc_strings_2+=(                      ['function rm']="function $( declare -pf rm                      )")
 
