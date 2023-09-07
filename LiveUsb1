@@ -59,6 +59,7 @@ function __vte_osc7(){ :
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 }
 
+# shellcheck disable=SC2317
 function __vte_prompt_command(){ :
   local - prompt_cmd pwd
   prompt_cmd=$( HISTTIMEFORMAT='' history 1 | sed 's/^ *[0-9]\+ *//' ) prompt_cmd="${prompt_cmd//;/ }"
