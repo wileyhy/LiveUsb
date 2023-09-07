@@ -10,7 +10,7 @@ umask 077
 hash -r
 
 : 'Environment'
-# hellcheck disable=SC1001
+# shellcheck disable=SC1001
 declare -n nL=L\INENO
 readonly nL
 PATH='/usr/bin:/usr/sbin' || exit "${nL}"
