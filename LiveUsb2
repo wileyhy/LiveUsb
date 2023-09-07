@@ -64,6 +64,10 @@ fi
 ## Bug? in vim, when quoting 'EOF', $git_tempd changes color, but bash still expands the redirection
 #+ destination file.
 
+## Buggy.  I think there's some bugginess going on with these system files. ie, I don't think git actually 
+#+  uses files in etc...?
+#+    "$XDG_CONFIG_HOME/git/ignore, $GIT_DIR/info/exclude, .gitignore" - `man gitignore`
+
 :;: 'Git'
 
 :;: 'Git parameters, dependency level 1'
