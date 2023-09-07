@@ -550,7 +550,7 @@ then
     sudo -- rsync --archive --checksum -- "${tmpd}/vim-conf-text" "${strng_vrc}" || er_x "${nL}"
 
     : $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
-    sudo -- rsync --checksum --archive -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
+    sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
     sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
     chmod 0400 -- "/home/${USER}/.vimrc"
 
