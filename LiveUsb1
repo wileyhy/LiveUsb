@@ -121,7 +121,7 @@ function must_be_root(){ \
 ## Note: rm(): command shadowing is intended in this case
 
 function rm(){ \
-  [[ ${#@} -eq 0 ]] && return 1
+  (( ${#@} == 0 )) && return 1
   
   local - delete_d fd time_sfx opts_done
   delete_d=~/rm.d 
@@ -186,8 +186,8 @@ function write_bashrc_strings(){ :
     #set -x # <>
 
   :;: 'Certain parameters must be defined and have non-zero values'
-  [[ $# -eq 0 ]] && er_x "line:${nL}"
-  [[ ${#files_for_use_with_bash[@]} -eq 0 ]] && er_x "line:${nL}"
+  (( $# == 0 )) && er_x "line:${nL}"
+  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line:${nL}"
 
   for ff
   do
@@ -612,7 +612,7 @@ then
     fsos5+=( "${1%% *}" "${1#* }")
     shift 1
     
-    [[ $# -eq 0 ]] && break 1
+    (( $# == 0 )) && break 1
   done
 fi
 
@@ -845,7 +845,7 @@ then
         :
         qq="${a_pids[pp]}"
 
-        [[ ${qq} -eq 1 ]] && continue 002
+        (( ${qq} == 1 )) && continue 002
         sleep 1
 
         for ss in HUP USR1 TERM KILL
