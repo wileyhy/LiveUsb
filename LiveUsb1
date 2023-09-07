@@ -189,19 +189,22 @@ function write_bashrc_strings(){ :
   [[ $# -eq 0 ]] && er_x "line:${nL}"
   [[ ${#files_for_use_with_bash[@]} -eq 0 ]] && er_x "line:${nL}"
 
-  :;: 'For each set of strings to append into bashrc'
   for ff
   do
+  :;: 'For each set of strings to append into bashrc'
+    
     local -n nr="$1"
 
-    :;: 'For each .bashrc'
     for file_x in "${files_for_use_with_bash[@]}"
     do
+    :;: 'For each .bashrc'
+      
       : "file_x: ${file_x}"
       
-      :;: 'For each definition (function or parameter) - loop'
       for Aa_index in "${!nr[@]}"
       do
+      :;: 'For each definition (function or parameter) - loop'
+        
         : "Aa_index: ${Aa_index}"
         Aa_element="${nr[${Aa_index}]}"
 
