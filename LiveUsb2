@@ -99,8 +99,8 @@ done
 unset ff
 
 : 'git config, remove a config if present'
-#if grep --quiet gpg.format <<< "${git_config_sys[@]}"
-if grep gpg.format <<< "${git_config_sys[@]}"
+#if grep --quiet gpg.format <<< "${git_conf_sys[@]}"
+if grep gpg.format <<< "${git_conf_sys[@]}"
 then
   sudo -- git config --system --unset gpg.format 
 fi
