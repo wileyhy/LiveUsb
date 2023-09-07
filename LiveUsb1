@@ -225,7 +225,7 @@ function write_bashrc_strings(){ :
         :;: 'Loop C - shut'
       done
       unset Aa_element
-      :;: 'For each definition - loop complete'
+      :;: 'Loop C - complete'
 
       :;: 'For each file, if absent add a newline at EOF'
       if sudo -- tail --lines 1 -- "${file_x}" | grep --quiet --extended-regexp '[[:graph:]]'
