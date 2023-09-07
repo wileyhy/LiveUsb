@@ -10,7 +10,7 @@ umask 077
 hash -r
 
 : 'Environment'
-# shellcheck disable=SC1001
+# hellcheck disable=SC1001
 declare -n nL=L\INENO
 readonly nL
 PATH='/usr/bin:/usr/sbin' || exit "${nL}"
@@ -135,8 +135,8 @@ then
 
 	EOF
 
+  ## Note: this use of  sudo  is for giving write permissions to  tee
   # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
-
   sudo -- tee -- "${git_mesg}" < "${git_tempd}/msg" > /dev/null || exit "${nL}"
 fi
 
@@ -154,7 +154,7 @@ then
 
 	EOF
 
-# shellcheck disable=SC2024
+# hellcheck disable=SC2024
 sudo -- tee -- "${git_ignr}" < "${git_tempd}/ign" > /dev/null || exit "${nL}"
 fi
 
@@ -320,7 +320,7 @@ readonly ps_o
 if [[ -z ${SSH_AUTH_SOCK} ]] || [[ -z ${SSH_AGENT_PID} ]]
 then
 
-  # shellcheck disable=SC2154
+  # hellcheck disable=SC2154
 
   awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /startx/ { print $2 }' <<< "${ps_o}" )
 
@@ -373,7 +373,7 @@ gpg_d=~/.gnupg
 sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
 sudo -- chmod --recursive 700 "${gpg_d}"
 
-  # shellcheck disable=SC2009
+  # hellcheck disable=SC2009
 
 if grep --quiet --extended-regexp '[g]pg-a.*daemon' <<< "${ps_o}"
 then
