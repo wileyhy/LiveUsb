@@ -1,6 +1,6 @@
 #!/bin/bash -x
 ## LiveUsb1
-  # shellcheck disable=SC2206,SC2317,SC2312
+  # hellcheck disable=SC2206,SC2317,SC2312
 
 ## TODO: make re-entrant: add atomicity to all changes
 ## TODO: add function boundary comments to all functions that will be used in-script. Functions that will 
@@ -82,7 +82,7 @@ function er_x(){ \
   exit "${exit_code}"
 } 
 
-  # shellcheck disable=SC2034 # (warning): pipeline1 appears unused
+  # hellcheck disable=SC2034 # (warning): pipeline1 appears unused
 
 function get_pids_for_restarting(){ :
   local - dnf_o pipeline1 pipeline2
@@ -267,7 +267,7 @@ unset tt
 
 ## Bug: only way to export namerefs? 
 ## Note: variable assignments: Backslash escape bc  sed -i 
-  # shellcheck disable=SC1001 # (info): This \I will be a regular 'I' in this context.
+  # hellcheck disable=SC1001 # (info): This \I will be a regular 'I' in this context.
 
 declare -nx nL=L\INENO
 
@@ -281,7 +281,7 @@ tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 : 'trap on EXIT'
 
 ## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
-  # shellcheck disable=SC2154 #(warning): ec|exit_trap_ec|lineno|nn is referenced but not assigned.
+  # hellcheck disable=SC2154 #(warning): ec|exit_trap_ec|lineno|nn is referenced but not assigned.
 
 trap trap_exit EXIT
 
@@ -291,7 +291,7 @@ PS1=''
 
 : 'Initialize some env vars found in sourced files, as a workaround for nounset'
 ## Note, local style: inline comments, ie, 'echo foo ## Note: blah', are useful for rebutting false positives from ShellCheck 
-# shellcheck disable=SC2034 #(warning): BASHRCSOURCED appears unused. Verify use (or export if used externally).
+# hellcheck disable=SC2034 #(warning): BASHRCSOURCED appears unused. Verify use (or export if used externally).
 declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
 # <Logs>
@@ -322,7 +322,7 @@ dns_srv_1=8.8.8.8
 dns_srv_A=75.75.75.75
 
 ## Note:  ping  doesn't have long options
-  # shellcheck disable=SC2310 # (info): This function is invoked in a ! condition so set -e will be disabled.
+  # hellcheck disable=SC2310 # (info): This function is invoked in a ! condition so set -e will be disabled.
 
 if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
 then
@@ -357,7 +357,7 @@ then
       ;;#
   esac
 
-    # shellcheck disable=SC2310
+    # hellcheck disable=SC2310
 
   if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
   then
@@ -433,12 +433,12 @@ fi
 
 : 'Define bashrc_strings_*'
 ## Note: you want for these array values to each represent just one parameter or function
-# shellcheck disable=SC2034,SC2016
+# hellcheck disable=SC2034,SC2016
 bashrc_strings_1=(            ['function __vte_osc7']="function $(  declare -pf __vte_osc7 )")
 bashrc_strings_1+=( ['function __vte_prompt_command']="function $(  declare -pf __vte_prompt_command )")
 bashrc_strings_1+=(                   ['function rm']="function $(  declare -pf rm )")
 
-# shellcheck disable=SC2016
+# hellcheck disable=SC2016
 bashrc_strings_2=(                 ['export BROWSER']=$(            declare -p BROWSER ) )
 bashrc_strings_2+=(                 ['export EDITOR']=$(            declare -p EDITOR ) )
 bashrc_strings_2+=(         ['export PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
@@ -610,7 +610,7 @@ then
   do
     [[ -z ${1:-} ]] && break 1 # <> set-u
 
-      # shellcheck disable=SC2190 # (warning): Elements in associative arrays need index
+      # hellcheck disable=SC2190 # (warning): Elements in associative arrays need index
 
     fsos5+=( "${1%% *}" "${1#* }")
     shift 1
@@ -659,7 +659,7 @@ then
           y|t)  printf '  %s %b %s %s \n' 'Script:' ' \x60rm -i\x60 ' 'requires a typed [yN] response:' \
                   'it defaults to do-not-delete if a user just presses [enter].'
 
-                  # shellcheck disable=SC2310 # (info): This function is invoked in an 'if' condition so set -e...
+                  # hellcheck disable=SC2310 # (info): This function is invoked in an 'if' condition so set -e...
 
                 if sudo -- command rm --one-file-system --preserve-root=all --interactive -- "${xx}"
                 then
@@ -711,8 +711,8 @@ rpm_count_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
 ## Note: these PE's have been tested and should "disappear" by virtue of whichever expansion does that, leaving
 #+  just the regular strings as the elements of the array
 rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
-  # shellcheck disable=SC2086 #(info): Double quote to prevent globbing...
 
+# shellcheck disable=SC2086 #(info): Double quote to prevent globbing...
 rpms=(  ${for_admin:=}        ncdu pwgen )
 rpms+=( ${for_bash:=}         bash bash-completion )
 rpms+=( ${for_bashdb:=}       bash-devel make autoconf )
