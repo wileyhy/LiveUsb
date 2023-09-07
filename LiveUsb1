@@ -184,6 +184,8 @@ function write_bashrc_strings(){ :
   local - file_x Aa_index Aa_element
   local -n nr="$1"
 
+    set -x # <>
+
   : 'For each .bashrc'
   for file_x in "${files_for_use_with_bash[@]}"
   do
@@ -377,9 +379,6 @@ EDITOR=$( command -v vim )
 
 declare -A bashrc_strings_1 bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
-
-  files_for_use_with_bash+=( ~/.foobar ) # <>
-
 missing_fns=()
 
 : 'Append user variables and functions into .bashrc.'
@@ -433,7 +432,7 @@ do
 
   ## Note: quoted tildas do not expand
 
-  sudo -- cp --archive -- "${ff}" "${ff}~" || er_x "${nL}"
+  sudo -- cp --archive -- "${ff}" "${ff}~" || er_x "line:${nL}, ${ff}"
 done
 
 : 'Alter the array files_for_use_with_bash'
@@ -441,7 +440,7 @@ write_bashrc_strings "bashrc_strings_1"
 write_bashrc_strings "bashrc_strings_2"
 
 ## Clean up from section Bash
-unset xon files_for_use_with_bash bashrc_strings_1 bashrc_strings_2
+unset files_for_use_with_bash bashrc_strings_1 bashrc_strings_2
 unset -f write_bashrc_strings
 
   #ec=101 nn="$nL" exit # <>
