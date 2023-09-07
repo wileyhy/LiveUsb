@@ -350,7 +350,7 @@ unset -f test_dns
 
   #declare -pF set_the_time # <>
 
-bash -c 'set_the_time'
+set_the_time
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
