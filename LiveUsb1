@@ -32,7 +32,6 @@ scr_nm=LiveUsb1
   #+	'get_pids_for_restarting()'
   #+	'must_be_root()'
   #+	'rm()'
-  #+  'set_the_time()'
   #+	'test_dns()'
   #+  'trap_exit()'
   #+	'write_bashrc_strings()'
@@ -152,16 +151,6 @@ function rm(){ \
     [[ -z ${opts_done} ]] && er_x "${nL}"
   done
 }
-
-function set_the_time(){ \
-  #local -
-  #set +e
-  sudo -- timedatectl set-local-rtc 0
-  sudo -- timedatectl set-timezone America/Vancouver
-  sudo -- nice --adjustment=-20 -- systemctl start -- chronyd.service 
-  sudo -- chronyc makestep > /dev/null
-}
-export -f set_the_time
 
 function test_dns(){ \
   local -
@@ -348,9 +337,10 @@ unset -f test_dns
 ## Note: \x60bash -c\x60 has no long option
 ## Note: \x60bash -c\x60 requires for any relevant vars to have been \x60export\x60ed
 
-  #declare -pF set_the_time # <>
-
-set_the_time
+sudo -- timedatectl set-local-rtc 0
+sudo -- timedatectl set-timezone America/Vancouver
+sudo -- nice --adjustment=-20 -- systemctl start chronyd.service 
+sudo -- chronyc makestep > /dev/null
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
