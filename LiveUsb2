@@ -19,7 +19,7 @@ fi
 umask 077
 hash -r
 
-: 'Environment'
+:;: 'Environment'
 # shellcheck disable=SC1001
 declare -n nL=L\INENO
 readonly nL
@@ -28,7 +28,7 @@ scr_repo_nm=scf
 fn_bndry=' ~~~ ~~~ ~~~ '
 fn_lvl=0
 
-: 'Functions'
+:;: 'Functions'
 function er_x(){ \
   local - exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
@@ -36,7 +36,7 @@ function er_x(){ \
   exit "${exit_code}"
 }
 
-: 'Regular users only'
+:;: 'Regular users only'
 if [[ ${UID} = 0 ]]
 then
   printf '\n\t Must be a regular user and use sudo. \n\n'
@@ -47,7 +47,7 @@ fi
 
 ## Bug? section "Network" is also present in LiveUsb1
 
-: 'Network'
+:;: 'Network'
 ## Note: \x60ping\x60 doesn't have any long options. \x60ping -c\x60 is "count;" \x60ping -W\x60 is "timeout."
 if ! sudo -- ping -c 1 -W 15 -- 8.8.8.8 > /dev/null
 then
@@ -64,9 +64,9 @@ fi
 ## Bug? in vim, when quoting 'EOF', $git_tempd changes color, but bash still expands the redirection
 #+ destination file.
 
-: 'Git'
+:;: 'Git'
 
-: 'Git parameters, dependency level 1'
+:;: 'Git parameters, dependency level 1'
 git_conf_sys=''
 git_config_sys_conf_file=/etc/gitconfig
 git_files_a=( /etc/git* /etc/.git* )
@@ -92,7 +92,7 @@ git_mesg=/etc/.gitmessage_system
 git_tempd=$( TMPDIR='' mktemp --directory ) 
 readonly git_tempd
 
-: 'Git parameters, dependency level 2'
+:;: 'Git parameters, dependency level 2'
 if [[ -f $git_config_sys_conf_file ]]
 then
   git_conf_sys=$( sudo -- git config --system --list )
@@ -102,20 +102,20 @@ git_keys+=(
   [core.excludesfile]="${git_ignr}"
 )
 
-: 'Permissions'
+:;: 'Permissions'
 for ff in "${git_files_a[@]}"
 do
   [[ -e ${ff} ]] && sudo -- chmod 0604 "${verb[@]}" "${ff}"
 done
 unset ff
 
-: 'git config, remove a config if present'
+:;: 'git config, remove a config if present'
 if grep gpg.format "${qui[@]}" <<< "${git_conf_sys[@]}"
 then
   sudo -- git config --system --unset gpg.format 
 fi
 
-: 'git config, assigning'
+:;: 'git config, assigning'
 unset ii
 for ii in "${!git_keys[@]}"
 do
@@ -128,10 +128,10 @@ do
 done
 unset ii
 
-: 'gitmessage (system)'
+:;: 'gitmessage (system)'
 if ! [[ -f ${git_mesg} ]]
 then
-  : 'Heredoc: gitmessage'
+  :;: 'Heredoc: gitmessage'
   cat <<- \EOF > "${git_tempd}/msg"
 	Subject line (try to keep under 50 characters)
 
@@ -149,10 +149,10 @@ fi
 
   #set -x # <>
 
-: 'gitignore (system)'
+:;: 'gitignore (system)'
 if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui[@]}" "${git_ignr}"
 then
-  : 'Heredoc: gitignore'
+  :;: 'Heredoc: gitignore'
   cat <<- \EOF > "${git_tempd}/ign"
 	*~
 	.*.swp
@@ -167,7 +167,7 @@ fi
 
   #exit $LINENO # <>
 
-: 'Copy root-user files to USER'
+:;: 'Copy root-user files to USER'
 for ff in "${git_mesg}" "${git_ignr}"
 do
   sudo -- rsync --checksum --archive "${verb[@]}" "${ff}" ~
@@ -176,7 +176,7 @@ do
 done
 unset ff
 
-: 'Rename files'
+:;: 'Rename files'
 
 for ff in "${git_files_b[@]}"
 do
@@ -190,9 +190,9 @@ unset ff
 ## Clean up after section "Git"
 unset git_files_a git_config_sys_conf_file git_conf_sys git_mesg git_ignr git_keys git_files_b
 
-: 'Make and change into directories'
+:;: 'Make and change into directories'
 
-: 'Make dirs'
+:;: 'Make dirs'
 umask 077
 ## Note: these vars, dev_d{1,2}, will be used throughout the rest of this script
 dev_d1=~/MYPROJECTS
@@ -212,12 +212,12 @@ unset dd
 ## Note: in order to clone into any repo, and keep multiple repos separate, \x60cd\x60 is required, or \x60pushd\x60 / 
 #+  \x60popd\x60
 
-: 'Change dirs'
+:;: 'Change dirs'
 pushd "${dev_d1}" || exit "${nL}"
 
   set -x # <>
 
-: 'gh -- github CLI'
+:;: 'gh -- github CLI'
 declare -A github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
 gh_config_list_out=$( gh config list | tr '\n' ' ' )
 
@@ -247,14 +247,14 @@ function gh_auth_login_command(){ :
     exit "${nL}"
 }
 
-: 'Login to github'
+:;: 'Login to github'
 ## Note: executing this command just once
 if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
 then
   gh_auth_login_command
 fi
 
-: 'Get SSH & GPG keys'
+:;: 'Get SSH & GPG keys'
 for cc in ssh-key gpg-key
 do
   if ! gh "${cc}" list
@@ -263,12 +263,12 @@ do
   fi
 done
 
-: 'Review auth'
+:;: 'Review auth'
 gh auth status --show-token
 
   #exit $nL # <>
 
-: 'Clone repo'
+:;: 'Clone repo'
 [[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
 
 if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
@@ -276,7 +276,7 @@ then
   git clone --origin 'github' "${verb[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
 fi
 
-: 'SSH'
+:;: 'SSH'
 ssh_d=~/.ssh
 ssh_system_conf=/etc/ssh_config
 ssh_user_conf=~/.ssh/config
@@ -300,7 +300,7 @@ fi
 
 ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
-: $'Collect output of \x60ps\x60'
+:;: $'Collect output of \x60ps\x60'
 if [[ -o xtrace ]]
 then
   set -
@@ -359,7 +359,7 @@ fi
 ## Clean up from section "Ssh"
 unset xon
 
-: 'GPG'
+:;: 'GPG'
 gpg_d=~/.gnupg
 sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
 sudo -- chmod --recursive 700 "${gpg_d}"
@@ -372,7 +372,7 @@ gpg-connect-agent /bye
 GPG_TTY=$( tty )
 export GPG_TTY
 
-: 'Remind user of commands for the interactive shell'
+:;: 'Remind user of commands for the interactive shell'
 
   #set -x # <>
 
@@ -384,7 +384,7 @@ then
   printf '\n\t cd "%s/%s" ; git status \n\n' "${dev_d1}" "${scr_repo_nm}"
 fi
 
-: 'Clean up & exit'
+:;: 'Clean up & exit'
 command rm --force --recursive "${verb[@]}" "${git_tempd}"
 exit 00
 
