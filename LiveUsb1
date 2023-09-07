@@ -24,16 +24,21 @@ fn_bndry=' ~~~ ~~~ ~~~ '
 fn_lvl=0
 
 : 'Functions TOC...'
-## functions_this_script=( 
-#+	'__vte_osc7()'
-#+	'__vte_prompt_command()'
-#+	'er_x()'
-#+	'get_pids_for_restarting()'
-#+	'must_be_root()'
-#+	'rm()'
-#+	'test_dns()'
-#+	'write_bashrc_strings()'
-#+)
+  ## functions_this_script=( 
+  #+	'__vte_osc7()'
+  #+	'__vte_prompt_command()'
+  #+	'er_x()'
+  #+	'get_pids_for_restarting()'
+  #+	'must_be_root()'
+  #+	'rm()'
+  #+	'test_dns()'
+  #+	'write_bashrc_strings()'
+  #+)
+functions_for_appending_into_bashrc=(
+  '__vte_osc7'
+  '__vte_prompt_command'
+  'rm'
+  ) 
 
 function __vte_osc7(){ \
   local - cmd urlencode_o
@@ -96,6 +101,7 @@ function get_pids_for_restarting(){ \
 
 function must_be_root(){ \
   local -
+  set -
   if [[ ${UID} = 0 ]]
   then
     er_x Must be a regular user and use sudo
@@ -146,6 +152,7 @@ function rm(){ \
 
 function test_dns(){ \
   local -
+  set -
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
@@ -364,7 +371,18 @@ files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 
 : 'Append user variables and functions into .bashrc.'
 ## Note: these arrays include some command substitutions which depend on some function definitions, which in
-#+ turn must be defined prior to defining these arrays.
+#+ turn must be defined prior to defining these arrays
+for nn in "${functions_for_appending_into_bashrc[@]}"
+do
+  if ! declare -F "${nn}" > /dev/null
+  then
+    missing_fns+=( "${nn}" )
+  fi
+done
+if [[ "${#missing_fns[@]}" -gt 0 ]]
+then
+  er_x "${nL}", "${missing_fns[@]}"
+fi
   # shellcheck disable=SC2034 #(warning): bashrc_strings_1 appears unused.
 
 bashrc_strings_1=( ['function __vte_osc7']=$(              declare -pf __vte_osc7                        ) )
