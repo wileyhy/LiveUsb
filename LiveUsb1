@@ -219,6 +219,9 @@ function write_bashrc_strings(){ :
         printf '\n' | 
           sudo -- tee --append -- "${file_x}" > /dev/null
       fi
+    done
+    
+    : 'Reset for the next loop, assuming there is one'
     unset -n rn
     shift
   done
