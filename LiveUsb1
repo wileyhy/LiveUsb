@@ -196,6 +196,8 @@ function write_bashrc_strings(){ :
     : 'For each .bashrc'
     for file_x in "${files_for_use_with_bash[@]}"
     do
+      : "file_x: ${file_x}"
+      
       : 'For each definition - loop'
       for Aa_index in "${!nr[@]}"
       do
@@ -203,7 +205,7 @@ function write_bashrc_strings(){ :
         if ! sudo -- grep --quiet --fixed-strings --regexp="## ${Aa_index}" -- "${file_x}"
         then
 
-          ## Note: use   unset   so that values from previous loops will not interfere with the current loop
+          ## Note: use  unset  so that values from previous loops will not interfere with the current loop
 
           Aa_element="${nr[${Aa_index}]}"
         
