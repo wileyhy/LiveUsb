@@ -716,12 +716,12 @@ then
   fi
 fi
 
-  df --sync --output=fstype,avail,pcent,target -- . # <>
+  #df --sync --output=fstype,avail,pcent,target -- . # <>
 
 : 'Then do a blanket security upgrade'
 sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet --security upgrade || er_x "${nL}"
 
-  df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
+  #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
 
 : 'Find out whether an RPM is installed, one by one'
 for rr in "${!rpms[@]}"
@@ -751,7 +751,7 @@ unset rpm_nms_for_removal rpms
 unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace},linting,lockfile,os_dnlds,strings,term_tests,unicode}
 unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
 
-  df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
+  #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
 
