@@ -349,7 +349,7 @@ export -f set_the_time
 
   declare -pF set_the_time
 
-sudo -- bash -c set_the_time || er_x "line:${nL}"
+sudo -- bash -c 'set_the_time' || er_x "line:${nL}"
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
