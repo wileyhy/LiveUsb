@@ -391,13 +391,11 @@ then
 fi
 
 # shellcheck disable=SC2034,SC2016
-bashrc_strings_1=(               ['function1 __vte_osc7']="function2 $( declare -pf __vte_osc7              )")
-bashrc_strings_1+=(    ['function3 __vte_prompt_command']="function4 $( declare -pf __vte_prompt_command    )")
+bashrc_strings_1=(               ['function __vte_osc7']="function $( declare -pf __vte_osc7              )")
+bashrc_strings_1+=(    ['function __vte_prompt_command']="function $( declare -pf __vte_prompt_command    )")
 bashrc_strings_2=(   ['export "${bashrc_strings_2[@]}"']=$(           declare -p BROWSER EDITOR           ) )
 bashrc_strings_2+=(  ['export "${bashrc_strings_2[@]}"']=$(           declare -p PROMPT_COMMAND PS0       ) )
-bashrc_strings_2+=(                      ['function5 rm']="function6 $( declare -pf rm                      )")
-
-  exit $nL
+bashrc_strings_2+=(                      ['function rm']="function $( declare -pf rm                      )")
 
 : 'Do some backups'
 for ff in "${files_for_use_with_bash[@]}"
