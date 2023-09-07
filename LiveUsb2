@@ -306,15 +306,15 @@ fi
 ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
 : $'Collect output of \x60ps\x60'
-xon=''
 if [[ -o xtrace ]]
 then
-  xon=yes
   set -
-  echo Color code is assigned and xtrace is re-enabled
   ps_o=$( ps aux )
-  readonly ps_o
+  set -x
+else
+  ps_o=$( ps aux )
 fi
+readonly ps_o
 
 if [[ -z ${SSH_AUTH_SOCK} ]] || [[ -z ${SSH_AGENT_PID} ]]
 then
