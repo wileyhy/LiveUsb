@@ -119,7 +119,7 @@ fi
 unset ii
 for ii in "${!git_keys[@]}"
 do
-  echo "ii:$ii"
+  : "ii:$ii"
 
   if ! grep "${ii}=${git_keys[$ii]}" "${qui[@]}" <<< "${git_conf_sys[@]}"
   then
