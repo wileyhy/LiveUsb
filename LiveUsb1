@@ -680,36 +680,36 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 #+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of 
 #+  my tabs.  :-(  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf 
 #+  needs-restarting  in the event that any files on disk may actually have been changed.
-
 rpm_count_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
 
 ## Note: these PE's have been tested and should "disappear" by virtue of whichever expansion does that, leaving
 #+  just the regular strings as the elements of the array
 rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
 
+## Note: this brace grouping is so that "shellcheck disable" will apply to the entire block
 # shellcheck disable=SC2206
 {
-rpms=(  ${for_admin:=}        ncdu pwgen )
-rpms+=( ${for_bash:=}         bash bash-completion )
-rpms+=( ${for_bashdb:=}       bash-devel make autoconf )
-#rpms+=( ${for_db_ish:=}       libreoffice-calc )
-rpms+=( ${for_bug_rpts:=}     inxi zsh dash mksh lynx )
-rpms+=( ${for_char_sets:=}    enca moreutils uchardet )
-rpms+=( ${for_duh:=}          info pdfgrep wdiff )
-rpms+=( ${for_firefox:=}      mozilla-noscript mozilla-privacy-badger mozilla-https-everywhere )
-rpms+=( ${for_fun:=}          angband )
-#rpms+=( ${for_gcov:=}         gcc )
-rpms+=( ${for_git:=}          git gh )
-#rpms+=( ${for_internet:=}     chromium )
-#rpms+=( ${for_later_other:=}  memstomp gdb valgrind memstrack kernelshark )
-#rpms+=( ${for_later_trace:=}  bpftrace python3-ptrace fatrace apitrace x11trace )
-rpms+=( ${for_linting:=}      ShellCheck kcov shfmt patch strace ltrace )
-rpms+=( ${for_lockfile:=}     procmail )
-#rpms+=( ${for_os_dnlds:=}     debian-keyring )
-rpms+=( ${for_strings:=}      binutils )
-rpms+=( ${for_term_tests:=}   gnome-terminal )
-rpms+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
-rpms+=( ${for_security:=}     orca protonvpn-cli )
+  rpms=(  ${for_admin:=}        ncdu pwgen )
+  rpms+=( ${for_bash:=}         bash bash-completion )
+  rpms+=( ${for_bashdb:=}       bash-devel make autoconf )
+  #rpms+=( ${for_db_ish:=}       libreoffice-calc )
+  rpms+=( ${for_bug_rpts:=}     inxi zsh dash mksh lynx )
+  rpms+=( ${for_char_sets:=}    enca moreutils uchardet )
+  rpms+=( ${for_duh:=}          info pdfgrep wdiff )
+  rpms+=( ${for_firefox:=}      mozilla-noscript mozilla-privacy-badger mozilla-https-everywhere )
+  rpms+=( ${for_fun:=}          angband )
+  #rpms+=( ${for_gcov:=}         gcc )
+  rpms+=( ${for_git:=}          git gh )
+  #rpms+=( ${for_internet:=}     chromium )
+  #rpms+=( ${for_later_other:=}  memstomp gdb valgrind memstrack kernelshark )
+  #rpms+=( ${for_later_trace:=}  bpftrace python3-ptrace fatrace apitrace x11trace )
+  rpms+=( ${for_linting:=}      ShellCheck kcov shfmt patch strace ltrace )
+  rpms+=( ${for_lockfile:=}     procmail )
+  #rpms+=( ${for_os_dnlds:=}     debian-keyring )
+  rpms+=( ${for_strings:=}      binutils )
+  rpms+=( ${for_term_tests:=}   gnome-terminal )
+  rpms+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
+  rpms+=( ${for_security:=}     orca protonvpn-cli )
 }
 
 :;: 'Start with removing any unnecessary RPMs'
