@@ -215,7 +215,7 @@ function write_bashrc_strings(){ :
         fi
 
         : 'If there is an alias by the same name, then delete it from the bashrc file at hand'
-        if sudo -- grep --quiet "## ${Aa_index}" -- "${file_x}"
+        if sudo -- grep ^"alias ${Aa_index##* }=" -- "${file_x}"
         then
           :  
           #grep ^"alias ${xx}=" $file
