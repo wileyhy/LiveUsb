@@ -611,8 +611,7 @@ then
   do
     [[ -z ${1:-} ]] && break 1 # <> set-u
 
-      # hellcheck disable=SC2190 # (warning): Elements in associative arrays need index
-
+    # shellcheck disable=SC2190
     fsos5+=( "${1%% *}" "${1#* }")
     shift 1
     
