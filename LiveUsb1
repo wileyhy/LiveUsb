@@ -88,24 +88,22 @@ function get_pids_for_restarting(){ :
   local - dnf_o pipeline1 pipeline2
 
   ## Note:  local -Ig  picks up attributes and values from global scope and also outputs same to global scope. ?!
-
   local -Ig a_pids pr_counter
   dnf_o=$( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
 
   ## Note: this pipeline was broken out into its constituent commands in order to verify the values mid-stream
-
   pipline1=$( awk '{ print $1 }' <<< "${dnf_o}" )
   pipline2=$( grep --only-matching --extended-regexp ^'[0-9]*'$ <<< "${pipline1}" )
   
   readarray -d '' -t a_pids < <( tr '\n' '\0' <<< "${pipline2}" )
 
-  : 'lengths of variables'
-  : $(( ++pr_counter ))
-  : Lengths of vars, measurement no.: "${pr_counter}"
-  : dnf_o:    "${#dnf_o}"
-  : pipline1: "${#pipline1}"
-  : pipline2: "${#pipline2}"
-  : a_pids:   "${#a_pids}"
+  : 'lengths of variables' # <>
+  : $(( ++pr_counter )) # <>
+  : Lengths of vars, measurement no.: "${pr_counter}" # <>
+  : dnf_o:    "${#dnf_o}" # <>
+  : pipline1: "${#pipline1}" # <>
+  : pipline2: "${#pipline2}" # <>
+  : a_pids:   "${#a_pids}" # <>
 }
 
 function must_be_root(){ :
@@ -259,9 +257,9 @@ tt=$( date +%H:%M:%S )
 printf '  %s - Executing %s \n' "${tt}" "$0"
 unset tt
 
-:;: 'Error handling, variables and functions'
+## Bug: only way to export namerefs?  `declare -nx nL=...`
 
-## Bug: only way to export namerefs? 
+:;: 'Error handling, variables and functions'
 ## Note: variable assignments: Backslash escape bc  sed -i 
 # shellcheck disable=SC1001
 declare -nx nL=L\INENO
