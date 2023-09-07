@@ -54,7 +54,7 @@ function __vte_osc7(){ \
   cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
   [[ -n ${cmd} ]] || return
   urlencode_o=$( "${cmd}" )
-  ## Bug: what does this \x60printf\x60 actually do???
+  ## Bug: what does this  printf  actually do???
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 }
 
@@ -87,7 +87,7 @@ function er_x(){ \
 function get_pids_for_restarting(){ \
   local - dnf_o pipeline1 pipeline2
 
-  ## Note: \x60local -Ig\x60 picks up attributes and values from global scope and also outputs same to global scope. ?!
+  ## Note:  local -Ig  picks up attributes and values from global scope and also outputs same to global scope. ?!
 
   local -Ig a_pids pr_counter
   dnf_o=$( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
@@ -141,7 +141,7 @@ function rm(){ \
       if [[ -e ${fd} ]]
       then
 
-        ## Note: \x60mv\x60 is commonly a default alias
+        ## Note:  mv  is commonly a default alias
 
         command mv --backup --suffix="${time_sfx}" -- "${fd}" "${delete_d}" || return 3
       fi
@@ -265,7 +265,7 @@ unset tt
 : 'Error handling, variables and functions'
 
 ## Bug: only way to export namerefs? 
-## Note: variable assignments: Backslash escape bc \x60sed -i\x60
+## Note: variable assignments: Backslash escape bc  sed -i 
   # shellcheck disable=SC1001 # (info): This \I will be a regular 'I' in this context.
 
 declare -nx nL=L\INENO
@@ -279,7 +279,7 @@ tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 
 : 'trap on EXIT'
 
-## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of \x60trap\x60 "args section" ??
+## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
   # shellcheck disable=SC2154 #(warning): ec|exit_trap_ec|lineno|nn is referenced but not assigned.
 
 trap trap_exit EXIT
@@ -320,14 +320,14 @@ unset ff
 dns_srv_1=8.8.8.8
 dns_srv_A=75.75.75.75
 
-## Note: \x60ping\x60 doesn't have long options
+## Note:  ping  doesn't have long options
   # shellcheck disable=SC2310 # (info): This function is invoked in a ! condition so set -e will be disabled.
 
 if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
 then
   printf '\n%s: Attempting to connect to the internet... \n\n' "$scr_nm"
 
-  ## Note: \x60systemctl start\x60 appears to be idempotent
+  ## Note:  systemctl start  appears to be idempotent
 
   : 'Try to get NetworkManager up and running'
   sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
@@ -381,7 +381,7 @@ sudo -- chronyc makestep > /dev/null
 
 : 'Bash'
 ## Note: this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
-## Note: \x60set [-|-x]\x60: letting xtrace expand this \x60tput\x60 command alters all xtrace colorization
+## Note:  set [-|-x] : letting xtrace expand this  tput  command alters all xtrace colorization
 
 : 'Env vars for bashrc'
 
@@ -568,7 +568,7 @@ unset arr_vrc strng_vrc write2fs aa bb cc ff xx yy zz umask_prior
 : 'Disk space: increase available by removing non-local locales'
 
 ## Note: such as... /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
-## Note: for $dirs1 , \x60find\x60 syntax based on Mascheck's
+## Note: for $dirs1 ,  find  syntax based on Mascheck's
 ## Note: for $dirs2 , use of bit bucket because GVFS ‘/run/user/1000/doc’ cannot be read, even by root
 ## Note: for $fsos3 , '--and' is not POSIX compliant
 ## Note: for $fsos4 , sorts by unique inode and delimits by nulls
@@ -671,7 +671,7 @@ then
                 unset 'fsos5[$dd]'
                 break 00001
               ;;#
-          *)    tt=$(( ++tt )) # <> set-e: can be just \x60(( tt++ ))\x60 when errexit's off
+          *)    tt=$(( ++tt )) # <> set-e: can be just  (( tt++ ))  when errexit's off
 
                 if (( tt < 3 ))
                 then
@@ -699,10 +699,10 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 
 : 'Dnf'
 ## Note: CUPS cannot be safely removed; too many dependencies
-## Note: For some unknown reason, even when \x60dnf\x60 doesn't change any programs, \x60dnf 
-#+  needs-restarting\x60 decides it needs to restart all available Firefox processes, which crashes all of 
-#+  my tabs.  :-(  (Bug?)  So, I'm adding in a few \x60rpm -qa | wc -l\x60s to only run \x60dnf 
-#+  needs-restarting\x60 in the event that any files on disk may actually have been changed.
+## Note: For some unknown reason, even when  dnf  doesn't change any programs,  dnf 
+#+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of 
+#+  my tabs.  :-(  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf 
+#+  needs-restarting  in the event that any files on disk may actually have been changed.
 
 rpm_count_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
 
@@ -751,7 +751,7 @@ then
     do
       #declare -p removable_rpms | tee -- "${tmpd}/removable_rpms.array"
 
-      ## Note: \x60dnf\x60: do not use [-y|--yes] with this command 
+      ## Note:  dnf : do not use [-y|--yes] with this command 
 
       if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_rpms[rr]}"
       then
@@ -820,7 +820,7 @@ then
   do
     get_pids_for_restarting
 
-    ## Note: \x60[[ ... =\x60: this second test, \x22[[ ${a_pids[*]} = 1 ]]\x22 is correct
+    ## Note:  [[ ... = : this second test,  [[ ${a_pids[*]} = 1 ]]  is correct
     : 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
     if [[ -n ${a_pids[*]: -1:1} ]] && ! (( ${a_pids[*]} == 1 ))
     then
@@ -863,8 +863,8 @@ then
 
             : '...then \kill\ it with the according per-loop SIGNAL...'
 
-            ## Note: the exit codes for \x60kill\x60 only indicate whether or not the target PIDs existed, rather
-            #+ than whether the \x60kill\x60 operation succeeded, per \x60info kill\x60.
+            ## Note: the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
+            #+ than whether the  kill  operation succeeded, per  info kill .
 
             sudo -- kill --signal "${ss}" -- "${qq}"
 
