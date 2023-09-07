@@ -402,6 +402,7 @@ bashrc_strings_1+=(    ['function __vte_prompt_command']="function $( declare -p
 
 # shellcheck disable=SC2016
 bashrc_strings_2=(   ['export "${bashrc_strings_2[@]}"']=$(           declare -p BROWSER EDITOR           ) )
+# shellcheck disable=SC2016
 bashrc_strings_2+=(  ['export "${bashrc_strings_2[@]}"']=$(           declare -p PROMPT_COMMAND PS0       ) )
 bashrc_strings_2+=(                      ['function rm']="function $( declare -pf rm                      )")
 
