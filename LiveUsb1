@@ -49,6 +49,7 @@ do
 done
 unset uu
 
+# shellcheck disable=SC2317
 function __vte_osc7(){ :
   local - cmd urlencode_o
   cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
