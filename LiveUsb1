@@ -345,6 +345,9 @@ function set_the_time(){ \
   nice --adjustment=-20 -- systemctl start -- chronyd.service
   chronyc makestepp > /dev/null
 }
+export -f set_the_time
+
+  declare -pf set_the_time
 
 sudo -- bash -c set_the_time || er_x "line:${nL}"
 
