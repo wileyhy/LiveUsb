@@ -390,14 +390,9 @@ then
   er_x "${nL}", "${missing_fns[@]}"
 fi
 
-  # shellcheck disable=SC2034 #(warning): bashrc_strings_1 appears unused.
-
+# shellcheck disable=SC2034, SC2016
 bashrc_strings_1=(               ['function __vte_osc7']="function $( declare -pf __vte_osc7              )")
 bashrc_strings_1+=(    ['function __vte_prompt_command']="function $( declare -pf __vte_prompt_command    )")
-
-  # shellcheck disable=SC2034 #(warning): bashrc_strings_2 appears unused...
-  # shellcheck disable=SC2016 #(info): Expressions don't expand in single quotes, use double quotes for that.
-
 bashrc_strings_2=(   ['export "${bashrc_strings_2[@]}"']=$(           declare -p BROWSER EDITOR           ) )
 bashrc_strings_2+=(  ['export "${bashrc_strings_2[@]}"']=$(           declare -p PROMPT_COMMAND PS0       ) )
 bashrc_strings_2+=(                      ['function rm']="function $( declare -pf rm                      )")
