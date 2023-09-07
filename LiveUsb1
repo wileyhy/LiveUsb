@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 ## LiveUsb1
   # shellcheck disable=SC2206,SC2317,SC2312
 
@@ -505,7 +505,7 @@ cat <<- \EOF | tee -- "${tmpd}/vim-conf-text" > /dev/null
 
 EOF
 
-  set -x # <>
+  #set -x # <>
 
 : $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29' 
 readarray -d '' -t arr_vrc < <( sudo -- find /root -name '*vimrc*' -print0 )
