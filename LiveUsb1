@@ -159,7 +159,7 @@ function test_dns(){ \
 }
 
 function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
-  set - 
+  #set - # <> 
   if [[ -e ${tmpd} ]]
   then
     command rm --one-file-system --preserve-root=all --force --recursive -- "${tmpd}"
@@ -168,11 +168,8 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
   if [[ $exit_trap_ec = "00" ]]
   then
     : "End of script, line:${lineno}"
-
-      #echo "End of script, line:${lineno}" # <>
-
   else
-    echo "End of EXIT trap, line:${lineno}"
+    : "End of EXIT trap, line:${lineno}"
   fi
   builtin exit "${exit_trap_ec}"
 }
