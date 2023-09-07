@@ -287,7 +287,7 @@ then
   ## Note: \x60systemctl start\x60 appears to be idempotent
 
   : 'Try to get NetworkManager up and running'
-  sudo -- nice --adjustment=-20 -- systemctl try-reload-or-restart -- NetworkManager.service
+  sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
   wait -f
 
   : 'Turn on networking'
