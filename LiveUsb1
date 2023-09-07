@@ -375,12 +375,15 @@ declare -A bashrc_strings_1 bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_fns=()
 
+  declare -pF foo # <>
+  declare -F foo # <>
+
 : 'Append user variables and functions into .bashrc.'
 ## Note: these arrays include some command substitutions which depend on some function definitions, which in
 #+ turn must be defined prior to defining these arrays
 for nn in "${functions_for_appending_into_bashrc[@]}"
 do
-  if ! [[ $( declare -F ${nn} ) =~ 'not found' ]]
+  if ! [[ $( declare -pF ${nn} ) =~ 'not found' ]]
   then
     missing_fns+=( "${nn}" )
   fi
