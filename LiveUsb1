@@ -713,7 +713,6 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
 }
 
 :;: 'Start with removing any unnecessary RPMs'
-
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
 then
   readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${rpm_nms_for_removal[@]}" )
@@ -729,7 +728,6 @@ then
       #declare -p removable_rpms | tee -- "${tmpd}/removable_rpms.array"
 
       ## Note:  dnf : do not use [-y|--yes] with this command 
-
       if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_rpms[rr]}"
       then
         unset 'rpm_nms_for_removal[nm]'
@@ -805,9 +803,7 @@ then
       nn="${#a_pids[@]}"
 
       :;: 'Print some info and wait for it to be read'
-
       ## Note: '\x27' is a single quote
-
       printf '\n  %b for restarting, count: %d \n\n' 'PID\x27s' "${nn}"
 
         sleep 1 # <>
@@ -815,14 +811,10 @@ then
       :;: 'for each signal and for each PID...'
       for pp in "${!a_pids[@]}"
       do
-
         ## Note: readability
-
-        :
-        :;: $'\x60kill\x60 '"loop $(( ++ii )) of ${nn}"
-        :
+        :;: $'\x60kill\x60 '"loop $(( ++ii )) of ${nn}" ;:
+        
         qq="${a_pids[pp]}"
-
         (( qq == 1 )) && continue 002
         sleep 1
 
@@ -839,10 +831,8 @@ then
           then
 
             :;: '...then \kill\ it with the according per-loop SIGNAL...'
-
             ## Note: the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
             #+ than whether the  kill  operation succeeded, per  info kill .
-
             sudo -- kill --signal "${ss}" -- "${qq}"
 
             :;: '...and if the PID in question no longer exists then unset the current array index number'
@@ -868,9 +858,8 @@ fi
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
 
-## TODO: use written function here
-
 :;: 'Restart NetworkManager if necessary'
+## TODO: use written function here
 for nn in "${dns_srv_A}" "${dns_srv_1}"
 do
   if ! ping -4qc1 -- "${nn}" > /dev/null 2>&1
