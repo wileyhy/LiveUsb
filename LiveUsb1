@@ -22,6 +22,7 @@ hash -r
 
 fn_bndry=' ~~~ ~~~ ~~~ '
 fn_lvl=0
+scr_nm=LiveUsb1
 
 : 'Functions TOC...'
   ## functions_this_script=( 
@@ -68,7 +69,7 @@ function __vte_prompt_command(){ \
 function er_x(){ \
   local - exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
-  printf 'Error: %s\n' "$*" >&2
+  printf '%s: Error: %s\n' "$scr_nm" "$*" >&2
   
   true "${fn_bndry} er_x() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
   exit "${exit_code}"
@@ -284,7 +285,7 @@ dns_srv_A=75.75.75.75
 
 if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
 then
-  printf '\n  Attempting to connect to the internet... \n\n'
+  printf '\n%s: Attempting to connect to the internet... \n\n' "$scr_nm"
 
   ## Note: \x60systemctl start\x60 appears to be idempotent
 
@@ -304,14 +305,14 @@ then
   : 'Connect the interface'
   case "${#ifaces[@]}" in
     0 ) 
-      er_x "${nL}, No network device available"
+      er_x "line:${nL}, No network device available"
       ;;#
     1 ) 
       nmcli c up "${ifaces[*]}"
       sleep 5
       ;;#
     * )
-      er_x "${nL}, Multiple network devices available"
+      er_x "line:${nL}, Multiple network devices available"
       ;;#
   esac
 
@@ -319,9 +320,9 @@ then
 
   if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
   then
-    printf '\n  Network: Giving up; exiting.\n\n'
+    printf '\n%s: Network: Giving up; exiting.\n\n' "$scr_nm"
   else
-    printf '\n  Network: Success! \n\n'
+    printf '\n%s: Network: Success! \n\n' "$scr_nm"
   fi
 fi
 
