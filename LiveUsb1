@@ -246,7 +246,7 @@ function write_bashrc_strings(){ :
   done
 }
 
-: 'Test OS'
+:;: 'Test OS'
 ## Note: written for Fedora: see hardcoded /run/media/root'
 ## Note: test of $kernel_release is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
 kernel_release=$( uname -r )
@@ -256,36 +256,36 @@ then
 fi
 unset kernel_release
 
-: 'Write to TTY'
+:;: 'Write to TTY'
 tt=$( date +%H:%M:%S )
 printf '  %s - Executing %s \n' "${tt}" "$0"
 unset tt
 
-: 'Error handling, variables and functions'
+:;: 'Error handling, variables and functions'
 
 ## Bug: only way to export namerefs? 
 ## Note: variable assignments: Backslash escape bc  sed -i 
 # shellcheck disable=SC1001
 declare -nx nL=L\INENO
 
-: 'PATH'
+:;: 'PATH'
 PATH='/usr/bin:/usr/sbin' export PATH
 
-: 'Working dir'
+:;: 'Working dir'
 tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 [[ -d ${tmpd} ]] || er_x "${nL}"
 
-: 'trap on EXIT'
+:;: 'trap on EXIT'
 
 ## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
 
 trap trap_exit EXIT
 
-: 'Other environment variables'
+:;: 'Other environment variables'
 LC_ALL=''
 PS1=''
 
-: 'Initialize some env vars found in sourced files, as a workaround for nounset'
+:;: 'Initialize some env vars found in sourced files, as a workaround for nounset'
 ## Note, local style: inline comments, ie, 'echo foo ## Note: blah', are useful for rebutting false positives from ShellCheck 
 # shellcheck disable=SC2034
 declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
@@ -295,10 +295,10 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/col
 #trap 'set - ; exec 2>&4 1>&3' EXIT HUP INT QUIT USR2 TERM # <Logs>
 #exec 1> ./Log_begin-1.txt 2>&1 # <Logs>
 
-: 'Regular users with sudo, only'
+:;: 'Regular users with sudo, only'
 must_be_root
 
-: 'Certain files must have been installed from off-disk'
+:;: 'Certain files must have been installed from off-disk'
 files_for_use_with_github=( ~/.ssh ~/.gnupg ~/.config/gh ~/.config/toprc ~/.vimrc ) 
 
   #files_for_use_with_github+=( ~/.foo) # <>
@@ -312,7 +312,7 @@ do
 done
 unset ff
 
-: 'Network'
+:;: 'Network'
 ## Note: 1 is Google; A is Comcast
 dns_srv_1=8.8.8.8
 dns_srv_A=75.75.75.75
@@ -324,20 +324,20 @@ then
 
   ## Note:  systemctl start  appears to be idempotent
 
-  : 'Try to get NetworkManager up and running'
+  :;: 'Try to get NetworkManager up and running'
   sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
   wait -f
 
-  : 'Turn on networking'
+  :;: 'Turn on networking'
   sudo -- nmcli n on
 
-  : 'Turn on WiFi'
+  :;: 'Turn on WiFi'
   sudo -- nmcli r wifi on
 
-  : 'Get interface name(s)'
+  :;: 'Get interface name(s)'
   readarray -d '' -t ifaces < <( nmcli --terse c | awk -F: '$1 !~ /lo/ { printf "%s\0", $1 }' )
 
-  : 'Connect the interface'
+  :;: 'Connect the interface'
   case "${#ifaces[@]}" in
     0 ) 
       er_x "line:${nL}, No network device available"
@@ -363,7 +363,7 @@ fi
 ## Note: dns_srv_A will be used at the end of the script
 unset -f test_dns
 
-: 'Time'
+:;: 'Time'
 sudo -- timedatectl set-local-rtc 0
 sudo -- timedatectl set-timezone America/Vancouver
 sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line:${nL}"
@@ -372,13 +372,13 @@ sudo -- chronyc makestep > /dev/null
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
 
-: 'Bash'
+:;: 'Bash'
 ## Note: this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
 ## Note:  set [-|-x] : letting xtrace expand this  tput  command alters all xtrace colorization
 
-: 'Env vars for bashrc'
+:;: 'Env vars for bashrc'
 
-: 'Color code assigned to PS0, ducking xtrace'
+:;: 'Color code assigned to PS0, ducking xtrace'
 if [[ -o xtrace ]]
 then
   set -
@@ -406,7 +406,7 @@ declare -A bashrc_strings_1 bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_fns=()
 
-: 'Append user variables and functions into .bashrc.'
+:;: 'Append user variables and functions into .bashrc.'
 ## Note: these arrays include some command substitutions which depend on some function definitions, which in
 #+ turn must be defined prior to defining these arrays
 for nn in "${functions_for_appending_into_bashrc[@]}"
@@ -423,7 +423,7 @@ then
   er_x "${nL}", "${missing_fns[@]}"
 fi
 
-: 'Define bashrc_strings_*'
+:;: 'Define bashrc_strings_*'
 ## Note: you want for these array values to each represent just one parameter or function
 bashrc_strings_1=(            ['function __vte_osc7']="function $(  declare -pf __vte_osc7 )")
 bashrc_strings_1+=( ['function __vte_prompt_command']="function $(  declare -pf __vte_prompt_command )")
@@ -435,17 +435,17 @@ bashrc_strings_2+=(                    ['export PS0']=$(            declare -p P
 
   #declare -p files_for_use_with_bash # <>
 
-: 'Do some backups'
+:;: 'Do some backups'
 ## Note:  sudo  cannot find  [[  and  [  requires internal quotes
 for ff in "${files_for_use_with_bash[@]}"
 do
-  : 'File must exist'
+  :;: 'File must exist'
   if ! sudo -- [ -f "${ff}" ]
   then
     er_x "line:${nL}, ${ff}"
   fi
 
-  : '...of the array files_for_use_with_bash'
+  :;: '...of the array files_for_use_with_bash'
   if ! sudo -- [ -e "${ff}.orig" ]
   then
     sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
@@ -453,12 +453,12 @@ do
     sudo -- chattr +i -- "${ff}.orig"
   fi
 
-  : '...per script-execution'
+  :;: '...per script-execution'
   ## Note: ~: quoted tildas do not expand
   sudo -- cp --archive -- "${ff}" "${ff}~" || er_x "line:${nL}, ${ff}"
 done
 
-: 'Alter the array files_for_use_with_bash'
+:;: 'Alter the array files_for_use_with_bash'
 write_bashrc_strings "bashrc_strings_1" "bashrc_strings_2"
 
   #exit $nL # <>
@@ -471,11 +471,11 @@ unset -f write_bashrc_strings
   #set -x # <>
   #set +e # <>
 
-: 'Vim'
+:;: 'Vim'
 
 ## Bug: hardcoded filename, 'vim-conf-text'
 
-: 'Heredoc of vim-conf-text'
+:;: 'Heredoc of vim-conf-text'
 cat <<- \EOF | tee -- "${tmpd}/vim-conf-text" > /dev/null
 	" ~/.vimrc
 
@@ -498,7 +498,7 @@ EOF
 
   #set -x # <>
 
-: $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29' 
+:;: $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29' 
 readarray -d '' -t arr_vrc < <( sudo -- find /root -name '*vimrc*' -print0 )
 
 case "${#arr_vrc[@]}" in
@@ -525,25 +525,25 @@ esac
 
   #exit $nL # <>
 
-: 'Write .vimrc'
+:;: 'Write .vimrc'
 if [[ ${write2fs} = yes ]]
 then
   if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${aa},${bb},${cc} = "${xx},${yy},${zz}" ]]
   then
-    : $'Test returned \x22true,\x22 the number didnt match, so write to .vimrc'
+    :;: $'Test returned \x22true,\x22 the number didnt match, so write to .vimrc'
 
-    : 'Set the umask and write the root file'
+    :;: 'Set the umask and write the root file'
     read -ra umask_prior < <( umask -p )
     umask 177
 
     sudo -- rsync --archive --checksum -- "${tmpd}/vim-conf-text" "${strng_vrc}" || er_x "${nL}"
 
-    : $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
+    :;: $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
     sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
     sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
     chmod 0400 -- "/home/${USER}/.vimrc"
 
-    : 'Reset the umask'
+    :;: 'Reset the umask'
     builtin "${umask_prior[@]}"
   fi
 fi
@@ -555,7 +555,7 @@ unset arr_vrc strng_vrc write2fs aa bb cc ff xx yy zz umask_prior
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
 
-: 'Disk space: increase available by removing non-local locales'
+:;: 'Disk space: increase available by removing non-local locales'
 
 ## Note: such as... /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
 ## Note: for $dirs1 ,  find  syntax based on Mascheck's
@@ -609,10 +609,10 @@ fi
 
   #declare -p fsos5 # <>
 
-: 'If any larger local data files were found, then remove them interactively'
+:;: 'If any larger local data files were found, then remove them interactively'
 if [[ -n ${!fsos5[*]} ]]
 then
-  : 'Inform user of any found FSOs'
+  :;: 'Inform user of any found FSOs'
   printf '  Script: delete these files? \n'
   #declare -p fsos5
   sleep 3
@@ -685,7 +685,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
   #set -x # <>
   #ec=101 nn="$nL" exit # <>
 
-: 'Dnf'
+:;: 'Dnf'
 ## Note: CUPS cannot be safely removed; too many dependencies
 ## Note: For some unknown reason, even when  dnf  doesn't change any programs,  dnf 
 #+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of 
@@ -723,7 +723,7 @@ rpms+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
 rpms+=( ${for_security:=}     orca protonvpn-cli )
 }
 
-: 'Start with removing any unnecessary RPMs'
+:;: 'Start with removing any unnecessary RPMs'
 
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
 then
@@ -732,7 +732,7 @@ then
 
     #declare -p grep_args removable_rpms # <>
 
-  : 'Keep a list, just in case an rpm removal accidentally erases something vital'
+  :;: 'Keep a list, just in case an rpm removal accidentally erases something vital'
   if [[ -n ${removable_rpms[*]:0:8} ]]
   then
     for rr in "${!removable_rpms[@]}"
@@ -755,12 +755,12 @@ fi
 
   #df --sync --output=fstype,avail,pcent,target -- . # <>
 
-: 'Then do a blanket security upgrade'
+:;: 'Then do a blanket security upgrade'
 sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet --security upgrade || er_x "${nL}"
 
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
 
-: 'Find out whether an RPM is installed, one by one'
+:;: 'Find out whether an RPM is installed, one by one'
 for rr in "${!rpms[@]}"
 do
   if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${rpms[rr]}"
@@ -770,13 +770,13 @@ do
   fi
 done
 
-: 'Upgrade any installed RPMs from the main list, en masse'
+:;: 'Upgrade any installed RPMs from the main list, en masse'
 if [[ -n ${installed_rpms[*]: -1:1} ]]
 then
   sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${installed_rpms[@]}" || er_x "${nL}"
 fi
 
-: 'Install any as yet uninstalled RPMs from the main list as necessary'
+:;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 uninstalled_rpms=( "${rpms[@]}" )
 
 if [[ -n ${uninstalled_rpms[*]: -1:1} ]]
@@ -792,7 +792,7 @@ unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
 
-: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
+:;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 
 a_pids=()
 pr_counter=0
@@ -809,13 +809,13 @@ then
     get_pids_for_restarting
 
     ## Note:  [[ ... = : this second test,  [[ ${a_pids[*]} = 1 ]]  is correct
-    : 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
+    :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
     if [[ -n ${a_pids[*]: -1:1} ]] && ! (( ${a_pids[*]} == 1 ))
     then
       ii=0
       nn="${#a_pids[@]}"
 
-      : 'Print some info and wait for it to be read'
+      :;: 'Print some info and wait for it to be read'
 
       ## Note: '\x27' is a single quote
 
@@ -823,14 +823,14 @@ then
 
         sleep 1 # <>
 
-      : 'for each signal and for each PID...'
+      :;: 'for each signal and for each PID...'
       for pp in "${!a_pids[@]}"
       do
 
         ## Note: readability
 
         :
-        : $'\x60kill\x60 '"loop $(( ++ii )) of ${nn}"
+        :;: $'\x60kill\x60 '"loop $(( ++ii )) of ${nn}"
         :
         qq="${a_pids[pp]}"
 
@@ -845,18 +845,18 @@ then
 
             wait -f # <>
 
-          : '...if the PID is still running...'
+          :;: '...if the PID is still running...'
           if ps --no-headers --quick-pid "${qq}" > /dev/null
           then
 
-            : '...then \kill\ it with the according per-loop SIGNAL...'
+            :;: '...then \kill\ it with the according per-loop SIGNAL...'
 
             ## Note: the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
             #+ than whether the  kill  operation succeeded, per  info kill .
 
             sudo -- kill --signal "${ss}" -- "${qq}"
 
-            : '...and if the PID in question no longer exists then unset the current array index number'
+            :;: '...and if the PID in question no longer exists then unset the current array index number'
             if ps --no-headers --quick-pid "${qq}" > /dev/null 2>&1
             then
               continue 0001
@@ -881,7 +881,7 @@ fi
 
 ## TODO: use written function here
 
-: 'Restart NetworkManager if necessary'
+:;: 'Restart NetworkManager if necessary'
 for nn in "${dns_srv_A}" "${dns_srv_1}"
 do
   if ! ping -4qc1 -- "${nn}" > /dev/null 2>&1
