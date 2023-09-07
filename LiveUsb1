@@ -712,7 +712,7 @@ rpm_count_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
 #+  just the regular strings as the elements of the array
 rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
 
-# shellcheck disable=SC2086 #(info): Double quote to prevent globbing...
+# shellcheck disable=SC2206
 rpms=(  ${for_admin:=}        ncdu pwgen )
 rpms+=( ${for_bash:=}         bash bash-completion )
 rpms+=( ${for_bashdb:=}       bash-devel make autoconf )
