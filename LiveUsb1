@@ -205,7 +205,7 @@ function write_bashrc_strings(){ :
         : "Aa_index: ${Aa_index}"
         Aa_element="${nr[${Aa_index}]}"
 
-        :;: 'If the definition is not yet written into the file'
+        :;: '(1) If the definition is not yet written into the file...'
         if ! sudo -- grep --quiet --fixed-strings "## ${Aa_index}" -- "${file_x}"
         then
 
@@ -214,7 +214,7 @@ function write_bashrc_strings(){ :
             sudo -- tee --append -- "${file_x}" > /dev/null || er_x "${nL}"
         fi
 
-        :;: 'If there is an alias by the same name, then delete it from the bashrc file at hand'
+        :;: '(2) If there is an alias by the same name, then delete it from the bashrc file at hand...'
         sudo -- sed -i "/^alias ${Aa_index##* }=/d" -- "${file_x}"
       done
       unset Aa_element
