@@ -514,7 +514,7 @@ command -- rm --one-file-system --preserve-root=all --force -- "${tmpd}/vim-conf
 unset arr_vrc strng_vrc write2fs aa bb cc ff xx yy zz umask_prior
 
   #ec=101 nn="$nL" exit # <>
-  set -x # <>
+  #set -x # <>
 
 : 'Disk space: increase available by removing non-local locales'
 
@@ -645,7 +645,7 @@ fi
 ## Clean up from section "Disk space"
 unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 
-  set -x # <>
+  #set -x # <>
   #ec=101 nn="$nL" exit # <>
 
 : 'Dnf'
@@ -753,7 +753,7 @@ unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
 
   df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
   #ec=101 nn="$nL" exit # <>
-  set -x # <>
+  #set -x # <>
 
 : 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 
@@ -840,7 +840,7 @@ then
 fi
 
   #ec=101 nn="$nL" exit # <>
-  set -x # <>
+  #set -x # <>
 
 ## TODO: use written function here
 
