@@ -49,7 +49,7 @@ do
 done
 unset uu
 
-function __vte_osc7(){ \
+function __vte_osc7(){ :
   local - cmd urlencode_o
   cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
   [[ -n ${cmd} ]] || return
@@ -58,7 +58,7 @@ function __vte_osc7(){ \
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 }
 
-function __vte_prompt_command(){ \
+function __vte_prompt_command(){ :
   local - prompt_cmd pwd
   prompt_cmd=$( HISTTIMEFORMAT='' history 1 | sed 's/^ *[0-9]\+ *//' ) prompt_cmd="${prompt_cmd//;/ }"
   pwd=~
@@ -84,7 +84,7 @@ function er_x(){ \
 
   # shellcheck disable=SC2034 # (warning): pipeline1 appears unused
 
-function get_pids_for_restarting(){ \
+function get_pids_for_restarting(){ :
   local - dnf_o pipeline1 pipeline2
 
   ## Note:  local -Ig  picks up attributes and values from global scope and also outputs same to global scope. ?!
@@ -108,7 +108,7 @@ function get_pids_for_restarting(){ \
   : a_pids:   "${#a_pids}"
 }
 
-function must_be_root(){ \
+function must_be_root(){ :
   local -
   set -
   if (( ${UID} == 0 ))
@@ -121,7 +121,7 @@ function must_be_root(){ \
 
 ## Note: rm(): command shadowing is intended in this case
 
-function rm(){ \
+function rm(){ :
   (( ${#@} == 0 )) && return 1
   
   local - delete_d fd time_sfx opts_done
@@ -159,13 +159,14 @@ function rm(){ \
   done
 }
 
-function test_dns(){ \
+function test_dns(){ :
   local -
   set -
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
-function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
+function trap_exit(){ \
+  local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
   set -
   if [[ -e ${tmpd} ]]
   then
