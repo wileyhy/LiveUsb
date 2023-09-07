@@ -36,11 +36,13 @@ scr_nm=LiveUsb1
   #+  'trap_exit()'
   #+	'write_bashrc_strings()'
   #+)
-functions_for_appending_into_bashrc=( 'foo'
+functions_for_appending_into_bashrc=(
   '__vte_osc7'
   '__vte_prompt_command'
   'rm'
   ) 
+
+  functions_for_appending_into_bashrc+=( foo ) # <>
 
 function __vte_osc7(){ \
   local - cmd urlencode_o
