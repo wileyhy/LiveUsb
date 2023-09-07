@@ -212,9 +212,11 @@ function write_bashrc_strings(){ :
         if ! sudo -- grep --quiet --fixed-strings "## ${Aa_index}" -- "${file_x}"
         then
 
-          :;: 'Then write the function definition into the file, and if the write fails, exit print the line number to xtrace'
+          : 'Then write the function definition into the file, and if the write fails, exit print the line number to xtrace'
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" | 
             sudo -- tee --append -- "${file_x}" > /dev/null || er_x "${nL}"
+        else
+          : 'Definition exists: skipping'
         fi
 
         :;: '(2) If there is an alias by the same name, then delete it from the bashrc file at hand...'
