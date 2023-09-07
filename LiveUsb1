@@ -23,7 +23,7 @@ fn_bndry=' ~~~ ~~~ ~~~ '
 fn_lvl=0
 scr_nm=LiveUsb1
 
-: 'Functions TOC...'
+:;: 'Functions TOC...'
   ## functions_this_script=( 
   #+	'__vte_osc7()'
   #+	'__vte_prompt_command()'
@@ -41,7 +41,7 @@ functions_for_appending_into_bashrc=(
   'rm'
   ) 
 
-: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
+:;: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
 for uu in "${functions_for_appending_into_bashrc[@]}"
 do 
   unset -f "$uu"
@@ -178,7 +178,7 @@ function trap_exit(){ \
   then
     : "End of script, line:${lineno}"
   else
-    : "End of EXIT trap"
+    : 'End of EXIT trap'
   fi
   builtin exit "${exit_trap_ec}"
 }
@@ -193,20 +193,17 @@ function write_bashrc_strings(){ :
   (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line:${nL}"
 
   for ff
-  do
-  :;: 'Loop A - For each set of strings to append into bashrc'
+  do :;: 'Loop A - For each set of strings to append into bashrc'
     
     local -n nr="$1"
 
     for file_x in "${files_for_use_with_bash[@]}"
-    do
-    :;: 'Loop B - For each .bashrc'
+    do :;: 'Loop B - For each .bashrc'
 
       : "file_x: ${file_x}"
 
       for Aa_index in "${!nr[@]}"
-      do
-      :;: 'Loop C - For each definition (function or parameter)'
+      do :;: 'Loop C - For each definition (function or parameter)'
 
         : "Aa_index: ${Aa_index}"
         Aa_element="${nr[${Aa_index}]}"
