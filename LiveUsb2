@@ -275,6 +275,8 @@ done
 : 'Review auth'
 gh auth status --show-token
 
+  exit $nL # <>
+
 : 'Clone repo'
 [[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
 
