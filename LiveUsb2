@@ -19,6 +19,7 @@ fn_bndry=' ~~~ ~~~ ~~~ '
 fn_lvl=0
 
 : 'Functions'
+# shellcheck disable=SC2317
 function er_x(){ \
   local - exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
