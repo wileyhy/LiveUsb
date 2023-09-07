@@ -219,7 +219,7 @@ pushd "${dev_d1}" || exit "${nL}"
 
 : 'gh -- github CLI'
 declare -A github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
-gh_config_list_out=$( gh config list | tr -d '\n' )
+gh_config_list_out=$( gh config list | tr '\n' ' ' )
 
 for ii in "${!github_configs[@]}"
 do 
