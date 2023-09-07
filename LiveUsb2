@@ -126,7 +126,7 @@ do
   then
     sudo -- git config --system "${ii}" "${git_keys[$ii]}"
   fi
-  :;: "Loop A - shut
+  :;: "Loop A - shut"
 done
 unset ii
 
