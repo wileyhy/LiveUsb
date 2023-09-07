@@ -169,7 +169,7 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
   then
     : "End of script, line:${lineno}"
   else
-    : "End of EXIT trap, line:${lineno}"
+    : "End of EXIT trap"
   fi
   builtin exit "${exit_trap_ec}"
 }
