@@ -241,14 +241,17 @@ gh auth setup-git --hostname 'github.com'
 
 : 'Log in'
 
-## Note: executing this command just once
-
-if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
-then 
-
+:;: 'Define a login command'
+function gh_auth_login_command(){ :
   ## Note: do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
+  gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
+    exit "${nL}"
+}
 
-  gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || exit "${nL}"
+## Note: executing this command just once
+if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
+then
+  gh_auth_login_command
 fi
 
 : 'Clone repo'
@@ -260,8 +263,13 @@ then
 fi
 
 : 'Get SSH & GPG keys'
-gh ssh-key list
-gh gpg-key list
+for cc in ssh-key gpg-key
+do
+  if ! gh "${cc}" list
+  then
+    gh_auth_login_command
+  fi
+done
 
 : 'Review auth'
 gh auth status --show-token
