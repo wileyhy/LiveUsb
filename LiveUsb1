@@ -168,6 +168,7 @@ function test_dns(){ :
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
+# shellcheck disable=SC2317
 function trap_exit(){ \
   local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
   set -
