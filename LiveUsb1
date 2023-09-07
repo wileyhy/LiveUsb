@@ -158,7 +158,7 @@ function test_dns(){ \
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
-function trap_exit(){ exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
+function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
   set - 
   if [[ -e ${tmpd} ]]
   then
