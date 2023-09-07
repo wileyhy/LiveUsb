@@ -419,9 +419,14 @@ do
 
   if ! sudo -- [ -e "${ff}.orig" ]
   then
-    sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
-    sudo -- chmod 400 -- "${ff}.orig"
-    sudo -- chattr +i -- "${ff}.orig"
+    if [[ -f ${ff} ]]
+    then
+      sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
+      sudo -- chmod 400 -- "${ff}.orig"
+      sudo -- chattr +i -- "${ff}.orig"
+    else
+      er_x "line:${nL}"
+    fi
   fi
 
   : '...per script-execution'
