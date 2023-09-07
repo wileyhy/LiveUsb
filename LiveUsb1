@@ -41,7 +41,8 @@ functions_for_appending_into_bashrc=(
   '__vte_prompt_command'
   'rm'
   ) 
-: 'redefine all functions to be appended into bashrc'
+
+: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
 for uu in "${functions_for_appending_into_bashrc[@]}"
 do 
   unset -f "$uu"
