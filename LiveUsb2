@@ -115,10 +115,11 @@ then
   sudo -- git config --system --unset gpg.format 
 fi
 
+:;: 'git config, assigning - Loop A'
 unset ii
 for ii in "${!git_keys[@]}"
 do
-  :;: 'git config, assigning - Loop A'
+  :;: 'Loop A - open'
   
   : "ii:$ii"
 
