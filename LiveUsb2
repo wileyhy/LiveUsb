@@ -160,7 +160,7 @@ fi
 
   #exit $LINENO # <>     # <> ### ###
 
-: 'Copy root-user files to $USER'
+: 'Copy root-user files to USER'
 for ff in "${git_mesg}" "${git_ignr}"
 do
   #sudo -- rsync --checksum --archive -- "${ff}" ~
