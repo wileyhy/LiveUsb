@@ -154,12 +154,12 @@ function rm(){ \
 }
 
 function set_the_time(){ \
-  local -
-  set +e
+  #local -
+  #set +e
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
   sudo -- nice --adjustment=-20 -- systemctl start -- chronyd.service
-  sudo -- chronyc makestep > /dev/null
+  sudo -- chronyc makestepp > /dev/null
 }
 export -f set_the_time
 
