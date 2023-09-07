@@ -319,7 +319,7 @@ then
       ;;#
   esac
 
-    # shellcheck disable=SC2310 # (info): This function is invoked in a ! condition so set -e will be disabled.
+    # shellcheck disable=SC2310
 
   if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
   then
@@ -341,7 +341,7 @@ sudo -- bash -c '(
   timedatectl set-local-rtc 0
   timedatectl set-timezone America/Vancouver
   nice --adjustment=-20 -- systemctl start -- chronyd.service
-  chronyc makestep > /dev/null
+  chronyc makestepp > /dev/null
 )' 
 
   #ec=101 nn="$nL" exit # <>
