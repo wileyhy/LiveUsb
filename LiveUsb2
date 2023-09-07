@@ -103,11 +103,11 @@ git_keys+=(
 )
 
 :;: 'Permissions'
-for ff in "${git_files_a[@]}"
+for aa in "${git_files_a[@]}"
 do
-  [[ -e ${ff} ]] && sudo -- chmod 0604 "${verb[@]}" "${ff}"
+  [[ -e ${aa} ]] && sudo -- chmod 0604 "${verb[@]}" "${aa}"
 done
-unset ff
+unset aa
 
 :;: 'git config, remove a config if present'
 if grep gpg.format "${qui[@]}" <<< "${git_conf_sys[@]}"
@@ -116,20 +116,19 @@ then
 fi
 
 :;: 'git config, assigning - Loop A'
-unset ii
-for ii in "${!git_keys[@]}"
+for bb in "${!git_keys[@]}"
 do
   :;: 'Loop A - open'
   
-  : "ii:$ii"
+  : "bb:$bb"
 
-  if ! grep "${ii}=${git_keys[$ii]}" "${qui[@]}" <<< "${git_conf_sys[@]}"
+  if ! grep "${bb}=${git_keys[$bb]}" "${qui[@]}" <<< "${git_conf_sys[@]}"
   then
-    sudo -- git config --system "${ii}" "${git_keys[$ii]}"
+    sudo -- git config --system "${bb}" "${git_keys[$bb]}"
   fi
   : "Loop A - shut" ;:
 done
-unset ii
+unset bb
 
 :;: 'gitmessage (system)'
 if ! [[ -f ${git_mesg} ]]
@@ -171,24 +170,24 @@ fi
   #exit $LINENO # <>
 
 :;: 'Copy root-user files to USER'
-for ff in "${git_mesg}" "${git_ignr}"
+for cc in "${git_mesg}" "${git_ignr}"
 do
-  sudo -- rsync --checksum --archive "${verb[@]}" "${ff}" ~
-  sudo -- chown "${UID}:${UID}" "${verb[@]}" ~/"${ff##*/}"
-  chmod 0400 -- ~/"${ff##*/}"
+  sudo -- rsync --checksum --archive "${verb[@]}" "${cc}" ~
+  sudo -- chown "${UID}:${UID}" "${verb[@]}" ~/"${cc##*/}"
+  chmod 0400 -- ~/"${cc##*/}"
 done
-unset ff
+unset cc
 
 :;: 'Rename files'
 
-for ff in "${git_files_b[@]}"
+for dd in "${git_files_b[@]}"
 do
-  if [[ -e $ff ]]
+  if [[ -e $dd ]]
   then
-    sudo -- mv --force "${verb[@]}" "${ff}" "${ff%_system}"
+    sudo -- mv --force "${verb[@]}" "${dd}" "${dd%_system}"
   fi
 done
-unset ff
+unset dd
 
 ## Clean up after section "Git"
 unset git_files_a git_config_sys_conf_file git_conf_sys git_mesg git_ignr git_keys git_files_b
@@ -203,14 +202,14 @@ dev_d2=~/OTHERSPROJECTS
 readonly dev_d1
 readonly dev_d2
 
-for dd in "${dev_d1}" "${dev_d2}"
+for ee in "${dev_d1}" "${dev_d2}"
 do
-  if ! [[ -d ${dd} ]]
+  if ! [[ -d ${ee} ]]
   then
-    mkdir --parents "${verb[@]}" "${dd}" || exit "${nL}"
+    mkdir --parents "${verb[@]}" "${ee}" || exit "${nL}"
   fi
 done
-unset dd
+unset ee
 
 ## Note: in order to clone into any repo, and keep multiple repos separate, \x60cd\x60 is required, or \x60pushd\x60 / 
 #+  \x60popd\x60
@@ -224,14 +223,14 @@ pushd "${dev_d1}" || exit "${nL}"
 declare -A github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
 gh_config_list_out=$( gh config list | tr '\n' ' ' )
 
-for ii in "${!github_configs[@]}"
+for ff in "${!github_configs[@]}"
 do 
-  if ! [[ ${gh_config_list_out} = "${ii}=${github_configs[$ii]}" ]]
+  if ! [[ ${gh_config_list_out} = "${ff}=${github_configs[$ff]}" ]]
   then
-    gh config set "${ii}" "${github_configs[$ii]}"
+    gh config set "${ff}" "${github_configs[$ff]}"
   fi
 done
-unset gh_config_list_out github_configs
+unset gh_config_list_out github_configs ff
 
 : 'Use GitHub CLI as a credential helper'
 gh auth setup-git --hostname 'github.com'
@@ -258,13 +257,14 @@ then
 fi
 
 :;: 'Get SSH & GPG keys'
-for cc in ssh-key gpg-key
+for gg in ssh-key gpg-key
 do
-  if ! gh "${cc}" list
+  if ! gh "${gg}" list
   then
     gh_auth_login_command
   fi
 done
+unset gg
 
 :;: 'Review auth'
 gh auth status --show-token
