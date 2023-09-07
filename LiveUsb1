@@ -292,7 +292,7 @@ PS1=''
 
 : 'Initialize some env vars found in sourced files, as a workaround for nounset'
 ## Note, local style: inline comments, ie, 'echo foo ## Note: blah', are useful for rebutting false positives from ShellCheck 
-# hellcheck disable=SC2034 #(warning): BASHRCSOURCED appears unused. Verify use (or export if used externally).
+# shellcheck disable=SC2034
 declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
 # <Logs>
