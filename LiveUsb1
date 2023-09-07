@@ -592,7 +592,8 @@ readarray -d '' -t fsos3 < <( find "${dirs2[@]}" -type f -size +2048b '(' ! -ipa
 if (( ${#fsos3[@]} > 0 ))
 then
   readarray -d '' -t fsos4 < <( {
-    for ff in "${fsos3[@]}" ; do
+    for ff in "${fsos3[@]}"
+    do
       printf '%s\0' "$( stat --printf='%i %n\n' -- "${ff}" )"
     done ; } |
       sort --unique |
@@ -735,8 +736,6 @@ rpms+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
 rpms+=( ${for_security:=}     orca protonvpn-cli )
 
 : 'Start with removing any unnecessary RPMs'
-
-  # shellcheck disable=SC2034 # (warning): nm appears unused.
 
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
 then
