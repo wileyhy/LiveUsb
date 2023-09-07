@@ -337,12 +337,16 @@ unset -f test_dns
 ## Note: \x60bash -c\x60 has no long option
 ## Note: \x60bash -c\x60 requires for any relevant vars to have been \x60export\x60ed
 
-sudo -- bash -c '(
+function set_the_time(){ \
+  local -
+  set +e
   timedatectl set-local-rtc 0
   timedatectl set-timezone America/Vancouver
   nice --adjustment=-20 -- systemctl start -- chronyd.service
   chronyc makestepp > /dev/null
-)' 
+}
+
+sudo -- bash -c set_the_time || er_x "line:${nL}"
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
