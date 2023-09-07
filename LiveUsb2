@@ -274,7 +274,7 @@ done
 gh auth status --show-token
 
 : 'Clone repo'
-[[ ${PWD} = ${dev_d1} ]] || er_x "${nL}"
+[[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
 
 if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
 then
