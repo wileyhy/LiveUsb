@@ -85,6 +85,7 @@ function er_x(){ \
   # hellcheck disable=SC2034 # (warning): pipeline1 appears unused
 
 function get_pids_for_restarting(){ :
+  # shellcheck disable=SC2034
   local - dnf_o pipeline1 pipeline2
 
   ## Note:  local -Ig  picks up attributes and values from global scope and also outputs same to global scope. ?!
