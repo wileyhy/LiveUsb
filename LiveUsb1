@@ -412,20 +412,20 @@ bashrc_strings_2+=(                      ['function rm']="function $( declare -p
 : 'Do some backups'
 for ff in "${files_for_use_with_bash[@]}"
 do
+  if ! [[ -f ${ff} ]]
+  then
+    er_x "line:${nL}, ${ff}"
+  fi
+
   : '...of the array files_for_use_with_bash'
 
   ## Note:  sudo  cannot find  [[  and  [  requires quotes internally
 
   if ! sudo -- [ -e "${ff}.orig" ]
   then
-    if [[ -f ${ff} ]]
-    then
-      sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
-      sudo -- chmod 400 -- "${ff}.orig"
-      sudo -- chattr +i -- "${ff}.orig"
-    else
-      er_x "line:${nL}, ${ff}"
-    fi
+    sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
+    sudo -- chmod 400 -- "${ff}.orig"
+    sudo -- chattr +i -- "${ff}.orig"
   fi
 
   : '...per script-execution'
