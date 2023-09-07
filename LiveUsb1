@@ -185,6 +185,7 @@ function write_bashrc_strings(){ :
 
     set -x # <>
 
+  :;: 'Certain parameters must be defined and have non-zero values'
   [[ $# -eq 0 ]] && er_x "line:${nL}"
   [[ ${#files_for_use_with_bash[@]} -eq 0 ]] && er_x "line:${nL}"
 
