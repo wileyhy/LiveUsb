@@ -442,7 +442,7 @@ bashrc_strings_2+=(                 ['export EDITOR']=$( declare -p EDITOR ) )
 bashrc_strings_2+=(         ['export PROMPT_COMMAND']=$( declare -p PROMPT_COMMAND ) )
 bashrc_strings_2+=(                    ['export PS0']=$( declare -p PS0  ) )
 
-  declare -p files_for_use_with_bash # <>
+  #declare -p files_for_use_with_bash # <>
 
 : 'Do some backups'
 ## Note:  sudo  cannot find  [[  and  [  requires quotes internally
@@ -470,7 +470,7 @@ done
 : 'Alter the array files_for_use_with_bash'
 write_bashrc_strings "bashrc_strings_1" "bashrc_strings_2"
 
-  exit $nL # <>
+  #exit $nL # <>
 
 ## Clean up from section Bash
 unset files_for_use_with_bash bashrc_strings_1 bashrc_strings_2
