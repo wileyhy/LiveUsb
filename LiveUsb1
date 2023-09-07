@@ -218,7 +218,7 @@ function write_bashrc_strings(){ :
         :;: '(2) If there is an alias by the same name, then delete it from the bashrc file at hand...'
         sudo -- sed -i "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
-        :;: 'Loop C - shut'
+        : 'Loop C - shut' ;:
       done
       unset Aa_element
       :;: 'Loop C - complete'
@@ -230,7 +230,7 @@ function write_bashrc_strings(){ :
           sudo -- tee --append -- "${file_x}" > /dev/null
       fi
       
-      :;: 'Loop B - shut'
+      : 'Loop B - shut' ;:
     done
     
     :;: 'Reset for the next loop, assuming there is one'
@@ -238,7 +238,7 @@ function write_bashrc_strings(){ :
     unset -n rn
     shift
     
-    :;: 'Loop A - shut'
+    : 'Loop A - shut' ;:
   done
 }
 
