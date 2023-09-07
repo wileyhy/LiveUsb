@@ -217,8 +217,7 @@ function write_bashrc_strings(){ :
         : 'If there is an alias by the same name, then delete it from the bashrc file at hand'
         if sudo -- grep ^"alias ${Aa_index##* }=" -- "${file_x}"
         then
-          :  
-          #grep ^"alias ${xx}=" $file
+          sudo -- sed -i "/^alias ${Aa_index##* }=/d" -- "${file_x}"
         fi
       done
       unset Aa_element
