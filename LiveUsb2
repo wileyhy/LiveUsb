@@ -9,8 +9,10 @@
 set -aCuTeo pipefail # <>
 if [[ -o xtrace ]]
 then
+  quiet=( '--' )
   verb=( '--verbose' '--' )
 else
+  quiet=( '--quiet' '--' )
   verb=( '--' )
 fi
 
@@ -103,13 +105,12 @@ git_keys+=(
 : 'Permissions'
 for ff in "${git_files_a[@]}"
 do
-  [[ -e ${ff} ]] && sudo -- chmod 0604 --verbose -- "${ff}"
+  [[ -e ${ff} ]] && sudo -- chmod 0604 "${verb[@]}" "${ff}"
 done
 unset ff
 
 : 'git config, remove a config if present'
-#if grep --quiet gpg.format <<< "${git_conf_sys[@]}"
-if grep gpg.format <<< "${git_conf_sys[@]}"
+if grep gpg.format "${quiet[@]}" <<< "${git_conf_sys[@]}"
 then
   sudo -- git config --system --unset gpg.format 
 fi
@@ -120,9 +121,7 @@ for ii in "${!git_keys[@]}"
 do
   echo "ii:$ii"
 
-  #if ! grep --quiet "${git_keys[$ii]}" <<< "${git_conf_sys[@]}"
-  
-  if ! grep "${ii}=${git_keys[$ii]}" <<< "${git_conf_sys[@]}"
+  if ! grep "${ii}=${git_keys[$ii]}" "${quiet[@]}" <<< "${git_conf_sys[@]}"
   then
     sudo -- git config --system "${ii}" "${git_keys[$ii]}"
   fi
@@ -151,8 +150,7 @@ fi
   #set -x # <>
 
 : 'gitignore (system)'
-#if ! [[ -f ${git_ignr} ]] || ! grep --quiet swp "${git_ignr}"
-if ! [[ -f ${git_ignr} ]] || ! grep swp "${git_ignr}"
+if ! [[ -f ${git_ignr} ]] || ! grep swp "${quiet[@]}" "${git_ignr}"
 then
   : 'Heredoc: gitignore'
   cat <<- \EOF > "${git_tempd}/ign"
@@ -172,8 +170,8 @@ fi
 : 'Copy root-user files to USER'
 for ff in "${git_mesg}" "${git_ignr}"
 do
-  sudo -- rsync --checksum --archive --verbose -- "${ff}" ~
-  sudo -- chown "${UID}:${UID}" --verbose -- ~/"${ff##*/}"
+  sudo -- rsync --checksum --archive "${verb[@]}" "${ff}" ~
+  sudo -- chown "${UID}:${UID}" "${verb[@]}" ~/"${ff##*/}"
   chmod 0400 -- ~/"${ff##*/}"
 done
 unset ff
@@ -184,7 +182,7 @@ for ff in "${git_files_b[@]}"
 do
   if [[ -e $ff ]]
   then
-    sudo -- mv --force --verbose -- "${ff}" "${ff%_system}"
+    sudo -- mv --force "${verb[@]}" "${ff}" "${ff%_system}"
   fi
 done
 unset ff
@@ -206,7 +204,7 @@ for dd in "${dev_d1}" "${dev_d2}"
 do
   if ! [[ -d ${dd} ]]
   then
-    mkdir --parents --verbose "${dd}" || exit "${nL}"
+    mkdir --parents "${verb[@]}" "${dd}" || exit "${nL}"
   fi
 done
 unset dd
@@ -299,7 +297,7 @@ sudo -- chmod --recursive 700 "${ssh_d}"
 
 if [[ -f ${ssh_user_conf} ]]
 then
-  if ! grep --quiet 'ForwardAgent yes' "${ssh_user_conf}"
+  if ! grep 'ForwardAgent yes' "${quiet[@]}" "${ssh_user_conf}"
   then
     cat <<- \EOF > "${ssh_user_conf}"
 		Host github.com
@@ -376,7 +374,7 @@ unset xon
 gpg_d=~/.gnupg
 sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
 sudo -- chmod --recursive 700 "${gpg_d}"
-if grep --quiet --extended-regexp '[g]pg-a.*daemon' <<< "${ps_o}"
+if grep --extended-regexp '[g]pg-a.*daemon' "${quiet[@]}" <<< "${ps_o}"
 then
   gpgconf --kill gpg-agent
 fi
