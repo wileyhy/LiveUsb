@@ -206,7 +206,8 @@ unset tt
 
 : 'Error handling, variables and functions'
 
-## Bug: only way to export namerefs? Backslash escape bc \x60sed -i\x60
+## Bug: only way to export namerefs? 
+## Note: variable assignments: Backslash escape bc \x60sed -i\x60
   # shellcheck disable=SC1001 # (info): This \I will be a regular 'I' in this context.
 
 declare -nx nL=L\INENO
