@@ -268,8 +268,7 @@ unset tt
 
 ## Bug: only way to export namerefs? 
 ## Note: variable assignments: Backslash escape bc  sed -i 
-  # hellcheck disable=SC1001 # (info): This \I will be a regular 'I' in this context.
-
+# shellcheck disable=SC1001
 declare -nx nL=L\INENO
 
 : 'PATH'
