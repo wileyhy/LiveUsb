@@ -154,8 +154,9 @@ then
 
 	EOF
 
-# hellcheck disable=SC2024
-sudo -- tee -- "${git_ignr}" < "${git_tempd}/ign" > /dev/null || exit "${nL}"
+  ## Note: this use of  sudo  is for giving write permissions to  tee
+  # shellcheck disable=SC2024
+  sudo -- tee -- "${git_ignr}" < "${git_tempd}/ign" > /dev/null || exit "${nL}"
 fi
 
   #exit $LINENO # <>     # <> ### ###
