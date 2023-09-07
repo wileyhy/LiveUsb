@@ -414,7 +414,7 @@ bashrc_strings_2+=(                      ['function rm']="function $( declare -p
 : 'Do some backups'
 for ff in "${files_for_use_with_bash[@]}"
 do
-  if ! [[ -f ${ff} ]]
+  if ! sudo -- [ -f "${ff}" ]
   then
     er_x "line:${nL}, ${ff}"
   fi
