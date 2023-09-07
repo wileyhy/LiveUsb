@@ -183,7 +183,6 @@ done
 unset cc
 
 :;: 'Rename files'
-
 for dd in "${git_files_b[@]}"
 do
   if [[ -e $dd ]]
