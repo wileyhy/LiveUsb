@@ -377,9 +377,9 @@ files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_fns=()
 
   set -x # <>
-  declare -pF foo # <>
-  declare -F foo # <>
-  declare -pf foo # <>
+  #declare -pF foo # <>
+  #declare -F foo # <>
+  #declare -pf foo # <>
 
 : 'Append user variables and functions into .bashrc.'
 ## Note: these arrays include some command substitutions which depend on some function definitions, which in
