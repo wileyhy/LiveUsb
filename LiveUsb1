@@ -412,13 +412,13 @@ for ff in "${files_for_use_with_bash[@]}"
 do
   : '...of the array files_for_use_with_bash'
 
-  ## Note: \x60sudo\x60 cannot find \x60[[\x60; \x60[\x60 requires quotes internally
+  ## Note:  sudo  cannot find  [[  and  [  requires quotes internally
 
-  if ! sudo -- [ -e "${ff}".orig ]
+  if ! sudo -- [ -e "${ff}.orig" ]
   then
-    sudo -- rsync --checksum --archive -- "${ff}" "${ff}".orig
-    sudo -- chmod 400 -- "${ff}".orig
-    sudo -- chattr +i -- "${ff}".orig
+    sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
+    sudo -- chmod 400 -- "${ff}.orig"
+    sudo -- chattr +i -- "${ff}.orig"
   fi
 
   : '...per script-execution'
