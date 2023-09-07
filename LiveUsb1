@@ -171,7 +171,7 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
     command rm --one-file-system --preserve-root=all --force --recursive -- "${tmpd}"
   fi
   trap - EXIT
-  if [[ $exit_trap_ec = "00" ]]
+  if [[ ${exit_trap_ec} -eq '00' ]]
   then
     : "End of script, line:${lineno}"
   else
