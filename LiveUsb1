@@ -529,15 +529,15 @@ unset arr_vrc strng_vrc write2fs aa bb cc ff xx yy zz umask_prior
 declare -A fsos5
 readarray -d '' -t dirs1 < <( find / ! -path / -prune -type d -print0 )
 
-  declare -p dirs1 # <>
+  #declare -p dirs1 # <>
 
 readarray -d '' -t dirs2 < <( find "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null ) 
 
-  declare -p dirs2 # <>
+  #declare -p dirs2 # <>
 
 readarray -d '' -t fsos3 < <( find "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
 
-  declare -p fsos3 # <>
+  #declare -p fsos3 # <>
 
 if [[ ${#fsos3[@]} -gt 0 ]]
 then
@@ -551,7 +551,7 @@ then
 
   ## Question: does this assoc array fsos5 need to be declared as such? (I don't think so, but...)
 
-    declare -p fsos4 # <>
+    #declare -p fsos4 # <>
 
   set -- "${fsos4[@]}"
   
@@ -568,14 +568,14 @@ then
   done
 fi
 
-  declare -p fsos5 # <>
+  #declare -p fsos5 # <>
 
 : 'If any larger local data files were found, then remove them interactively'
 if [[ -n ${!fsos5[*]} ]]
 then
   : 'Inform user of any found FSOs'
   printf '  Script: delete these files? \n'
-  declare -p fsos5
+  #declare -p fsos5
   sleep 3
 
   for dd in "${!fsos5[@]}"
@@ -599,7 +599,7 @@ then
         yn="${yn,,?}"
         yn="${yn:=n}"
 
-          declare -p yn # <>
+          #declare -p yn # <>
 
         case "${yn}" in
           0|1)  printf '  Zero and one are ambiguous: please use letters. \n'
@@ -693,14 +693,14 @@ then
   readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${rpm_nms_for_removal[@]}" )
   readarray -t removable_rpms < <( rpm -qa | grep --ignore-case --extended-regexp "${grep_args[@]}" )
 
-    declare -p grep_args removable_rpms # <>
+    #declare -p grep_args removable_rpms # <>
 
   : 'Keep a list, just in case an rpm removal accidentally erases something vital'
   if [[ -n ${removable_rpms[*]:0:8} ]]
   then
     for rr in "${!removable_rpms[@]}"
     do
-      declare -p removable_rpms | tee -- "${tmpd}/removable_rpms.array"
+      #declare -p removable_rpms | tee -- "${tmpd}/removable_rpms.array"
 
       ## Note: \x60dnf\x60: do not use [-y|--yes] with this command 
 
@@ -760,7 +760,7 @@ unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
 a_pids=()
 pr_counter=0
 
-  declare -p pr_counter # <>
+  #declare -p pr_counter # <>
   #ec=101 nn="$nL" exit # <>
 
 rpm_count_B=$( rpm -qa | sha256sum | awk '{ print $1 }' )
