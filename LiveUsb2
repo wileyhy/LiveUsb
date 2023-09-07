@@ -115,16 +115,18 @@ then
   sudo -- git config --system --unset gpg.format 
 fi
 
-:;: 'git config, assigning'
 unset ii
 for ii in "${!git_keys[@]}"
 do
+  :;: 'git config, assigning - Loop A'
+  
   : "ii:$ii"
 
   if ! grep "${ii}=${git_keys[$ii]}" "${qui[@]}" <<< "${git_conf_sys[@]}"
   then
     sudo -- git config --system "${ii}" "${git_keys[$ii]}"
   fi
+  :;: "Loop A - shut
 done
 unset ii
 
