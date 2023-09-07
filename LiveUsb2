@@ -9,10 +9,10 @@
 set -aCuTeo pipefail # <>
 if [[ -o xtrace ]]
 then
-  quiet=( '--' )
+  qui=( '--' )
   verb=( '--verbose' '--' )
 else
-  quiet=( '--quiet' '--' )
+  qui=( '--quiet' '--' )
   verb=( '--' )
 fi
 
@@ -110,7 +110,7 @@ done
 unset ff
 
 : 'git config, remove a config if present'
-if grep gpg.format "${quiet[@]}" <<< "${git_conf_sys[@]}"
+if grep gpg.format "${qui[@]}" <<< "${git_conf_sys[@]}"
 then
   sudo -- git config --system --unset gpg.format 
 fi
@@ -121,7 +121,7 @@ for ii in "${!git_keys[@]}"
 do
   echo "ii:$ii"
 
-  if ! grep "${ii}=${git_keys[$ii]}" "${quiet[@]}" <<< "${git_conf_sys[@]}"
+  if ! grep "${ii}=${git_keys[$ii]}" "${qui[@]}" <<< "${git_conf_sys[@]}"
   then
     sudo -- git config --system "${ii}" "${git_keys[$ii]}"
   fi
@@ -150,7 +150,7 @@ fi
   #set -x # <>
 
 : 'gitignore (system)'
-if ! [[ -f ${git_ignr} ]] || ! grep swp "${quiet[@]}" "${git_ignr}"
+if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui[@]}" "${git_ignr}"
 then
   : 'Heredoc: gitignore'
   cat <<- \EOF > "${git_tempd}/ign"
@@ -220,26 +220,16 @@ pushd "${dev_d1}" || exit "${nL}"
 : 'gh -- github CLI'
 gh_config_list_out=$( gh config list | tr -d '\n' )
 
-if ! [[ ${gh_config_list_out} =~ editor=vim ]]
-then
-  gh config set editor 'vim'
-fi
+declare -A github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
 
-if ! [[ ${gh_config_list_out} =~ browser=firefox ]]
-then
-  gh config set browser 'firefox'
-fi
-
-if ! [[ ${gh_config_list_out} =~ pager=less ]]
-then
-  gh config set pager 'less'
-fi
-
-if ! [[ ${gh_config_list_out} =~ git_protocol=ssh ]]
-then
-  gh config set git_protocol 'ssh' --host 'github.com'
-fi
-unset gh_config_list_out
+for ii in "${!github_configs[@]}"
+do 
+  if ! [[ ${gh_config_list_out} =~ "${github_configs[$ii]}=${ii}" ]]
+  then
+    gh config set "${github_configs[$ii]}" "${ii}"
+  fi
+done
+unset gh_config_list_out github_configs
 
 : 'Use GitHub CLI as a credential helper'
 gh auth setup-git --hostname 'github.com'
@@ -284,7 +274,7 @@ gh auth status --show-token
 
 if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
 then
-  git clone --origin 'github' "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
+  git clone --origin 'github' "${verb[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
 fi
 
 : 'SSH'
@@ -292,12 +282,12 @@ ssh_d=~/.ssh
 ssh_system_conf=/etc/ssh_config
 ssh_user_conf=~/.ssh/config
 
-sudo -- chown "${UID}:${UID}" "${ssh_d}" || er_x "${nL}"
-sudo -- chmod --recursive 700 "${ssh_d}"
+sudo -- chown "${UID}:${UID}" "${verb[@]}" "${ssh_d}" || er_x "${nL}"
+sudo -- chmod --recursive 700 "${verb[@]}" "${ssh_d}"
 
 if [[ -f ${ssh_user_conf} ]]
 then
-  if ! grep 'ForwardAgent yes' "${quiet[@]}" "${ssh_user_conf}"
+  if ! grep 'ForwardAgent yes' "${qui[@]}" "${ssh_user_conf}"
   then
     cat <<- \EOF > "${ssh_user_conf}"
 		Host github.com
@@ -341,7 +331,7 @@ then
 
             ssh-agent -k
           else
-            command -p kill "${ssh_agent_pids[*]}"
+            command -p kill "${verb[@]}" "${ssh_agent_pids[*]}"
           fi
         ;;#
       *)  for pp in "${ssh_agent_pids[@]}"
@@ -374,7 +364,7 @@ unset xon
 gpg_d=~/.gnupg
 sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
 sudo -- chmod --recursive 700 "${gpg_d}"
-if grep --extended-regexp '[g]pg-a.*daemon' "${quiet[@]}" <<< "${ps_o}"
+if grep --extended-regexp '[g]pg-a.*daemon' "${qui[@]}" <<< "${ps_o}"
 then
   gpgconf --kill gpg-agent
 fi
@@ -396,6 +386,6 @@ then
 fi
 
 : 'Clean up & exit'
-command rm --force --recursive "${git_tempd}"
+command rm --force --recursive "${verb[@]}" "${git_tempd}"
 exit 00
 
