@@ -182,7 +182,9 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
 
 function write_bashrc_strings(){ :
   local - ff file_x Aa_index Aa_element
-  
+
+    set -x # <>
+
   [[ $# -eq 0 ]] && er_x "line:${nL}"
   [[ ${#files_for_use_with_bash[@]} -eq 0 ]] && er_x "line:${nL}"
 
@@ -190,8 +192,6 @@ function write_bashrc_strings(){ :
   for ff
   do
     local -n nr="$1"
-
-      set -x # <>
 
     : 'For each .bashrc'
     for file_x in "${files_for_use_with_bash[@]}"
