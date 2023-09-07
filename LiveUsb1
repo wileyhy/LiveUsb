@@ -343,7 +343,7 @@ function set_the_time(){ \
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
   sudo -- nice --adjustment=-20 -- systemctl start -- chronyd.service
-  sudo -- chronyc makestepp > /dev/null
+  sudo -- chronyc makestep > /dev/null
 }
 export -f set_the_time
 
