@@ -409,6 +409,8 @@ bashrc_strings_2=(   ['export "${bashrc_strings_2[@]}"']=$(           declare -p
 bashrc_strings_2+=(  ['export "${bashrc_strings_2[@]}"']=$(           declare -p PROMPT_COMMAND PS0       ) )
 bashrc_strings_2+=(                      ['function rm']="function $( declare -pf rm                      )")
 
+  declare -p files_for_use_with_bash
+
 : 'Do some backups'
 for ff in "${files_for_use_with_bash[@]}"
 do
