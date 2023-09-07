@@ -244,22 +244,18 @@ gh auth setup-git --hostname 'github.com'
 :;: 'Define a login command'
 function gh_auth_login_command(){ :
   ## Note: do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
-  gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
-    exit "${nL}"
+  if gh auth status 
+  then
+    gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
+      exit "${nL}"
+  fi
 }
 
+: 'Login to github'
 ## Note: executing this command just once
 if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
 then
   gh_auth_login_command
-fi
-
-: 'Clone repo'
-[[ ${PWD} = ${dev_d1} ]] || er_x "${nL}"
-
-if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
-then
-  git clone --origin 'github' "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
 fi
 
 : 'Get SSH & GPG keys'
@@ -273,6 +269,14 @@ done
 
 : 'Review auth'
 gh auth status --show-token
+
+: 'Clone repo'
+[[ ${PWD} = ${dev_d1} ]] || er_x "${nL}"
+
+if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
+then
+  git clone --origin 'github' "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
+fi
 
 : 'SSH'
 ssh_d=~/.ssh
