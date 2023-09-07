@@ -160,7 +160,7 @@ then
   sudo -- tee -- "${git_ignr}" < "${git_tempd}/ign" > /dev/null || exit "${nL}"
 fi
 
-  #exit $LINENO # <>     # <> ### ###
+  #exit $LINENO # <>
 
 : 'Copy root-user files to USER'
 for ff in "${git_mesg}" "${git_ignr}"
