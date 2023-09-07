@@ -345,15 +345,14 @@ sudo -- bash -c '(
 ## Note: this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
 ## Note: \x60set [-|-x]\x60: letting xtrace expand this \x60tput\x60 command alters all xtrace colorization
 
-: 'Color code assigned to PS0'
-xon=''
+: 'Color code assigned to PS0, ducking xtrace'
 if [[ -o xtrace ]]
 then
-  xon=yes
   set -
-  echo Color code is assigned and xtrace is re-enabled
   PS0=$( tput setaf 43 )
   set -x
+else
+  PS0=$( tput setaf 43 )
 fi
 
 : 'Env vars for bashrc'
