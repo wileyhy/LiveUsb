@@ -434,20 +434,20 @@ fi
 : 'Define bashrc_strings_*'
 ## Note: you want for these array values to each represent just one parameter or function
 # shellcheck disable=SC2034,SC2016
-bashrc_strings_1=(            ['function __vte_osc7']="function $( declare -pf __vte_osc7 )")
-bashrc_strings_1+=( ['function __vte_prompt_command']="function $( declare -pf __vte_prompt_command )")
-bashrc_strings_1+=(                   ['function rm']="function $( declare -pf rm )")
+bashrc_strings_1=(            ['function __vte_osc7']="function $(  declare -pf __vte_osc7 )")
+bashrc_strings_1+=( ['function __vte_prompt_command']="function $(  declare -pf __vte_prompt_command )")
+bashrc_strings_1+=(                   ['function rm']="function $(  declare -pf rm )")
 
 # shellcheck disable=SC2016
-bashrc_strings_2=(                 ['export BROWSER']=$( declare -p BROWSER ) )
-bashrc_strings_2+=(                 ['export EDITOR']=$( declare -p EDITOR ) )
-bashrc_strings_2+=(         ['export PROMPT_COMMAND']=$( declare -p PROMPT_COMMAND ) )
-bashrc_strings_2+=(                    ['export PS0']=$( declare -p PS0  ) )
+bashrc_strings_2=(                 ['export BROWSER']=$(            declare -p BROWSER ) )
+bashrc_strings_2+=(                 ['export EDITOR']=$(            declare -p EDITOR ) )
+bashrc_strings_2+=(         ['export PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
+bashrc_strings_2+=(                    ['export PS0']=$(            declare -p PS0  ) )
 
   #declare -p files_for_use_with_bash # <>
 
 : 'Do some backups'
-## Note:  sudo  cannot find  [[  and  [  requires quotes internally
+## Note:  sudo  cannot find  [[  and  [  requires internal quotes
 for ff in "${files_for_use_with_bash[@]}"
 do
   : 'File must exist'
