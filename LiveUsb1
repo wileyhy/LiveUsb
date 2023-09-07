@@ -386,7 +386,7 @@ missing_fns=()
 #+ turn must be defined prior to defining these arrays
 for nn in "${functions_for_appending_into_bashrc[@]}"
 do
-  if [[ $( declare -pF ${nn} 2>&1 ) =~ not found ]]
+  if [[ $( declare -pF ${nn} 2>&1 ) =~ 'not found' ]]
   then
     missing_fns+=( "${nn}" )
   fi
