@@ -377,6 +377,9 @@ EDITOR=$( command -v vim )
 
 declare -A bashrc_strings_1 bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
+
+  files_for_use_with_bash+=( ~/.foobar ) # <>
+
 missing_fns=()
 
 : 'Append user variables and functions into .bashrc.'
