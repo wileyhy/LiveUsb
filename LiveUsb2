@@ -140,7 +140,7 @@ then
   sudo -- tee -- "${git_mesg}" < "${git_tempd}/msg" > /dev/null || exit "${nL}"
 fi
 
-  set -x # <>
+  #set -x # <>
 
 : 'gitignore (system)'
 #if ! [[ -f ${git_ignr} ]] || ! grep --quiet swp "${git_ignr}"
@@ -320,9 +320,6 @@ readonly ps_o
 
 if [[ -z ${SSH_AUTH_SOCK} ]] || [[ -z ${SSH_AGENT_PID} ]]
 then
-
-  # hellcheck disable=SC2154
-
   awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /startx/ { print $2 }' <<< "${ps_o}" )
 
   if [[ -n ${awk_o} ]]
@@ -373,9 +370,6 @@ unset xon
 gpg_d=~/.gnupg
 sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
 sudo -- chmod --recursive 700 "${gpg_d}"
-
-  # hellcheck disable=SC2009
-
 if grep --quiet --extended-regexp '[g]pg-a.*daemon' <<< "${ps_o}"
 then
   gpgconf --kill gpg-agent
@@ -387,7 +381,7 @@ export GPG_TTY
 
 : 'Remind user of commands for the interactive shell'
 
-  set -x # <>
+  #set -x # <>
 
 popd || exit "${nL}"
 
