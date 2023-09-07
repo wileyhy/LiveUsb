@@ -44,6 +44,8 @@ functions_for_appending_into_bashrc=(
 
   functions_for_appending_into_bashrc+=( foo ) # <>
 
+for nn in "${functions_for_appending_into_bashrc[@]}" ; do unset -f "$nn" ; done
+
 function __vte_osc7(){ \
   local - cmd urlencode_o
   cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
