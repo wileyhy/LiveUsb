@@ -505,6 +505,8 @@ cat <<- \EOF | tee -- "${tmpd}/vim-conf-text" > /dev/null
 
 EOF
 
+  set -x # <>
+
 : $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29' 
 readarray -d '' -t arr_vrc < <( sudo -- find /root -name '*vimrc*' -print0 )
 
@@ -529,6 +531,8 @@ case "${#arr_vrc[@]}" in
       printf '%s \n' "${arr_vrc[@]}"
     ;;#
 esac
+
+  exit $nL # <>
 
 : 'Write .vimrc'
 if [[ ${write2fs} = yes ]]
