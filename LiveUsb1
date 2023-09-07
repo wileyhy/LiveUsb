@@ -263,6 +263,8 @@ must_be_root
 : 'Certain files must have been installed from off-disk'
 files_for_use_with_github=( ~/.ssh ~/.gnupg ~/.config/gh ~/.config/toprc ~/.vimrc ) 
 
+  files_for_use_with_github+=( ~/.foo) # <>
+
 for ff in "${files_for_use_with_github[@]}"
 do
   if ! [[ -e ${ff} ]]
