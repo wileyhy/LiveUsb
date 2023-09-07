@@ -271,10 +271,9 @@ PATH='/usr/bin:/usr/sbin' export PATH
 tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 [[ -d ${tmpd} ]] || er_x "${nL}"
 
-:;: 'trap on EXIT'
-
 ## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
 
+:;: 'trap on EXIT'
 trap trap_exit EXIT
 
 :;: 'Other environment variables'
@@ -318,9 +317,8 @@ if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
 then
   printf '\n%s: Attempting to connect to the internet... \n\n' "$scr_nm"
 
-  ## Note:  systemctl start  appears to be idempotent
-
   :;: 'Try to get NetworkManager up and running'
+  ## Note:  systemctl start  appears to be idempotent
   sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
   wait -f
 
@@ -388,15 +386,14 @@ PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-## Note, TERM_SESSION_ID, 1: added in order to identify which TTY is using which terminal emulator program. See 
-#+  also: https://stackoverflow.com/questions/42710685/bash-identify-a-terminal-session
-
-#TERM_SESSION_ID="${TERM_SESSION_ID:-}"
-#if [[ -z "$TERM_SESSION_ID" ]] 
-#then
+  ## Note, TERM_SESSION_ID, 1: added in order to identify which TTY is using which terminal emulator program. See 
+  #+  also: https://stackoverflow.com/questions/42710685/bash-identify-a-terminal-session
+  #TERM_SESSION_ID="${TERM_SESSION_ID:-}"
+  #if [[ -z "$TERM_SESSION_ID" ]] 
+  #then
   #TERM_SESSION_ID=$( uuidgen )
   #export TERM_SESSION_ID
-#fi
+  #fi
 
 declare -A bashrc_strings_1 bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
