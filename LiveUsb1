@@ -528,7 +528,6 @@ then
     :;: 'Set the umask and write the root file'
     read -ra umask_prior < <( umask -p )
     umask 177
-
     sudo -- rsync --archive --checksum -- "${tmpd}/vim-conf-text" "${strng_vrc}" || er_x "${nL}"
 
     :;: $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
