@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 ## LiveUsb2
 # shellcheck disable=SC2317
 
