@@ -265,9 +265,6 @@ then
   gh_auth_login_command
 fi
 
-: 'Use GitHub CLI as a credential helper'
-gh auth setup-git --hostname 'github.com'
-
 :;: 'Get SSH & GPG keys'
 for gg in ssh-key gpg-key
 do
