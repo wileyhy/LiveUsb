@@ -381,7 +381,7 @@ then
   gpgconf --kill gpg-agent
 fi
 
-gpg-connect-agent /bye
+gpg-connect-agent /bye > /dev/null
 GPG_TTY=$( tty )
 export GPG_TTY
 
