@@ -389,7 +389,7 @@ export GPG_TTY
 
   #set -x # <>
 
-popd || exit "${nL}"
+popd > /dev/null || exit "${nL}"
 
 if ! [[ ${PWD} = ${dev_d1}/${scr_repo_nm} ]]
 then
