@@ -225,7 +225,7 @@ unset ee
 :;: 'Change dirs'
 pushd "${dev_d1}" || exit "${nL}"
 
-  set -x # <>
+  #set -x # <>
 
 :;: 'gh -- github CLI'
 #gh auth status > /dev/null
