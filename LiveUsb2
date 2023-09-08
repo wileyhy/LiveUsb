@@ -241,6 +241,9 @@ do
 done
 unset gh_config_list_out github_configs ff
 
+: 'Use GitHub CLI as a credential helper'
+gh auth setup-git --hostname 'github.com'
+
 : 'Log in'
 
 :;: 'Define a login command'
