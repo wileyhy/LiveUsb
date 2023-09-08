@@ -391,7 +391,7 @@ popd > /dev/null || exit "${nL}"
 
 if ! [[ ${PWD} = ${dev_d1}/${scr_repo_nm} ]]
 then
-  printf '\n\t Now run this command: \n'
+  printf '\n  Now run this command: \n'
   printf '\n\t cd "%s/%s" ; git status \n\n' "${dev_d1}" "${scr_repo_nm}"
 fi
 
