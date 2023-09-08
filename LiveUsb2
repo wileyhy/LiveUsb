@@ -19,6 +19,11 @@ fi
 umask 077
 hash -r
 
+:;: 'Write to TTY'
+tt=$( date +%H:%M:%S )
+printf '  %s - Executing %s \n' "${tt}" "$0"
+unset tt
+
 :;: 'Environment'
 # shellcheck disable=SC1001
 declare -n nL=L\INENO
