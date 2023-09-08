@@ -223,7 +223,7 @@ unset ee
 #+  \x60popd\x60
 
 :;: 'Change dirs'
-pushd "${dev_d1}" || exit "${nL}"
+pushd "${dev_d1}" > /dev/null || exit "${nL}"
 
   #set -x # <>
 
