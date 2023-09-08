@@ -279,7 +279,7 @@ done
 unset gg
 
 :;: 'Review auth'
-gh auth status --show-token
+gh auth status 
 
   #exit $nL # <>
 
