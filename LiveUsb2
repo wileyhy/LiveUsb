@@ -223,6 +223,7 @@ pushd "${dev_d1}" || exit "${nL}"
   set -x # <>
 
 :;: 'gh -- github CLI'
+gh auth status > /dev/null
 declare -A github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
 gh_config_list_out=$( gh config list | tr '\n' ' ' )
 
