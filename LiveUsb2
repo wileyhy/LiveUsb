@@ -314,16 +314,12 @@ fi
 ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
 :;: $'Collect output of \x60ps\x60'
-if [[ -o xtrace ]]
-then
-  set -
-  ps_o=$( ps aux )
-  set -x
-else
-  ps_o=$( ps aux )
-fi
+[[ -o xtrace ]] && xon=yes && set -
+ps_o=$( ps aux )
+[[ ${xon:=} = yes ]] && set -x && unset xon
 readonly ps_o
 
+: 'Make sure ssh daemon is running (?)'
 if [[ -z ${SSH_AUTH_SOCK} ]] || [[ -z ${SSH_AGENT_PID} ]]
 then
   awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /startx/ { print $2 }' <<< "${ps_o}" )
