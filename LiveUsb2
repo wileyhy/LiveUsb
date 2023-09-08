@@ -255,7 +255,8 @@ function gh_auth_login_command(){ :
     exit "${nL}"
 
   : 'Use GitHub CLI as a credential helper'
-  gh auth setup-git --hostname 'github.com'
+  git config --global credential.helper "cache --timeout=3600"
+  gh auth setup-git
 }
 
 :;: 'Login to github'
