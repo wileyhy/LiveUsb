@@ -23,6 +23,11 @@ fn_bndry=' ~~~ ~~~ ~~~ '
 fn_lvl=0
 scr_nm=LiveUsb1
 
+:;: 'Write to TTY'
+tt=$( date +%H:%M:%S )
+printf '  %s - Executing %s \n' "${tt}" "$0"
+unset tt
+
 :;: 'Functions TOC...'
   ## functions_this_script=( 
   #+	'__vte_osc7()'
@@ -251,11 +256,6 @@ then
   er_x "${LINENO}: OS is not Fedora"
 fi
 unset kernel_release
-
-:;: 'Write to TTY'
-tt=$( date +%H:%M:%S )
-printf '  %s - Executing %s \n' "${tt}" "$0"
-unset tt
 
 ## Bug: only way to export namerefs?  `declare -nx nL=...`
 
