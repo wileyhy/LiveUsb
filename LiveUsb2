@@ -399,5 +399,6 @@ fi
 
 :;: 'Clean up & exit'
 command rm --force --recursive "${verb[@]}" "${git_tempd}"
+printf '  %s - Done \n' "$( date +%H:%M:%S )"
 exit 00
 
