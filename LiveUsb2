@@ -277,6 +277,7 @@ done
 unset gg
 
 :;: 'Review auth'
+printf '\n'
 gh auth status 
 
   #exit $nL # <>
