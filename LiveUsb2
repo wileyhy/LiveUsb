@@ -241,9 +241,6 @@ do
 done
 unset gh_config_list_out github_configs ff
 
-: 'Use GitHub CLI as a credential helper'
-gh auth setup-git --hostname 'github.com'
-
 : 'Log in'
 
 :;: 'Define a login command'
@@ -256,6 +253,9 @@ function gh_auth_login_command(){ :
   
   gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
     exit "${nL}"
+
+  : 'Use GitHub CLI as a credential helper'
+  gh auth setup-git --hostname 'github.com'
 }
 
 :;: 'Login to github'
