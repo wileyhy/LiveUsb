@@ -13,7 +13,7 @@ _xbp_err ()
 
 ## Usage:   _xbp [ |+|x|e]
 function _xbp() 
-{
+{ nn=$LINENO
   :
  
   case "$#" in 
@@ -32,8 +32,8 @@ function _xbp()
           : _xbp: XTRACE __ON__ '$1 = x', line:$LINENO
           set -x
           ;;
-        [0-9]* )
-          : _xbp: EXIT '$1 = [0-9]*', line:$LINENO
+        e|[0-9]* )
+          : _xbp: EXIT '$1 = e|[0-9]*', line:$LINENO
           printf '%s: _xbp: line: %d\n' "$scr_nm" "$1"
           exit 101
           ;;
@@ -88,5 +88,5 @@ _xbp x
 
 :; echo global, seven, exit, line:$LINENO
 #   xon   A:exit  > exit
-_xbp $nL
+_xbp e
 
