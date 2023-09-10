@@ -6,7 +6,7 @@ declare -n nL=LINENO
 declare -- PS4='\e[m+ \t.$(
                             printf "%s" "${EPOCHREALTIME##*.}"; 
                             for (( ii=0; ii <= "${#BASH_SOURCE[@]}"; ii++ )) { printf "  ";}
-                          )>  \e[38;5;43m'
+                          )>\e[38;5;43m'
 
 _xbp_err ()
 { 
