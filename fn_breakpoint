@@ -39,6 +39,7 @@ function _xbp()
           _xbp_err
           ;;
       esac
+      ;;
     * )
       _xbp_err
       ;;
