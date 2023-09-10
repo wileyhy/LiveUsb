@@ -35,42 +35,42 @@ function _xbp()
 
 # Changes
 
-echo one
+echo one line:$LINENO
 
 #   xoff  A:xon   > xon
 _xbp x
 
-echo two
+echo two line:$LINENO
 
 #   xon   A:noop  > xon
 _xbp 
 
-echo three
+echo three line:$LINENO
 
 #   xon   A:xoff  > xoff
 _xbp +
 
-echo four
+echo four line:$LINENO
 
 #   xoff  A:noop  > xoff
 _xbp 
 
-echo five
+echo five line:$LINENO
 
 #   xoff  A:exit  > exit
 _xbp e
 
-echo six
+echo six line:$LINENO
 
 #   xoff  A:xon   > xon
 _xbp x
 
-echo seven
+echo seven line:$LINENO
 
 #   xon   A:exit  > exit
 _xbp e
 
-echo eight
+echo eight line:$LINENO
 
     
 
