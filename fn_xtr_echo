@@ -5,7 +5,7 @@ FUNCNEST=8
 
 function echo ()
 {
-  if [[ -o xtrace ]]
+  if : [[ -o xtrace ]]
   then
     : "$@"
   else
