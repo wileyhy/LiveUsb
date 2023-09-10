@@ -75,7 +75,7 @@ _xbp
 :; echo global, five, line:$LINENO
 
 #   xoff  A:exit  > exit
-_xbp $nL
+#_xbp $nL
 
 :; echo global, six, line:$LINENO
 
