@@ -34,7 +34,7 @@ function _xbp()
           ;;
         e|[0-9]* )
           : _xbp: EXIT '$1 = e|[0-9]*', line:$LINENO
-          printf '%s: _xbp: line: %d\n' "$scr_nm" "$1"
+          printf '%s: _xbp: line: %d\n' "$scr_nm" "$1":"$nn"
           exit 101
           ;;
         * )
