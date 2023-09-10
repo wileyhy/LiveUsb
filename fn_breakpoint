@@ -7,22 +7,22 @@ function _xbp()
   :
   case "$#" in 
     0 )
-      : _xbp: '$# = 0', line:$LINENO
+      : _xbp: NO-OP '$# = 0', line:$LINENO
       return
       ;;
     1 )
       : _xbp: '$# = 1', line:$LINENO
       case "$1" in
         - )
-          : _xbp: '$1 = -', line:$LINENO
+          : _xbp: XTRACE __ON__ '$1 = -', line:$LINENO
           set +x
           ;;
         x )
-          : _xbp: '$1 = x', line:$LINENO
+          : _xbp: XTRACE _OFF_'$1 = x', line:$LINENO
           set -x
           ;;
         e|* )
-          : _xbp: '$1 = e', line:$LINENO
+          : _xbp: EXIT '$1 = e', line:$LINENO
           printf '%s: _xbp: line: %d\n' "$scr_nm" "$LINENO"
           exit 101
           ;;
@@ -75,6 +75,7 @@ echo global, seven, line:$LINENO
 
 #   xon   A:exit  > exit
 _xbp e
+
 
 echo global, eight, line:$LINENO
 
