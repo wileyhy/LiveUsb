@@ -7,7 +7,7 @@ declare -n nL=LINENO
 _xbp_err ()
 { 
   : _xbp: ERROR '$1 = *', line:$LINENO
-  printf '%s: _xbp: line: %s\n' "$scr_nm" "$1"
+  printf '%s: _xbp: line: %d\n' "$scr_nm" "${1//[a-zA-Z}"
   exit 101
 }
 
@@ -34,7 +34,7 @@ _xbp()
           ;;
         e[0-9]* )
           : _xbp: EXIT '$1 = e[0-9]*', line:$LINENO
-          printf '%s: _xbp: line: %s\n' "$scr_nm" "${1//[a-zA-Z]}"
+          printf '%s: _xbp: line: %d\n' "$scr_nm" "${1//[a-zA-Z]}"
           exit 101
           ;;
         * )
