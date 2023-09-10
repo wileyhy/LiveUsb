@@ -7,7 +7,7 @@ declare -- PS4='\e[m+ \t.$(printf "%s\\t" "${EPOCHREALTIME##*.}") > \e[38;5;43m'
 
 _xbp_err ()
 { 
-  : _xbp: ERROR '$1 = *', line:$LINENO
+  : _xbp: ERROR '$1 = *', _xbp_err line:$LINENO
   printf '%s: _xbp: ERROR: line: %d\n' "$scr_nm" "${1//[a-zA-Z]}"
   exit 101
 }
@@ -19,22 +19,22 @@ _xbp()
  
   case "$#" in 
     0 )
-      : _xbp: NO-OP '$# = 0', line:$LINENO
+      : _xbp: NO-OP '$# = 0', _xbp line:$LINENO
       return
       ;;
     1 )
       : _xbp: '$# = 1', line:$LINENO
       case "$1" in
         + )
-          : _xbp: XTRACE __OFF__ '$1 = -', line:$LINENO
+          : _xbp: XTRACE __OFF__ '$1 = -', _xbp line:$LINENO
           set +x
           ;;
         x )
-          : _xbp: XTRACE __ON__ '$1 = x', line:$LINENO
+          : _xbp: XTRACE __ON__ '$1 = x', _xbp line:$LINENO
           set -x
           ;;
         e[0-9]* )
-          : _xbp: EXIT '$1 = e[0-9]*', line:$LINENO
+          : _xbp: EXIT '$1 = e[0-9]*', _xbp line:$LINENO
           printf '%s: _xbp: exit: line: %d\n' "$scr_nm" "${1//[a-zA-Z]}"
           exit 101
           ;;
