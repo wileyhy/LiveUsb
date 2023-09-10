@@ -1,5 +1,80 @@
 #!/bin/bash
 
-function xbp() 
+
+## Usage:   _xbp [ |+|x|e]
+function _xbp() 
 {
-  
+  local -
+  if [[ $# -eq 0 ]]
+  then
+    return
+  elif [[ $# -gt 1 ]]
+  then
+    printf '%s: _xbp: line: %d\n' "$scr_nm" "$LINENO"
+    : "${Halt:?}"
+  fi
+
+  case "$1" in
+    - )
+      set +x
+      ;;
+    x )
+      set -x
+      ;;
+    * )
+      printf '%s: _xbp: line: %d\n' "$scr_nm" "$LINENO"
+      exit 101
+      ;;
+  esac
+}
+
+
+# action            noop    xon   xoff    exit
+
+# from state xon    >xon   >xon   >xoff   >exit
+
+# from state xoff   >xoff  >xon   >xoff   >exit
+
+
+# Changes
+
+echo one
+
+#   xoff  A:xon   > xon
+_xbp x
+
+echo two
+
+#   xon   A:noop  > xon
+_xbp 
+
+echo three
+
+#   xon   A:xoff  > xoff
+_xbp +
+
+echo four
+
+#   xoff  A:noop  > xoff
+_xbp 
+
+echo five
+
+#   xoff  A:exit  > exit
+_xbp e
+
+echo six
+
+#   xoff  A:xon   > xon
+_xbp x
+
+echo seven
+
+#   xon   A:exit  > exit
+_xbp e
+
+echo eight
+
+    
+
+
