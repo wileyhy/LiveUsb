@@ -1,17 +1,17 @@
 #!/bin/bash -x
 ## Trying to write an 'echo()' function that will only print one line to xtrace whether xtrace is either on or off
 
-FUNCNEST=8
+#echo ()
+#{
+#  if [[ -o xtrace ]]
+#  then
+#    : "$@"
+#  else
+#    builtin echo "$@"
+#  fi
+#}
 
-echo ()
-{
-  if [[ -o xtrace ]]
-  then
-    : "$@"
-  else
-    builtin echo "$@"
-  fi
-}
+alias echo=':'
 
 set -x
 
