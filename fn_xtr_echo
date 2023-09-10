@@ -12,7 +12,7 @@
 #}
 
 shopt -s expand_aliases
-alias 'set'='unalias echo='
+alias 'set'='set -; unalias echo=; set '
 
 : 'Define foo()'
 foo(){
