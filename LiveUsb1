@@ -423,7 +423,7 @@ bashrc_strings_1+=( ['function __vte_prompt_command']="function $(  declare -pf 
 bashrc_strings_1+=(                   ['function rm']="function $(  declare -pf rm )")
 bashrc_strings_2=(                 ['export BROWSER']=$(            declare -p BROWSER ) )
 bashrc_strings_2+=(                 ['export EDITOR']=$(            declare -p EDITOR ) )
-bashrc_strings_2+=(         ['export PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
+bashrc_strings_2+=(         ['define PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
 bashrc_strings_2+=(                    ['export PS0']=$(            declare -p PS0  ) )
 
   #declare -p files_for_use_with_bash # <>
