@@ -1,8 +1,7 @@
 #!/bin/bash -x
 ## Trying to write an 'echo()' function that will only print one line to xtrace whether xtrace is either on or off
 
-#FUNCNEST=8
-ii=0
+FUNCNEST=8
 
 function echo ()
 {
@@ -10,10 +9,8 @@ function echo ()
 
   if [[ -o xtrace ]]
   then
-    printf 'xtrace on %d\n' $(( ii++ ))
     : "$@"
   else
-    printf 'xtrace off %d\n' $(( ii++ ))
     builtin echo "$@"
   fi
 }
