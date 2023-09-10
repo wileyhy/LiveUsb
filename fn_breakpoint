@@ -18,7 +18,7 @@ function _xbp()
           set +x
           ;;
         x )
-          : _xbp: XTRACE _OFF_'$1 = x', line:$LINENO
+          : _xbp: XTRACE _OFF_ '$1 = x', line:$LINENO
           set -x
           ;;
         e|* )
