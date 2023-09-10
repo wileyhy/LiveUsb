@@ -41,6 +41,11 @@ function _xbp()
 
 # Changes
 
+echo global, zero, line:$LINENO
+
+#   xoff  A:xon   > xon
+_xbp 
+
 echo global, one, line:$LINENO
 
 #   xoff  A:xon   > xon
