@@ -12,7 +12,7 @@
 #}
 
 shopt -s expand_aliases
-alias 'set'='set -; if alias echo > /dev/null 2>&1 then unalias echo; else alias echo=":"; set '
+alias 'set'='set -; if alias echo > /dev/null 2>&1 then unalias echo; else alias echo=":"; fi; set '
 
 : 'Define foo()'
 foo(){
