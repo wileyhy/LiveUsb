@@ -2,10 +2,18 @@
 scr_nm=fn_breakpoint
 declare -n nL=LINENO
 
+_xbp_err ()
+{ 
+  : _xbp: ERROR '$1 = *', line:$LINENO
+  printf '%s: _xbp: line: %d\n' "$scr_nm" "$LINENO"
+  exit 101
+}
+
 ## Usage:   _xbp [ |+|x|e]
 function _xbp() 
 {
   :
+ 
   case "$#" in 
     0 )
       : _xbp: NO-OP '$# = 0', line:$LINENO
@@ -28,11 +36,11 @@ function _xbp()
           exit 101
           ;;
         * )
-          : _xbp: EXIT '$1 = *', line:$LINENO
-          printf '%s: _xbp: line: %d\n' "$scr_nm" "$LINENO"
-          exit 101
+          _xbp_err
           ;;
       esac
+    * )
+      _xbp_err
       ;;
   esac
 }
