@@ -5,8 +5,6 @@ FUNCNEST=8
 
 function echo ()
 {
-  [[ $# -eq 0 ]] && builtin echo
-
   if [[ -o xtrace ]]
   then
     : "$@"
