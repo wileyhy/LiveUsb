@@ -86,11 +86,15 @@ _xbp
 #   xoff  A:exit  > exit
 _xbp e$nL
 
-:; echo global, six, xon, line:$LINENO
+:; echo global, six, noop, line:$LINENO
+#   xoff  A:noop  > xoff
+_xbp 
+
+:; echo global, seven, xon, line:$LINENO
 #   xoff  A:xon   > xon
 _xbp x
 
-:; echo global, seven, exit, line:$LINENO
+:; echo global, eight, exit, line:$LINENO
 #   xon   A:exit  > exit
 _xbp e$nL
 
