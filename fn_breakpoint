@@ -38,12 +38,12 @@ _xbp()
           exit 101
           ;;
         * )
-          _xbp_err
+          _xbp_err "$1"
           ;;
       esac
       ;;
     * )
-      _xbp_err
+      _xbp_err "$1"
       ;;
   esac
 }
