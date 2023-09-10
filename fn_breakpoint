@@ -11,7 +11,7 @@ for ((ii=0;ii<"${#BASH_SOURCE[@]}";ii++)) { printf "  ";}
 _xbp_err ()
 { 
   : _xbp: ERROR '$1 = *', _xbp_err-line:$LINENO
-  printf '%s: _xbp: ERROR: line: %d\n' "$scr_nm" "${1//[a-zA-Z]}"
+  printf '%s: _xbp: ERROR: line: %s\n' "$scr_nm" "${1}"
   exit 101
 }
 
