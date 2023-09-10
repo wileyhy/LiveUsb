@@ -6,14 +6,17 @@ function _xbp()
 {
   case "$#" in 
     0 )
+      : $LINENO
       return
       ;;
     1 )
       case "$1" in
         - )
+          : $LINENO
           set +x
           ;;
         x )
+          : $LINENO
           set -x
           ;;
         * )
