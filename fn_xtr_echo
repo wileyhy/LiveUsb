@@ -3,7 +3,7 @@
 
 FUNCNEST=8
 
-function echo ()
+echo ()
 {
   if [[ -o xtrace ]]
   then
