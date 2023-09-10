@@ -21,7 +21,7 @@ echo foo
 
 echo bar
 
-set +x
+#set +x
 
 echo baz
 
