@@ -88,5 +88,5 @@ _xbp x
 
 :; echo global, seven, exit, line:$LINENO
 #   xon   A:exit  > exit
-_xbp e
+_xbp e$nL
 
