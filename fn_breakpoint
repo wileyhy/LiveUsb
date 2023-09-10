@@ -88,7 +88,7 @@ _xbp e$nL
 
 :; echo global, six, noop, line:$LINENO
 #   xoff  A:noop  > xoff
-_xbp 
+_xbp y
 
 :; echo global, seven, xon, line:$LINENO
 #   xoff  A:xon   > xon
