@@ -9,8 +9,10 @@ function echo ()
 
   if [[ -o xtrace ]]
   then
+    printf 'xtrace on\n'
     : "$@"
   else
+    printf 'xtrace off\n'
     echo "$@"
   fi
 }
