@@ -58,46 +58,35 @@ function _xbp()
 
 # Changes
 
-:; echo global, zero, line:$LINENO
-
+:; echo global, zero, noop, line:$LINENO
 #   xoff  A:noop   > xon
 _xbp 
 
-:; echo global, one, line:$LINENO
-
+:; echo global, one, xon, line:$LINENO
 #   xoff  A:xon   > xon
 _xbp x
 
-:; echo global, two, line:$LINENO
-
+:; echo global, two, noop, line:$LINENO
 #   xon   A:noop  > xon
 _xbp 
 
-:; echo global, three, line:$LINENO
-
+:; echo global, three, xoff, line:$LINENO
 #   xon   A:xoff  > xoff
 _xbp +
 
-:; echo global, four, line:$LINENO
-
+:; echo global, four, noop, line:$LINENO
 #   xoff  A:noop  > xoff
 _xbp 
 
-:; echo global, five, line:$LINENO
-
+#:; echo global, five, exit, line:$LINENO
 #   xoff  A:exit  > exit
 #_xbp $nL
 
-:; echo global, six, line:$LINENO
-
+:; echo global, six, xon, line:$LINENO
 #   xoff  A:xon   > xon
 _xbp x
 
-:; echo global, seven, line:$LINENO
-
+:; echo global, seven, exit, line:$LINENO
 #   xon   A:exit  > exit
 _xbp $nL
-
-
-:; echo global, eight, line:$LINENO
 
