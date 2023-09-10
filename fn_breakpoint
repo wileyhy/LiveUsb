@@ -3,7 +3,7 @@
 
 scr_nm=fn_breakpoint
 declare -n nL=LINENO
-declare -- PS4="$'\E[m'+ $'\E[38;5;43m'"
+declare -- PS4='\E[m+ \E[38;5;43m'
 
 _xbp_err ()
 { 
