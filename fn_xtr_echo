@@ -1,18 +1,18 @@
 #!/bin/bash -x
 ## Trying to write an 'echo()' function that will only print one line to xtrace whether xtrace is either on or off
 
-FUNCNEST=8
-
-function echo ()
-{
-  if [[ -o xtrace ]]
-  then
-    : "$@"
-  else
-    builtin echo "$@"
-  fi
-}
-
+#FUNCNEST=8
+#
+#function echo ()
+#{
+  #if [[ -o xtrace ]]
+  #then
+    #: "$@"
+  #else
+    #builtin echo "$@"
+  #fi
+#}
+#
 set -x
 
 echo foo 
