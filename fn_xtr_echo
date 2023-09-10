@@ -3,7 +3,7 @@
 
 function echo ()
 {
-  local -; set -
+  #local -; set -
 
   [[ $# -eq 0 ]] && builtin echo
 
