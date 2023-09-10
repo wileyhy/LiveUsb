@@ -5,13 +5,13 @@ function echo ()
 {
   local -; set -
 
-  [[ $# -eq 0 ]] && echo
+  [[ $# -eq 0 ]] && builtin echo
 
   if [[ -o xtrace ]]
   then
     : "$@"
   else
-    echo "$@"
+    builtin echo "$@"
   fi
 }
 
