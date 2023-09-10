@@ -4,7 +4,6 @@ scr_nm=fn_breakpoint
 ## Usage:   _xbp [ |+|x|e]
 function _xbp() 
 {
-  local -
   if [[ $# -eq 0 ]]
   then
     return
