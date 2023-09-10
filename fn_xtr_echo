@@ -6,9 +6,7 @@ ii=0
 
 function echo ()
 {
-  #local -; set -
-
-  #[[ $# -eq 0 ]] && builtin echo
+  [[ $# -eq 0 ]] && builtin echo
 
   if [[ -o xtrace ]]
   then
