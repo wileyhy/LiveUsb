@@ -11,7 +11,7 @@ function echo ()
   then
     : "$@"
   else
-    builtin echo "$@"
+    echo "$@"
   fi
 }
 
