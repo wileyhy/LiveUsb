@@ -12,7 +12,8 @@
 #}
 
 shopt -s expand_aliases
-alias echo=':'
+alias 'set +x'='unalias echo='
+
 
 set -x
 
