@@ -4,6 +4,7 @@ scr_nm=fn_breakpoint
 ## Usage:   _xbp [ |+|x|e]
 function _xbp() 
 {
+  :
   case "$#" in 
     0 )
       : _xbp: '$# = 0', line:$LINENO
