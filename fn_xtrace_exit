@@ -1,0 +1,94 @@
+#!/bin/bash
+# shellcheck disable=SC2016
+
+scr_nm=fn_xtrace_exit
+declare -n nL=LINENO
+declare -- PS4='\e[m+ \t.$(
+printf "%s" "${EPOCHREALTIME##*.}"
+for ((ii=0;ii<"${#BASH_SOURCE[@]}";ii++)) { printf "  ";}
+)> \e[38;5;43m'
+
+_xtx_err ()
+{
+  : _xtx: ERROR '$1 = *', _xtx_err-line:$LINENO
+  printf '%s: _xtx: ERROR: line: %s\n' "$scr_nm" "${1}"
+  exit 101
+}
+
+## Usage:   _xtx [ |+|x|e]
+_xtx()
+{
+  :
+  case "$#" in
+    0 )
+      : _xtx: NO-OP '$# = 0', _xtx-line:$LINENO
+      return
+      ;;#
+    1 )
+      : _xtx: '$# = 1', line:$LINENO
+      case "$1" in
+        + )
+          : _xtx: XTRACE __OFF__ '$1 = -', _xtx-line:$LINENO
+          set +x
+          ;;#
+        x )
+          : _xtx: XTRACE __ON__ '$1 = x', _xtx-line:$LINENO
+          set -x
+          ;;#
+        e[0-9]* )
+          : _xtx: EXIT '$1 = e[0-9]*', _xtx-line:$LINENO
+          printf '%s: _xtx: exit: line: %d\n' "$scr_nm" "${1//[a-zA-Z]}"
+          exit 101
+          ;;#
+        * )
+          _xtx_err "$1"
+          ;;#
+      esac
+      ;;#
+    * )
+      _xtx_err "$1"
+      ;;#
+  esac
+}
+
+## action            noop    xon   xoff    exit
+## from state xon    >xon   >xon   >xoff   >exit
+## from state xoff   >xoff  >xon   >xoff   >exit
+
+## Changes
+:; echo global, zero, noop, line:$LINENO
+##   xoff  A:noop   > xon
+_xtx
+
+:; echo global, one, xon, line:$LINENO
+##   xoff  A:xon   > xon
+_xtx x
+
+:; echo global, two, noop, line:$LINENO
+##   xon   A:noop  > xon
+_xtx
+
+:; echo global, three, xoff, line:$LINENO
+##   xon   A:xoff  > xoff
+_xtx +
+
+:; echo global, four, noop, line:$LINENO
+##   xoff  A:noop  > xoff
+_xtx
+
+#:; echo global, five, exit, line:$LINENO
+##   xoff  A:exit  > exit
+#_xtx e$nL
+
+:; echo global, six, noop, line:$LINENO
+##   xoff  A:noop  > xoff
+_xtx y
+
+:; echo global, seven, xon, line:$LINENO
+##   xoff  A:xon   > xon
+_xtx x
+
+:; echo global, eight, exit, line:$LINENO
+##   xon   A:exit  > exit
+_xtx e$nL
+
