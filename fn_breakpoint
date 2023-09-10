@@ -49,7 +49,7 @@ function _xbp()
 
 :; echo global, zero, line:$LINENO
 
-#   xoff  A:xon   > xon
+#   xoff  A:noop   > xon
 _xbp 
 
 :; echo global, one, line:$LINENO
