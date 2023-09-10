@@ -32,8 +32,8 @@ function _xbp()
           : _xbp: XTRACE __ON__ '$1 = x', line:$LINENO
           set -x
           ;;
-        e|[0-9]* )
-          : _xbp: EXIT '$1 = e|[0-9]*', line:$LINENO
+        e[0-9]* )
+          : _xbp: EXIT '$1 = e[0-9]*', line:$LINENO
           printf '%s: _xbp: line: %s\n' "$scr_nm" "$1":"$nn"
           exit 101
           ;;
