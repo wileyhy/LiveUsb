@@ -12,7 +12,7 @@ _xbp_err ()
 }
 
 ## Usage:   _xbp [ |+|x|e]
-function _xbp() 
+_xbp() 
 {
   :
  
