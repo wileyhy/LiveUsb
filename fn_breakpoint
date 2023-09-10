@@ -1,5 +1,6 @@
 #!/bin/bash
 scr_nm=fn_breakpoint
+declare -n nL=LINENO
 
 ## Usage:   _xbp [ |+|x|e]
 function _xbp() 
@@ -21,8 +22,13 @@ function _xbp()
           : _xbp: XTRACE __ON__ '$1 = x', line:$LINENO
           set -x
           ;;
-        e|* )
-          : _xbp: EXIT '$1 = e', line:$LINENO
+        [0-9]* )
+          : _xbp: EXIT '$1 = [0-9]*', line:$LINENO
+          printf '%s: _xbp: line: %d\n' "$scr_nm" "$1"
+          exit 101
+          ;;
+        * )
+          : _xbp: EXIT '$1 = *', line:$LINENO
           printf '%s: _xbp: line: %d\n' "$scr_nm" "$LINENO"
           exit 101
           ;;
@@ -69,7 +75,7 @@ _xbp
 :; echo global, five, line:$LINENO
 
 #   xoff  A:exit  > exit
-_xbp e
+_xbp $nL
 
 :; echo global, six, line:$LINENO
 
@@ -79,7 +85,7 @@ _xbp x
 :; echo global, seven, line:$LINENO
 
 #   xon   A:exit  > exit
-_xbp e
+_xbp $nL
 
 
 :; echo global, eight, line:$LINENO
