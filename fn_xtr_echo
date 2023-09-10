@@ -2,15 +2,17 @@
 ## Trying to write an 'echo()' function that will only print one line to xtrace whether xtrace is either on or off
 
 FUNCNEST=8
+x=a
 
 function echo ()
 {
-  if :; [[ -o xtrace ]]
+  if x=y; [[ -o xtrace ]]
   then
     : "$@"
   else
     builtin echo "$@"
   fi
+  declare -p x
 }
 
 set -x
