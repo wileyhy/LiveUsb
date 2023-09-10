@@ -3,7 +3,7 @@
 
 scr_nm=fn_breakpoint
 declare -n nL=LINENO
-declare -- PS4='\e[m+ $(printf "%s\\t" $EPOCHREALTIME) > \e[38;5;43m'
+declare -- PS4='\e[m+ \t$(printf "%s\\t" "${EPOCHREALTIME##*.}") > \e[38;5;43m'
 
 _xbp_err ()
 { 
