@@ -2,7 +2,27 @@
 
 function echo ()
 {
+  local -; set -
+
   [[ $# -eq 0 ]] && echo
 
   if [[ -o xtrace ]]
-  
+  then
+    : "$@"
+  else
+    echo "$@"
+  fi
+}
+
+set -x
+
+echo foo 
+
+echo bar
+
+set +x
+
+echo baz
+
+echo quux
+
