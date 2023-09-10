@@ -16,7 +16,7 @@ function echo ()
     : "$@"
   else
     printf 'xtrace off %d\n' $(( ii++ ))
-    echo "$@"
+    builtin echo "$@"
   fi
 }
 
