@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash -x
+## Trying to write an 'echo()' function that will only print one line to xtrace whether xtrace is either on or off
 
 function echo ()
 {
