@@ -6,22 +6,22 @@ function _xbp()
 {
   case "$#" in 
     0 )
-      : '$# = 0', line:$LINENO
+      : _xbp: '$# = 0', line:$LINENO
       return
       ;;
     1 )
-      : '$# = 1', line:$LINENO
+      : _xbp: '$# = 1', line:$LINENO
       case "$1" in
         - )
-          : '$1 = -', line:$LINENO
+          : _xbp: '$1 = -', line:$LINENO
           set +x
           ;;
         x )
-          : '$1 = x', line:$LINENO
+          : _xbp: '$1 = x', line:$LINENO
           set -x
           ;;
         e|* )
-          : '$1 = e', line:$LINENO
+          : _xbp: '$1 = e', line:$LINENO
           printf '%s: _xbp: line: %d\n' "$scr_nm" "$LINENO"
           exit 101
           ;;
@@ -40,42 +40,42 @@ function _xbp()
 
 # Changes
 
-echo one, line:$LINENO
+echo global, line:$LINENO
 
 #   xoff  A:xon   > xon
 _xbp x
 
-echo two, line:$LINENO
+echo global, line:$LINENO
 
 #   xon   A:noop  > xon
 _xbp 
 
-echo three, line:$LINENO
+echo global, line:$LINENO
 
 #   xon   A:xoff  > xoff
 _xbp +
 
-echo four, line:$LINENO
+echo global, line:$LINENO
 
 #   xoff  A:noop  > xoff
 _xbp 
 
-echo five, line:$LINENO
+echo global, line:$LINENO
 
 #   xoff  A:exit  > exit
 _xbp e
 
-echo six, line:$LINENO
+echo global, line:$LINENO
 
 #   xoff  A:xon   > xon
 _xbp x
 
-echo seven, line:$LINENO
+echo global, line:$LINENO
 
 #   xon   A:exit  > exit
 _xbp e
 
-echo eight, line:$LINENO
+echo global, line:$LINENO
 
     
 
