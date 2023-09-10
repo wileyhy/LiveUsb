@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 ## LiveUsb1
 
 ## TODO: make re-entrant: add atomicity to all changes
