@@ -6,20 +6,25 @@ function _xbp()
 {
   case "$#" in 
     0 )
+      : '$# = 0'
       : $LINENO
       return
       ;;
     1 )
+      : '$# = 1'
       case "$1" in
         - )
+          : '$1 = -'
           : $LINENO
           set +x
           ;;
         x )
+          : '$1 = x'
           : $LINENO
           set -x
           ;;
-        * )
+        e|* )
+          : '$1 = e'
           printf '%s: _xbp: line: %d\n' "$scr_nm" "$LINENO"
           exit 101
           ;;
