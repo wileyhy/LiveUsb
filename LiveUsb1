@@ -762,8 +762,8 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 ## Bug, the --security upgrade should be done rpm by rpm
 
 ## <>, add pauses between each set of commands; 
-## Usage:   pause_and_check $nL
-pause_and_check() {
+## Usage:   pause_to_check $nL
+pause_to_check() {
   local - ec=101 nn="$1";
   set -;
   read -N 1 -p 'Ready?' -r -s -t 60;
@@ -779,7 +779,7 @@ pause_and_check() {
 }
 
   echo Beginning section on DNF # <>
-  pause_and_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 ## <>, exit on non-zero exit codes
 
@@ -825,7 +825,7 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
 
 :;: 'Start with removing any unnecessary RPMs'
 
-  pause_and_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
 then
@@ -860,7 +860,7 @@ fi
 
 :;: 'Then do a blanket security upgrade'
 
-  pause_and_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 ## Count the original number of rpms installed
 
@@ -902,7 +902,7 @@ sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet --security upgrade || e
 
 :;: 'Find out whether an RPM is installed, one by one'
 
-  pause_and_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 for rr in "${!rpms[@]}"
 do
@@ -916,7 +916,7 @@ done
 
 :;: 'Upgrade any installed RPMs from the main list, en masse'
 
-  pause_and_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 if [[ -n ${installed_rpms[*]: -1:1} ]]
 then
@@ -926,7 +926,7 @@ fi
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 
-  pause_and_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 uninstalled_rpms=( "${rpms[@]}" )
 
@@ -950,7 +950,7 @@ unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 
-  pause_and_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 a_pids=()
 pr_counter=0
@@ -989,13 +989,13 @@ then
         (( qq == 1 )) && continue 001
         sleep 1
 
-          pause_and_check "$nL" # <>
+          pause_to_check "$nL" # <>
 
         for ss in HUP USR1 TERM KILL
         do
 
             : "To kill PID $qq with signal $ss" # <>
-            pause_and_check "$nL" # <>
+            pause_to_check "$nL" # <>
 
           #sleep 1
           sync --file-system
@@ -1036,7 +1036,7 @@ fi
 
 :;: 'Restart NetworkManager if necessary'
 
-  pause_and_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 ## TODO: use written function here
 for nn in "${dns_srv_A}" "${dns_srv_1}"
