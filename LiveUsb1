@@ -294,7 +294,7 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/col
 must_be_root
 
 :;: 'Certain files must have been installed from off-disk'
-files_for_use_with_github=( ~/.ssh ~/.gnupg ~/.config/gh ~/.config/toprc ~/.vimrc ) 
+files_for_use_with_github=( ~/.ssh ~/.gnupg ~/.config/gh ~/.config/procps/toprc ~/.vimrc ) 
 
   #files_for_use_with_github+=( ~/.foo) # <>
 
@@ -674,18 +674,42 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
   #ec=101 nn="$nL" exit # <>
 
 :;: 'Dnf'
+
+## Bug, there should be a n\eeds-restarting loop between each install/upgrade
+## Bug, the --security upgrade should be done rpm by rpm
+
+## <>, add pauses between each set of commands; 
+## Usage:   pause_and_check $nL
+pause_and_check() {
+  local - ec=101 nn="$1";
+  set -;
+  read -N 1 -p 'Ready?' -r -s -t 60;
+  case $REPLY in
+    Y*|y*|$'\n'|' ' )
+      printf '\ngo\n';
+      ;;
+    * )
+      printf '\nexiting\n';
+      exit;
+      ;;
+  esac;
+}
+
+## <>, exit on non-zero exit codes
+
 ## Note: CUPS cannot be safely removed; too many dependencies
 ## Note: For some unknown reason, even when  dnf  doesn't change any programs,  dnf 
 #+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of 
 #+  my tabs.  :-(  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf 
 #+  needs-restarting  in the event that any files on disk may actually have been changed.
-rpm_count_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
+## Note: these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of whichever 
+#+  expansion does that, leaving just the regular strings as the elements of the array
+## Note: this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will 
+#+  apply to the entire block
 
-## Note: these PE's have been tested and should "disappear" by virtue of whichever expansion does that, leaving
-#+  just the regular strings as the elements of the array
+rpm_count_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
 rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
 
-## Note: this brace grouping is so that "shellcheck disable" will apply to the entire block
 # shellcheck disable=SC2206
 {
   rpms=(  ${for_admin:=}        ncdu pwgen )
@@ -711,6 +735,7 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
   rpms+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
   rpms+=( ${for_security:=}     orca protonvpn-cli )
 }
+
 
 :;: 'Start with removing any unnecessary RPMs'
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
@@ -742,10 +767,12 @@ fi
 
   #df --sync --output=fstype,avail,pcent,target -- . # <>
 
+
 :;: 'Then do a blanket security upgrade'
 sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet --security upgrade || er_x "${nL}"
 
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
+
 
 :;: 'Find out whether an RPM is installed, one by one'
 for rr in "${!rpms[@]}"
@@ -757,11 +784,13 @@ do
   fi
 done
 
+
 :;: 'Upgrade any installed RPMs from the main list, en masse'
 if [[ -n ${installed_rpms[*]: -1:1} ]]
 then
   sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${installed_rpms[@]}" || er_x "${nL}"
 fi
+
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 uninstalled_rpms=( "${rpms[@]}" )
@@ -782,6 +811,7 @@ unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
+
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 
