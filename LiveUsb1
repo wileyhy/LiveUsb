@@ -221,6 +221,58 @@ function rm(){ :
   done
 }
 
+: 'Define setup_network()'
+## Note: 1 is Google; A is Comcast
+function setup_network(){
+  dns_srv_1=8.8.8.8
+  dns_srv_A=75.75.75.75
+
+  ## Note:  ping  doesn't have long options
+  if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
+  then
+    printf '\n%s: Attempting to connect to the internet... \n\n' "$scr_nm"
+
+    :;: 'Try to get NetworkManager up and running'
+    ## Note:  systemctl start  appears to be idempotent
+    time sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
+    wait -f
+
+    :;: 'Turn on networking'
+    time sudo -- nmcli n on
+
+    :;: 'Turn on WiFi'
+    time sudo -- nmcli r wifi on
+
+    :;: 'Get interface name(s)'
+    readarray -d '' -t ifaces < <( nmcli --terse c | awk -F: '$1 !~ /lo/ { printf "%s\0", $1 }' )
+
+    :;: 'Connect the interface'
+    case "${#ifaces[@]}" in
+      0 ) 
+        er_x "line:${nL}, No network device available"
+        ;;#
+      1 ) 
+        nmcli c up "${ifaces[*]}"
+        sleep 5
+        ;;#
+      * )
+        er_x "line:${nL}, Multiple network devices available"
+        ;;#
+    esac
+
+    if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
+    then
+      printf '\n%s: Network: Giving up; exiting.\n\n' "$scr_nm"
+    else
+      printf '\n%s: Network: Success! \n\n' "$scr_nm"
+    fi
+  fi
+
+  ## Clean up from Network
+  ## Note: dns_srv_A will be used at the end of the script
+  unset -f test_dns
+}
+
 : 'Define setup_time()'
 function setup_time(){
   time sudo -- timedatectl set-local-rtc 0
@@ -375,54 +427,7 @@ must_be_root
 reqd_user_files
 
 :;: 'Network'
-## Note: 1 is Google; A is Comcast
-dns_srv_1=8.8.8.8
-dns_srv_A=75.75.75.75
-
-## Note:  ping  doesn't have long options
-if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
-then
-  printf '\n%s: Attempting to connect to the internet... \n\n' "$scr_nm"
-
-  :;: 'Try to get NetworkManager up and running'
-  ## Note:  systemctl start  appears to be idempotent
-  time sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
-  wait -f
-
-  :;: 'Turn on networking'
-  time sudo -- nmcli n on
-
-  :;: 'Turn on WiFi'
-  time sudo -- nmcli r wifi on
-
-  :;: 'Get interface name(s)'
-  readarray -d '' -t ifaces < <( nmcli --terse c | awk -F: '$1 !~ /lo/ { printf "%s\0", $1 }' )
-
-  :;: 'Connect the interface'
-  case "${#ifaces[@]}" in
-    0 ) 
-      er_x "line:${nL}, No network device available"
-      ;;#
-    1 ) 
-      nmcli c up "${ifaces[*]}"
-      sleep 5
-      ;;#
-    * )
-      er_x "line:${nL}, Multiple network devices available"
-      ;;#
-  esac
-
-  if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
-  then
-    printf '\n%s: Network: Giving up; exiting.\n\n' "$scr_nm"
-  else
-    printf '\n%s: Network: Success! \n\n' "$scr_nm"
-  fi
-fi
-
-## Clean up from Network
-## Note: dns_srv_A will be used at the end of the script
-unset -f test_dns
+setup_network
 
 :;: 'Time'
 setup_time
