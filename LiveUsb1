@@ -28,11 +28,6 @@ tt=$( date +%H:%M:%S )
 printf '  %s - Executing %s \n' "${tt}" "$0"
 unset tt
 
-:;: 'Minimum necessary git commands'
-git config --global 'user.email' '84648683+wileyhy@users.noreply.github.com'
-git config --global 'user.name' 'Wiley Young'
-git config --global 'user.signingkey' 'E287D0CF528591CE'
-
 :;: 'Functions TOC...'
   ## functions_this_script=( 
   #+	'__vte_osc7()'
@@ -297,6 +292,24 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/col
 
 :;: 'Regular users with sudo, only'
 must_be_root
+
+:;: 'Minimum necessary rpms'
+for XX in git gh ShellCheck
+do
+  if ! rpm -q --quiet "$XX"
+  then
+    sudo dnf --assumeyes install "$XX"
+    if sudo dnf needs-restarting
+    then
+      er_x "${nL}" needs-restarting "$XX"
+    fi
+  fi
+done
+
+:;: 'Minimum necessary git and gh commands'
+git config --global 'user.email' '84648683+wileyhy@users.noreply.github.com'
+git config --global 'user.name' 'Wiley Young'
+git config --global 'user.signingkey' 'E287D0CF528591CE'
 
 :;: 'Certain files must have been installed from off-disk'
 files_for_use_with_github=( ~/.ssh ~/.gnupg ~/.config/gh ~/.config/procps/toprc ~/.vimrc ) 
