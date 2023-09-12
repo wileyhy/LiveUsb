@@ -303,9 +303,13 @@ function write_bashrc_strings(){ :
   done
 }
 
+:;: 'trap on EXIT'
+trap trap_exit EXIT
+
 :;: 'Test OS'
 test_os
 
+:;: 'Parameters, global'
 ## Bug: only way to export namerefs?  `declare -nx nL=...`
 
 :;: 'Error handling, variables and functions'
@@ -314,16 +318,14 @@ test_os
 declare -nx nL=L\INENO
 
 :;: 'PATH'
-PATH='/usr/bin:/usr/sbin' export PATH
+PATH='/usr/bin:/usr/sbin'
+export PATH
 
 :;: 'Working dir'
 tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 [[ -d ${tmpd} ]] || er_x "${nL}"
 
 ## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
-
-:;: 'trap on EXIT'
-trap trap_exit EXIT
 
 :;: 'Other environment variables'
 LC_ALL=''
