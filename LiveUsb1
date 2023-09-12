@@ -303,7 +303,7 @@ function write_bashrc_strings(){ :
   done
 }
 
-:;: 'trap on EXIT'
+:;: 'Define trap on EXIT'
 trap trap_exit EXIT
 
 :;: 'Test OS'
