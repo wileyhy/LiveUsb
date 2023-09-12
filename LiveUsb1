@@ -126,7 +126,7 @@ function get_pids_for_restarting(){ :
   : a_pids:   "${#a_pids}" # <>
 }
 
-:;: 'Define gh_auth_login_command()'
+: 'Define gh_auth_login_command()'
 function gh_auth_login_command(){ :
   ## Note: do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
   if gh auth status 2> /dev/null 1>&2
