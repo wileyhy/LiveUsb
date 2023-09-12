@@ -416,34 +416,33 @@ trap trap_exit EXIT
 :;: 'Test OS'
 test_os
 
-:;: 'Parameters, global'
+:;: 'Vars, dirs, etc'
 ## Bug: only way to export namerefs?  `declare -nx nL=...`
 
-:;: 'Error handling, variables and functions'
+:;: 'Vars... -- Error handling, variables and functions'
 ## Note: variable assignments: Backslash escape bc  sed -i 
 # shellcheck disable=SC1001
 declare -nx nL=L\INENO
 
-:;: 'PATH'
+:;: 'Vars... -- PATH'
 PATH='/usr/bin:/usr/sbin'
 export PATH
 
-:;: 'Working dir'
+:;: 'Vars... -- Working dir'
 tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 [[ -d ${tmpd} ]] || er_x "${nL}"
 
 ## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
 
-:;: 'Other environment variables'
+:;: 'Vars... -- Other environment variables'
+## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
+## Note, local style, inline comments, ie, 'echo foo ## Note: blah', are useful for rebutting false positives from ShellCheck 
 LC_ALL=''
 PS1=''
-
-:;: 'Initialize some env vars found in sourced files, as a workaround for nounset'
-## Note, local style: inline comments, ie, 'echo foo ## Note: blah', are useful for rebutting false positives from ShellCheck 
 # shellcheck disable=SC2034
 declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
-# <Logs>
+:;: '<Logs>'
 #exec 3>&1 4>&2 # <Logs>
 #trap 'set - ; exec 2>&4 1>&3' EXIT HUP INT QUIT USR2 TERM # <Logs>
 #exec 1> ./Log_begin-1.txt 2>&1 # <Logs>
