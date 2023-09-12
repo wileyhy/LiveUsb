@@ -227,61 +227,6 @@ pushd "${dev_d1}" > /dev/null || exit "${nL}"
 
   #set -x # <>
 
-:;: 'gh -- github CLI'
-#gh auth status > /dev/null
-declare -A github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
-gh_config_list_out=$( gh config list | tr '\n' ' ' )
-
-for ff in "${!github_configs[@]}"
-do 
-  if ! [[ ${gh_config_list_out} = "${ff}=${github_configs[$ff]}" ]]
-  then
-    gh config set "${ff}" "${github_configs[$ff]}"
-  fi
-done
-unset gh_config_list_out github_configs ff
-
-: 'Log in'
-
-:;: 'Define a login command'
-function gh_auth_login_command(){ :
-  ## Note: do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
-  if gh auth status 2> /dev/null 1>&2
-  then
-    gh auth logout 2> /dev/null 1>&2
-  fi
-  
-  gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
-    exit "${nL}"
- 
-  : 'Use GitHub CLI as a credential helper'
-  git config --global credential.helper "cache --timeout=3600"
-  gh auth setup-git
-}
-
-:;: 'Login to github'
-## Note: executing this command just once
-if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
-then
-  gh_auth_login_command
-fi
-
-:;: 'Get SSH & GPG keys'
-for gg in ssh-key gpg-key
-do
-  if ! gh "${gg}" list > /dev/null
-  then
-    gh_auth_login_command
-  fi
-done
-unset gg
-
-:;: 'Review auth'
-printf '\n'
-gh auth status 
-
-  #exit $nL # <>
-
 :;: 'Clone repo'
 [[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
 

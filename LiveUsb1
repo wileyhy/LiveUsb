@@ -53,6 +53,7 @@ do
 done
 unset uu
 
+: 'Define __vte_osc7()'
 # shellcheck disable=SC2317
 function __vte_osc7(){ :
   local - cmd urlencode_o
@@ -63,6 +64,7 @@ function __vte_osc7(){ :
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 }
 
+: 'Define __vte_prompt_command()'
 # shellcheck disable=SC2317
 function __vte_prompt_command(){ :
   local - prompt_cmd pwd
@@ -79,6 +81,7 @@ function __vte_prompt_command(){ :
   __vte_osc7
 }
 
+: 'Define er_x()'
 function er_x(){ \
   local - exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
@@ -88,6 +91,7 @@ function er_x(){ \
   exit "${exit_code}"
 } 
 
+: 'Define get_pids_for_restarting()'
 function get_pids_for_restarting(){ :
   # shellcheck disable=SC2034
   local - dnf_o pipeline1 pipeline2
@@ -111,6 +115,7 @@ function get_pids_for_restarting(){ :
   : a_pids:   "${#a_pids}" # <>
 }
 
+: 'Define must_be_root()'
 function must_be_root(){ :
   local -
   set -
@@ -124,6 +129,7 @@ function must_be_root(){ :
 
 ## Note: rm(): command shadowing is intended in this case
 
+: 'Define rm()'
 function rm(){ :
   (( ${#@} == 0 )) && return 1
   
@@ -160,12 +166,14 @@ function rm(){ :
   done
 }
 
+: 'Define test_dns()'
 function test_dns(){ :
   #local -
   #set -
   time sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
+: 'Define trap_exit()'
 # shellcheck disable=SC2317
 function trap_exit(){ \
   local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
@@ -184,6 +192,7 @@ function trap_exit(){ \
   builtin exit "${exit_trap_ec}"
 }
 
+: 'Define write_bashrc_strings()'
 function write_bashrc_strings(){ :
   local - ff file_x Aa_index Aa_element
 
