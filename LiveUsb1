@@ -408,6 +408,8 @@ function write_bashrc_strings(){ :
   done
 }
 
+##  FUNCTION DEFINITIONS COMPLETE ##
+
 :;: 'Define trap on EXIT'
 trap trap_exit EXIT
 
