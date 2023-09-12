@@ -221,6 +221,14 @@ function rm(){ :
   done
 }
 
+: 'Define setup_time()'
+function setup_time(){
+  time sudo -- timedatectl set-local-rtc 0
+  time sudo -- timedatectl set-timezone America/Vancouver
+  sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line:${nL}"
+  time sudo -- chronyc makestep > /dev/null
+}
+
 : 'Define test_dns()'
 function test_dns(){ :
   #local -
@@ -363,7 +371,6 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/col
 :;: 'Regular users with sudo, only'
 must_be_root
 
-
 :;: 'Certain files must have been installed from off-disk'
 reqd_user_files
 
@@ -418,10 +425,7 @@ fi
 unset -f test_dns
 
 :;: 'Time'
-time sudo -- timedatectl set-local-rtc 0
-time sudo -- timedatectl set-timezone America/Vancouver
-sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line:${nL}"
-time sudo -- chronyc makestep > /dev/null
+setup_time
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
