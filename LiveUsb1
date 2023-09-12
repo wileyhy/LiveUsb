@@ -40,6 +40,7 @@ unset tt
   #+  'gh_auth_login_command()'
   #+	'must_be_root()'
   #+  'pause_to_check()'
+  #+  'reqd_user_files()'
   #+	'rm()'
   #+	'test_dns()'
   #+  'test_os()'
@@ -164,6 +165,21 @@ pause_to_check() {
       exit;
       ;;
   esac;
+}
+
+: 'reqd_user_files()'
+function reqd_user_files(){
+  local - ff 
+
+    #files_for_use_with_github+=( ~/.foo) # <>
+
+  for ff in "${files_for_use_with_github[@]}"
+  do
+    if ! [[ -e ${ff} ]]
+    then
+      er_x "${nL}", "${ff}"
+    fi
+  done
 }
 
 ## Note: rm(): command shadowing is intended in this case
@@ -349,22 +365,7 @@ must_be_root
 
 
 :;: 'Certain files must have been installed from off-disk'
-
-: 'reqd_user_files()'
-function reqd_user_files(){
-  local - ff 
-
-    #files_for_use_with_github+=( ~/.foo) # <>
-
-  for ff in "${files_for_use_with_github[@]}"
-  do
-    if ! [[ -e ${ff} ]]
-    then
-      er_x "${nL}", "${ff}"
-    fi
-  done
-  unset ff
-}
+reqd_user_files
 
 :;: 'Network'
 ## Note: 1 is Google; A is Comcast
