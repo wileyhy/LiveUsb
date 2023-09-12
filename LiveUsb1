@@ -16,6 +16,9 @@
 # <> Debugging
 set -aCuTeo pipefail # <>
 
+:;: 'Variables likely to be manually changed with some regularity'
+files_for_use_with_github=( ~/.ssh ~/.gnupg ~/.config/gh ~/.config/procps/toprc ~/.vimrc ~/.mozilla ~/.angband ) 
+
 umask 077
 hash -r
 
@@ -344,19 +347,24 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/col
 :;: 'Regular users with sudo, only'
 must_be_root
 
+
 :;: 'Certain files must have been installed from off-disk'
-files_for_use_with_github=( ~/.ssh ~/.gnupg ~/.config/gh ~/.config/procps/toprc ~/.vimrc ~/.mozilla ~/.angband ) 
 
-  #files_for_use_with_github+=( ~/.foo) # <>
+: 'reqd_user_files()'
+function reqd_user_files(){
+  local - ff 
 
-for ff in "${files_for_use_with_github[@]}"
-do
-  if ! [[ -e ${ff} ]]
-  then
-    er_x "${nL}", "${ff}"
-  fi
-done
-unset ff
+    #files_for_use_with_github+=( ~/.foo) # <>
+
+  for ff in "${files_for_use_with_github[@]}"
+  do
+    if ! [[ -e ${ff} ]]
+    then
+      er_x "${nL}", "${ff}"
+    fi
+  done
+  unset ff
+}
 
 :;: 'Network'
 ## Note: 1 is Google; A is Comcast
