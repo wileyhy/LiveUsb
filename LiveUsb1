@@ -870,14 +870,17 @@ then
   
         qq="${a_pids[pp]}"
         (( qq == 1 )) && continue 001
-        #sleep 1
+        sleep 1
 
           pause_and_check "$nL" # <>
 
         for ss in HUP USR1 TERM KILL
         do
 
-          sleep 1
+            : "To kill PID $qq with signal $ss" # <>
+            pause_and_check "$nL" # <>
+
+          #sleep 1
           sync --file-system
 
             wait -f # <>
