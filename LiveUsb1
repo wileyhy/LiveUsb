@@ -68,6 +68,7 @@ unset uu
 # shellcheck disable=SC2317
 function __vte_osc7(){ :
   local - cmd urlencode_o
+  set -
   cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
   [[ -n ${cmd} ]] || return
   urlencode_o=$( "${cmd}" )
@@ -79,6 +80,7 @@ function __vte_osc7(){ :
 # shellcheck disable=SC2317
 function __vte_prompt_command(){ :
   local - prompt_cmd pwd
+  set -
   prompt_cmd=$( HISTTIMEFORMAT='' history 1 | sed 's/^ *[0-9]\+ *//' ) prompt_cmd="${prompt_cmd//;/ }"
   pwd=~
 
@@ -86,7 +88,6 @@ function __vte_prompt_command(){ :
   then
     pwd="${PWD/#"${HOME}"\//\~\/}" pwd="${pwd//[[:cntrl:]]}"
   fi
-  
   ## Bug: what does this  printf  actually do???
   printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${pwd}"
   __vte_osc7
