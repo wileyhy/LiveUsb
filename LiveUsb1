@@ -51,6 +51,7 @@ unset tt
   #+  'trap_exit()'
   #+	'write_bashrc_strings()'
   #+)
+
 functions_for_appending_into_bashrc=(
   '__vte_osc7'
   '__vte_prompt_command'
