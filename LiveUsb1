@@ -39,6 +39,7 @@ unset tt
   #+  'pause_to_check()'
   #+	'rm()'
   #+	'test_dns()'
+  #+  'test_os()'
   #+  'trap_exit()'
   #+	'write_bashrc_strings()'
   #+)
@@ -208,6 +209,17 @@ function test_dns(){ :
   time sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
+: 'Define test_os()'
+## Note: written for Fedora: see hardcoded /run/media/root'
+## Note: test of $kernel_release is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
+function test_os(){
+  local - kernel_release=$( uname -r )
+  if ! [[ ${kernel_release} =~ \.fc[0-9]{2}\. ]] 
+  then
+    er_x "${LINENO}: OS is not Fedora"
+  fi
+}
+
 : 'Define trap_exit()'
 # shellcheck disable=SC2317
 function trap_exit(){ \
@@ -292,14 +304,7 @@ function write_bashrc_strings(){ :
 }
 
 :;: 'Test OS'
-## Note: written for Fedora: see hardcoded /run/media/root'
-## Note: test of $kernel_release is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
-kernel_release=$( uname -r )
-if ! [[ ${kernel_release} =~ \.fc[0-9]{2}\. ]] 
-then
-  er_x "${LINENO}: OS is not Fedora"
-fi
-unset kernel_release
+test_os
 
 ## Bug: only way to export namerefs?  `declare -nx nL=...`
 
