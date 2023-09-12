@@ -34,6 +34,7 @@ unset tt
   #+	'__vte_prompt_command()'
   #+	'er_x()'
   #+	'get_pids_for_restarting()'
+  #+  'gh_auth_login_command()'
   #+	'must_be_root()'
   #+	'rm()'
   #+	'test_dns()'
@@ -113,6 +114,22 @@ function get_pids_for_restarting(){ :
   : pipline1: "${#pipline1}" # <>
   : pipline2: "${#pipline2}" # <>
   : a_pids:   "${#a_pids}" # <>
+}
+
+:;: 'Define gh_auth_login_command()'
+function gh_auth_login_command(){ :
+  ## Note: do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
+  if gh auth status 2> /dev/null 1>&2
+  then
+    gh auth logout 2> /dev/null 1>&2
+  fi
+  
+  gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
+    exit "${nL}"
+ 
+  : 'gh - Use GitHub CLI as a credential helper'
+  git config --global credential.helper "cache --timeout=3600"
+  gh auth setup-git
 }
 
 : 'Define must_be_root()'
@@ -408,22 +425,6 @@ done
 unset gh_config_list_out github_configs ff
 
 :;: 'gh -- Log in'
-
-:;: 'gh -- Define a login command'
-function gh_auth_login_command(){ :
-  ## Note: do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
-  if gh auth status 2> /dev/null 1>&2
-  then
-    gh auth logout 2> /dev/null 1>&2
-  fi
-  
-  gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
-    exit "${nL}"
- 
-  : 'gh - Use GitHub CLI as a credential helper'
-  git config --global credential.helper "cache --timeout=3600"
-  gh auth setup-git
-}
 
 :;: 'gh -- Login to github'
 ## Note: executing this command just once
