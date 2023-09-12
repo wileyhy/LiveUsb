@@ -38,6 +38,7 @@ unset tt
   #+	'er_x()'
   #+	'get_pids_for_restarting()'
   #+  'gh_auth_login_command()'
+  #+  'min_necc_rpms()'
   #+	'must_be_root()'
   #+  'pause_to_check()'
   #+  'reqd_user_files()'
@@ -138,6 +139,21 @@ function gh_auth_login_command(){ :
   : 'gh - Use GitHub CLI as a credential helper'
   git config --global credential.helper "cache --timeout=3600"
   gh auth setup-git
+}
+
+: 'Define min_necc_rpms()'
+function min_necc_rpms(){
+  for XX in git gh ShellCheck
+  do
+    if ! rpm -q --quiet "$XX"
+    then
+      sudo dnf --assumeyes install "$XX"
+      if sudo dnf needs-restarting
+      then
+        er_x "${nL}" needs-restarting "$XX"
+      fi
+    fi
+  done
 }
 
 : 'Define must_be_root()'
@@ -438,17 +454,7 @@ setup_time
   #set -x # <>
 
 :;: 'Minimum necessary rpms'
-for XX in git gh ShellCheck
-do
-  if ! rpm -q --quiet "$XX"
-  then
-    sudo dnf --assumeyes install "$XX"
-    if sudo dnf needs-restarting
-    then
-      er_x "${nL}" needs-restarting "$XX"
-    fi
-  fi
-done
+min_necc_rpms
 
 :;: 'Minimum necessary git commands'
 git config --global 'user.email' '84648683+wileyhy@users.noreply.github.com'
@@ -468,8 +474,6 @@ do
   fi
 done
 unset gh_config_list_out github_configs ff
-
-:;: 'gh -- Log in'
 
 :;: 'gh -- Login to github'
 ## Note: executing this command just once
