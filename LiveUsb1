@@ -161,9 +161,9 @@ function rm(){ :
 }
 
 function test_dns(){ :
-  local -
-  set -
-  sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
+  #local -
+  #set -
+  time sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
 # shellcheck disable=SC2317
@@ -221,7 +221,7 @@ function write_bashrc_strings(){ :
         fi
 
         :;: '(2) If there is an alias by the same name, then delete it from the bashrc file at hand...'
-        sudo -- sed -i "/^alias ${Aa_index##* }=/d" -- "${file_x}"
+        time sudo -- sed -i "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
         : 'Loop C - shut' ;:
       done
@@ -319,14 +319,14 @@ then
 
   :;: 'Try to get NetworkManager up and running'
   ## Note:  systemctl start  appears to be idempotent
-  sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
+  time sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
   wait -f
 
   :;: 'Turn on networking'
-  sudo -- nmcli n on
+  time sudo -- nmcli n on
 
   :;: 'Turn on WiFi'
-  sudo -- nmcli r wifi on
+  time sudo -- nmcli r wifi on
 
   :;: 'Get interface name(s)'
   readarray -d '' -t ifaces < <( nmcli --terse c | awk -F: '$1 !~ /lo/ { printf "%s\0", $1 }' )
@@ -358,10 +358,10 @@ fi
 unset -f test_dns
 
 :;: 'Time'
-sudo -- timedatectl set-local-rtc 0
-sudo -- timedatectl set-timezone America/Vancouver
+time sudo -- timedatectl set-local-rtc 0
+time sudo -- timedatectl set-timezone America/Vancouver
 sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line:${nL}"
-sudo -- chronyc makestep > /dev/null
+time sudo -- chronyc makestep > /dev/null
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
@@ -441,9 +441,9 @@ do
   :;: '...of the array files_for_use_with_bash'
   if ! sudo -- [ -e "${ff}.orig" ]
   then
-    sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
-    sudo -- chmod 400 -- "${ff}.orig"
-    sudo -- chattr +i -- "${ff}.orig"
+    time sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
+    time sudo -- chmod 400 -- "${ff}.orig"
+    time sudo -- chattr +i -- "${ff}.orig"
   fi
 
   :;: '...per script-execution'
@@ -494,50 +494,49 @@ EOF
 :;: $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29' 
 readarray -d '' -t arr_vrc < <( sudo -- find /root -name '*vimrc*' -print0 )
 
+## Bug? hardcoded conf file pathname
+
 case "${#arr_vrc[@]}" in
-  0|1)
-
-      ## Bug? hardcoded conf file pathname
-
+  0 )
+      strng_vrc=/root/.vimrc
+    ;;#
+  1 )
       strng_vrc="${arr_vrc[*]:=/root/.vimrc}"
-      write2fs=yes
-
-      if (( "${#arr_vrc[@]}" == 1 ))
-      then
-        read -r aa bb cc ff < <( sudo -- wc -- "${tmpd}/vim-conf-text" 2>&1 )
-        read -r xx yy zz ff < <( sudo -- wc -- "${strng_vrc}" 2>&1 )
-      else
-        sudo -- touch -- "${strng_vrc}" # <> set-e
-      fi
     ;;#
   *)
-      printf '  Multiple .vimrc files found: please edit the filesystem. \n'
-      printf '%s \n' "${arr_vrc[@]}"
+      printf '\n  Multiple .vimrc files found: please edit the filesystem.\n'
+      printf '\t%s\n' "${arr_vrc[@]}"
+      printf '\n'
     ;;#
 esac
 
   #exit $nL # <>
 
-:;: 'Write .vimrc'
-if [[ ${write2fs} = yes ]]
+if (( "${#arr_vrc[@]}" == 1 ))
 then
-  if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${aa},${bb},${cc} = "${xx},${yy},${zz}" ]]
-  then
-    :;: $'Test returned \x22true,\x22 the number didnt match, so write to .vimrc'
+  read -r aa uu < <( sudo -- sha256sum -- "${tmpd}/vim-conf-text" 2>&1 )
+  read -r zz uu < <( sudo -- sha256sum -- "${strng_vrc}" 2>&1 )
+else
+  time sudo -- touch -- "${strng_vrc}" # <> set-e
+fi
 
-    :;: 'Set the umask and write the root file'
-    read -ra umask_prior < <( umask -p )
-    umask 177
-    sudo -- rsync --archive --checksum -- "${tmpd}/vim-conf-text" "${strng_vrc}" || er_x "${nL}"
+:;: 'Write .vimrc'
+if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${aa} = "${zz}" ]]
+then
+  :;: $'Test returned \x22true,\x22 the number didn\x27t match, so write to .vimrc'
 
-    :;: $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
-    sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
-    sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
-    chmod 0400 -- "/home/${USER}/.vimrc"
+  :;: 'Set the umask and write the root file'
+  read -ra umask_prior < <( umask -p )
+  umask 177
+  sudo -- rsync --archive --checksum -- "${tmpd}/vim-conf-text" "${strng_vrc}" || er_x "${nL}"
 
-    :;: 'Reset the umask'
-    builtin "${umask_prior[@]}"
-  fi
+  :;: $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
+  sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
+  time sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
+  chmod 0400 -- "/home/${USER}/.vimrc"
+
+  :;: 'Reset the umask'
+  builtin "${umask_prior[@]}"
 fi
 
 ## Clean up after section Vim
@@ -731,7 +730,7 @@ then
       ## Note:  dnf : do not use [-y|--yes] with this command 
       if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_rpms[rr]}"
       then
-        unset 'rpm_nms_for_removal[nm]'
+        unset 'rpm_nms_for_removal[rr]'
       else
         er_x Line:"${nL}", "${removable_rpms[rr]}"
       fi
@@ -769,8 +768,12 @@ uninstalled_rpms=( "${rpms[@]}" )
 
 if [[ -n ${uninstalled_rpms[*]: -1:1} ]]
 then
-  sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${uninstalled_rpms[@]}" || 
-    er_x "${nL}"
+  ## Note: if you install multiple rpms at the same time, and one of them causes some error, then you have 
+  #+  no immediate way of knowing which one caused the error
+  for XX in "${uninstalled_rpms[@]}"
+  do
+    sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${XX}" || er_x "${nL}"
+  done
 fi
 unset rpm_nms_for_removal rpms
 unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace},linting,lockfile,os_dnlds,strings,term_tests,unicode}
@@ -784,17 +787,17 @@ unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
 
 a_pids=()
 pr_counter=0
+get_pids_for_restarting
 
   #declare -p pr_counter # <>
   #ec=101 nn="$nL" exit # <>
 
 rpm_count_B=$( rpm -qa | sha256sum | awk '{ print $1 }' )
 
-if ! [[ ${rpm_count_A} = "${rpm_count_B}" ]]
+if ! [[ ${rpm_count_A} = "${rpm_count_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
 then
   while true
   do
-    get_pids_for_restarting
 
     ## Note:  [[ ... = : this second test,  [[ ${a_pids[*]} = 1 ]]  is correct; ie, do not use ((...))
     :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
@@ -816,7 +819,7 @@ then
         :;: $'\x60kill\x60 '"loop $(( ++ii )) of ${nn}" ;:
         
         qq="${a_pids[pp]}"
-        (( qq == 1 )) && continue 002
+        (( qq == 1 )) && continue 001
         sleep 1
 
         for ss in HUP USR1 TERM KILL
@@ -834,7 +837,7 @@ then
             :;: '...then \kill\ it with the according per-loop SIGNAL...'
             ## Note: the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
             #+ than whether the  kill  operation succeeded, per  info kill .
-            sudo -- kill --signal "${ss}" -- "${qq}"
+            time sudo -- kill --signal "${ss}" -- "${qq}"
 
             :;: '...and if the PID in question no longer exists then unset the current array index number'
             if ps --no-headers --quick-pid "${qq}" > /dev/null 2>&1
@@ -874,4 +877,3 @@ done
 
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 ec='00' nn="$nL" exit
-
