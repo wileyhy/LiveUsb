@@ -42,6 +42,8 @@ unset tt
   #+  'pause_to_check()'
   #+  'reqd_user_files()'
   #+	'rm()'
+  #+  'setup_network()'
+  #+  'setup_time()'
   #+	'test_dns()'
   #+  'test_os()'
   #+  'trap_exit()'
