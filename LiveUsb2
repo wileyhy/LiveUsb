@@ -291,8 +291,8 @@ then
 fi
 
 :;: 'SSH'
-ssh_d=~/.ssh
-ssh_system_conf=/etc/ssh_config
+ssh_d=~/.ssh/
+ssh_system_conf=/etc/ssh/ssh_config
 ssh_user_conf=~/.ssh/config
 
 sudo -- chown --recursive "${UID}:${UID}" "${verb[@]}" "${ssh_d}" || er_x "${nL}"
@@ -325,30 +325,26 @@ readonly ps_o
 if [[ -z ${SSH_AUTH_SOCK} ]] || [[ -z ${SSH_AGENT_PID} ]]
 then
   awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /startx/ { print $2 }' <<< "${ps_o}" )
-
   if [[ -n ${awk_o} ]]
   then
     readarray -t ssh_agent_pids <<< "${awk_o}"
   fi
-
   if [[ ${#ssh_agent_pids[@]} -gt 0 ]]
   then
     case "${#ssh_agent_pids[@]}" in
       1)  if [[ -v SSH_AGENT_PID ]]
           then
-
             ## Note: \x60ssh-agent\x60 doesn't have any long options. \x60ssh-agent -k\x60 is "kill the current agent."
-
             ssh-agent -k
           else
             command -p kill "${verb[@]}" "${ssh_agent_pids[*]}"
           fi
-        ;;#
+        ;;\
       *)  for pp in "${ssh_agent_pids[@]}"
           do
             command -p kill "${pp}"
           done
-        ;;#
+        ;;\
     esac
   fi
 
@@ -399,4 +395,3 @@ fi
 command rm --force --recursive "${verb[@]}" "${git_tempd}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 exit 00
-
