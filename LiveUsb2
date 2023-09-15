@@ -102,7 +102,7 @@ git_tempd=$( TMPDIR='' mktemp --directory )
 readonly git_tempd
 
 :;: 'Git parameters, dependency level 2'
-if [[ -f $git_config_sys_conf_file ]]
+if sudo -- [ -f $git_config_sys_conf_file ]
 then
   git_conf_sys=$( sudo -- git config --system --list )
 fi

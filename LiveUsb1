@@ -190,7 +190,7 @@ function must_be_root(){ :
 pause_to_check() {
   local - ec=101 nn="$1";
   set -;
-  read -N 1 -p 'Ready?' -r -s -t 60;
+  read -N 1 -p 'Ready?' -r -s -t 600;
   case $REPLY in
     Y*|y*|$'\n'|' ' )
       printf '\ngo\n';
@@ -828,7 +828,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 ## Bug, the --security upgrade should be done rpm by rpm
 
   echo Beginning section on DNF # <>
-  pause_to_check "$nL" # <>
+  #pause_to_check "$nL" # <>
 
 ## <>, exit on non-zero exit codes
 
@@ -850,7 +850,7 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
   rpms=(  ${for_admin:=}        ncdu pwgen )
   rpms+=( ${for_bash:=}         bash bash-completion )
   rpms+=( ${for_bashdb:=}       bash-devel make autoconf )
-  rpms+=( ${for_critical:=}     sudo systemd nss openssh NetworkManager* audit chrony sssd dnf gpgme xfce4-terminal )
+  #rpms+=( ${for_critical:=}     sudo systemd nss openssh NetworkManager* audit chrony sssd dnf gpgme xfce4-terminal )
   #rpms+=( ${for_db_ish:=}       libreoffice-calc )
   rpms+=( ${for_bug_rpts:=}     inxi zsh dash mksh lynx )
   rpms+=( ${for_char_sets:=}    enca moreutils uchardet )
@@ -874,7 +874,7 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
 
 :;: 'Start with removing any unnecessary RPMs'
 
-  pause_to_check "$nL" # <>
+  #pause_to_check "$nL" # <>
 
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
 then
@@ -909,7 +909,7 @@ fi
 
 :;: 'Then do a blanket security upgrade'
 
-  pause_to_check "$nL" # <>
+  #pause_to_check "$nL" # <>
 
 ## Count the original number of rpms installed
 
@@ -944,14 +944,14 @@ fi
 
 
 
-sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet --security upgrade || er_x "${nL}"
+sudo -- nice --adjustment=-20 -- dnf --assumeyes --security upgrade || er_x "${nL}"
 
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
 
 
 :;: 'Find out whether an RPM is installed, one by one'
 
-  pause_to_check "$nL" # <>
+  #pause_to_check "$nL" # <>
 
 for rr in "${!rpms[@]}"
 do
@@ -965,7 +965,7 @@ done
 
 :;: 'Upgrade any installed RPMs from the main list, en masse'
 
-  pause_to_check "$nL" # <>
+  #pause_to_check "$nL" # <>
 
 if [[ -n ${installed_rpms[*]: -1:1} ]]
 then
@@ -986,6 +986,28 @@ then
   for XX in "${uninstalled_rpms[@]}"
   do
     sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${XX}" || er_x "${nL}"
+  
+    readarray -t nr_pids < <( sudo -- nice --adjustment=-20 -- dnf --quiet needs-restarting 2> /dev/null | awk '{ print $1 }')
+
+      declare -p nr_pids # <>
+
+    if [[ -n ${nr_pids[*]:0:1} ]]
+    then
+      for XX in "${nr_pids[@]}"
+      do
+        ps aux | awk "\$2 ~ /${XX}/ { print }"
+
+        pause_to_check "$nL"
+
+        sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose --timeout 1000 HUP --timeout 1000 USR1 --timeout 1000 TERM --timeout 1000 KILL -- "$XX"
+
+        echo 'Now restart some PID ??'
+
+        pause_to_check "$nL"
+
+
+      done
+    fi
   done
 fi
 unset rpm_nms_for_removal rpms
