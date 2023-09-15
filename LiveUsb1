@@ -822,6 +822,8 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
   #set -x # <>
   #ec=101 nn="$nL" exit # <>
 
+## TODO: you want to kill blueman-applet and remove its rpm(s) ( ie, any/all bluetooth connectivity )
+
 :;: 'Dnf'
 
 ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
