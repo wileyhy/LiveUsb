@@ -871,7 +871,7 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
   rpms+=( ${for_strings:=}      binutils )
   rpms+=( ${for_term_tests:=}   gnome-terminal )
   rpms+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
-  rpms+=( ${for_security:=}     orca protonvpn-cli )
+  rpms+=( ${for_security:=}     orca protonvpn-cli xsecurelock )
 }
 
 
