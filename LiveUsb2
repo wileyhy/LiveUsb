@@ -114,7 +114,7 @@ git_keys+=(
 :;: 'Permissions'
 for aa in "${git_files_a[@]}"
 do
-  [[ -e ${aa} ]] && sudo -- chmod 0604 "${verb[@]}" "${aa}"
+  sudo -- [ -e "${aa}" ] && sudo -- chmod 0604 "${verb[@]}" "${aa}"
 done
 unset aa
 
@@ -256,7 +256,8 @@ then
   fi
 fi
 
-[[ -f ${ssh_system_conf} ]] && exit "${nL}"
+# ?
+#[[ -f ${ssh_system_conf} ]] && exit "${nL}"
 
 ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
@@ -340,3 +341,4 @@ fi
 command rm --force --recursive "${verb[@]}" "${git_tempd}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 exit 00
+
