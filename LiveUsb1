@@ -966,7 +966,7 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
 
 :;: 'Start with removing any unnecessary RPMs'
 
-  pause_to_check "$nL" # <>
+  #pause_to_check "$nL" # <>
 
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
 then
@@ -1072,7 +1072,7 @@ fi
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 
-  pause_to_check "$nL" # <>
+  #pause_to_check "$nL" # <>
 
 uninstalled_rpms=( "${rpms[@]}" )
 
@@ -1094,13 +1094,13 @@ then
       do
         ps aux | awk "\$2 ~ /${XX}/ { print }"
 
-        pause_to_check "$nL"
+        #pause_to_check "$nL"
 
         sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose --timeout 1000 HUP --timeout 1000 USR1 --timeout 1000 TERM --timeout 1000 KILL -- "$XX"
 
         echo 'Now restart some PID ??'
 
-        pause_to_check "$nL"
+        #pause_to_check "$nL"
 
 
       done
@@ -1118,7 +1118,7 @@ unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 
-  pause_to_check "$nL" # <>
+  #pause_to_check "$nL" # <>
 
 a_pids=()
 pr_counter=0
@@ -1157,13 +1157,13 @@ then
         (( qq == 1 )) && continue 001
         sleep 1
 
-          pause_to_check "$nL" # <>
+          #pause_to_check "$nL" # <>
 
         for ss in HUP USR1 TERM KILL
         do
 
             : "To kill PID $qq with signal $ss" # <>
-            pause_to_check "$nL" # <>
+            #pause_to_check "$nL" # <>
 
           #sleep 1
           sync --file-system
@@ -1214,7 +1214,7 @@ fi
 
 :;: 'Restart NetworkManager if necessary'
 
-  pause_to_check "$nL" # <>
+  #pause_to_check "$nL" # <>
 
 ## TODO: use written function here
 for nn in "${dns_srv_A}" "${dns_srv_1}"
