@@ -980,6 +980,8 @@ done
 
 :;: 'Upgrade any installed RPMs from the main list, en masse'
 
+## Note: this section should upgrade rpms one by one
+
   #pause_to_check "$nL" # <>
 
 if [[ -n ${installed_rpms[*]: -1:1} ]]
