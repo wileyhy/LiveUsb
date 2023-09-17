@@ -757,7 +757,7 @@ if [[ -n ${!fsos5[*]} ]]
 then
   :;: 'Inform user of any found FSOs'
   printf '  Script: delete these files? \n'
-  #declare -p fsos5
+  declare -p fsos5
   sleep 3
 
   for dd in "${!fsos5[@]}"
