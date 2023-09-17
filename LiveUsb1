@@ -102,8 +102,8 @@ function __vte_prompt_command(){ :
 }
 
 :;: 'Define er_x()'
-function er_x(){ \
-  local - exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function er_x(){ local - exit_code="$?" 
+  true "${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   printf '%s, Error, %s\n' "$scr_nm" "$*" >&2
 
@@ -119,11 +119,13 @@ function get_pids_for_restarting(){ :
   # shellcheck disable=SC2034
   local - dnf_o pipeline1 pipeline2
 
-  ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global scope. ?!
+  ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global 
+  #+  scope. ?!
   local -Ig a_pids pr_counter
   dnf_o=$( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
 
-  ## Note, this pipeline was broken out into its constituent commands in order to verify the values mid-stream
+  ## Note, this pipeline was broken out into its constituent commands in order to verify the values 
+  #+  mid-stream
   pipline1=$( awk '{ print $1 }' <<< "${dnf_o}" )
   pipline2=$( grep --only-matching --extended-regexp ^'[0-9]*'$ <<< "${pipline1}" )
 
@@ -149,8 +151,9 @@ function gh_auth_login_command(){ :
     gh auth logout 2> /dev/null 1>&2
   fi
 
-  ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
-  gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web ||
+  ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to 
+  #+  refresh auth manually
+  gh auth login -p 'ssh' -h 'github.com' -s 'admin:public_key,read:gpg_key,admin:ssh_signing_key' -w || 
     exit "${nL}"
 
   : 'gh - Use GitHub CLI as a credential helper'
@@ -307,9 +310,12 @@ function reqd_user_files(){ :
         files_lev_2_dest \
         files_lev_3_dest
 
-      readarray -t  files_lev_1_source < <( printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_1[@]#~/}" )
-      readarray -t  files_lev_2_source < <( printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_2[@]#~/}" )
-      readarray -t  files_lev_3_source < <( printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_3[@]#~/}" )
+      readarray -t  files_lev_1_source < <(
+                                  printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_1[@]#~/}" )
+      readarray -t  files_lev_2_source < <(
+                                  printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_2[@]#~/}" )
+      readarray -t  files_lev_3_source < <(
+                                  printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_3[@]#~/}" )
                     files_lev_1_dest=~
                     files_lev_2_dest=~/.config
                     files_lev_3_dest=~/.config/procps
@@ -469,12 +475,14 @@ function test_os(){ :
   true "${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
+## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 
+#+  of  trap  "args section" ??
 
 :;: 'Define trap_exit()'
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}" _="${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}" 
+  true"${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
 
   if [[ -e ${tmpd} ]]
@@ -527,7 +535,7 @@ function write_bashrc_strings(){ :
         if ! sudo -- grep --quiet --fixed-strings "## ${Aa_index}" -- "${file_x}"
         then
 
-          : 'Then write the function definition into the file, and if the write fails, exit print the line number to xtrace'
+          : 'Then write the function definition into the file'
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}"
             sudo -- tee --append -- "${file_x}" > /dev/null || er_x "${nL}"
         else
@@ -588,7 +596,8 @@ tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 
 :;: 'Vars... -- Other environment variables'
 ## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
-## Note, local style, inline comments, ie, ': foo ## Note, blah', are useful for rebutting false positives from ShellCheck
+## Note, local style, inline comments, ie, ': foo ## Note, blah', are useful for rebutting false positives
+#+  from ShellCheck
 LC_ALL=''
 PS1=''
 # shellcheck disable=SC2034
@@ -682,8 +691,8 @@ PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-  ## Note, TERM_SESSION_ID, 1, added in order to identify which TTY is using which terminal emulator program. See
-  #+  also, https://stackoverflow.com/questions/42710685/bash-identify-a-terminal-session
+  ## Note, TERM_SESSION_ID, 1, added in order to identify which TTY is using which terminal emulator 
+  #+  program. See also, https://stackoverflow.com/questions/42710685/bash-identify-a-terminal-session
   #TERM_SESSION_ID="${TERM_SESSION_ID:-}"
   #if [[ -z "$TERM_SESSION_ID" ]]
   #then
@@ -778,8 +787,8 @@ cat <<- \EOF | tee -- "${tmpd}/vim-conf-text" > /dev/null
 	" On pressing tab, insert 2 spaces
 	set expandtab
 
-	" per https://superuser.com/questions/286290/is-there-any-way-to-hook-saving-in-vim-up-to-commiting-in-git ...and then some guessing and testing
-  autocmd BufWritePost * execute '! if [[ -d .git ]] || git rev-parse --git-dir > /dev/null 2>&1 ; then git commit --gpg-sign --all --file - ; fi'
+	" per https://superuser.com/questions/286290/is-there-any-way-to-hook-saving-in-vim-up-to-commiting-in-git 
+  autocmd BufWritePost * execute '! if [[ -d .git ]]; then git commit -S -a -F -; fi'
 
 EOF
 
@@ -848,18 +857,21 @@ unset arr_vrc strng_vrc write2fs aa bb cc ff xx yy zz umask_prior
 ## Note, for $fsos3 , '--and' is not POSIX compliant
 ## Note, for $fsos4 , sorts by unique inode and delimits by nulls
 
-## Bug, Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on Fedora-like systems
+## Bug, Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on 
+#+  Fedora-like systems
 
 declare -A fsos5
 readarray -d '' -t dirs1 < <( find / ! -path / -prune -type d -print0 )
 
   #declare -p dirs1 # <>
 
-readarray -d '' -t dirs2 < <( find "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
+readarray -d '' -t dirs2 < <( 
+  find "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
 
   #declare -p dirs2 # <>
 
-readarray -d '' -t fsos3 < <( find "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
+readarray -d '' -t fsos3 < <( 
+  find "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
 
   #declare -p fsos3 # <>
 
@@ -980,8 +992,8 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 #+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of
 #+  my tabs.  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf
 #+  needs-restarting  in the event that any files on disk may actually have been changed.
-## Note, these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of whichever
-#+  expansion does that, leaving just the regular strings as the elements of the array
+## Note, these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of 
+#+  whichever expansion does that, leaving just the regular strings as the elements of the array
 ## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will
 #+  apply to the entire block
 
@@ -1028,7 +1040,8 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
 
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
 then
-  ## Note, this  printf  command uses nulls so that '-e' and '%s.*' will be read as separate indices by  readarray
+  ## Note, this  printf  command uses nulls so that '-e' and '%s.*' will be read as separate indices
+  #+  by  readarray
   readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${rpm_nms_for_removal[@]}" )
   readarray -t removable_rpms < <( rpm -qa | grep --ignore-case --extended-regexp "${grep_args[@]}" )
 
@@ -1135,7 +1148,8 @@ then
   do
     sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${XX}" || er_x "${nL}"
 
-    readarray -t nr_pids < <( sudo -- nice --adjustment=-20 -- dnf --quiet needs-restarting 2> /dev/null | awk '{ print $1 }')
+    readarray -t nr_pids < <(
+      sudo -- nice --adjustment=-20 -- dnf --quiet needs-restarting 2> /dev/null | awk '{ print $1 }')
 
       declare -p nr_pids # <>
 
@@ -1147,7 +1161,11 @@ then
 
         #pause_to_check "$nL"
 
-        sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose --timeout 1000 HUP --timeout 1000 USR1 --timeout 1000 TERM --timeout 1000 KILL -- "$XX"
+        sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
+          --timeout 1000 HUP \
+          --timeout 1000 USR1 \
+          --timeout 1000 TERM \
+          --timeout 1000 KILL -- "$XX"
 
         : 'Now restart some PID ??'
 
@@ -1158,13 +1176,13 @@ then
   done
 fi
 unset rpm_nms_for_removal rpms
-unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace},linting,lockfile,os_dnlds,strings,term_tests,unicode}
+unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
+unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
 unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
 
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
-
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 
