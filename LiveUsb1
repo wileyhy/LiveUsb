@@ -1,7 +1,6 @@
 #!/bin/bash -x
 ## LiveUsb1
 
-## TODO: make re-entrant: add atomicity to all changes
 ## TODO: add function boundary comments to all functions that will be used in-script. Functions that will 
 #+  only be written out to files do not need any such comments. 
 
@@ -67,7 +66,7 @@ do
 done
 unset uu
 
-: 'Define __vte_osc7()'
+: 'Define __vte_osc7() -- for bashrc only'
 # shellcheck disable=SC2317
 function __vte_osc7(){ :
   local - cmd urlencode_o
@@ -79,7 +78,7 @@ function __vte_osc7(){ :
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 }
 
-: 'Define __vte_prompt_command()'
+: 'Define __vte_prompt_command() -- for bashrc only'
 # shellcheck disable=SC2317
 function __vte_prompt_command(){ :
   local - prompt_cmd pwd
@@ -297,7 +296,7 @@ function reqd_user_files(){
 
 ## Note: rm(): command shadowing is intended in this case
 
-: 'Define rm()'
+: 'Define rm() -- for bashrc only'
 function rm(){ :
   (( ${#@} == 0 )) && return 1
   
