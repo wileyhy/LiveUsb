@@ -17,7 +17,9 @@
 set -aCuTeo pipefail # <>
 
 :;: 'Variables likely to be manually changed with some regularity'
-files_for_use_with_github=( ~/.ssh ~/.gnupg ~/.config/gh ~/.config/procps/toprc ~/.vimrc ~/.mozilla ~/.angband ) 
+files_for_use_with_github_level_1=( ~/.ssh ~/.gnupg ~/.vimrc ~/.mozilla ~/.angband ) 
+files_for_use_with_github_level_2=( ~/.config/gh ) 
+files_for_use_with_github_level_3=( ~/.config/procps/toprc ) 
 
 umask 077
 hash -r
@@ -208,12 +210,46 @@ function reqd_user_files(){
   local - ff 
   set -
 
-    #files_for_use_with_github+=( ~/.foo) # <>
+    #files_for_use_with_github_level_1+=( ~/.foo) # <>
+    declare -p files_for_use_with_github_level_1 # <>
+    declare -p files_for_use_with_github_level_2 # <>
+    declare -p files_for_use_with_github_level_3 # <>
+    
+    pause_to_check # <>
 
-  for ff in "${files_for_use_with_github[@]}"
+  for ff in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
+    "${files_for_use_with_github_level_3[@]}"
   do
     if ! [[ -e ${ff} ]]
     then
+
+      local pttn_label pttn_path mount_dir prev_umask
+      pttn_label='29_Mar_2023'
+      pttn_path=$( lsblk -o label,path | awk '$1 ~ /29_Mar_2023/ { print $2 }' )
+      mount_dir=$( "/run/media/root/${pttn_label}" )
+      read -r a prev_umask < <( umask -p )
+      umask 077
+
+      if [[ -z $pttn_path ]]
+      then
+        er_x "${nL} USB device not available"
+      fi
+
+      sudo -- mkdir --parents -- "${mount_dir}" || er_x "${nL}"
+      sudo -- mount -- "${pttn_path}" "${mount_dir}" || er_x "${nL}"
+
+
+
+      local files_lev_1 files_lev_2 files_lev_3
+      files_lev_1="${files_for_use_with_github_level_1[@]#}"
+      files_lev_2="${files_for_use_with_github_level_2[@]}"
+      files_lev_3="${files_for_use_with_github_level_3[@]}"
+      
+rsync -ca ./.gnupg ./.ssh ./.mozilla ./.angband /home/liveuser
+rsync -ca ./.config/gh /home/liveuser/.config
+rsync -ca ./.toprc_liveuser /home/liveuser/.config/procps/toprc 
+rsync -ca ./.vimrc_liveuser /home/liveuser/.vimrc
+
       er_x "${nL}", "${ff}"
     fi
   done
