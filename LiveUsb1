@@ -234,7 +234,11 @@ function reqd_user_files(){
       mount_pt="/run/media/root/${pttn_label}"
       data_dir="${mount_pt}/set-up-git"
       
-      read -r a prev_umask < <( umask -p )
+      read -r -a prev_umask < <( umask -p )
+      
+        declare -p prev_umask
+        exit 101
+
       umask 077
 
       if [[ -z $pttn_path ]]
