@@ -20,7 +20,7 @@ function set() {
   then
     : 'Define echo() -- true'
     function echo(){
-      : "$@"
+      #: "$@"
     }
   else
     : 'Define echo() -- builtin'
