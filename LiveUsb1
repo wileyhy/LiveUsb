@@ -921,6 +921,9 @@ fi
 
 :;: 'Then do a blanket security upgrade'
 
+## Note: the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to 
+#+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest.
+
   #pause_to_check "$nL" # <>
 
 ## Count the original number of rpms installed
