@@ -505,28 +505,29 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
 function write_bashrc_strings(){ :
   true "${fn_bndry} write_bashrc_strings() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
-  local - ff file_x Aa_index Aa_element
+  local - JJ file_x Aa_index Aa_element
+  local -n fn_nameref
   set -
 
   :;: 'Certain parameters must be defined and have non-zero values'
   (( $# == 0 )) && er_x "line ${nL}"
   (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line ${nL}"
 
-  for ff
+  for JJ
   do :;: 'Loop A - For each set of strings to append into bashrc'
 
-    local -n nr="$1"
+    fn_nameref="$JJ"
 
     for file_x in "${files_for_use_with_bash[@]}"
     do :;: 'Loop B - For each .bashrc'
 
       : "file_x  ${file_x}"
 
-      for Aa_index in "${!nr[@]}"
+      for Aa_index in "${!fn_nameref[@]}"
       do :;: 'Loop C - For each definition (function or parameter)'
 
         : "Aa_index  ${Aa_index}"
-        Aa_element="${nr[${Aa_index}]}"
+        Aa_element="${fn_nameref[${Aa_index}]}"
 
         :;: '(1) If the definition is not yet written into the file...'
         if ! sudo -- grep --quiet --fixed-strings "## ${Aa_index}" -- "${file_x}"
@@ -558,7 +559,7 @@ function write_bashrc_strings(){ :
 
     :;: 'Reset for the next loop, assuming there is one'
     ## Note, ?? use  unset  so that values from previous loops will not interfere with the current loop
-    unset -n rn
+    unset -n fn_nameref
     shift
 
     : 'Loop A - shut' ;:
@@ -631,14 +632,14 @@ declare -A github_configs
 github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
 gh_config_list_out=$( gh config list | tr '\n' ' ' )
 
-for ff in "${!github_configs[@]}"
+for KK in "${!github_configs[@]}"
 do
-  if ! [[ ${gh_config_list_out} = "${ff}=${github_configs[$ff]}" ]]
+  if ! [[ ${gh_config_list_out} = "${KK}=${github_configs[$KK]}" ]]
   then
-    gh config set "${ff}" "${github_configs[$ff]}"
+    gh config set "${KK}" "${github_configs[$KK]}"
   fi
 done
-unset gh_config_list_out github_configs ff
+unset gh_config_list_out github_configs KK
 
 :;: 'gh -- Login to github'
 ## Note, executing this command just once
@@ -653,14 +654,14 @@ then
 fi
 
 :;: 'gh -- Get SSH & GPG keys'
-for gg in ssh-key gpg-key
+for QQ in ssh-key gpg-key
 do
-  if ! gh "${gg}" list > /dev/null
+  if ! gh "${QQ}" list > /dev/null
   then
     gh_auth_login_command
   fi
 done
-unset gg
+unset QQ
 
 :;: 'gh -- Review auth'
 printf '\n'
@@ -704,14 +705,14 @@ missing_fns=()
 :;: 'Append user variables and functions into .bashrc.'
 ## Note, these arrays include some command substitutions which depend on some function definitions, which in
 #+ turn must be defined prior to defining these arrays
-for nn in "${functions_for_appending_into_bashrc[@]}"
+for UU in "${functions_for_appending_into_bashrc[@]}"
 do
-  if [[ $( declare -pF "${nn}" 2>&1 ) =~ 'not found' ]]
+  if [[ $( declare -pF "${UU}" 2>&1 ) =~ 'not found' ]]
   then
-    missing_fns+=( "${nn}" )
+    missing_fns+=( "${UU}" )
   fi
 done
-unset nn
+unset UU
 
 if (( ${#missing_fns[@]} > 0 ))
 then
@@ -732,26 +733,27 @@ bashrc_strings_2+=(                    ['export PS0']=$(            declare -p P
 
 :;: 'Do some backups'
 ## Note,  sudo  cannot find  [[  , and  [  requires internal quotes
-for ff in "${files_for_use_with_bash[@]}"
+for VV in "${files_for_use_with_bash[@]}"
 do
   : 'File must exist'
-  if ! sudo -- [ -f "${ff}" ]
+  if ! sudo -- [ -f "${VV}" ]
   then
-    er_x "line ${nL}, ${ff}"
+    er_x "line ${nL}, ${VV}"
   fi
 
   : '...of the array files_for_use_with_bash'
-  if ! sudo -- [ -e "${ff}.orig" ]
+  if ! sudo -- [ -e "${VV}.orig" ]
   then
-    sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
-    sudo -- chmod 400 -- "${ff}.orig"
-    sudo -- chattr +i -- "${ff}.orig"
+    sudo -- rsync --checksum --archive -- "${VV}" "${VV}.orig"
+    sudo -- chmod 400 -- "${VV}.orig"
+    sudo -- chattr +i -- "${VV}.orig"
   fi
 
   : '...per script-execution'
   ## Note, ~, quoted tildas do not expand
-  sudo -- cp --archive -- "${ff}" "${ff}~" || er_x "line ${nL}, ${ff}"
+  sudo -- cp --archive -- "${VV}" "${VV}~" || er_x "line ${nL}, ${VV}"
 done
+unset VV
 
 :;: 'Alter the array files_for_use_with_bash'
 write_bashrc_strings "bashrc_strings_1" "bashrc_strings_2"
@@ -841,7 +843,7 @@ fi
 
 ## Clean up after section Vim
 command -- rm --one-file-system --preserve-root=all --force -- "${tmpd}/vim-conf-text"
-unset arr_vrc strng_vrc write2fs aa bb cc ff xx yy zz umask_prior
+unset arr_vrc strng_vrc write2fs WW bb cc ff xx yy zz umask_prior
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
