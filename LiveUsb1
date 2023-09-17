@@ -853,7 +853,7 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
   rpms=(  ${for_admin:=}        ncdu pwgen )
   rpms+=( ${for_bash:=}         bash bash-completion )
   rpms+=( ${for_bashdb:=}       bash-devel make autoconf )
-  #rpms+=( ${for_critical:=}     sudo nss openssh NetworkManager* chrony dnf gpgme xfce4-terminal )
+  rpms+=( ${for_critical:=}     sudo nss openssh NetworkManager* chrony dnf gpgme xfce4-terminal )
   #rpms+=( ${for_careful:=}      systemd auditd sssd )
   #rpms+=( ${for_db_ish:=}       libreoffice-calc )
   rpms+=( ${for_bug_rpts:=}     inxi zsh dash mksh lynx )
