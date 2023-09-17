@@ -1,11 +1,9 @@
 #!/bin/bash -x
 ## LiveUsb1
 
-## TODO: add function boundary comments to all functions that will be used in-script. Functions that will 
-#+  only be written out to files do not need any such comments. 
-
 ## Note: Online Git book:
 #+  https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository
+
 ## Note: Idempotent script
 ## Note: style / function definition syntax: '(){ :' makes plain xtrace easier to read
 
@@ -146,7 +144,7 @@ function gh_auth_login_command(){ :
 }
 
 : 'min_necc_git_cmds()'
-function min_necc_git_cmds(){
+function min_necc_git_cmds(){ :
   local -
   set -
   ## Note, idempotent commands
@@ -156,7 +154,7 @@ function min_necc_git_cmds(){
 }
 
 : 'Define min_necc_rpms()'
-function min_necc_rpms(){
+function min_necc_rpms(){ :
   local - XX
   set -
   for XX in git gh ShellCheck
@@ -206,7 +204,7 @@ pause_to_check() {
 }
 
 : 'reqd_user_files()'
-function reqd_user_files(){
+function reqd_user_files(){ :
   local - ff 
   #set -
 
@@ -335,7 +333,7 @@ function rm(){ :
 
 : 'Define setup_network()'
 ## Note: 1 is Google; A is Comcast
-function setup_network(){
+function setup_network(){ :
   dns_srv_1=8.8.8.8
   dns_srv_A=75.75.75.75
 
@@ -386,7 +384,7 @@ function setup_network(){
 }
 
 : 'Define setup_time()'
-function setup_time(){
+function setup_time(){ :
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
   sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line:${nL}"
@@ -403,7 +401,7 @@ function test_dns(){ :
 : 'Define test_os()'
 ## Note: written for Fedora: see hardcoded /run/media/root'
 ## Note: test of $kernel_release is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
-function test_os(){
+function test_os(){ :
   local - kernel_release=$( uname -r )
   if ! [[ ${kernel_release} =~ \.fc[0-9]{2}\. ]] 
   then
