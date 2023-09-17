@@ -498,6 +498,7 @@ unset gh_config_list_out github_configs ff
 if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
 then
   firefox --browser &
+  sleep 3
   gh_auth_login_command
 fi
 
