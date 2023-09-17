@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 ## LiveUsb2
 # shellcheck disable=SC2317
 
@@ -104,7 +104,8 @@ readonly git_tempd
 :;: 'Git parameters, dependency level 2'
 if sudo -- [ -f $git_config_sys_conf_file ]
 then
-  git_conf_sys=$( sudo -- git config --system --list )
+  #git_conf_sys=$( sudo -- git config --global --list )
+  git_conf_sys=$( git config --global --list )
 fi
 git_keys+=(
   [commit.template]="${git_mesg}"
@@ -121,7 +122,8 @@ unset aa
 :;: 'git config, remove a config if present'
 if grep gpg.format "${qui[@]}" <<< "${git_conf_sys[@]}"
 then
-  sudo -- git config --system --unset gpg.format 
+  #sudo -- git config --global --unset gpg.format 
+  git config --global --unset gpg.format 
 fi
 
 :;: 'git config, assigning - Loop A'
@@ -133,7 +135,8 @@ do
 
   if ! grep "${bb}=${git_keys[$bb]}" "${qui[@]}" <<< "${git_conf_sys[@]}"
   then
-    sudo -- git config --system "${bb}" "${git_keys[$bb]}"
+    #sudo -- git config --global "${bb}" "${git_keys[$bb]}"
+    git config --global "${bb}" "${git_keys[$bb]}"
   fi
   : "Loop A - shut" ;:
 done
@@ -227,12 +230,25 @@ pushd "${dev_d1}" > /dev/null || exit "${nL}"
 
   #set -x # <>
 
+GIT_TRACE=true
+#GIT_CURL_VERBOSE=true
+#GIT_SSH_COMMAND="ssh -vvv"
+#GIT_TRACE_PACK_ACCESS=true
+#GIT_TRACE_PACKET=true
+#GIT_TRACE_PACKFILE=true
+#GIT_TRACE_PERFORMANCE=true
+GIT_TRACE_SETUP=true
+GIT_TRACE_SHALLOW=true
+
+git config --global --list --show-origin --show-scope | cat
+#sudo -- git config --global --list --show-origin --show-scope
+
 :;: 'Clone repo'
 [[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
 
 if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
 then
-  git clone --origin 'github' "${verb[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
+  git clone --verbose --origin 'github' "${verb[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
 fi
 
 :;: 'SSH'
@@ -341,4 +357,5 @@ fi
 command rm --force --recursive "${verb[@]}" "${git_tempd}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 exit 00
+
 

@@ -164,7 +164,8 @@ function min_necc_rpms(){
     then
       set -x
       sudo dnf --assumeyes install "$XX"
-      if sudo dnf needs-restarting
+      
+      if ! sudo -- dnf needs-restarting
       then
         er_x "${nL}" needs-restarting "$XX"
       fi
@@ -1077,23 +1078,33 @@ then
             wait -f # <>
 
           :;: '...if the PID is still running...'
-          if ps --no-headers --quick-pid "${qq}" > /dev/null
+          if ps --no-headers --quick-pid "${qq}"
           then
 
             :;: '...then \kill\ it with the according per-loop SIGNAL...'
             ## Note: the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
             #+ than whether the  kill  operation succeeded, per  info kill .
-            time sudo -- kill --signal "${ss}" -- "${qq}"
+            time sudo -- "$(type -P kill)" --signal "${ss}" -- "${qq}"
 
             :;: '...and if the PID in question no longer exists then unset the current array index number'
-            if ps --no-headers --quick-pid "${qq}" > /dev/null 2>&1
+            if ps --no-headers --quick-pid "${qq}"
             then
-              continue 0001
+              is_zombie=$( ps aux | awk "\$2 ~ /${qq}/ { print \$8 }" )
+
+              if [[ ${is_zombie} = 'Z' ]]
+              then
+                : 'Process is a zombie; unsetting'
+                unset 'a_pids[pp]'
+                break 00001
+              else
+                continue 00001
+              fi
             else
               unset 'a_pids[pp]'
               break 0001
             fi
           else
+            unset 'a_pids[pp]'
             break 001
           fi
         done
@@ -1102,7 +1113,7 @@ then
       break 1
     fi
   done
-  unset nn ss pp qq a_pids
+  unset nn ss pp qq a_pids is_zombie
 fi
 
   #ec=101 nn="$nL" exit # <>
@@ -1122,8 +1133,9 @@ do
 done
 
 # <Logs> Write to TTY and exit
-#kill --signal USR2 -- "$$" # <Logs>
+#"$(type -P kill)" --signal USR2 -- "$$" # <Logs>
 
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 ec='00' nn="$nL" exit
+
 
