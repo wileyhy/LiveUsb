@@ -192,7 +192,7 @@ function must_be_root(){ :
 ## Usage:   pause_to_check $nL
 pause_to_check() {
   local - ec=101 nn="$1";
-  set -;
+  #set -;
   read -N 1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is no\n\n' -r -s -t 1
 
   case $REPLY in
