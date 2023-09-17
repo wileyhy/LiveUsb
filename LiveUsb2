@@ -9,11 +9,11 @@
 set -aCuTeo pipefail # <>
 if [[ -o xtrace ]]
 then
-  qui=( '--' )
-  verb=( '--verbose' '--' )
+  qui__=( '--' )
+  verb__=( '--verbose' '--' )
 else
-  qui=( '--quiet' '--' )
-  verb=( '--' )
+  qui__=( '--quiet' '--' )
+  verb__=( '--' )
 fi
 
 umask 077
@@ -118,13 +118,13 @@ umask 133
 for aa in "${git_files_a[@]}"
 do
   sudo -- [ -e "${aa}" ] || sudo -- touch "${aa}"
-  sudo -- chmod 0644 "${verb[@]}" "${aa}"
+  sudo -- chmod 0644 "${verb__[@]}" "${aa}"
 done
 unset aa
 builtin "${prev_umask[@]}"
 
 :;: 'git config, remove a config if present'
-if grep gpg.format "${qui[@]}" <<< "${git_conf_sys[@]}"
+if grep gpg.format "${qui__[@]}" <<< "${git_conf_sys[@]}"
 then
   git config --global --unset gpg.format 
 fi
@@ -136,7 +136,7 @@ do
   
   : "bb:$bb"
 
-  if ! grep "${bb}=${git_keys[$bb]}" "${qui[@]}" <<< "${git_conf_sys[@]}"
+  if ! grep "${bb}=${git_keys[$bb]}" "${qui__[@]}" <<< "${git_conf_sys[@]}"
   then
     git config --global "${bb}" "${git_keys[$bb]}"
   fi
@@ -161,13 +161,13 @@ then
   ## Note: this use of  sudo  is for giving write permissions to  tee
   # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
   sudo -- tee -- "${git_mesg}" < "${git_tempd}/msg" > /dev/null || exit "${nL}"
-  sudo -- chmod 0644 "${verb[@]}" "${git_mesg}" || exit "${nL}"
+  sudo -- chmod 0644 "${verb__[@]}" "${git_mesg}" || exit "${nL}"
 fi
 
   #set -x # <>
 
 :;: 'gitignore (system)'
-if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui[@]}" "${git_ignr}"
+if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui__[@]}" "${git_ignr}"
 then
   :;: 'Heredoc: gitignore'
   cat <<- \EOF > "${git_tempd}/ign"
@@ -180,7 +180,7 @@ then
   ## Note: this use of  sudo  is for giving write permissions to  tee
   # shellcheck disable=SC2024
   sudo -- tee -- "${git_ignr}" < "${git_tempd}/ign" > /dev/null || exit "${nL}"
-  sudo -- chmod 0644 "${verb[@]}" "${git_ignr}" || exit "${nL}"
+  sudo -- chmod 0644 "${verb__[@]}" "${git_ignr}" || exit "${nL}"
 fi
 
   #exit $LINENO # <>
@@ -188,8 +188,8 @@ fi
 :;: 'Copy root-user files to USER'
 for cc in "${git_mesg}" "${git_ignr}"
 do
-  sudo -- rsync --checksum --archive "${verb[@]}" "${cc}" ~
-  sudo -- chown "${UID}:${UID}" "${verb[@]}" ~/"${cc##*/}"
+  sudo -- rsync --checksum --archive "${verb__[@]}" "${cc}" ~
+  sudo -- chown "${UID}:${UID}" "${verb__[@]}" ~/"${cc##*/}"
   chmod 0400 -- ~/"${cc##*/}"
 done
 unset cc
@@ -199,7 +199,7 @@ for dd in "${git_files_b[@]}"
 do
   if [[ -e $dd ]]
   then
-    sudo -- mv --force "${verb[@]}" "${dd}" "${dd%_system}"
+    sudo -- mv --force "${verb__[@]}" "${dd}" "${dd%_system}"
   fi
 done
 unset dd
@@ -221,7 +221,7 @@ for ee in "${dev_d1}" "${dev_d2}"
 do
   if ! [[ -d ${ee} ]]
   then
-    mkdir --parents "${verb[@]}" "${ee}" || exit "${nL}"
+    mkdir --parents "${verb__[@]}" "${ee}" || exit "${nL}"
   fi
 done
 unset ee
@@ -249,7 +249,7 @@ pushd "${dev_d1}" > /dev/null || exit "${nL}"
 
 if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
 then
-  git clone --verbose --origin 'github' "${verb[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
+  git clone --verbose --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
 fi
 
 :;: 'SSH'
@@ -257,13 +257,13 @@ ssh_d=~/.ssh/
 ssh_system_conf=/etc/ssh/ssh_config
 ssh_user_conf=~/.ssh/config
 
-sudo -- chown --recursive "${UID}:${UID}" "${verb[@]}" "${ssh_d}" || er_x "${nL}"
-chmod 700 "${verb[@]}" "${ssh_d}"
-chmod --recursive 700 "${verb[@]}" "${ssh_d}"/*
+sudo -- chown --recursive "${UID}:${UID}" "${verb__[@]}" "${ssh_d}" || er_x "${nL}"
+chmod 700 "${verb__[@]}" "${ssh_d}"
+chmod --recursive 700 "${verb__[@]}" "${ssh_d}"/*
 
 if [[ -f ${ssh_user_conf} ]]
 then
-  if ! grep 'ForwardAgent yes' "${qui[@]}" "${ssh_user_conf}"
+  if ! grep 'ForwardAgent yes' "${qui__[@]}" "${ssh_user_conf}"
   then
     cat <<- \EOF > "${ssh_user_conf}"
 		Host github.com
@@ -297,7 +297,7 @@ then
             ## Note: \x60ssh-agent\x60 doesn't have any long options. \x60ssh-agent -k\x60 is "kill the current agent."
             ssh-agent -k
           else
-            command -p kill "${verb[@]}" "${ssh_agent_pids[*]}"
+            command -p kill "${verb__[@]}" "${ssh_agent_pids[*]}"
           fi
         ;;\
       *)  for pp in "${ssh_agent_pids[@]}"
@@ -331,7 +331,7 @@ gpg_d=~/.gnupg
 sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
 chmod --recursive 700 "${gpg_d}"
 
-if grep --extended-regexp '[g]pg-a.*daemon' "${qui[@]}" <<< "${ps_o}"
+if grep --extended-regexp '[g]pg-a.*daemon' "${qui__[@]}" <<< "${ps_o}"
 then
   gpgconf --kill gpg-agent
 fi
@@ -353,7 +353,7 @@ then
 fi
 
 :;: 'Clean up & exit'
-command rm --force --recursive "${verb[@]}" "${git_tempd}"
+command rm --force --recursive "${verb__[@]}" "${git_tempd}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 exit 00
 
