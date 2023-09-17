@@ -545,7 +545,7 @@ setup_network
 :;: 'Time'
 setup_time
 
-  ec=101 nn="$nL" exit # <>
+  #ec=101 nn="$nL" exit # <>
   #set -x # <>
 
 :;: 'Minimum necessary rpms'
