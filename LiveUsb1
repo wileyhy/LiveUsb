@@ -224,7 +224,7 @@ function reqd_user_files(){
   for ff in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
     "${files_for_use_with_github_level_3[@]}"
   do
-    #command rm -fr "$ff" ; continue # <>
+    command rm -fr "$ff" ; continue # <>
 
     if ! [[ -e ${ff} ]]
     then
@@ -242,13 +242,13 @@ function reqd_user_files(){
         er_x "${nL} USB device not available"
       fi
 
-      	if lsblk -o path | grep -q "$pttn_path"
-	then
-      	  sudo umount "${pttn_path}"
-          sudo rmdir  "${mount_pt}"
-	fi
-	sudo sync -f
-	wait -f
+      	if lsblk -o path | grep -q "$pttn_path" # <>
+	      then
+      	  sudo umount "${pttn_path}" # <>
+          sudo rmdir  "${mount_pt}" # <>
+	      fi # <>
+	      sudo sync -f # <>
+	      wait -f # <>
 
       sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
       sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
