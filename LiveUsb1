@@ -1176,6 +1176,7 @@ then
         #pause_to_check "$nL"
 
       done
+      unset WW
     fi
   done
   unset VV
@@ -1211,31 +1212,31 @@ then
     :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
     if [[ -n ${a_pids[*]: -1:1} ]] && ! [[ ${a_pids[*]} = 1 ]]
     then
-      ii=0
-      nn="${#a_pids[@]}"
+      II=0
+      XX="${#a_pids[@]}"
 
       :;: 'Print some info and wait for it to be read'
       ## Note, '\x27' is a single quote
-      printf '\n  %b for restarting, count, %d \n\n' 'PID\x27s' "${nn}"
+      printf '\n  %b for restarting, count, %d \n\n' 'PID\x27s' "${XX}"
 
         sleep 1 # <>
 
       :;: 'for each signal and for each PID...'
-      for pp in "${!a_pids[@]}"
+      for YY in "${!a_pids[@]}"
       do
         ## Note, readability
-        :;: $'\x60kill\x60 '"loop $(( ++ii )) of ${nn}" ;:
+        :;: $'\x60kill\x60 '"loop $(( ++II )) of ${XX}" ;:
 
-        qq="${a_pids[pp]}"
-        (( qq == 1 )) && continue 001
+        ZZ="${a_pids[YY]}"
+        (( ZZ == 1 )) && continue 001
         sleep 1
 
           #pause_to_check "$nL" # <>
 
-        for ss in HUP USR1 TERM KILL
+        for AA in HUP USR1 TERM KILL
         do
 
-            : "To kill PID $qq with signal $ss" # <>
+            : "To kill PID $ZZ with signal $AA" # <>
             #pause_to_check "$nL" # <>
 
           #sleep 1
@@ -1244,42 +1245,44 @@ then
             wait -f # <>
 
           :;: '...if the PID is still running...'
-          if ps --no-headers --quick-pid "${qq}"
+          if ps --no-headers --quick-pid "${ZZ}"
           then
 
             :;: '...then \kill\ it with the according per-loop SIGNAL...'
             ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
             #+ than whether the  kill  operation succeeded, per  info kill .
-            sudo -- "$(type -P kill)" --signal "${ss}" -- "${qq}"
+            sudo -- "$(type -P kill)" --signal "${AA}" -- "${ZZ}"
 
             :;: '...and if the PID in question no longer exists then unset the current array index number'
-            if ps --no-headers --quick-pid "${qq}"
+            if ps --no-headers --quick-pid "${ZZ}"
             then
-              is_zombie=$( ps aux | awk "\$2 ~ /${qq}/ { print \$8 }" )
+              is_zombie=$( ps aux | awk "\$2 ~ /${ZZ}/ { print \$8 }" )
 
               if [[ ${is_zombie} = 'Z' ]]
               then
                 : 'Process is a zombie; unsetting'
-                unset 'a_pids[pp]'
+                unset 'a_pids[YY]'
                 break 00001
               else
                 continue 00001
               fi
             else
-              unset 'a_pids[pp]'
+              unset 'a_pids[YY]'
               break 0001
             fi
           else
-            unset 'a_pids[pp]'
+            unset 'a_pids[YY]'
             break 001
           fi
         done
+        unset AA
       done
+      unset YY ZZ
     else
       break 1
     fi
   done
-  unset nn ss pp qq a_pids is_zombie
+  unset II XX a_pids is_zombie
 fi
 
   #ec=101 nn="$nL" exit # <>
