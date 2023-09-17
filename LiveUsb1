@@ -572,9 +572,12 @@ unset gh_config_list_out github_configs ff
 ## Note: executing this command just once
 if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
 then
-  firefox --browser &
-  pause_to_check $nL
-  gh_auth_login_command
+  if ! ps aux | grep -q [f]irefox
+  then
+    firefox --browser &
+    pause_to_check $nL
+    gh_auth_login_command
+  fi
 fi
 
 :;: 'gh -- Get SSH & GPG keys'
