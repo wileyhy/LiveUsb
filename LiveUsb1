@@ -889,7 +889,7 @@ then
   readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${rpm_nms_for_removal[@]}" )
   readarray -t removable_rpms < <( rpm -qa | grep --ignore-case --extended-regexp "${grep_args[@]}" )
 
-    #declare -p grep_args removable_rpms # <>
+    declare -p grep_args removable_rpms # <>
 
   :;: 'Keep a list, just in case an rpm removal accidentally erases something vital'
   if [[ -n ${removable_rpms[*]:0:8} ]]
