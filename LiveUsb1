@@ -219,6 +219,11 @@ function reqd_user_files(){
     echo "${files_for_use_with_github_level_2[@]##*/}"
     echo "${files_for_use_with_github_level_3[@]##*/}"
 
+    echo tilde, ~
+    echo HOME, $HOME
+    sudo echo tilda, ~
+    sudo echo HOME, $HOME
+    
     pause_to_check $nL # <>
 
   for ff in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
@@ -244,12 +249,12 @@ function reqd_user_files(){
 
 
 
-      local files_lev_1 files_lev_2 files_lev_3
-      files_lev_1="${files_for_use_with_github_level_1[@]#~/}"
-      files_lev_2="${files_for_use_with_github_level_2[@]#~/}"
-      files_lev_3="${files_for_use_with_github_level_3[@]#~/}"
+      local -a files_lev_1 files_lev_2 files_lev_3
+      files_lev_1=( "${files_for_use_with_github_level_1[@]##*/}" )
+      files_lev_2=( "${files_for_use_with_github_level_2[@]##*/}" )
+      files_lev_3=( "${files_for_use_with_github_level_3[@]##*/}" )
       
-      rsync -ca ./.gnupg ./.ssh ./.mozilla ./.angband /home/liveuser
+      rsync -ca ./.gnupg ./.ssh ./.mozilla ./.angband 
       rsync -ca ./.config/gh /home/liveuser/.config
       rsync -ca ./.toprc_liveuser /home/liveuser/.config/procps/toprc 
       rsync -ca ./.vimrc_liveuser /home/liveuser/.vimrc
