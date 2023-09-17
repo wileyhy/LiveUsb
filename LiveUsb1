@@ -224,7 +224,7 @@ function reqd_user_files(){
   for ff in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
     "${files_for_use_with_github_level_3[@]}"
   do
-    command rm -fr "$ff" ; continue # <>
+    #command rm -fr "$ff" ; continue # <>
 
     if ! [[ -e ${ff} ]]
     then
@@ -242,7 +242,7 @@ function reqd_user_files(){
         er_x "${nL} USB device not available"
       fi
 
-      	if lsblk | grep -q "$pttn_path"
+      	if lsblk -o path | grep -q "$pttn_path"
 	then
       	  sudo umount "${pttn_path}"
           sudo rmdir  "${mount_pt}"
@@ -283,7 +283,7 @@ function reqd_user_files(){
     fi
   done
 
-    exit 101
+    exit 102
 }
 
 ## Note: rm(): command shadowing is intended in this case
