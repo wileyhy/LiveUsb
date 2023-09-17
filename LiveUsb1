@@ -301,7 +301,7 @@ function rm(){ :
     mkdir --mode 0700 --verbose -- "${delete_d}" || return 2
   fi
 
-  for fd
+  for fd --
   do
     if [[ ${opts_done} = yes ]]
     then
