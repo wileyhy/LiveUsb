@@ -112,12 +112,17 @@ git_keys+=(
   [core.excludesfile]="${git_ignr}"
 )
 
-:;: 'Permissions'
+:;: 'Files must exist  and  Permissions'
+read -r -a prev_umask < <( umask -p )
+umask 133
+
 for aa in "${git_files_a[@]}"
 do
-  sudo -- [ -e "${aa}" ] && sudo -- chmod 0604 "${verb[@]}" "${aa}"
+  sudo -- [ -e "${aa}" ] || sudo -- touch "${aa}"
+  sudo -- [ -e "${aa}" ] && sudo -- chmod 0644 "${verb[@]}" "${aa}"
 done
 unset aa
+builtin "${prev_umask[@]}"
 
 :;: 'git config, remove a config if present'
 if grep gpg.format "${qui[@]}" <<< "${git_conf_sys[@]}"
