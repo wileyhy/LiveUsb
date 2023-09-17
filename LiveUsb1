@@ -22,9 +22,9 @@ fn_lvl=0
 scr_nm=LiveUsb1
 
 :;: 'Write to TTY'
-tt=$( date +%H:%M:%S )
-printf '  %s - Executing %s \n' "${tt}" "$0"
-unset tt
+TT=$( date +%H:%M:%S )
+printf '  %s - Executing %s \n' "${TT}" "$0"
+unset TT
 
 ##  FUNCTION DEFINITIONS BEGIN ##
 
@@ -56,11 +56,11 @@ functions_for_appending_into_bashrc=(
   )
 
 :;: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
-for uu in "${functions_for_appending_into_bashrc[@]}"
+for AA in "${functions_for_appending_into_bashrc[@]}"
 do
-  unset -f "$uu"
+  unset -f "$AA"
 done
-unset uu
+unset AA
 
 :;: 'Define __vte_osc7() -- for bashrc only'
 # shellcheck disable=SC2317
@@ -72,8 +72,7 @@ function __vte_osc7(){ :
   [[ -n ${cmd} ]] || return
   urlencode_o=$( "${cmd}" )
 
-  ## Bug, what does this  printf  actually do???
-
+  ## Bug, what does this cmd do?
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 }
 
@@ -93,8 +92,8 @@ function __vte_prompt_command(){ :
     pwd="${pwd//[[:cntrl:]]}"
   fi
 
-  ## Bug, what does this  printf  actually do???
-
+  ## Bug, what does this cmd do?
+  
   printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${pwd}"
   __vte_osc7
 }
@@ -114,11 +113,10 @@ function er_x(){ local - exit_code="$?"
 function get_pids_for_restarting(){ :
   true "${fn_bndry} get_pids_for_restarting() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
+  ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global 
+  #+  scope.
   # shellcheck disable=SC2034
   local - dnf_o pipeline1 pipeline2
-
-  ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global 
-  #+  scope. ?!
   local -Ig a_pids pr_counter
   dnf_o=$( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
 
@@ -246,7 +244,7 @@ function pause_to_check() {
 function reqd_user_files(){ :
   true "${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
-  local - ff
+  local - BB
   #set -
 
     #declare -p files_for_use_with_github_level_1 # <>
@@ -259,12 +257,12 @@ function reqd_user_files(){ :
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
     #pause_to_check $nL # <>
 
-  for ff in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
+  for BB in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
     "${files_for_use_with_github_level_3[@]}"
   do
-    #command rm -fr "$ff" ; continue # <>
+    #command rm -fr "$BB" ; continue # <>
 
-    if ! [[ -e ${ff} ]]
+    if ! [[ -e ${BB} ]]
     then
       local pttn_label pttn_path mount_pt data_dir prev_umask
 
@@ -345,7 +343,7 @@ function reqd_user_files(){ :
 function rm(){ :
   (( ${#@} == 0 )) && return 1
 
-  local - delete_d fd time_sfx opts_done
+  local - delete_d HH time_sfx opts_done
   delete_d=~/rm.d
   time_sfx=$( date --utc +%s )
 
@@ -354,19 +352,19 @@ function rm(){ :
     mkdir --mode 0700 --verbose -- "${delete_d}" || return 2
   fi
 
-  for fd in "$@" --
+  for HH in "$@" --
   do
     if [[ ${opts_done} = yes ]]
     then
 
-      if [[ -e ${fd} ]]
+      if [[ -e ${HH} ]]
       then
         ## Note,  mv  is commonly a default alias
-        command mv --backup --suffix="${time_sfx}" -- "${fd}" "${delete_d}" || return 3
+        command mv --backup --suffix="${time_sfx}" -- "${HH}" "${delete_d}" || return 3
       fi
     else
 
-      if [[ $fd = '--' ]]
+      if [[ $HH = '--' ]]
       then
         opts_done=yes
       else
