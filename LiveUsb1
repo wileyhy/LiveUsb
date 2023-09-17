@@ -193,7 +193,8 @@ function must_be_root(){ :
 pause_to_check() {
   local - ec=101 nn="$1";
   set -;
-  read -N 1 -p 'Ready?' -r -s -t 600;
+  read -N 1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is no\n\n' -r -s -t 1
+
   case $REPLY in
     Y*|y*|$'\n'|' ' )
       printf '\ngo\n';
@@ -574,7 +575,7 @@ if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'
 then
   if ! ps aux | grep -q [f]irefox
   then
-    firefox --browser &
+    firefox --browser 2>/dev/null & 
     pause_to_check $nL
     gh_auth_login_command
   fi
