@@ -882,7 +882,7 @@ rpm_nms_for_removal+=( claws-mail blueman bluez )
 
 :;: 'Start with removing any unnecessary RPMs'
 
-  #pause_to_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
 then
