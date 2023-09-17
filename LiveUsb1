@@ -216,6 +216,8 @@ function reqd_user_files(){
     declare -p files_for_use_with_github_level_3 # <>
    
     echo "${files_for_use_with_github_level_1[@]##*/}"
+    echo "${files_for_use_with_github_level_2[@]##*/}"
+    echo "${files_for_use_with_github_level_3[@]##*/}"
 
     pause_to_check $nL # <>
 
