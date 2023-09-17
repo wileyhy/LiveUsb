@@ -64,7 +64,6 @@ unset uu
 :;: 'Define __vte_osc7() -- for bashrc only'
 # shellcheck disable=SC2317
 function __vte_osc7(){ :
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   local - cmd urlencode_o
   set -
 
@@ -73,14 +72,11 @@ function __vte_osc7(){ :
   urlencode_o=$( "${cmd}" )
   ## Bug, what does this  printf  actually do???
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
-
-  true "${fn_bndry} blah() ENDS ${fn_bndry} ${fn_lvl} to $(( –fn_lvl ))" # <>
 }
 
 ::: 'Define __vte_prompt_command() -- for bashrc only'
 # shellcheck disable=SC2317
 function __vte_prompt_command(){ :
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   local - prompt_cmd pwd
   set -
   prompt_cmd=$( HISTTIMEFORMAT='' history 1 | sed 's/^ *[0-9]\+ *//' )
@@ -95,19 +91,16 @@ function __vte_prompt_command(){ :
   ## Bug, what does this  printf  actually do???
   printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${pwd}"
   __vte_osc7
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 }
 
 :;: 'Define er_x()'
 function er_x(){ \
   local - exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
   printf '%s, Error, %s\n' "$scr_nm" "$*" >&2
   
   true "${fn_bndry} er_x() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
   exit "${exit_code}"
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 } 
 
 :;: 'Define get_pids_for_restarting()'
@@ -133,7 +126,7 @@ function get_pids_for_restarting(){ :
   : pipline1, "${#pipline1}" # <>
   : pipline2, "${#pipline2}" # <>
   : a_pids,   "${#a_pids}" # <>
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define gh_auth_login_command()'
@@ -151,7 +144,7 @@ function gh_auth_login_command(){ :
   : 'gh - Use GitHub CLI as a credential helper'
   git config --global credential.helper "cache --timeout=3600"
   gh auth setup-git
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'min_necc_git_cmds()'
@@ -163,7 +156,7 @@ function min_necc_git_cmds(){ :
   git config --global 'user.email' '84648683+wileyhy@users.noreply.github.com'
   git config --global 'user.name' 'Wiley Young'
   git config --global 'user.signingkey' 'E287D0CF528591CE'
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define min_necc_rpms()'
@@ -185,7 +178,7 @@ function min_necc_rpms(){ :
       set -
     fi
   done
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define must_be_root()'
@@ -199,7 +192,7 @@ function must_be_root(){ :
   else
     sudo --validate || er_x "${nL}"
   fi
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define pause_to_check()'
@@ -219,7 +212,7 @@ pause_to_check() {
       exit;
       ;;
   esac;
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ::: 'reqd_user_files()'
@@ -310,7 +303,7 @@ function reqd_user_files(){ :
   done
 
     #exit 102 # <>
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ## Bug, this rm function is broken. if the user doesn't include '--' the file is not removed
@@ -319,7 +312,6 @@ function reqd_user_files(){ :
 
 :;: 'Define rm() -- for bashrc only'
 function rm(){ :
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   (( ${#@} == 0 )) && return 1
   
   local - delete_d fd time_sfx opts_done
@@ -353,7 +345,6 @@ function rm(){ :
     fi
     [[ -z ${opts_done} ]] && er_x "${nL}"
   done
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 }
 
 ::: 'Define setup_network()'
@@ -407,7 +398,7 @@ function setup_network(){ :
   ## Clean up from Network
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_time()'
@@ -417,7 +408,7 @@ function setup_time(){ :
   sudo -- timedatectl set-timezone America/Vancouver
   sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line ${nL}"
   sudo -- chronyc makestep > /dev/null
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define test_dns()'
@@ -426,7 +417,7 @@ function test_dns(){ :
   local -
   #set -
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define test_os()'
@@ -440,7 +431,7 @@ function test_os(){ :
   then
     er_x "${LINENO}, OS is not Fedora"
   fi
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define trap_exit()'
@@ -461,7 +452,7 @@ function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
     : 'End of EXIT trap'
   fi
   builtin exit "${exit_trap_ec}"
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define write_bashrc_strings()'
@@ -526,7 +517,7 @@ function write_bashrc_strings(){ :
     
     : 'Loop A - shut' ;:
   done
-  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} blah() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ##  FUNCTION DEFINITIONS COMPLETE ##
