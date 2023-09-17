@@ -208,7 +208,7 @@ pause_to_check() {
 : 'reqd_user_files()'
 function reqd_user_files(){
   local - ff 
-  set -
+  #set -
 
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
     declare -p files_for_use_with_github_level_1 # <>
@@ -224,8 +224,7 @@ function reqd_user_files(){
   for ff in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
     "${files_for_use_with_github_level_3[@]}"
   do
-    command rm -fr "$ff"
-    continue
+    command rm -fr "$ff" ; continue # <>
 
     if ! [[ -e ${ff} ]]
     then
@@ -233,8 +232,8 @@ function reqd_user_files(){
       local pttn_label pttn_path mount_pt data_dir prev_umask
       pttn_label='29_Mar_2023'
       pttn_path=$( lsblk -o label,path | awk '$1 ~ /29_Mar_2023/ { print $2 }' )
-      mount_pt=$( "/run/media/root/${pttn_label}" )
-      data_dir="${mount_dir}/set-up-git"
+      mount_pt="/run/media/root/${pttn_label}"
+      data_dir="${mount_pt}/set-up-git"
       read -r a prev_umask < <( umask -p )
       umask 077
 
@@ -243,30 +242,45 @@ function reqd_user_files(){
         er_x "${nL} USB device not available"
       fi
 
+      	sudo umount "${pttn_path}"
+        sudo rmdir  "${mount_pt}"
+	sudo sync -f
+	wait -f
+
       sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
       sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
 
+      local -a \
+        files_lev_1_source \
+        files_lev_2_source \
+        files_lev_3_source \
+        files_lev_1_dest \
+        files_lev_2_dest \
+        files_lev_3_dest
 
-
-      local -a files_lev_1 files_lev_2 files_lev_3
-      files_lev_1=( "${files_for_use_with_github_level_1[@]##*/}" )
-      files_lev_2=( "${files_for_use_with_github_level_2[@]##*/}" )
-      files_lev_3=( "${files_for_use_with_github_level_3[@]##*/}" )
+      readarray -t files_lev_1_source < <( printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_1[@]#~/}" )
+      readarray -t files_lev_2_source < <( printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_2[@]#~/}" )
+      readarray -t files_lev_3_source < <( printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_3[@]#~/}" )
+      files_lev_1_dest=~
+      files_lev_2_dest=~/.config
+      files_lev_3_dest=~/.config/procps
       
-        declare -p files_lev_1
-        declare -p files_lev_2
-        declare -p files_lev_3
+        declare -p files_lev_{1,2,3}_{source,dest}
 
-        pause_to_check
+        pause_to_check $nL
 
-      rsync -ca "${data_dir}/${files_lev_1[@]}"  ~
-      rsync -ca "${data_dir}/${files_lev_2[@]}"  ~/.config/procps/toprc 
-      rsync -ca "${data_dir}/${files_lev_3[@]}"  ~
-      rsync -ca ./.config/gh /home/liveuser/.config
+      sudo -- rsync -ca -- "${files_lev_1_source[@]}"  "${files_lev_1_dest}"
+      sudo -- rsync -ca -- "${files_lev_2_source[@]}"  "${files_lev_2_dest}"
+      sudo -- rsync -ca -- "${files_lev_3_source[@]}"  "${files_lev_3_dest}"
+
+        pause_to_check $nL
+	exit 101
 
       break
     fi
   done
+
+    exit 101
 }
 
 ## Note: rm(): command shadowing is intended in this case
