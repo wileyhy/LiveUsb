@@ -93,13 +93,13 @@ function __vte_prompt_command(){ :
   fi
 
   ## Bug, what does this cmd do?
-  
+
   printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${pwd}"
   __vte_osc7
 }
 
 :;: 'Define er_x()'
-function er_x(){ local - exit_code="$?" 
+function er_x(){ local - exit_code="$?"
   true "${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   printf '%s, Error, %s\n' "$scr_nm" "$*" >&2
@@ -113,14 +113,14 @@ function er_x(){ local - exit_code="$?"
 function get_pids_for_restarting(){ :
   true "${fn_bndry} get_pids_for_restarting() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
-  ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global 
+  ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global
   #+  scope.
   # shellcheck disable=SC2034
   local - dnf_o pipeline1 pipeline2
   local -Ig a_pids pr_counter
   dnf_o=$( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
 
-  ## Note, this pipeline was broken out into its constituent commands in order to verify the values 
+  ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream
   pipline1=$( awk '{ print $1 }' <<< "${dnf_o}" )
   pipline2=$( grep --only-matching --extended-regexp ^'[0-9]*'$ <<< "${pipline1}" )
@@ -147,9 +147,9 @@ function gh_auth_login_command(){ :
     gh auth logout 2> /dev/null 1>&2
   fi
 
-  ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to 
+  ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to
   #+  refresh auth manually; using short options for just this reason
-  gh auth login -p 'ssh' -h 'github.com' -s 'admin:public_key,read:gpg_key,admin:ssh_signing_key' -w || 
+  gh auth login -p 'ssh' -h 'github.com' -s 'admin:public_key,read:gpg_key,admin:ssh_signing_key' -w ||
     exit "${nL}"
 
   : 'gh - Use GitHub CLI as a credential helper'
@@ -399,7 +399,7 @@ function setup_network(){ :
     sudo -- nmcli r wifi on
 
     : 'Get interface name(s)'
-    readarray -d '' -t ifaces < <( nmcli --terse c | 
+    readarray -d '' -t ifaces < <( nmcli --terse c |
       awk --field-separator ':' '$1 !~ /lo/ { printf "%s\0", $1 }' )
 
     : 'Connect the interface'
@@ -471,13 +471,13 @@ function test_os(){ :
   true "${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 
+## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2
 #+  of  trap  "args section" ??
 
 :;: 'Define trap_exit()'
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - exit_trap_ec="${EC:-$?}" lineno="${LL:-$nL}" 
+function trap_exit(){ local - exit_trap_ec="${EC:-$?}" lineno="${LL:-$nL}"
   true"${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
 
@@ -688,7 +688,7 @@ PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-  ## Note, TERM_SESSION_ID, 1, added in order to identify which TTY is using which terminal emulator 
+  ## Note, TERM_SESSION_ID, 1, added in order to identify which TTY is using which terminal emulator
   #+  program. See also, https://stackoverflow.com/questions/42710685/bash-identify-a-terminal-session
   #TERM_SESSION_ID="${TERM_SESSION_ID:-}"
   #if [[ -z "$TERM_SESSION_ID" ]]
@@ -785,7 +785,7 @@ cat <<- \EOF | tee -- "${tmpd}/vim-conf-text" > /dev/null
 	" On pressing tab, insert 2 spaces
 	set expandtab
 
-	" per https://superuser.com/questions/286290/is-there-any-way-to-hook-saving-in-vim-up-to-commiting-in-git 
+	" per https://superuser.com/questions/286290/is-there-any-way-to-hook-saving-in-vim-up-to-commiting-in-git
   autocmd BufWritePost * execute '! if [[ -d .git ]]; then git commit -S -a -F -; fi'
 
 EOF
@@ -855,7 +855,7 @@ unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 ## Note, for $fsos3 , '--and' is not POSIX compliant
 ## Note, for $fsos4 , sorts by unique inode and delimits by nulls
 
-## Bug, Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on 
+## Bug, Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on
 #+  Fedora-like systems
 
 declare -A fsos5
@@ -863,12 +863,12 @@ readarray -d '' -t dirs1 < <( find / ! -path / -prune -type d -print0 )
 
   #declare -p dirs1 # <>
 
-readarray -d '' -t dirs2 < <( 
+readarray -d '' -t dirs2 < <(
   find "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
 
   #declare -p dirs2 # <>
 
-readarray -d '' -t fsos3 < <( 
+readarray -d '' -t fsos3 < <(
   find "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
 
   #declare -p fsos3 # <>
@@ -991,7 +991,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 #+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of
 #+  my tabs.  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf
 #+  needs-restarting  in the event that any files on disk may actually have been changed.
-## Note, these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of 
+## Note, these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of
 #+  whichever expansion does that, leaving just the regular strings as the elements of the array
 ## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will
 #+  apply to the entire block
@@ -1042,7 +1042,7 @@ then
   ## Note, this  printf  command uses nulls so that '-e' and '%s.*' will be read as separate indices
   #+  by  readarray
   readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${rpm_nms_for_removal[@]}" )
-  readarray -t removable_rpms < <( 
+  readarray -t removable_rpms < <(
     rpm --all --query | grep --ignore-case --extended-regexp "${grep_args[@]}" )
 
     declare -p grep_args removable_rpms # <>
