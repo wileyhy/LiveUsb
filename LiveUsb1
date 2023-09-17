@@ -256,8 +256,9 @@ function reqd_user_files(){
 
         pause_to_check
 
-      rsync -ca "${files_lev_1  ~
-      rsync -ca ./.toprc_liveuser ~/.config/procps/toprc 
+      rsync -ca "${data_dir}/${files_lev_1[@]}"  ~
+      rsync -ca "${data_dir}/${files_lev_2[@]}"  ~/.config/procps/toprc 
+      rsync -ca "${data_dir}/${files_lev_3[@]}"  ~
       rsync -ca ./.config/gh /home/liveuser/.config
 
       break
