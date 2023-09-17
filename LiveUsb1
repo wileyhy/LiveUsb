@@ -346,14 +346,14 @@ function setup_network(){
 
     :;: 'Try to get NetworkManager up and running'
     ## Note:  systemctl start  appears to be idempotent
-    time sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
+    sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
     wait -f
 
     :;: 'Turn on networking'
-    time sudo -- nmcli n on
+    sudo -- nmcli n on
 
     :;: 'Turn on WiFi'
-    time sudo -- nmcli r wifi on
+    sudo -- nmcli r wifi on
 
     :;: 'Get interface name(s)'
     readarray -d '' -t ifaces < <( nmcli --terse c | awk -F: '$1 !~ /lo/ { printf "%s\0", $1 }' )
@@ -387,17 +387,17 @@ function setup_network(){
 
 : 'Define setup_time()'
 function setup_time(){
-  time sudo -- timedatectl set-local-rtc 0
-  time sudo -- timedatectl set-timezone America/Vancouver
+  sudo -- timedatectl set-local-rtc 0
+  sudo -- timedatectl set-timezone America/Vancouver
   sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line:${nL}"
-  time sudo -- chronyc makestep > /dev/null
+  sudo -- chronyc makestep > /dev/null
 }
 
 : 'Define test_dns()'
 function test_dns(){ :
   #local -
   #set -
-  time sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
+  sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
 : 'Define test_os()'
@@ -468,7 +468,7 @@ function write_bashrc_strings(){ :
         fi
 
         :;: '(2) If there is an alias by the same name, then delete it from the bashrc file at hand...'
-        time sudo -- sed -i "/^alias ${Aa_index##* }=/d" -- "${file_x}"
+        sudo -- sed -i "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
         : 'Loop C - shut' ;:
       done
@@ -668,9 +668,9 @@ do
   :;: '...of the array files_for_use_with_bash'
   if ! sudo -- [ -e "${ff}.orig" ]
   then
-    time sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
-    time sudo -- chmod 400 -- "${ff}.orig"
-    time sudo -- chattr +i -- "${ff}.orig"
+    sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
+    sudo -- chmod 400 -- "${ff}.orig"
+    sudo -- chattr +i -- "${ff}.orig"
   fi
 
   :;: '...per script-execution'
@@ -744,7 +744,7 @@ then
   read -r aa uu < <( sudo -- sha256sum -- "${tmpd}/vim-conf-text" 2>&1 )
   read -r zz uu < <( sudo -- sha256sum -- "${strng_vrc}" 2>&1 )
 else
-  time sudo -- touch -- "${strng_vrc}" # <> set-e
+  sudo -- touch -- "${strng_vrc}" # <> set-e
 fi
 
 :;: 'Write .vimrc'
@@ -759,7 +759,7 @@ then
 
   :;: $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
   sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
-  time sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
+  sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
   chmod 0400 -- "/home/${USER}/.vimrc"
 
   :;: 'Reset the umask'
@@ -1173,7 +1173,7 @@ then
             :;: '...then \kill\ it with the according per-loop SIGNAL...'
             ## Note: the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
             #+ than whether the  kill  operation succeeded, per  info kill .
-            time sudo -- "$(type -P kill)" --signal "${ss}" -- "${qq}"
+            sudo -- "$(type -P kill)" --signal "${ss}" -- "${qq}"
 
             :;: '...and if the PID in question no longer exists then unset the current array index number'
             if ps --no-headers --quick-pid "${qq}"
