@@ -1,14 +1,11 @@
 #!/bin/bash -x
 ## LiveUsb1
 
-## Note: Online Git book:
+## Note, Online Git book:
 #+  https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository
 
-## Note: Idempotent script
-## Note: style / function definition syntax: '(){ :' makes plain xtrace easier to read
-
-## Bug: this kill loop usually kills the user session, including the terminal and the script, so the script
-#+  usually needs to be run multiple times. (search: /Restart any processes )
+## Note, Idempotent script
+## Note, style, function definition syntax: '(){ :' makes plain xtrace easier to read
 
 # <> Debugging
 set -aCuTeo pipefail # <>
@@ -108,11 +105,11 @@ function get_pids_for_restarting(){ :
   # shellcheck disable=SC2034
   local - dnf_o pipeline1 pipeline2
 
-  ## Note:  local -Ig  picks up attributes and values from global scope and also outputs same to global scope. ?!
+  ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global scope. ?!
   local -Ig a_pids pr_counter
   dnf_o=$( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
 
-  ## Note: this pipeline was broken out into its constituent commands in order to verify the values mid-stream
+  ## Note, this pipeline was broken out into its constituent commands in order to verify the values mid-stream
   pipline1=$( awk '{ print $1 }' <<< "${dnf_o}" )
   pipline2=$( grep --only-matching --extended-regexp ^'[0-9]*'$ <<< "${pipline1}" )
   
@@ -129,7 +126,7 @@ function get_pids_for_restarting(){ :
 
 : 'Define gh_auth_login_command()'
 function gh_auth_login_command(){ :
-  ## Note: do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
+  ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
   if gh auth status 2> /dev/null 1>&2
   then
     gh auth logout 2> /dev/null 1>&2
@@ -292,7 +289,7 @@ function reqd_user_files(){ :
     #exit 102 # <>
 }
 
-## Note: rm(): command shadowing is intended in this case
+## Note, rm(): command shadowing is intended in this case
 
 : 'Define rm() -- for bashrc only'
 function rm(){ :
@@ -314,7 +311,7 @@ function rm(){ :
       
       if [[ -e ${fd} ]]
       then
-        ## Note:  mv  is commonly a default alias
+        ## Note,  mv  is commonly a default alias
         command mv --backup --suffix="${time_sfx}" -- "${fd}" "${delete_d}" || return 3
       fi
     else
@@ -332,18 +329,18 @@ function rm(){ :
 }
 
 : 'Define setup_network()'
-## Note: 1 is Google; A is Comcast
+## Note, 1 is Google; A is Comcast
 function setup_network(){ :
   dns_srv_1=8.8.8.8
   dns_srv_A=75.75.75.75
 
-  ## Note:  ping  doesn't have long options
+  ## Note,  ping  doesn't have long options
   if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
   then
     printf '\n%s: Attempting to connect to the internet... \n\n' "$scr_nm"
 
     :;: 'Try to get NetworkManager up and running'
-    ## Note:  systemctl start  appears to be idempotent
+    ## Note,  systemctl start  appears to be idempotent
     sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
     wait -f
 
@@ -379,7 +376,7 @@ function setup_network(){ :
   fi
 
   ## Clean up from Network
-  ## Note: dns_srv_A will be used at the end of the script
+  ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
 }
 
@@ -399,8 +396,8 @@ function test_dns(){ :
 }
 
 : 'Define test_os()'
-## Note: written for Fedora: see hardcoded /run/media/root'
-## Note: test of $kernel_release is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
+## Note, written for Fedora: see hardcoded /run/media/root'
+## Note, test of $kernel_release is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
 function test_os(){ :
   local - kernel_release=$( uname -r )
   if ! [[ ${kernel_release} =~ \.fc[0-9]{2}\. ]] 
@@ -484,7 +481,7 @@ function write_bashrc_strings(){ :
     done
     
     :;: 'Reset for the next loop, assuming there is one'
-    ## Note: ?? use  unset  so that values from previous loops will not interfere with the current loop
+    ## Note, ?? use  unset  so that values from previous loops will not interfere with the current loop
     unset -n rn
     shift
     
@@ -504,7 +501,7 @@ test_os
 ## Bug: only way to export namerefs?  `declare -nx nL=...`
 
 :;: 'Vars... -- Error handling, variables and functions'
-## Note: variable assignments: Backslash escape bc  sed -i 
+## Note, variable assignments: Backslash escape bc  sed -i 
 # shellcheck disable=SC1001
 declare -nx nL=L\INENO
 
@@ -520,11 +517,11 @@ tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 
 :;: 'Vars... -- Other environment variables'
 ## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
-## Note, local style, inline comments, ie, 'echo foo ## Note: blah', are useful for rebutting false positives from ShellCheck 
+## Note, local style, inline comments, ie, 'echo foo ## Note, blah', are useful for rebutting false positives from ShellCheck 
 LC_ALL=''
 PS1=''
 # shellcheck disable=SC2034
-declare BASHRCSOURCED USER_LS_COLORS ## Note: /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
+declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
 :;: '<Logs>'
 #exec 3>&1 4>&2 # <Logs>
@@ -567,7 +564,7 @@ done
 unset gh_config_list_out github_configs ff
 
 :;: 'gh -- Login to github'
-## Note: executing this command just once
+## Note, executing this command just once
 if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
 then
   if ! ps aux | grep -q [f]irefox
@@ -595,8 +592,8 @@ gh auth status
   #exit $nL # <>
 
 :;: 'Bash'
-## Note: this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
-## Note:  set [-|-x] : letting xtrace expand this  tput  command alters all xtrace colorization
+## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
+## Note,  set [-|-x] : letting xtrace expand this  tput  command alters all xtrace colorization
 
 :;: 'Env vars for bashrc'
 
@@ -628,7 +625,7 @@ files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_fns=()
 
 :;: 'Append user variables and functions into .bashrc.'
-## Note: these arrays include some command substitutions which depend on some function definitions, which in
+## Note, these arrays include some command substitutions which depend on some function definitions, which in
 #+ turn must be defined prior to defining these arrays
 for nn in "${functions_for_appending_into_bashrc[@]}"
 do
@@ -645,7 +642,7 @@ then
 fi
 
 :;: 'Define bashrc_strings_*'
-## Note: you want for these array values to each represent just one parameter or function
+## Note, you want for these array values to each represent just one parameter or function
 bashrc_strings_1=(            ['function __vte_osc7']="function $(  declare -pf __vte_osc7 )")
 bashrc_strings_1+=( ['function __vte_prompt_command']="function $(  declare -pf __vte_prompt_command )")
 bashrc_strings_1+=(                   ['function rm']="function $(  declare -pf rm )")
@@ -657,7 +654,7 @@ bashrc_strings_2+=(                    ['export PS0']=$(            declare -p P
   #declare -p files_for_use_with_bash # <>
 
 :;: 'Do some backups'
-## Note:  sudo  cannot find  [[  and  [  requires internal quotes
+## Note,  sudo  cannot find  [[  and  [  requires internal quotes
 for ff in "${files_for_use_with_bash[@]}"
 do
   :;: 'File must exist'
@@ -675,7 +672,7 @@ do
   fi
 
   :;: '...per script-execution'
-  ## Note: ~: quoted tildas do not expand
+  ## Note, ~: quoted tildas do not expand
   sudo -- cp --archive -- "${ff}" "${ff}~" || er_x "line:${nL}, ${ff}"
 done
 
@@ -776,11 +773,11 @@ unset arr_vrc strng_vrc write2fs aa bb cc ff xx yy zz umask_prior
 
 :;: 'Disk space: increase available by removing non-local locales'
 
-## Note: such as... /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
-## Note: for $dirs1 ,  find  syntax based on Mascheck's
-## Note: for $dirs2 , use of bit bucket because GVFS ‘/run/user/1000/doc’ cannot be read, even by root
-## Note: for $fsos3 , '--and' is not POSIX compliant
-## Note: for $fsos4 , sorts by unique inode and delimits by nulls
+## Note, such as... /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
+## Note, for $dirs1 ,  find  syntax based on Mascheck's
+## Note, for $dirs2 , use of bit bucket because GVFS ‘/run/user/1000/doc’ cannot be read, even by root
+## Note, for $fsos3 , '--and' is not POSIX compliant
+## Note, for $fsos4 , sorts by unique inode and delimits by nulls
 
 ## Bug: Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on Fedora-like systems
 
@@ -847,7 +844,7 @@ then
     do
       if [[ -e ${xx} ]]
       then
-        ## Note: '\x60' is a "backtick"
+        ## Note, '\x60' is a "backtick"
         printf '  Script, output of %b: %s \n' '\x60ls\x60' \
           "$( ls -l --all --human-readable --classify --inode --directory "${xx}" )"
         read -r -p ' > [yN] ' -t 600 yn
@@ -913,14 +910,14 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 
 ## <>, exit on non-zero exit codes
 
-## Note: CUPS cannot be safely removed; too many dependencies
-## Note: For some unknown reason, even when  dnf  doesn't change any programs,  dnf 
+## Note, CUPS cannot be safely removed; too many dependencies
+## Note, For some unknown reason, even when  dnf  doesn't change any programs,  dnf 
 #+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of 
 #+  my tabs.  :-(  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf 
 #+  needs-restarting  in the event that any files on disk may actually have been changed.
-## Note: these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of whichever 
+## Note, these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of whichever 
 #+  expansion does that, leaving just the regular strings as the elements of the array
-## Note: this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will 
+## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will 
 #+  apply to the entire block
 
 hash_of_installed_rpms_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
@@ -979,7 +976,7 @@ then
     do
       #declare -p removable_rpms | tee -- "${tmpd}/removable_rpms.array"
 
-      ## Note:  dnf : do not use [-y|--yes] with this command 
+      ## Note,  dnf : do not use [-y|--yes] with this command 
       if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_rpms[rr]}"
       then
         unset 'removable_rpms[rr]'
@@ -998,7 +995,7 @@ fi
 
 :;: 'Then do a blanket security upgrade'
 
-## Note: the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to 
+## Note, the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to 
 #+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest.
 
   #pause_to_check "$nL" # <>
@@ -1057,7 +1054,7 @@ done
 
 :;: 'Upgrade any installed RPMs from the main list, en masse'
 
-## Note: this section should upgrade rpms one by one
+## Note, this section should upgrade rpms one by one
 
   #pause_to_check "$nL" # <>
 
@@ -1075,7 +1072,7 @@ uninstalled_rpms=( "${rpms[@]}" )
 
 if [[ -n ${uninstalled_rpms[*]: -1:1} ]]
 then
-  ## Note: if you install multiple rpms at the same time, and one of them causes some error, then you have 
+  ## Note, if you install multiple rpms at the same time, and one of them causes some error, then you have 
   #+  no immediate way of knowing which one caused the error
   for XX in "${uninstalled_rpms[@]}"
   do
@@ -1131,7 +1128,7 @@ then
   while true
   do
 
-    ## Note:  [[ ... = : this second test,  [[ ${a_pids[*]} = 1 ]]  is correct; ie, do not use ((...))
+    ## Note,  [[ ... = : this second test,  [[ ${a_pids[*]} = 1 ]]  is correct; ie, do not use ((...))
     :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
     if [[ -n ${a_pids[*]: -1:1} ]] && ! [[ ${a_pids[*]} = 1 ]]
     then
@@ -1139,7 +1136,7 @@ then
       nn="${#a_pids[@]}"
 
       :;: 'Print some info and wait for it to be read'
-      ## Note: '\x27' is a single quote
+      ## Note, '\x27' is a single quote
       printf '\n  %b for restarting, count: %d \n\n' 'PID\x27s' "${nn}"
 
         sleep 1 # <>
@@ -1147,7 +1144,7 @@ then
       :;: 'for each signal and for each PID...'
       for pp in "${!a_pids[@]}"
       do
-        ## Note: readability
+        ## Note, readability
         :;: $'\x60kill\x60 '"loop $(( ++ii )) of ${nn}" ;:
   
         qq="${a_pids[pp]}"
@@ -1172,7 +1169,7 @@ then
           then
 
             :;: '...then \kill\ it with the according per-loop SIGNAL...'
-            ## Note: the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
+            ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
             #+ than whether the  kill  operation succeeded, per  info kill .
             sudo -- "$(type -P kill)" --signal "${ss}" -- "${qq}"
 
