@@ -20,9 +20,9 @@ function set() {
   then
     : 'Define echo() -- true'
     function echo(){
-      #: "$@"
-      : 'Define non_existent_function()'
-      function non_existent_function(){ :; }
+      function non_existent_function(){ 
+        :
+      }
     }
   else
     : 'Define echo() -- builtin'
