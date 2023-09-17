@@ -159,6 +159,7 @@ then
   ## Note: this use of  sudo  is for giving write permissions to  tee
   # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
   sudo -- tee -- "${git_mesg}" < "${git_tempd}/msg" > /dev/null || exit "${nL}"
+  sudo -- chmod 0644 "${verb[@]}" "${git_mesg}" || exit "${nL}"
 fi
 
   #set -x # <>
@@ -177,6 +178,7 @@ then
   ## Note: this use of  sudo  is for giving write permissions to  tee
   # shellcheck disable=SC2024
   sudo -- tee -- "${git_ignr}" < "${git_tempd}/ign" > /dev/null || exit "${nL}"
+  sudo -- chmod 0644 "${verb[@]}" "${git_ignr}" || exit "${nL}"
 fi
 
   #exit $LINENO # <>
