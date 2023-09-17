@@ -193,7 +193,7 @@ function must_be_root(){ :
 pause_to_check() {
   local - ec=101 nn="$1";
   set -;
-  read -N 1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is no\n\n' -r -s -t 600
+  read -N 1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n\n' -r -s -t 600
 
   case $REPLY in
     Y*|y*|$'\n'|' ' )
