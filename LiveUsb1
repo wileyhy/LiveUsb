@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 ## LiveUsb1
 
 ## Note, Online Git book
@@ -10,6 +10,7 @@
 
 # <> Debugging
 set -aCuTeo pipefail # <>
+set -x
 
 :;: 'Variables likely to be manually changed with some regularity'
 files_for_use_with_github_level_1=( ~/.ssh ~/.gnupg ~/.vimrc ~/.mozilla ~/.angband )
@@ -152,7 +153,7 @@ function gh_auth_login_command(){ :
   fi
 
   ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to 
-  #+  refresh auth manually
+  #+  refresh auth manually; using short options for just this reason
   gh auth login -p 'ssh' -h 'github.com' -s 'admin:public_key,read:gpg_key,admin:ssh_signing_key' -w || 
     exit "${nL}"
 
@@ -187,7 +188,7 @@ function min_necc_rpms(){ :
 
   for XX in git gh ShellCheck
   do
-    if ! rpm -q --quiet "$XX"
+    if ! rpm --quiet "$XX"
     then
       set -x
       sudo dnf --assumeyes install "$XX"
@@ -271,7 +272,7 @@ function reqd_user_files(){ :
       local pttn_label pttn_path mount_pt data_dir prev_umask
 
       pttn_label='29_Mar_2023'
-      pttn_path=$( lsblk -o label,path | awk '$1 ~ /29_Mar_2023/ { print $2 }' )
+      pttn_path=$( lsblk --output label,path | awk '$1 ~ /29_Mar_2023/ { print $2 }' )
       mount_pt="/run/media/root/${pttn_label}"
       data_dir="${mount_pt}/set-up-git"
 
@@ -291,7 +292,7 @@ function reqd_user_files(){ :
         #sudo sync -f # <>
 
       : 'If the partition is not mounted which holds the data directory, then mount it'
-      if ! lsblk -o path | grep -q "$pttn_path" # <>
+      if ! lsblk --output path | grep --quiet "$pttn_path" # <>
       then
 
         if ! [[ -d "${mount_pt}" ]]
@@ -323,9 +324,9 @@ function reqd_user_files(){ :
         #declare -p files_lev_{1,2,3}_{source,dest} # <>
         #pause_to_check $nL # <>
 
-      sudo -- rsync -ca -- "${files_lev_1_source[@]}"  "${files_lev_1_dest}"
-      sudo -- rsync -ca -- "${files_lev_2_source[@]}"  "${files_lev_2_dest}"
-      sudo -- rsync -ca -- "${files_lev_3_source[@]}"  "${files_lev_3_dest}"
+      sudo -- rsync --archive --checksum -- "${files_lev_1_source[@]}"  "${files_lev_1_dest}"
+      sudo -- rsync --archive --checksum -- "${files_lev_2_source[@]}"  "${files_lev_2_dest}"
+      sudo -- rsync --archive --checksum -- "${files_lev_3_source[@]}"  "${files_lev_3_dest}"
 
         #pause_to_check $nL # <>
 	      #exit 101 # <>
