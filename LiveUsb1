@@ -814,14 +814,14 @@ esac
 
 if (( "${#arr_vrc[@]}" == 1 ))
 then
-  read -r aa uu < <( sudo -- sha256sum -- "${tmpd}/vim-conf-text" 2>&1 )
-  read -r zz uu < <( sudo -- sha256sum -- "${strng_vrc}" 2>&1 )
+  read -r WW XX < <( sudo -- sha256sum -- "${tmpd}/vim-conf-text" 2>&1 )
+  read -r YY XX < <( sudo -- sha256sum -- "${strng_vrc}" 2>&1 )
 else
   sudo -- touch -- "${strng_vrc}" # <> set-e
 fi
 
 : 'Write .vimrc'
-if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${aa} = "${zz}" ]]
+if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${WW} = "${YY}" ]]
 then
   : $'Test returned \x22true,\x22 the number didn\x27t match, so write to .vimrc'
 
@@ -843,7 +843,7 @@ fi
 
 ## Clean up after section Vim
 command -- rm --one-file-system --preserve-root=all --force -- "${tmpd}/vim-conf-text"
-unset arr_vrc strng_vrc write2fs WW bb cc ff xx yy zz umask_prior
+unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
@@ -876,10 +876,11 @@ readarray -d '' -t fsos3 < <(
 
 if (( ${#fsos3[@]} > 0 ))
 then
+  ## Note, for loop is run in a subshell, so unsetting ZZ is unnecessary
   readarray -d '' -t fsos4 < <( {
-    for ff in "${fsos3[@]}"
+    for ZZ in "${fsos3[@]}"
     do
-      printf '%s\0' "$( stat --printf='%i %n\n' -- "${ff}" )"
+      printf '%s\0' "$( stat --printf='%i %n\n' -- "${ZZ}" )"
     done ; } |
       sort --unique |
       tr --delete '\n'
