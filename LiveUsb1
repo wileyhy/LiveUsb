@@ -773,7 +773,7 @@ then
         ## Note: '\x60' is a "backtick"
         printf '  Script, output of %b: %s \n' '\x60ls\x60' \
           "$( ls -l --all --human-readable --classify --inode --directory "${xx}" )"
-        read -r -p ' > [yN] ' -t 60 yn
+        read -r -p ' > [yN] ' -t 600 yn
         yn="${yn,,?}"
         yn="${yn:=n}"
 
