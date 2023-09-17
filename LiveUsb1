@@ -224,6 +224,9 @@ function reqd_user_files(){
   for ff in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
     "${files_for_use_with_github_level_3[@]}"
   do
+    command rm -fr "$ff"
+    continue
+
     if ! [[ -e ${ff} ]]
     then
 
