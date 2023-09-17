@@ -4,7 +4,8 @@
 ## Note, Online Git book
 #+  https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository
 
-## Note, Idempotent script
+## Note, written for Fedora, see hardcoded /run/media/root'
+## Note, idempotent script
 ## Note, style, function definition syntax, '(){ :' makes plain xtrace easier to read
 
 # <> Debugging
@@ -26,6 +27,8 @@ scr_nm=LiveUsb1
 tt=$( date +%H:%M:%S )
 printf '  %s - Executing %s \n' "${tt}" "$0"
 unset tt
+
+##  FUNCTION DEFINITIONS BEGIN ##
 
 :;: 'Functions TOC...'
   ## functions_this_script=( 
@@ -70,7 +73,9 @@ function __vte_osc7(){ :
   cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
   [[ -n ${cmd} ]] || return
   urlencode_o=$( "${cmd}" )
+  
   ## Bug, what does this  printf  actually do???
+  
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 }
 
@@ -79,6 +84,7 @@ function __vte_osc7(){ :
 function __vte_prompt_command(){ :
   local - prompt_cmd pwd
   set -
+  
   prompt_cmd=$( HISTTIMEFORMAT='' history 1 | sed 's/^ *[0-9]\+ *//' )
   prompt_cmd="${prompt_cmd//;/ }"
   pwd=~
@@ -88,7 +94,9 @@ function __vte_prompt_command(){ :
     pwd="${PWD/#"${HOME}"\//\~\/}"
     pwd="${pwd//[[:cntrl:]]}"
   fi
+  
   ## Bug, what does this  printf  actually do???
+  
   printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${pwd}"
   __vte_osc7
 }
@@ -100,12 +108,14 @@ function er_x(){ \
   printf '%s, Error, %s\n' "$scr_nm" "$*" >&2
   
   true "${fn_bndry} er_x() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  
   exit "${exit_code}"
 } 
 
 :;: 'Define get_pids_for_restarting()'
 function get_pids_for_restarting(){ :
   true "${fn_bndry} get_pids_for_restarting() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   # shellcheck disable=SC2034
   local - dnf_o pipeline1 pipeline2
 
@@ -126,44 +136,52 @@ function get_pids_for_restarting(){ :
   : pipline1, "${#pipline1}" # <>
   : pipline2, "${#pipline2}" # <>
   : a_pids,   "${#a_pids}" # <>
+  
   true "${fn_bndry} get_pids_for_restarting() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define gh_auth_login_command()'
 function gh_auth_login_command(){ :
-  ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
   true "${fn_bndry} gh_auth_login_command() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+
   if gh auth status 2> /dev/null 1>&2
   then
     gh auth logout 2> /dev/null 1>&2
   fi
   
+  ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
   gh auth login --git-protocol 'ssh' --hostname 'github.com' --scopes 'admin:public_key,read:gpg_key,admin:ssh_signing_key' --web || 
     exit "${nL}"
  
   : 'gh - Use GitHub CLI as a credential helper'
   git config --global credential.helper "cache --timeout=3600"
   gh auth setup-git
+  
   true "${fn_bndry} gh_auth_login_command() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'min_necc_git_cmds()'
+
 function min_necc_git_cmds(){ :
   true "${fn_bndry} min_necc_git_cmds() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   local -
   set -
-  ## Note, idempotent commands
+  
   git config --global 'user.email' '84648683+wileyhy@users.noreply.github.com'
   git config --global 'user.name' 'Wiley Young'
   git config --global 'user.signingkey' 'E287D0CF528591CE'
+ 
   true "${fn_bndry} min_necc_git_cmds() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define min_necc_rpms()'
 function min_necc_rpms(){ :
   true "${fn_bndry} min_necc_rpms() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   local - XX
   set -
+  
   for XX in git gh ShellCheck
   do
     if ! rpm -q --quiet "$XX"
@@ -178,20 +196,24 @@ function min_necc_rpms(){ :
       set -
     fi
   done
+  
   true "${fn_bndry} min_necc_rpms() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define must_be_root()'
 function must_be_root(){ :
   true "${fn_bndry} must_be_root() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   local -
   set -
+  
   if (( UID == 0 ))
   then
     er_x Must be a regular user and use sudo
   else
     sudo --validate || er_x "${nL}"
   fi
+  
   true "${fn_bndry} must_be_root() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
@@ -199,8 +221,10 @@ function must_be_root(){ :
 ## Usage,   pause_to_check $nL
 pause_to_check() {
   true "${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   local - ec=101 nn="$1";
   set -;
+  
   read -N 1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n\n' -r -s -t 600
 
   case $REPLY in
@@ -212,12 +236,15 @@ pause_to_check() {
       exit;
       ;;
   esac;
+  
   true "${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ::: 'reqd_user_files()'
+
 function reqd_user_files(){ :
   true "${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   local - ff 
   #set -
 
@@ -303,14 +330,14 @@ function reqd_user_files(){ :
   done
 
     #exit 102 # <>
+
   true "${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ## Bug, this rm function is broken. if the user doesn't include '--' the file is not removed
 
-## Note, rm(), command shadowing is intended in this case
-
 :;: 'Define rm() -- for bashrc only'
+## Note, rm(), command shadowing is intended in this case
 function rm(){ :
   (( ${#@} == 0 )) && return 1
   
@@ -348,19 +375,19 @@ function rm(){ :
 }
 
 ::: 'Define setup_network()'
-## Note, 1 is Google; A is Comcast
+## Note, 1 is Google; A is Comcast; both are global variables
 function setup_network(){ :
   true "${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   dns_srv_1=8.8.8.8
   dns_srv_A=75.75.75.75
+  readonly dns_srv_1 dns_srv_A
 
-  ## Note,  ping  doesn't have long options
   if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
   then
     printf '\n%s, Attempting to connect to the internet... \n\n' "$scr_nm"
 
     : 'Try to get NetworkManager up and running'
-    ## Note,  systemctl start  appears to be idempotent
     sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
     wait -f
 
@@ -398,69 +425,83 @@ function setup_network(){ :
   ## Clean up from Network
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
+  
   true "${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_time()'
 function setup_time(){ :
   true "${fn_bndry} setup_time() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
   sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line ${nL}"
   sudo -- chronyc makestep > /dev/null
+  
   true "${fn_bndry} setup_time() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define test_dns()'
 function test_dns(){ :
   true "${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   local -
   #set -
+  
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
+  
   true "${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define test_os()'
-## Note, written for Fedora, see hardcoded /run/media/root'
-## Note, test of $kernel_release is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
 function test_os(){ :
   true "${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   local - kernel_release
   kernel_release=$( uname -r )
+  
+  ## Note, test of $kernel_release is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
   if ! [[ ${kernel_release} =~ \.fc[0-9]{2}\. ]] 
   then
     er_x "${LINENO}, OS is not Fedora"
   fi
+  
   true "${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
+
 :;: 'Define trap_exit()'
-# shellcheck disable=SC2317
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
-function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
-  true "${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+# shellcheck disable=SC2317
+function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}" _="${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
+
   if [[ -e ${tmpd} ]]
   then
     command rm --one-file-system --preserve-root=all --force --recursive -- "${tmpd}"
   fi
+  
   trap - EXIT
+
   if [[ ${exit_trap_ec} -eq '00' ]]
   then
     : "End of script, line ${lineno}"
   else
     : 'End of EXIT trap'
   fi
-  builtin exit "${exit_trap_ec}"
+  
   true "${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+
+  builtin exit "${exit_trap_ec}"
 }
 
 :;: 'Define write_bashrc_strings()'
 function write_bashrc_strings(){ :
   true "${fn_bndry} write_bashrc_strings() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
   local - ff file_x Aa_index Aa_element
-
-    #set -x # <>
+  set -
 
   :;: 'Certain parameters must be defined and have non-zero values'
   (( $# == 0 )) && er_x "line ${nL}"
@@ -541,11 +582,9 @@ PATH='/usr/bin:/usr/sbin'
 export PATH
 
 :;: 'Vars... -- Working dir'
-declare tmpd
+unset tmpd
 tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 [[ -d ${tmpd} ]] || er_x "${nL}"
-
-## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
 
 :;: 'Vars... -- Other environment variables'
 ## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
