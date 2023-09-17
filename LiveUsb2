@@ -53,7 +53,7 @@ fi
 ## Bug? section "Network" is also present in LiveUsb1
 
 :;: 'Network'
-## Note: \x60ping\x60 doesn't have any long options. \x60ping -c\x60 is "count;" \x60ping -W\x60 is "timeout."
+## Note:  ping  doesn't have any long options.  ping -c  is "count;"  ping -W  is "timeout."
 if ! sudo -- ping -c 1 -W 15 -- 8.8.8.8 > /dev/null
 then
   sudo -- systemctl start NetworkManager.service
@@ -226,8 +226,8 @@ do
 done
 unset ee
 
-## Note: in order to clone into any repo, and keep multiple repos separate, \x60cd\x60 is required, or \x60pushd\x60 / 
-#+  \x60popd\x60
+## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  / 
+#+   popd 
 
 :;: 'Change dirs'
 pushd "${dev_d1}" > /dev/null || exit "${nL}"
@@ -294,7 +294,7 @@ then
     case "${#ssh_agent_pids[@]}" in
       1)  if [[ -v SSH_AGENT_PID ]]
           then
-            ## Note: \x60ssh-agent\x60 doesn't have any long options. \x60ssh-agent -k\x60 is "kill the current agent."
+            ## Note:  ssh-agent  doesn't have any long options.  ssh-agent -k  is "kill the current agent."
             ssh-agent -k
           else
             command -p kill "${verb__[@]}" "${ssh_agent_pids[*]}"
@@ -308,12 +308,12 @@ then
     esac
   fi
 
-  ## Note: \x60ssh-agent -s\x60 is "generate Bourne shell commands on stdout."
+  ## Note:  ssh-agent -s  is "generate Bourne shell commands on stdout."
 
   ssh_agent_o=$( ssh-agent -s )
   eval "${ssh_agent_o}"
 
-  ## Note: \x60ssh-add\x60 and \x60ssh\x60 don't have long options. \x60ssh-add -L\x60 is "list;" \x60ssh -T\x60 is "disable
+  ## Note:  ssh-add  and  ssh  don't have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
   #+ pseudo-terminal allocation.
 
   ## Bug? hardcoded filename
