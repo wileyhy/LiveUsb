@@ -1,11 +1,11 @@
 #!/bin/bash -x
 ## LiveUsb1
 
-## Note, Online Git book:
+## Note, Online Git book
 #+  https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository
 
 ## Note, Idempotent script
-## Note, style, function definition syntax: '(){ :' makes plain xtrace easier to read
+## Note, style, function definition syntax, '(){ :' makes plain xtrace easier to read
 
 # <> Debugging
 set -aCuTeo pipefail # <>
@@ -61,7 +61,7 @@ do
 done
 unset uu
 
-: 'Define __vte_osc7() -- for bashrc only'
+:;: 'Define __vte_osc7() -- for bashrc only'
 # shellcheck disable=SC2317
 function __vte_osc7(){ :
   local - cmd urlencode_o
@@ -69,11 +69,11 @@ function __vte_osc7(){ :
   cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
   [[ -n ${cmd} ]] || return
   urlencode_o=$( "${cmd}" )
-  ## Bug: what does this  printf  actually do???
+  ## Bug, what does this  printf  actually do???
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 }
 
-: 'Define __vte_prompt_command() -- for bashrc only'
+::: 'Define __vte_prompt_command() -- for bashrc only'
 # shellcheck disable=SC2317
 function __vte_prompt_command(){ :
   local - prompt_cmd pwd
@@ -85,22 +85,22 @@ function __vte_prompt_command(){ :
   then
     pwd="${PWD/#"${HOME}"\//\~\/}" pwd="${pwd//[[:cntrl:]]}"
   fi
-  ## Bug: what does this  printf  actually do???
+  ## Bug, what does this  printf  actually do???
   printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${pwd}"
   __vte_osc7
 }
 
-: 'Define er_x()'
+:;: 'Define er_x()'
 function er_x(){ \
   local - exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
-  printf '%s: Error: %s\n' "$scr_nm" "$*" >&2
+  printf '%s, Error, %s\n' "$scr_nm" "$*" >&2
   
   true "${fn_bndry} er_x() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
   exit "${exit_code}"
 } 
 
-: 'Define get_pids_for_restarting()'
+:;: 'Define get_pids_for_restarting()'
 function get_pids_for_restarting(){ :
   # shellcheck disable=SC2034
   local - dnf_o pipeline1 pipeline2
@@ -117,14 +117,14 @@ function get_pids_for_restarting(){ :
 
   : 'lengths of variables' # <>
   : $(( ++pr_counter )) # <>
-  : Lengths of vars, measurement no.: "${pr_counter}" # <>
-  : dnf_o:    "${#dnf_o}" # <>
-  : pipline1: "${#pipline1}" # <>
-  : pipline2: "${#pipline2}" # <>
-  : a_pids:   "${#a_pids}" # <>
+  : Lengths of vars, measurement no., "${pr_counter}" # <>
+  : dnf_o,    "${#dnf_o}" # <>
+  : pipline1, "${#pipline1}" # <>
+  : pipline2, "${#pipline2}" # <>
+  : a_pids,   "${#a_pids}" # <>
 }
 
-: 'Define gh_auth_login_command()'
+:;: 'Define gh_auth_login_command()'
 function gh_auth_login_command(){ :
   ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to refresh auth manually
   if gh auth status 2> /dev/null 1>&2
@@ -140,7 +140,7 @@ function gh_auth_login_command(){ :
   gh auth setup-git
 }
 
-: 'min_necc_git_cmds()'
+:;: 'min_necc_git_cmds()'
 function min_necc_git_cmds(){ :
   local -
   set -
@@ -150,7 +150,7 @@ function min_necc_git_cmds(){ :
   git config --global 'user.signingkey' 'E287D0CF528591CE'
 }
 
-: 'Define min_necc_rpms()'
+:;: 'Define min_necc_rpms()'
 function min_necc_rpms(){ :
   local - XX
   set -
@@ -170,7 +170,7 @@ function min_necc_rpms(){ :
   done
 }
 
-: 'Define must_be_root()'
+:;: 'Define must_be_root()'
 function must_be_root(){ :
   local -
   set -
@@ -182,8 +182,8 @@ function must_be_root(){ :
   fi
 }
 
-: 'Define pause_to_check()'
-## Usage:   pause_to_check $nL
+:;: 'Define pause_to_check()'
+## Usage,   pause_to_check $nL
 pause_to_check() {
   local - ec=101 nn="$1";
   set -;
@@ -200,7 +200,7 @@ pause_to_check() {
   esac;
 }
 
-: 'reqd_user_files()'
+::: 'reqd_user_files()'
 function reqd_user_files(){ :
   local - ff 
   #set -
@@ -289,9 +289,9 @@ function reqd_user_files(){ :
     #exit 102 # <>
 }
 
-## Note, rm(): command shadowing is intended in this case
+## Note, rm(), command shadowing is intended in this case
 
-: 'Define rm() -- for bashrc only'
+:;: 'Define rm() -- for bashrc only'
 function rm(){ :
   (( ${#@} == 0 )) && return 1
   
@@ -328,7 +328,7 @@ function rm(){ :
   done
 }
 
-: 'Define setup_network()'
+::: 'Define setup_network()'
 ## Note, 1 is Google; A is Comcast
 function setup_network(){ :
   dns_srv_1=8.8.8.8
@@ -337,41 +337,41 @@ function setup_network(){ :
   ## Note,  ping  doesn't have long options
   if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
   then
-    printf '\n%s: Attempting to connect to the internet... \n\n' "$scr_nm"
+    printf '\n%s, Attempting to connect to the internet... \n\n' "$scr_nm"
 
-    :;: 'Try to get NetworkManager up and running'
+    : 'Try to get NetworkManager up and running'
     ## Note,  systemctl start  appears to be idempotent
     sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
     wait -f
 
-    :;: 'Turn on networking'
+    : 'Turn on networking'
     sudo -- nmcli n on
 
-    :;: 'Turn on WiFi'
+    : 'Turn on WiFi'
     sudo -- nmcli r wifi on
 
-    :;: 'Get interface name(s)'
+    : 'Get interface name(s)'
     readarray -d '' -t ifaces < <( nmcli --terse c | awk -F: '$1 !~ /lo/ { printf "%s\0", $1 }' )
 
-    :;: 'Connect the interface'
+    : 'Connect the interface'
     case "${#ifaces[@]}" in
       0 ) 
-        er_x "line:${nL}, No network device available"
+        er_x "line,${nL}, No network device available"
         ;;#
       1 ) 
         nmcli c up "${ifaces[*]}"
         sleep 5
         ;;#
       * )
-        er_x "line:${nL}, Multiple network devices available"
+        er_x "line ${nL}, Multiple network devices available"
         ;;#
     esac
 
     if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
     then
-      printf '\n%s: Network: Giving up; exiting.\n\n' "$scr_nm"
+      printf '\n%s  Network  Giving up; exiting.\n\n' "$scr_nm"
     else
-      printf '\n%s: Network: Success! \n\n' "$scr_nm"
+      printf '\n%s  Network  Success! \n\n' "$scr_nm"
     fi
   fi
 
@@ -380,33 +380,33 @@ function setup_network(){ :
   unset -f test_dns
 }
 
-: 'Define setup_time()'
+:;: 'Define setup_time()'
 function setup_time(){ :
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
-  sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line:${nL}"
+  sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line ${nL}"
   sudo -- chronyc makestep > /dev/null
 }
 
-: 'Define test_dns()'
+:;: 'Define test_dns()'
 function test_dns(){ :
   #local -
   #set -
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
 }
 
-: 'Define test_os()'
-## Note, written for Fedora: see hardcoded /run/media/root'
+:;: 'Define test_os()'
+## Note, written for Fedora, see hardcoded /run/media/root'
 ## Note, test of $kernel_release is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
 function test_os(){ :
   local - kernel_release=$( uname -r )
   if ! [[ ${kernel_release} =~ \.fc[0-9]{2}\. ]] 
   then
-    er_x "${LINENO}: OS is not Fedora"
+    er_x "${LINENO}, OS is not Fedora"
   fi
 }
 
-: 'Define trap_exit()'
+:;: 'Define trap_exit()'
 # shellcheck disable=SC2317
 function trap_exit(){ \
   local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}"
@@ -418,22 +418,22 @@ function trap_exit(){ \
   trap - EXIT
   if [[ ${exit_trap_ec} -eq '00' ]]
   then
-    : "End of script, line:${lineno}"
+    : "End of script, line ${lineno}"
   else
     : 'End of EXIT trap'
   fi
   builtin exit "${exit_trap_ec}"
 }
 
-: 'Define write_bashrc_strings()'
+:;: 'Define write_bashrc_strings()'
 function write_bashrc_strings(){ :
   local - ff file_x Aa_index Aa_element
 
     #set -x # <>
 
   :;: 'Certain parameters must be defined and have non-zero values'
-  (( $# == 0 )) && er_x "line:${nL}"
-  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line:${nL}"
+  (( $# == 0 )) && er_x "line ${nL}"
+  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line ${nL}"
 
   for ff
   do :;: 'Loop A - For each set of strings to append into bashrc'
@@ -443,12 +443,12 @@ function write_bashrc_strings(){ :
     for file_x in "${files_for_use_with_bash[@]}"
     do :;: 'Loop B - For each .bashrc'
 
-      : "file_x: ${file_x}"
+      : "file_x  ${file_x}"
 
       for Aa_index in "${!nr[@]}"
       do :;: 'Loop C - For each definition (function or parameter)'
 
-        : "Aa_index: ${Aa_index}"
+        : "Aa_index  ${Aa_index}"
         Aa_element="${nr[${Aa_index}]}"
 
         :;: '(1) If the definition is not yet written into the file...'
@@ -459,7 +459,7 @@ function write_bashrc_strings(){ :
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" | 
             sudo -- tee --append -- "${file_x}" > /dev/null || er_x "${nL}"
         else
-          : 'Definition exists: skipping'
+          : 'Definition exists, skipping'
         fi
 
         :;: '(2) If there is an alias by the same name, then delete it from the bashrc file at hand...'
@@ -498,10 +498,10 @@ trap trap_exit EXIT
 test_os
 
 :;: 'Vars, dirs, etc'
-## Bug: only way to export namerefs?  `declare -nx nL=...`
+## Bug, only way to export namerefs?  `declare -nx nL=...`
 
 :;: 'Vars... -- Error handling, variables and functions'
-## Note, variable assignments: Backslash escape bc  sed -i 
+## Note, variable assignments, Backslash escape bc  sed -i 
 # shellcheck disable=SC1001
 declare -nx nL=L\INENO
 
@@ -513,7 +513,7 @@ export PATH
 tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
 [[ -d ${tmpd} ]] || er_x "${nL}"
 
-## Bug: these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
+## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2 of  trap  "args section" ??
 
 :;: 'Vars... -- Other environment variables'
 ## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
@@ -593,7 +593,7 @@ gh auth status
 
 :;: 'Bash'
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
-## Note,  set [-|-x] : letting xtrace expand this  tput  command alters all xtrace colorization
+## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
 
 :;: 'Env vars for bashrc'
 
@@ -611,8 +611,8 @@ PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-  ## Note, TERM_SESSION_ID, 1: added in order to identify which TTY is using which terminal emulator program. See 
-  #+  also: https://stackoverflow.com/questions/42710685/bash-identify-a-terminal-session
+  ## Note, TERM_SESSION_ID, 1, added in order to identify which TTY is using which terminal emulator program. See 
+  #+  also, https://stackoverflow.com/questions/42710685/bash-identify-a-terminal-session
   #TERM_SESSION_ID="${TERM_SESSION_ID:-}"
   #if [[ -z "$TERM_SESSION_ID" ]] 
   #then
@@ -657,13 +657,13 @@ bashrc_strings_2+=(                    ['export PS0']=$(            declare -p P
 ## Note,  sudo  cannot find  [[  and  [  requires internal quotes
 for ff in "${files_for_use_with_bash[@]}"
 do
-  :;: 'File must exist'
+  : 'File must exist'
   if ! sudo -- [ -f "${ff}" ]
   then
-    er_x "line:${nL}, ${ff}"
+    er_x "line ${nL}, ${ff}"
   fi
 
-  :;: '...of the array files_for_use_with_bash'
+  : '...of the array files_for_use_with_bash'
   if ! sudo -- [ -e "${ff}.orig" ]
   then
     sudo -- rsync --checksum --archive -- "${ff}" "${ff}.orig"
@@ -671,9 +671,9 @@ do
     sudo -- chattr +i -- "${ff}.orig"
   fi
 
-  :;: '...per script-execution'
-  ## Note, ~: quoted tildas do not expand
-  sudo -- cp --archive -- "${ff}" "${ff}~" || er_x "line:${nL}, ${ff}"
+  : '...per script-execution'
+  ## Note, ~, quoted tildas do not expand
+  sudo -- cp --archive -- "${ff}" "${ff}~" || er_x "line ${nL}, ${ff}"
 done
 
 :;: 'Alter the array files_for_use_with_bash'
@@ -691,9 +691,9 @@ unset -f write_bashrc_strings
 
 :;: 'Vim'
 
-## Bug: hardcoded filename, 'vim-conf-text'
+## Bug, hardcoded filename, 'vim-conf-text'
 
-:;: 'Heredoc of vim-conf-text'
+: 'Heredoc of vim-conf-text'
 cat <<- \EOF | tee -- "${tmpd}/vim-conf-text" > /dev/null
 	" ~/.vimrc
 
@@ -709,14 +709,14 @@ cat <<- \EOF | tee -- "${tmpd}/vim-conf-text" > /dev/null
 	" On pressing tab, insert 2 spaces
 	set expandtab
 
-	" per https://superuser.com/questions/286290/is-there-any-way-to-hook-saving-in-vim-up-to-commiting-in-git ...and then some guessing and testing :-( 
+	" per https://superuser.com/questions/286290/is-there-any-way-to-hook-saving-in-vim-up-to-commiting-in-git ...and then some guessing and testing
   autocmd BufWritePost * execute '! if [[ -d .git ]] || git rev-parse --git-dir > /dev/null 2>&1 ; then git commit --gpg-sign --all --file - ; fi'
 
 EOF
 
   #set -x # <>
 
-:;: $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29' 
+: $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29' 
 readarray -d '' -t arr_vrc < <( sudo -- find /root -name '*vimrc*' -print0 )
 
 ## Bug? hardcoded conf file pathname
@@ -729,7 +729,7 @@ case "${#arr_vrc[@]}" in
       strng_vrc="${arr_vrc[*]:=/root/.vimrc}"
     ;;#
   *)
-      printf '\n  Multiple .vimrc files found: please edit the filesystem.\n'
+      printf '\n  Multiple .vimrc files found, please edit the filesystem.\n'
       printf '\t%s\n' "${arr_vrc[@]}"
       printf '\n'
     ;;#
@@ -745,22 +745,22 @@ else
   sudo -- touch -- "${strng_vrc}" # <> set-e
 fi
 
-:;: 'Write .vimrc'
+: 'Write .vimrc'
 if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${aa} = "${zz}" ]]
 then
-  :;: $'Test returned \x22true,\x22 the number didn\x27t match, so write to .vimrc'
+  : $'Test returned \x22true,\x22 the number didn\x27t match, so write to .vimrc'
 
-  :;: 'Set the umask and write the root file'
+  : 'Set the umask and write the root file'
   read -ra umask_prior < <( umask -p )
   umask 177
   sudo -- rsync --archive --checksum -- "${tmpd}/vim-conf-text" "${strng_vrc}" || er_x "${nL}"
 
-  :;: $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
+  : $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
   sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
   sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
   chmod 0400 -- "/home/${USER}/.vimrc"
 
-  :;: 'Reset the umask'
+  : 'Reset the umask'
   builtin "${umask_prior[@]}"
 fi
 
@@ -771,7 +771,7 @@ unset arr_vrc strng_vrc write2fs aa bb cc ff xx yy zz umask_prior
   #ec=101 nn="$nL" exit # <>
   #set -x # <>
 
-:;: 'Disk space: increase available by removing non-local locales'
+:;: 'Disk space, increase available by removing non-local locales'
 
 ## Note, such as... /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
 ## Note, for $dirs1 ,  find  syntax based on Mascheck's
@@ -779,7 +779,7 @@ unset arr_vrc strng_vrc write2fs aa bb cc ff xx yy zz umask_prior
 ## Note, for $fsos3 , '--and' is not POSIX compliant
 ## Note, for $fsos4 , sorts by unique inode and delimits by nulls
 
-## Bug: Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on Fedora-like systems
+## Bug, Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on Fedora-like systems
 
 declare -A fsos5
 readarray -d '' -t dirs1 < <( find / ! -path / -prune -type d -print0 )
@@ -807,7 +807,7 @@ then
 
     #declare -p fsos4 # <>
 
-  ## Question: does this assoc array fsos5 need to be declared as such? (I don't think so, but...)
+  ## Question, does this assoc array fsos5 need to be declared as such? (I don't think so, but...)
 
   set -- "${fsos4[@]}"
   
@@ -825,11 +825,11 @@ fi
 
   #declare -p fsos5 # <>
 
-:;: 'If any larger local data files were found, then remove them interactively'
+: 'If any larger local data files were found, then remove them interactively'
 if [[ -n ${!fsos5[*]} ]]
 then
-  :;: 'Inform user of any found FSOs'
-  printf '  Script: delete these files? \n'
+  : 'Inform user of any found FSOs'
+  printf '  Script, delete these files? \n'
   declare -p fsos5
   sleep 3
 
@@ -838,14 +838,14 @@ then
     mm=0
     tt=0
     xx="${fsos5[$dd]#.}"
-    printf '  File %d: \n' $(( ++mm ))
+    printf '  File %d, \n' $(( ++mm ))
 
     while true
     do
       if [[ -e ${xx} ]]
       then
         ## Note, '\x60' is a "backtick"
-        printf '  Script, output of %b: %s \n' '\x60ls\x60' \
+        printf '  Script, output of %b, %s \n' '\x60ls\x60' \
           "$( ls -l --all --human-readable --classify --inode --directory "${xx}" )"
         read -r -p ' > [yN] ' -t 600 yn
         yn="${yn,,?}"
@@ -854,10 +854,10 @@ then
           #declare -p yn # <>
 
         case "${yn}" in
-          0|1)  printf '  Zero and one are ambiguous: please use letters. \n'
+          0|1)  printf '  Zero and one are ambiguous, please use letters. \n'
                 continue 0001
               ;;#
-          y|t)  printf '  %s %b %s %s \n' 'Script:' ' \x60rm -i\x60 ' 'requires a typed [yN] response:' \
+          y|t)  printf '  %s %b %s %s \n' 'Script,' ' \x60rm -i\x60 ' 'requires a typed [yN] response,' \
                   'it defaults to do-not-delete if a user just presses [enter].'
 
                 if sudo -- command rm --one-file-system --preserve-root=all --interactive -- "${xx}"
@@ -872,11 +872,11 @@ then
                 unset 'fsos5[$dd]'
                 break 00001
               ;;#
-          *)    tt=$(( ++tt )) # <> set-e: can be just  (( tt++ ))  when errexit's off
+          *)    tt=$(( ++tt )) # <> set-e, can be just  (( tt++ ))  when errexit's off
 
                 if (( tt < 3 ))
                 then
-                  printf '  Invalid response (%d): please try again. \n' "${tt}"
+                  printf '  Invalid response (%d), please try again. \n' "${tt}"
 
                 else
                   printf '  Keeping this file. \n'
@@ -898,7 +898,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
   #set -x # <>
   #ec=101 nn="$nL" exit # <>
 
-## TODO: you want to kill blueman-applet and remove its rpm(s) ( ie, any/all bluetooth connectivity )
+## TODO, you want to kill blueman-applet and remove its rpm(s) ( ie, any/all bluetooth connectivity )
 
 :;: 'Dnf'
 
@@ -913,7 +913,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 ## Note, CUPS cannot be safely removed; too many dependencies
 ## Note, For some unknown reason, even when  dnf  doesn't change any programs,  dnf 
 #+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of 
-#+  my tabs.  :-(  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf 
+#+  my tabs.  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf 
 #+  needs-restarting  in the event that any files on disk may actually have been changed.
 ## Note, these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of whichever 
 #+  expansion does that, leaving just the regular strings as the elements of the array
@@ -976,12 +976,12 @@ then
     do
       #declare -p removable_rpms | tee -- "${tmpd}/removable_rpms.array"
 
-      ## Note,  dnf : do not use [-y|--yes] with this command 
+      ## Note,  dnf , do not use [-y|--yes] with this command 
       if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_rpms[rr]}"
       then
         unset 'removable_rpms[rr]'
       else
-        er_x Line:"${nL}", "${removable_rpms[rr]}"
+        er_x Line "${nL}", "${removable_rpms[rr]}"
       fi
     done
      
@@ -1128,7 +1128,7 @@ then
   while true
   do
 
-    ## Note,  [[ ... = : this second test,  [[ ${a_pids[*]} = 1 ]]  is correct; ie, do not use ((...))
+    ## Note,  [[ ... = , this second test,  [[ ${a_pids[*]} = 1 ]]  is correct; ie, do not use ((...))
     :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
     if [[ -n ${a_pids[*]: -1:1} ]] && ! [[ ${a_pids[*]} = 1 ]]
     then
@@ -1137,7 +1137,7 @@ then
 
       :;: 'Print some info and wait for it to be read'
       ## Note, '\x27' is a single quote
-      printf '\n  %b for restarting, count: %d \n\n' 'PID\x27s' "${nn}"
+      printf '\n  %b for restarting, count, %d \n\n' 'PID\x27s' "${nn}"
 
         sleep 1 # <>
 
