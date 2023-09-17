@@ -900,14 +900,14 @@ then
       ## Note:  dnf : do not use [-y|--yes] with this command 
       if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_rpms[rr]}"
       then
-        unset 'rpm_nms_for_removal[rr]'
+        unset 'removable_rpms[rr]'
       else
         er_x Line:"${nL}", "${removable_rpms[rr]}"
       fi
     done
      
-    [[ -f "${tmpd}/removable_rpms.array" ]] && 
-      command rm --one-file-system --preserve-root=all --force -- "${tmpd}/removable_rpms.array"
+    #[[ -f "${tmpd}/removable_rpms.array" ]] && 
+      #command rm --one-file-system --preserve-root=all --force -- "${tmpd}/removable_rpms.array" # <>
   fi
 fi
 
