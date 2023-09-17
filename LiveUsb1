@@ -848,8 +848,12 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 #+  apply to the entire block
 
 hash_of_installed_rpms_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
+
+## Removals for disk space
 rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
-rpm_nms_for_removal+=( claws-mail blueman bluez )
+
+## Removals for security
+#rpm_nms_for_removal+=( claws-mail blueman bluez )
 
 # shellcheck disable=SC2206
 {
