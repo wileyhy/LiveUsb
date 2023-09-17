@@ -104,7 +104,6 @@ readonly git_tempd
 :;: 'Git parameters, dependency level 2'
 if sudo -- [ -f $git_config_sys_conf_file ]
 then
-  #git_conf_sys=$( sudo -- git config --global --list )
   git_conf_sys=$( git config --global --list )
 fi
 git_keys+=(
@@ -119,7 +118,7 @@ umask 133
 for aa in "${git_files_a[@]}"
 do
   sudo -- [ -e "${aa}" ] || sudo -- touch "${aa}"
-  sudo -- [ -e "${aa}" ] && sudo -- chmod 0644 "${verb[@]}" "${aa}"
+  sudo -- chmod 0644 "${verb[@]}" "${aa}"
 done
 unset aa
 builtin "${prev_umask[@]}"
@@ -127,7 +126,6 @@ builtin "${prev_umask[@]}"
 :;: 'git config, remove a config if present'
 if grep gpg.format "${qui[@]}" <<< "${git_conf_sys[@]}"
 then
-  #sudo -- git config --global --unset gpg.format 
   git config --global --unset gpg.format 
 fi
 
@@ -140,7 +138,6 @@ do
 
   if ! grep "${bb}=${git_keys[$bb]}" "${qui[@]}" <<< "${git_conf_sys[@]}"
   then
-    #sudo -- git config --global "${bb}" "${git_keys[$bb]}"
     git config --global "${bb}" "${git_keys[$bb]}"
   fi
   : "Loop A - shut" ;:
@@ -236,19 +233,16 @@ unset ee
 pushd "${dev_d1}" > /dev/null || exit "${nL}"
 
   #set -x # <>
-
-GIT_TRACE=true
-#GIT_CURL_VERBOSE=true
-#GIT_SSH_COMMAND="ssh -vvv"
-#GIT_TRACE_PACK_ACCESS=true
-#GIT_TRACE_PACKET=true
-#GIT_TRACE_PACKFILE=true
-#GIT_TRACE_PERFORMANCE=true
-GIT_TRACE_SETUP=true
-GIT_TRACE_SHALLOW=true
-
-git config --global --list --show-origin --show-scope | cat
-#sudo -- git config --global --list --show-origin --show-scope
+  #GIT_TRACE=true # <>
+  #GIT_CURL_VERBOSE=true # <>
+  #GIT_SSH_COMMAND="ssh -vvv" # <>
+  #GIT_TRACE_PACK_ACCESS=true # <>
+  #GIT_TRACE_PACKET=true # <>
+  #GIT_TRACE_PACKFILE=true # <>
+  #GIT_TRACE_PERFORMANCE=true # <>
+  #GIT_TRACE_SETUP=true # <>
+  #GIT_TRACE_SHALLOW=true # <>
+  #git config --global --list --show-origin --show-scope | cat # <>
 
 :;: 'Clone repo'
 [[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
@@ -264,8 +258,8 @@ ssh_system_conf=/etc/ssh/ssh_config
 ssh_user_conf=~/.ssh/config
 
 sudo -- chown --recursive "${UID}:${UID}" "${verb[@]}" "${ssh_d}" || er_x "${nL}"
-sudo -- chmod 700 "${verb[@]}" "${ssh_d}"
-sudo -- chmod --recursive 700 "${verb[@]}" "${ssh_d}"/*
+chmod 700 "${verb[@]}" "${ssh_d}"
+chmod --recursive 700 "${verb[@]}" "${ssh_d}"/*
 
 if [[ -f ${ssh_user_conf} ]]
 then
@@ -279,12 +273,9 @@ then
   fi
 fi
 
-# ?
-#[[ -f ${ssh_system_conf} ]] && exit "${nL}"
-
 ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
-:;: $'Collect output of \x60ps\x60'
+:;: $'Collect output of \x60ps\x60, but without printing it to xtrace'
 [[ -o xtrace ]] && xon=yes && set -
 ps_o=$( ps aux )
 [[ ${xon:=} = yes ]] && set -x && unset xon
@@ -338,7 +329,8 @@ unset xon
 :;: 'GPG'
 gpg_d=~/.gnupg
 sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
-sudo -- chmod --recursive 700 "${gpg_d}"
+chmod --recursive 700 "${gpg_d}"
+
 if grep --extended-regexp '[g]pg-a.*daemon' "${qui[@]}" <<< "${ps_o}"
 then
   gpgconf --kill gpg-agent
@@ -348,9 +340,9 @@ gpg-connect-agent /bye 2> /dev/null
 GPG_TTY=$( tty )
 export GPG_TTY
 
-:;: 'Remind user of commands for the interactive shell'
-
   #set -x # <>
+
+:;: 'Remind user of commands for the interactive shell'
 
 popd > /dev/null || exit "${nL}"
 
@@ -364,5 +356,4 @@ fi
 command rm --force --recursive "${verb[@]}" "${git_tempd}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 exit 00
-
 
