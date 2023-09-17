@@ -218,10 +218,9 @@ function must_be_root(){ :
 
 :;: 'Define pause_to_check()'
 ## Usage,   pause_to_check $nL
-function pause_to_check() {
+function pause_to_check() { EC=101 LL="$1"
   true "${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-
-  local - ec=101 nn="$1"
+  local -
   set -
 
   read -N 1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n\n' -r -s -t 600
@@ -478,7 +477,7 @@ function test_os(){ :
 :;: 'Define trap_exit()'
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - exit_trap_ec="${ec:-$?}" lineno="${nn:-$nL}" 
+function trap_exit(){ local - exit_trap_ec="${EC:-$?}" lineno="${LL:-$nL}" 
   true"${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
 
@@ -618,7 +617,7 @@ setup_network
 :;: 'Time'
 setup_time
 
-  #ec=101 nn="$nL" exit # <>
+  #EC=101 LL="$nL" exit # <>
   #set -x # <>
 
 :;: 'Minimum necessary rpms'
@@ -764,7 +763,7 @@ write_bashrc_strings "bashrc_strings_1" "bashrc_strings_2"
 unset files_for_use_with_bash bashrc_strings_1 bashrc_strings_2
 unset -f write_bashrc_strings
 
-  #ec=101 nn="$nL" exit # <>
+  #EC=101 LL="$nL" exit # <>
   #set -x # <>
   #set +e # <>
 
@@ -845,7 +844,7 @@ fi
 command -- rm --one-file-system --preserve-root=all --force -- "${tmpd}/vim-conf-text"
 unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 
-  #ec=101 nn="$nL" exit # <>
+  #EC=101 LL="$nL" exit # <>
   #set -x # <>
 
 :;: 'Disk space, increase available by removing non-local locales'
@@ -977,7 +976,7 @@ fi
 unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 
   #set -x # <>
-  #ec=101 nn="$nL" exit # <>
+  #EC=101 LL="$nL" exit # <>
 
 :;: 'Dnf'
 
@@ -1187,7 +1186,7 @@ unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
 unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
 
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
-  #ec=101 nn="$nL" exit # <>
+  #EC=101 LL="$nL" exit # <>
   #set -x # <>
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
@@ -1199,7 +1198,7 @@ pr_counter=0
 get_pids_for_restarting
 
   #declare -p pr_counter # <>
-  #ec=101 nn="$nL" exit # <>
+  #EC=101 LL="$nL" exit # <>
 
 hash_of_installed_rpms_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
@@ -1285,7 +1284,7 @@ then
   unset II XX a_pids is_zombie
 fi
 
-  #ec=101 nn="$nL" exit # <>
+  #EC=101 LL="$nL" exit # <>
   #set -x # <>
 
 :;: 'Restart NetworkManager if necessary'
@@ -1293,18 +1292,18 @@ fi
   #pause_to_check "$nL" # <>
 
 ## TODO: use written function here
-for nn in "${dns_srv_A}" "${dns_srv_1}"
+for BB in "${dns_srv_A}" "${dns_srv_1}"
 do
-  if ! ping -4qc1 -- "${nn}" > /dev/null 2>&1
+  if ! ping -4qc1 -- "${BB}" > /dev/null 2>&1
   then
     sudo -- nice --adjustment=-20 -- systemctl restart -- NetworkManager.service || er_x "${nL}"
   fi
 done
-unset nn
+unset BB
 
 # <Logs> Write to TTY and exit
 #"$(type -P kill)" --signal USR2 -- "$$" # <Logs>
 
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
-ec='00' nn="$nL" exit
+EC='00' LL="$nL" exit
 
