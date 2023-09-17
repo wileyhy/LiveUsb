@@ -914,54 +914,54 @@ then
   declare -p fsos5
   sleep 3
 
-  for dd in "${!fsos5[@]}"
+  for AA in "${!fsos5[@]}"
   do
-    mm=0
-    tt=0
-    xx="${fsos5[$dd]#.}"
-    printf '  File %d, \n' $(( ++mm ))
+    HH=0
+    II=0
+    JJ="${fsos5[$AA]#.}"
+    printf '  File %d, \n' $(( ++II ))
 
     while true
     do
-      if [[ -e ${xx} ]]
+      if [[ -e ${JJ} ]]
       then
         ## Note, '\x60' is a "backtick"
         printf '  Script, output of %b, %s \n' '\x60ls\x60' \
-          "$( ls -l --all --human-readable --classify --inode --directory "${xx}" )"
-        read -r -p ' > [yN] ' -t 600 yn
-        yn="${yn,,?}"
-        yn="${yn:=n}"
+          "$( ls -l --all --human-readable --classify --inode --directory "${JJ}" )"
+        read -r -p ' > [yN] ' -t 600 yes_or_no
+        yes_or_no="${yes_or_no,,?}"
+        yes_or_no="${yes_or_no:=n}"
 
-          #declare -p yn # <>
+          #declare -p yes_or_no # <>
 
-        case "${yn}" in
+        case "${yes_or_no}" in
           0|1)  printf '  Zero and one are ambiguous, please use letters. \n'
                 continue 0001
               ;;\
           y|t)  printf '  %s %b %s %s \n' 'Script,' ' \x60rm -i\x60 ' 'requires a typed [yN] response,' \
                   'it defaults to do-not-delete if a user just presses [enter].'
 
-                if sudo -- command rm --one-file-system --preserve-root=all --interactive -- "${xx}"
+                if sudo -- command rm --one-file-system --preserve-root=all --interactive -- "${JJ}"
                 then
-                  unset 'fsos5[$dd]'
+                  unset 'fsos5[$AA]'
                   break 00001
                 else
                   er_x "${nL}, unknown error"
                 fi
               ;;\
           n|f)  printf '  Keeping this file. \n'
-                unset 'fsos5[$dd]'
+                unset 'fsos5[$AA]'
                 break 00001
               ;;\
-          *)    tt=$(( ++tt )) # <> set-e, can be just  (( tt++ ))  when errexit's off
+          *)    HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit's off
 
-                if (( tt < 3 ))
+                if (( HH < 3 ))
                 then
-                  printf '  Invalid response (%d), please try again. \n' "${tt}"
+                  printf '  Invalid response (%d), please try again. \n' "${HH}"
 
                 else
                   printf '  Keeping this file. \n'
-                  unset 'fsos5[$dd]'
+                  unset 'fsos5[$AA]'
                   break 00001
                 fi
               ;;\
@@ -974,7 +974,7 @@ then
 fi
 
 ## Clean up from section "Disk space"
-unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
+unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 
   #set -x # <>
   #ec=101 nn="$nL" exit # <>
@@ -1051,18 +1051,19 @@ then
   :;: 'Keep a list, just in case an rpm removal accidentally erases something vital'
   if [[ -n ${removable_rpms[*]:0:8} ]]
   then
-    for rr in "${!removable_rpms[@]}"
+    for QQ in "${!removable_rpms[@]}"
     do
       #declare -p removable_rpms | tee -- "${tmpd}/removable_rpms.array"
 
       ## Note,  dnf , do not use [-y|--yes] with this particular command
-      if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_rpms[rr]}"
+      if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_rpms[QQ]}"
       then
-        unset 'removable_rpms[rr]'
+        unset 'removable_rpms[QQ]'
       else
-        er_x Line "${nL}", "${removable_rpms[rr]}"
+        er_x Line "${nL}", "${removable_rpms[QQ]}"
       fi
     done
+    unset QQ
 
     #[[ -f "${tmpd}/removable_rpms.array" ]] &&
       #command rm --one-file-system --preserve-root=all --force -- "${tmpd}/removable_rpms.array" # <>
@@ -1114,14 +1115,15 @@ sudo -- nice --adjustment=-20 -- dnf --assumeyes --security upgrade || er_x "${n
 
   #pause_to_check "$nL" # <>
 
-for rr in "${!rpms[@]}"
+for UU in "${!rpms[@]}"
 do
-  if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${rpms[rr]}"
+  if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${rpms[UU]}"
   then
-    installed_rpms+=( "${rpms[rr]}" )
-    unset 'rpms[rr]'
+    installed_rpms+=( "${rpms[UU]}" )
+    unset 'rpms[UU]'
   fi
 done
+unset UU
 
 :;: 'Upgrade any installed RPMs from the main list, en masse'
 
@@ -1145,9 +1147,9 @@ then
   ## Note, if you install multiple rpms at the same time, and one of them causes some error, then you have
   #+  no immediate way of knowing which one caused the error
 
-  for XX in "${uninstalled_rpms[@]}"
+  for VV in "${uninstalled_rpms[@]}"
   do
-    sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${XX}" || er_x "${nL}"
+    sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" || er_x "${nL}"
 
     readarray -t nr_pids < <(
       sudo -- nice --adjustment=-20 -- dnf --quiet needs-restarting 2> /dev/null | awk '{ print $1 }')
@@ -1156,9 +1158,10 @@ then
 
     if [[ -n ${nr_pids[*]:0:1} ]]
     then
-      for XX in "${nr_pids[@]}"
+
+      for WW in "${nr_pids[@]}"
       do
-        ps aux | awk "\$2 ~ /${XX}/ { print }"
+        ps aux | awk "\$2 ~ /${WW}/ { print }"
 
         #pause_to_check "$nL"
 
@@ -1166,7 +1169,7 @@ then
           --timeout 1000 HUP \
           --timeout 1000 USR1 \
           --timeout 1000 TERM \
-          --timeout 1000 KILL -- "$XX"
+          --timeout 1000 KILL -- "$WW"
 
         : 'Now restart some PID ??'
 
@@ -1175,6 +1178,7 @@ then
       done
     fi
   done
+  unset VV
 fi
 unset rpm_nms_for_removal rpms
 unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
