@@ -242,8 +242,11 @@ function reqd_user_files(){
         er_x "${nL} USB device not available"
       fi
 
-      	sudo umount "${pttn_path}"
-        sudo rmdir  "${mount_pt}"
+      	if lsblk | grep -q "$pttn_path"
+	then
+      	  sudo umount "${pttn_path}"
+          sudo rmdir  "${mount_pt}"
+	fi
 	sudo sync -f
 	wait -f
 
