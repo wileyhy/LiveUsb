@@ -1022,7 +1022,6 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
   rpms+=( ${for_security:=}     orca protonvpn-cli xsecurelock )
 }
 
-
 :;: 'Start with removing any unnecessary RPMs'
 
   #pause_to_check "$nL" # <>
@@ -1058,7 +1057,6 @@ fi
 
   #df --sync --output=fstype,avail,pcent,target -- . # <>
 
-
 :;: 'Then do a blanket security upgrade'
 
 ## Note, the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to
@@ -1069,8 +1067,6 @@ fi
 ## Count the original number of rpms installed
 
 ## Get full list of rpms to upgrade, in an array; exit on non-zero
-
-
 
 ## For each "original rpm" in the original list
 
@@ -1096,13 +1092,9 @@ fi
 
 ## Loop A, end
 
-
-
-
 sudo -- nice --adjustment=-20 -- dnf --assumeyes --security upgrade || er_x "${nL}"
 
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
-
 
 :;: 'Find out whether an RPM is installed, one by one'
 
@@ -1117,7 +1109,6 @@ do
   fi
 done
 
-
 :;: 'Upgrade any installed RPMs from the main list, en masse'
 
 ## Note, this section should upgrade rpms one by one
@@ -1128,7 +1119,6 @@ if [[ -n ${installed_rpms[*]: -1:1} ]]
 then
   sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${installed_rpms[@]}" || er_x "${nL}"
 fi
-
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 
@@ -1162,7 +1152,6 @@ then
         : 'Now restart some PID ??'
 
         #pause_to_check "$nL"
-
 
       done
     fi
