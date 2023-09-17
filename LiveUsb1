@@ -545,7 +545,7 @@ function write_bashrc_strings(){ :
         fi
 
         :;: '(2) If there is an alias by the same name, then delete it from the bashrc file at hand...'
-        sudo -- sed -i "/^alias ${Aa_index##* }=/d" -- "${file_x}"
+        sudo -- sed --in-place "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
         : 'Loop C - shut' ;:
       done
@@ -649,7 +649,7 @@ unset gh_config_list_out github_configs ff
 ## Note, executing this command just once
 if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
 then
-  if ! ps aux | grep -q [f]irefox
+  if ! ps aux | grep --quiet '[f]irefox'
   then
     firefox --browser 2>/dev/null &
     pause_to_check "$nL"
@@ -999,7 +999,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 dd mm tt xx yn
 ## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will
 #+  apply to the entire block
 
-hash_of_installed_rpms_A=$( rpm -qa | sha256sum | awk '{ print $1 }' )
+hash_of_installed_rpms_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
 ## Removals for disk space
 rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
@@ -1045,7 +1045,8 @@ then
   ## Note, this  printf  command uses nulls so that '-e' and '%s.*' will be read as separate indices
   #+  by  readarray
   readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${rpm_nms_for_removal[@]}" )
-  readarray -t removable_rpms < <( rpm -qa | grep --ignore-case --extended-regexp "${grep_args[@]}" )
+  readarray -t removable_rpms < <( 
+    rpm --all --query | grep --ignore-case --extended-regexp "${grep_args[@]}" )
 
     declare -p grep_args removable_rpms # <>
 
@@ -1197,7 +1198,7 @@ get_pids_for_restarting
   #declare -p pr_counter # <>
   #ec=101 nn="$nL" exit # <>
 
-hash_of_installed_rpms_B=$( rpm -qa | sha256sum | awk '{ print $1 }' )
+hash_of_installed_rpms_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
 if ! [[ ${hash_of_installed_rpms_A} = "${hash_of_installed_rpms_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
 then
