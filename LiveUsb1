@@ -1,12 +1,9 @@
 #!/bin/bash
 ## LiveUsb1
 
-## Note, Online Git book
-#+  https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository
-
 ## Note, written for Fedora, see hardcoded /run/media/root'
-## Note, idempotent script
 ## Note, style, function definition syntax, '(){ :' makes plain xtrace easier to read
+## Note, idempotent script
 
 # <> Debugging
 set -aCuTeo pipefail # <>
