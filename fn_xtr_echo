@@ -21,6 +21,7 @@ function set() {
     : 'Define echo() -- true'
     function echo(){
       #: "$@"
+      : 'Define non_existent_function()'
       function non_existent_function(){ :; }
     }
   else
