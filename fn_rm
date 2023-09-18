@@ -106,7 +106,7 @@ rm ()
 
     declare -p opts_rm args_rm fn_command_line
     echo rm "${opts_rm[@]}" "${args_rm[@]}"
-    exit $LINENO
+    #exit $LINENO
 
   :;: '"Recycle bin" must exist'
   local delete_d 
