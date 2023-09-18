@@ -40,7 +40,11 @@ rm ()
       case "${HH}" in
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
         --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
-        --verbose|-- )
+        --verbose )
+          args_rm+=( "${HH}" )
+          ;;    
+        -- )
+          end_of_options='has_been_reached'
           args_rm+=( "${HH}" )
           ;;    
         --help )
