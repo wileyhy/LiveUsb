@@ -132,7 +132,7 @@ rm ()
     builtin command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return $LINENO
   fi
 }
-declare -fx rm
+declare -fxt rm
 
 touch foo 
 
