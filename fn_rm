@@ -20,21 +20,20 @@ rm ()
       mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
   fi
 
-  : 'For each FSO to be recycled'
-  if [[ ${end_of_options:=} = 'has_been_reached' ]]
-  then
-    echo options are over
-    if [[ -e ${HH} ]]
+  for HH
+  do
+    : 'For each FSO to be recycled'
+    if [[ ${end_of_options:=} = 'has_been_reached' ]]
     then
-      args_rm+=( "${HH}" )
+      : 'Options are over'
+      
+      if [[ -e ${HH} ]]
+      then
+        args_rm+=( "${HH}" )
+      else
+        printf '\n\tInvalid imput, %s\n\n' "${HH}"
+      fi
     else
-      printf '\n\tInvalid imput, %s\n\n' "${HH}"
-    fi
-
-
-  else
-    for HH
-    do
       : 'Static options'
       case "${HH}" in
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
@@ -64,8 +63,8 @@ rm ()
           esac
           ;;
       esac
-    done
-  fi
+    fi
+  done
 
   : 'Sanity check for options and arguments'
 
