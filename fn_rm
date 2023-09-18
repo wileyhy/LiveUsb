@@ -71,6 +71,7 @@ rm ()
   [[ -z ${opts_rm:=} ]] && opts_rm=( -- )
 
     declare -p opts_rm args_rm
+    echo rm "${opts_rm[@]}" "${args_rm[@]}"
     exit $LINENO
 
   :;: '"Recycle bin" must exist'
