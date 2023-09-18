@@ -4,7 +4,7 @@ XX=foo
 case $XX in
   bar|\
 baz|\
-    quux\
+  quux|\
     baz ) 
       echo blyw
       ;; 
