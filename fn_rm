@@ -27,6 +27,7 @@ rm ()
   else
     for HH
     do
+      : 'Static options'
       case "${HH}" in
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
         --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
@@ -40,7 +41,8 @@ rm ()
           command rm --version
           ;;
         * )
-          case ${HH} in
+          : 'Non-option arguments'
+          case "${HH}" in
             '--' )
               end_of_options=yes
               ;;
