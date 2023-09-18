@@ -140,8 +140,8 @@ touch foo
 #rm foo          ##   success -- okay
 
 #rm -f foo       ##   success -- okay 
-rm foo -f       ##   
-#rm -- foo       ## 
+#rm foo -f       ##   Invalid input -- okay
+#rm -- foo       ##   
 #rm foo --       ## 
 
 #rm -f -- foo    ## 
