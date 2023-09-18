@@ -73,8 +73,10 @@ declare -fx rm
 touch foo 
 #touch bar baz quux
 
-rm foo
-#rm -f bar
+## Command    ## Syntax
+#rm foo        ##  succeeds
+rm -f bar     ##  
+
 #rm -- baz
 #rm -f -- quux
 
