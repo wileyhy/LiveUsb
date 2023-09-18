@@ -159,3 +159,5 @@ touch foo
 
 #touch bar baz quux
 
+exit 00
+
