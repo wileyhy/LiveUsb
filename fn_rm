@@ -95,15 +95,17 @@ rm ()
       esac
     else 
       : 'Yes, so options are over and only arguments are processed'
+      II=$( realpath -e "${HH}" )
 
-      if [[ -e ${HH} ]]
+      if [[ -e ${II} ]]
       then
-        : "HH, $HH"
-        args_rm+=( "${HH}" )
+        : "II, $II"
+        args_rm+=( "${II}" )
       else
         printf '\n\tInvalid imput, %s\n\n' "${HH}"
         return "$LINENO"
       fi
+      unset II
     fi
 
     : 'Restart loop'
