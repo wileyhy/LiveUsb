@@ -25,7 +25,7 @@ rm ()
   [[ ${#@} -eq 0 ]] && return "$LINENO"
     
   :;: 'For each positional parameter'
-  local HH opts_rm args_rm
+  local HH end_of_options opts_rm args_rm
   
   for HH
   do
