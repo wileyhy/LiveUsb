@@ -49,20 +49,32 @@ rm ()
           opts_rm+=( "${HH}" )
           ;;    
         * )
-          : 'No options found; options have concluded'
+          : 'No more options found; options have concluded'
           end_of_options='has_been_reached'
           
-          : 'If there is no next pos-parm'
-          if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
-          then
-            : '...then force end of arguments on the CLI'
-            opts_rm+=( -- )
+          : 'Force end of arguments on the commandline...'
+          :   $'...IF there is no next positional parameter, OR...'
+          
+          if      [[ -z ${2:-} ]]
+          then 
+            opts_rm+=( -- )  
+          
+          ## fall through means, there is a next positional parameter
           else
-            : $'...or if the next pos-parm isn\x60t a valid FSO (File System Object)'
-            if ! [[ -e $2 ]] || ! [[ -d $2 ]] 
-            then
-              : '...then force end of arguments on the CLI'
-              opts_rm+=( -- )
+            :   $'...IF the next positional parameter is not "--", OR...'
+            if !  [[ $2 = -- ]]
+            then 
+              opts_rm+=( -- )  
+          
+            ## fall through means, the next positional parameter is "--"
+            else
+              :   $'...IF the next positional parameter does not exist on disk'
+              if !  [[ -e $2 ]]
+              then 
+                opts_rm+=( -- )  
+
+              ## fall through means, the next positional parameter does exist on disk (ie, "--" could be a filename)
+              fi
             fi
           fi
 
