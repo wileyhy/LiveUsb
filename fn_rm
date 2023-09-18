@@ -50,11 +50,20 @@ rm ()
         * )
           : 'No options found; options have concluded'
           end_of_options='has_been_reached'
-          
           : 'Non-option arguments begin'
+          
+          : 'If there is no next pos-parm'
           if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
           then
+            : '...then force end of arguments on the CLI'
             opts_rm+=( -- )
+          else
+            : $'...or if the next pos-parm isn\x60t a valid FSO'
+            if ! [[ -e $2 ]] || ! [[ -d $2 ]] 
+            then
+              : '...then force end of arguments on the CLI'
+              opts_rm+=( -- )
+            fi
           fi
 
           case "${HH}" in
