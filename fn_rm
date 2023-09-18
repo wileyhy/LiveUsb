@@ -6,78 +6,62 @@
 : 'Define rm()'
 rm ()
 {
-    :;: 'Input must exist'
-    (( ${#@} == 0 )) && return $LINENO
+  :;: 'Input must exist'
+  (( ${#@} == 0 )) && return $LINENO
     
-    : 'Vars'
-    local - HH delete_d time_sfx args_rm
-    delete_d=~/rm.d
-    time_sfx=$(date --utc +%s)
+  : 'Vars'
+  local - HH delete_d time_sfx args_rm
+  delete_d=~/rm.d
+  time_sfx=$(date --utc +%s)
 
-    : '"Recycle bin" must exist'
-    if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
-    then
-        mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
-    fi
+  : '"Recycle bin" must exist'
+  if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
+  then
+      mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
+  fi
 
-    : 'For each FSO to be recycled'
+  : 'For each FSO to be recycled'
+  if [[ ${end_of_options} = '--' ]]
+  then
+    echo options are over
+  else
     for HH
     do
       case "${HH}" 
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
-        --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|--verbose )
-            args_rm+=( "${HH}" )
-            ;;    
+        --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
+        --verbose )
+          args_rm+=( "${HH}" )
+          ;;    
         --help )
-            command rm --help
-            ;;
+          command rm --help
+          ;;
         --version )
-            command rm --version
-            ;;
+          command rm --version
+          ;;
         * )
-            if [[ -e ${HH} ]]
-            then
-
-              if [[ $
-            ;;
+          case ${HH} in
+            '--' )
+              end_of_options=yes
+              ;;
+            * )
+              if [[ -e ${HH} ]]
+              then
+                args_rm+=( "${HH}" )
+              else
+                printf '\n\tInvalid imput, %s\n\n' "${HH}"
+              fi
+              ;;
+          esac
+          ;;
       esac
-
-
-
-
-
-
-
-
-
-
-
-        : 'Are the rm command options done?'
-        if [[ ${opts_done:=} = 'yes' ]]
-        then
-            : 'Yes, command options are done'
-
-            : 'Is the current posparm an FSO?'
-            if [[ -e ${HH} ]]
-            then
-                : 'Yes, the current posparm is an FSO'
-                command mv --backup --suffix="${time_sfx}" -- "${HH}" "${delete_d}" || return 3
-            else
-
-            fi
-        else
-            : 'No, command options are not yet done'
-
-            if [[ $HH = '--' ]]
-            then
-                opts_done=yes
-            else
-                shift
-                continue
-            fi
-        fi
-        [[ -z ${opts_done} ]] && er_x "${nL}"
     done
+  fi
+
+  if [[ -n ${args_rm[*]:0:8} ]]
+  then
+    command mv --backup --suffix="${time_sfx}" -- "${HH}" "${delete_d}" || return 3
+  fi
 }
 declare -fx rm
 
