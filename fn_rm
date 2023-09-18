@@ -142,22 +142,22 @@ declare -fxt rm
 
 touch foo 
 
-## Command       ## Syntax
-#rm foo          ##   success -- okay
+## Command       ## Syntax           ## P/F
+#rm foo          ##   success           Pass
 
-#rm -f foo       ##   success -- okay 
-#rm foo -f       ##   Invalid input -- okay
-#rm -- foo       ##   success -- okay
-#rm foo --       ##   Invalid input -- okay 
+#rm -f foo       ##   success           Pass
+#rm foo -f       ##   Invalid input     Pass
 
-#rm -f -- foo    ##   success -- okay
-#rm -- -f foo    ##   Invalid input -- okay
-#rm -f foo --    ##   Invalid input -- okay
-#rm foo -f --    ##   Invalid input -- okay
-#rm foo -- -f    ##   Invalid input -- okay
-#rm -- foo -f    ##   Invalid input -- okay
+#rm -- foo       ##   success           Pass
+#rm foo --       ##   Invalid input     Pass
 
-#touch bar baz quux
+#rm -f -- foo    ##   success           Pass
+#rm -- -f foo    ##   Invalid input     Pass
+#rm -f foo --    ##   Invalid input     Pass
+#rm foo -f --    ##   Invalid input     Pass
+#rm foo -- -f    ##   Invalid input     Pass
+#rm -- foo -f    ##   Invalid input     Pass
 
+[[ -f foo ]] && command rm -i -- foo
 exit 00
 
