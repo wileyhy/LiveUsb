@@ -5,7 +5,7 @@
 
 
 : 'Vars and traps'
-delete_d=~/rm.d
+delete_d=~/.rm.d
 trap_rtn(){
   declare -p opts_rm args_rm fn_command_line
   command -- rm -vf -- "${delete_d}"/*
@@ -98,7 +98,7 @@ rm ()
 
   :;: '"Recycle bin" must exist'
   local delete_d
-  delete_d=~/rm.d
+  delete_d=~/.rm.d
 
   if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
   then
