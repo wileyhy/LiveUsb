@@ -1,0 +1,140 @@
+#!/bin/bash -eux
+## fn_rm -- a function for sending deleted files (etc.) to a "Recycle Bin"
+#+  Written on bash 5.2
+#+  Copyright 2023 Wiley Houston Young
+
+
+: 'Vars and traps'
+delete_d=~/rm.d
+trap_rtn(){
+  declare -p opts_rm args_rm fn_command_line
+  command -- rm -vf -- "${delete_d}"/*
+}
+trap trap_rtn RETURN
+
+: 'Define rm()'
+rm ()
+{
+  local - 
+  #set -
+  
+  declare fn_command_line
+  fn_command_line="${FUNCNAME[0]} $*"
+ 
+  :;: 'Input must exist'
+  [[ ${#@} -eq 0 ]] && return "$LINENO"
+    
+  :;: 'For each positional parameter'
+  local HH opts_rm args_rm
+  
+  for HH
+  do
+    : 'If "End of Options" has been reached'
+    if ! [[ ${end_of_options:=} = 'has_been_reached' ]]
+    then
+      case "${HH}" in
+        --version )
+          command rm --version
+          ;;
+        --help )
+          command rm --help
+          ;;
+        -- )
+          end_of_options='has_been_reached'
+          opts_rm+=( "${HH}" )
+          ;;    
+        -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
+        --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
+        --verbose )
+          opts_rm+=( "${HH}" )
+          ;;    
+        * )
+          : 'No options found; options have concluded'
+          end_of_options='has_been_reached'
+          
+          : 'If there is no next pos-parm'
+          if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
+          then
+            : '...then force end of arguments on the CLI'
+            opts_rm+=( -- )
+          else
+            : $'...or if the next pos-parm isn\x60t a valid FSO (File System Object)'
+            if ! [[ -e $2 ]] || ! [[ -d $2 ]] 
+            then
+              : '...then force end of arguments on the CLI'
+              opts_rm+=( -- )
+            fi
+          fi
+
+          case "${HH}" in
+            * )
+              if [[ -e ${HH} ]]
+              then
+                args_rm+=( "${HH}" )
+              else
+                printf '\n\tInvalid imput, %s\n\n' "${HH}"
+              fi
+              ;;
+          esac
+          ;;
+      esac
+    else 
+      : 'Yes, so options are over and only arguments are processed'
+
+      if [[ -e ${HH} ]]
+      then
+        II=$( realpath -e "${HH}" )
+        args_rm+=( "${II}" )
+      else
+        printf '\n\tInvalid imput, %s\n\n' "${HH}"
+        return "$LINENO"
+      fi
+      unset II
+    fi
+
+    : 'Restart loop'
+    shift
+  done
+  : 'End of loop'
+
+  : 'Sanity check for options and arguments'
+  [[ -z ${opts_rm:=} ]] && opts_rm=( -- )
+
+  :;: '"Recycle bin" must exist'
+  if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
+  then
+      mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
+  fi
+
+  :;: 'If optargs exist, then  mv  the file into the recycle bucket'
+  local time_sfx 
+  time_sfx=$( date --utc +%s )
+
+  if [[ -n ${args_rm[*]:0:8} ]]
+  then
+    command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return $LINENO
+  fi
+}
+declare -fxt rm
+
+touch foo 
+
+## Command       ## Syntax           ## P/F
+#rm foo          ##   success           Pass
+
+#rm -f foo       ##   success           Pass
+#rm foo -f       ##   Invalid input     Pass
+
+#rm -- foo       ##   success           Pass
+#rm foo --       ##   Invalid input     Pass
+
+#rm -f -- foo    ##   success           Pass
+#rm -- -f foo    ##   Invalid input     Pass
+#rm -f foo --    ##   Invalid input     Pass
+#rm foo -f --    ##   Invalid input     Pass
+#rm foo -- -f    ##   Invalid input     Pass
+#rm -- foo -f    ##   Invalid input     Pass
+
+[[ -f foo ]] && command rm -i -- foo
+exit 00
+
