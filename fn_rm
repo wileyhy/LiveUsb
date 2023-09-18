@@ -1,0 +1,43 @@
+#!/bin/bash -eux
+
+rm () 
+{ 
+    :;
+    (( ${#@} == 0 )) && return 1;
+    local - delete_d fd time_sfx opts_done;
+    delete_d=~/rm.d;
+    time_sfx=$(date --utc +%s);
+    if ! [[ -e ${delete_d} ]]; then
+        mkdir --mode 0700 --verbose -- "${delete_d}" || return 2;
+    fi;
+    for fd in "$@" --;
+    do
+        if [[ ${opts_done} = yes ]]; then
+            if [[ -e ${fd} ]]; then
+                command mv --backup --suffix="${time_sfx}" -- "${fd}" "${delete_d}" || return 3;
+            fi;
+        else
+            if [[ $fd = '--' ]]; then
+                opts_done=yes;
+            else
+                shift;
+                continue;
+            fi;
+        fi;
+        [[ -z ${opts_done} ]] && er_x "${nL}";
+    done
+}
+declare -fx rm
+
+
+
+touch foo bar baz quux
+
+rm foo
+
+rm -f bar
+
+rm -- baz 
+
+rm -f -- quux
+
