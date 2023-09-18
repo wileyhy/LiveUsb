@@ -95,11 +95,12 @@ rm ()
       esac
     else 
       : 'Yes, so options are over and only arguments are processed'
-      II=$( realpath -e "${HH}" )
 
-      if [[ -e ${II} ]]
+      if [[ -e ${HH} ]]
       then
-        : "II, $II"
+        : "HH, $HH"
+      
+        II=$( realpath -e "${HH}" )
         args_rm+=( "${II}" )
       else
         printf '\n\tInvalid imput, %s\n\n' "${HH}"
