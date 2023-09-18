@@ -139,7 +139,7 @@ touch foo
 
 #rm --version           ##   success           Pass
 #rm --help              ##   success           Pass
-rm --preserve-root -v  ##
+#rm --preserve-root -v  ##   Invalid input     Pass
 
 [[ -f foo ]] && command -- rm -i -- foo
 exit 00
