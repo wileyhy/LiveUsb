@@ -103,8 +103,8 @@ touch foo
 ## Command      ## Syntax
 rm foo         ##  succeeds == okay
 
-#rm -f foo       ##  succeeds == okay
-#rm foo -f       ## Invalid imput == okay
+#rm -f foo       ##  
+#rm foo -f       ## 
 #rm -- foo       ## 
 #rm foo --       ## 
 
