@@ -58,7 +58,7 @@ rm ()
                 : "HH, $HH"
                 args_rm+=( "${HH}" )
               
-                  declare "ampersand, $@"
+                  : "ampersand, $@"
                   exit "$LINENO"
 
               else
