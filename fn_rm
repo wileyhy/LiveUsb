@@ -132,10 +132,10 @@ declare -fx rm
 
 touch foo 
 
-## Command      ## Syntax
-rm foo         ##  
+## Command       ## Syntax
+#rm foo          ##   success -- okay
 
-#rm -f foo       ##  
+rm -f foo       ##   
 #rm foo -f       ## 
 #rm -- foo       ## 
 #rm foo --       ## 
