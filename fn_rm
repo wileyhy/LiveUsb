@@ -10,7 +10,7 @@ rm ()
   #set -
   fn_command_line="$0 $@"
  
-    declare -p fn_command_line
+    declare -p fn_command_line FUNCNAME
     exit "$LINENO"
 
   :;: 'Input must exist'
