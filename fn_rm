@@ -19,7 +19,7 @@ rm ()
   :;: 'For each positional parameter'
   local HH opts_rm args_rm
   
-  for HH
+  for HH in "$1"
   do
     : "HH, $HH"
 
@@ -82,6 +82,7 @@ rm ()
     fi
 
     : 'Restart loop'
+    shift
   done
   : 'End of loop'
 
