@@ -122,10 +122,10 @@ declare -fxt rm
 touch foo 
 
 ## Command              ## Syntax           ## P/F    ## kcov   ## Test number
-rm foo                 ##   success           Pass              1
+#rm foo                 ##   success           Pass              1
 
 #rm -f foo              ##   success           Pass             2
-#rm foo -f              ##   Invalid input     Pass             3
+rm foo -f              ##   Invalid input     Pass             3
 
 #rm -- foo              ##   success           Pass             4
 #rm foo --              ##   Invalid input     Pass             5
