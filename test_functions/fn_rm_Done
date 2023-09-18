@@ -130,7 +130,7 @@ touch foo
 #rm -- foo              ##   success           Pass
 #rm foo --              ##   Invalid input     Pass
 
-#rm -f -- foo           ##   success           Pass    69.8%
+rm -f -- foo           ##   success           Pass    
 #rm -- -f foo           ##   Invalid input     Pass
 #rm -f foo --           ##   Invalid input     Pass
 #rm foo -f --           ##   Invalid input     Pass
