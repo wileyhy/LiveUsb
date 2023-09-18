@@ -3,7 +3,13 @@
 ## Note, in case statements, the patterns can span more than one line. You just have to put a pipe
 #+  immediately before the backslash at the end of the line
 
-trap 'declare -p fn_command_line' RETURN
+: 'Vars and traps'
+delete_d=~/rm.d
+trap_rtn(){
+  declare -p fn_command_line
+  command rm -vf "${delete_d}"/*
+}
+trap trap_rtn RETURN
 
 : 'Define rm()'
 rm ()
@@ -113,9 +119,6 @@ rm ()
     #exit $LINENO
 
   :;: '"Recycle bin" must exist'
-  local delete_d 
-  delete_d=~/rm.d
-
   if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
   then
       mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
