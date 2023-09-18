@@ -9,17 +9,22 @@ rm ()
     delete_d=~/rm.d
     time_sfx=$(date --utc +%s)
 
-    if ! [[ -e ${delete_d} ]]; then
+    if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
+    then
         mkdir --mode 0700 --verbose -- "${delete_d}" || return 2
     fi
+
     for fd in "$@" --
     do
-        if [[ ${opts_done:=} = yes ]]; then
-            if [[ -e ${fd} ]]; then
+        if [[ ${opts_done:=} = 'yes' ]]
+        then
+            if [[ -e ${fd} ]]
+            then
                 command mv --backup --suffix="${time_sfx}" -- "${fd}" "${delete_d}" || return 3
             fi
         else
-            if [[ $fd = '--' ]]; then
+            if [[ $fd = '--' ]]
+            then
                 opts_done=yes
             else
                 shift
