@@ -125,7 +125,6 @@ rm ()
   then
     ## Note: with the '--backup' and '--suffix' flags, `mv` doesn't append a timestamp as a suffix
     #+  on the first file moved into the "Recycle Bin"
-    #builtin command -- mv --backup --suffix=".${time_sfx}" -- "${HH}" "${delete_d}" || return $LINENO
     builtin command -- mv -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return $LINENO
   fi
 }
