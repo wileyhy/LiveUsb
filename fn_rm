@@ -79,6 +79,7 @@ rm ()
 
     : 'Restart loop'
   done
+  : 'End of loop'
 
   : 'Sanity check for options and arguments'
   [[ -z ${opts_rm:=} ]] && opts_rm=( -- )
