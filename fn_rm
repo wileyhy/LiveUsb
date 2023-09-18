@@ -76,8 +76,8 @@ touch foo
 ## Command      ## Syntax
 #rm foo         ##  succeeds
 
-rm -f foo       ##   
-#rm foo -f       ## 
+#rm -f foo       ##  okay
+rm foo -f       ## 
 #rm -- foo       ## 
 #rm foo --       ## 
 
