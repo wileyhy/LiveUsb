@@ -179,7 +179,7 @@ function min_necc_rpms(){ :
   true "${fn_bndry} min_necc_rpms() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   local - XX
-  set -
+  #set -
 
   for XX in git gh ShellCheck
   do
