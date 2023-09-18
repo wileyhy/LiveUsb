@@ -6,8 +6,9 @@
 : 'Define rm()'
 rm ()
 {
-  local -
+  local - command_line
   #set -
+  command_line="$0" "$@"
   
   :;: 'Input must exist'
   [[ ${#@} -eq 0 ]] && return "$LINENO"
