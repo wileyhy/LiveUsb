@@ -68,6 +68,7 @@ rm ()
   done
 
   : 'Sanity check for options and arguments'
+  [[ -z ${opts_rm} ]] && opts_rm=( -- )
 
     declare -p opts_rm args_rm
     exit $LINENO
