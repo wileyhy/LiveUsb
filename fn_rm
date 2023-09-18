@@ -24,19 +24,8 @@ rm ()
     : "HH, $HH"
 
     : 'If "End of Options" has been reached'
-    if [[ ${end_of_options:=} = 'has_been_reached' ]]
+    if ! [[ ${end_of_options:=} = 'has_been_reached' ]]
     then
-      : 'Yes, so options are over and only arguments are processed'
-
-      if [[ -e ${HH} ]]
-      then
-        : "HH, $HH"
-        args_rm+=( "${HH}" )
-      else
-        printf '\n\tInvalid imput, %s\n\n' "${HH}"
-        return "$LINENO"
-      fi
-    else
       : $'No, so options continue and arguments aren\x60t yet processed'
       : 'Static options'
       case "${HH}" in
@@ -68,6 +57,10 @@ rm ()
               then
                 : "HH, $HH"
                 args_rm+=( "${HH}" )
+              
+                  declare "ampersand, $@"
+                  exit "$LINENO"
+
               else
                 printf '\n\tInvalid imput, %s\n\n' "${HH}"
               fi
@@ -75,6 +68,17 @@ rm ()
           esac
           ;;
       esac
+    else 
+      : 'Yes, so options are over and only arguments are processed'
+
+      if [[ -e ${HH} ]]
+      then
+        : "HH, $HH"
+        args_rm+=( "${HH}" )
+      else
+        printf '\n\tInvalid imput, %s\n\n' "${HH}"
+        return "$LINENO"
+      fi
     fi
 
     : 'Restart loop'
