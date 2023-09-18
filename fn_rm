@@ -49,9 +49,9 @@ rm ()
           ;;    
         * )
           : 'No options found; options have concluded'
-          : 'Non-option arguments begin'
           end_of_options='has_been_reached'
           
+          : 'Non-option arguments begin'
           if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
           then
             opts_rm+=( -- )
