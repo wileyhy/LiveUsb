@@ -62,6 +62,9 @@ rm ()
 
   : 'Sanity check for options and arguments'
 
+    declare -p args_rm
+    exit $LINENO
+
   : 'If optargs exist, then  mv  the file into the recycle bucket'
   if [[ -n ${args_rm[*]:0:8} ]]
   then
