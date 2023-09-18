@@ -67,10 +67,11 @@ rm ()
 }
 declare -fx rm
 
-touch foo bar baz quux
+touch foo 
+#touch bar baz quux
 
 rm foo
-rm -f bar
-rm -- baz
-rm -f -- quux
+#rm -f bar
+#rm -- baz
+#rm -f -- quux
 
