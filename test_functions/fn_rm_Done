@@ -44,8 +44,8 @@ rm ()
           opts_rm+=( "${HH}" )
           ;;    
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
-        --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
-        --verbose )
+        --one-file-system|--no-preserve-root|--preserve-root|--preserve-root=all|-r|-R|--recursive|\
+        -d|--dir|-v|--verbose )
           opts_rm+=( "${HH}" )
           ;;    
         * )
@@ -118,21 +118,25 @@ declare -fxt rm
 
 touch foo 
 
-## Command       ## Syntax           ## P/F
-#rm foo          ##   success           Pass
+## Command              ## Syntax           ## P/F
+#rm foo                 ##   success           Pass
 
-#rm -f foo       ##   success           Pass
-#rm foo -f       ##   Invalid input     Pass
+#rm -f foo              ##   success           Pass
+#rm foo -f              ##   Invalid input     Pass
 
-#rm -- foo       ##   success           Pass
-#rm foo --       ##   Invalid input     Pass
+#rm -- foo              ##   success           Pass
+#rm foo --              ##   Invalid input     Pass
 
-rm -f -- foo    ##   success           Pass
-#rm -- -f foo    ##   Invalid input     Pass
-#rm -f foo --    ##   Invalid input     Pass
-#rm foo -f --    ##   Invalid input     Pass
-#rm foo -- -f    ##   Invalid input     Pass
-#rm -- foo -f    ##   Invalid input     Pass
+rm -f -- foo           ##   success           Pass
+#rm -- -f foo           ##   Invalid input     Pass
+#rm -f foo --           ##   Invalid input     Pass
+#rm foo -f --           ##   Invalid input     Pass
+#rm foo -- -f           ##   Invalid input     Pass
+#rm -- foo -f           ##   Invalid input     Pass
+
+#rm --version           ##
+#rm --help              ##
+#rm --preserve-root -v  ##
 
 [[ -f foo ]] && command -- rm -i -- foo
 exit 00
