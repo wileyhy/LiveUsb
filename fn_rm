@@ -3,11 +3,15 @@
 ## Note, in case statements, the patterns can span more than one line. You just have to put a pipe
 #+  immediately before the backslash at the end of the line
 
+trap 'declare -p fn_command_line' RTN
+
 : 'Define rm()'
 rm ()
 {
-  local - fn_command_line
+  local - 
   #set -
+  
+  declare fn_command_line
   fn_command_line="${FUNCNAME[0]} $@"
  
     #declare -p fn_command_line
