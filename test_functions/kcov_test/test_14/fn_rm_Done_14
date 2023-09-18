@@ -122,7 +122,7 @@ declare -fxt rm
 touch foo 
 
 ## Command              ## Syntax           ## P/F    ## kcov   ## Test number
-rm foo                 ##   success           Pass              1
+#rm foo                 ##   success           Pass              1
 
 #rm -f foo              ##   success           Pass             2
 #rm foo -f              ##   Invalid input     Pass             3
@@ -139,7 +139,7 @@ rm foo                 ##   success           Pass              1
 
 #rm --version           ##   success           Pass             12
 #rm --help              ##   success           Pass             13
-#rm --preserve-root -v  ##   Invalid input     Pass             14
+rm --preserve-root -v  ##   Invalid input     Pass             14
 
 [[ -f foo ]] && command -- rm -i -- foo
 exit 00
