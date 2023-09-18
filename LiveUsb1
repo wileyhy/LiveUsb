@@ -339,40 +339,109 @@ function reqd_user_files(){ :
 
 :;: 'Define rm() -- for bashrc only'
 ## Note, rm(), command shadowing is intended in this case
-function rm(){ :
-  (( ${#@} == 0 )) && return 1
+rm ()
+{
+  local - 
+  #set -
 
-  local - delete_d HH time_sfx opts_done
-  delete_d=~/rm.d
-  time_sfx=$( date --utc +%s )
-
-  if ! [[ -e ${delete_d} ]]
-  then
-    mkdir --mode 0700 --verbose -- "${delete_d}" || return 2
-  fi
-
-  for HH in "$@" --
+  local fn_command_line
+  fn_command_line="${FUNCNAME[0]} $*"
+ 
+  :;: 'Input must exist'
+  [[ ${#@} -eq 0 ]] && return "$LINENO"
+    
+  :;: 'For each positional parameter'
+  local HH end_of_options opts_rm args_rm
+  
+  for HH
   do
-    if [[ ${opts_done} = yes ]]
+    : 'If "End of Options" has (not) been reached'
+    if ! [[ ${end_of_options:=} = 'has_been_reached' ]]
     then
+      case "${HH}" in
+        --version )
+          command -- rm --version
+          ;;
+        --help )
+          command -- rm --help
+          ;;
+        -- )
+          end_of_options='has_been_reached'
+          opts_rm+=( "${HH}" )
+          ;;    
+        -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
+        --one-file-system|--no-preserve-root|--preserve-root|--preserve-root=all|-r|-R|--recursive|\
+        -d|--dir|-v|--verbose )
+          opts_rm+=( "${HH}" )
+          ;;    
+        * )
+          : 'No options found; options have concluded'
+          end_of_options='has_been_reached'
+          
+          : 'If there is no next pos-parm'
+          if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
+          then
+            : '...then force end of arguments on the CLI'
+            opts_rm+=( -- )
+          else
+            : $'...or if the next pos-parm isn\x60t a valid FSO (File System Object)'
+            if ! [[ -e $2 ]] || ! [[ -d $2 ]] 
+            then
+              : '...then force end of arguments on the CLI'
+              opts_rm+=( -- )
+            fi
+          fi
+
+          if [[ -e ${HH} ]]
+          then
+            JJ=$( realpath -e "${HH}" )
+            args_rm+=( "${JJ}" )
+          else
+            : $'rm: unrecognized option \x27'"${HH}"$'\x27\n'
+            : $'Try \x27rm --help\x27 for more information.'
+          fi
+          unset JJ
+          ;;
+      esac
+    else 
+      : 'Yes, so options are over and only arguments are processed'
 
       if [[ -e ${HH} ]]
       then
-        ## Note,  mv  is commonly a default alias
-        command mv --backup --suffix="${time_sfx}" -- "${HH}" "${delete_d}" || return 3
-      fi
-    else
-
-      if [[ $HH = '--' ]]
-      then
-        opts_done=yes
+        II=$( realpath -e "${HH}" )
+        args_rm+=( "${II}" )
       else
-        shift
-        continue
+        : $'fn_rm: cannot access \x27'"${HH}"$'\x27: No such file or directory\n'
+        : $'GNU \x60rm\x60 silently ignores such inputs'
       fi
+      unset II
     fi
-    [[ -z ${opts_done} ]] && er_x "${nL}"
+
+    : 'Restart loop'
+    shift
   done
+  : 'End of loop'
+
+  : 'Sanity check for options and arguments'
+  [[ -z ${opts_rm:=} ]] && opts_rm=( -- )
+
+  :;: '"Recycle bin" must exist'
+  local delete_d
+  delete_d=~/.rm.d
+
+  if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
+  then
+      command -- mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
+  fi
+
+  :;: 'If optargs exist, then  mv  the file into the recycle bucket, appending the time'
+  if [[ -n ${args_rm[*]:0:8} ]]
+  then
+    local time_sfx 
+    time_sfx=$( date --utc +%s )
+    
+    command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return $LINENO
+  fi
 }
 
 ::: 'Define setup_network()'
