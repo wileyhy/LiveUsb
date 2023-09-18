@@ -20,13 +20,13 @@ rm ()
       mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
   fi
 
-  :;: 'Process pos-parms'
+  :;: 'For each positional parameter'
   for HH
   do
-    : 'For each FSO to be recycled'
+    : 'If "End of Options" has been reached'
     if [[ ${end_of_options:=} = 'has_been_reached' ]]
     then
-      : 'Options are over'
+      : 'Options are over and only arguments are processed'
       
       if [[ -e ${HH} ]]
       then
@@ -36,6 +36,7 @@ rm ()
         return $LINENO
       fi
     else
+      : 'Options continue and arguments aren\x27t yet processed'
       : 'Static options'
       case "${HH}" in
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
