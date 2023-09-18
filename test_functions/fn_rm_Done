@@ -134,8 +134,8 @@ touch foo
 #rm foo -- -f           ##   Invalid input     Pass
 #rm -- foo -f           ##   Invalid input     Pass
 
-rm --version           ##
-#rm --help              ##
+#rm --version           ##   success           Pass
+rm --help              ##
 #rm --preserve-root -v  ##
 
 [[ -f foo ]] && command -- rm -i -- foo
