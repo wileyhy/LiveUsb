@@ -1,16 +1,7 @@
 #!/bin/bash -eux
 
-XX=foo
-case $XX in
-  bar|\
-baz|\
-  quux|\
-    foo ) 
-      echo blyw
-      ;; 
-esac
-
-exit
+## Note, in case statements, the patterns can span more than one line. You just have to put a pipe
+#+  immediately before the backslash at the end of the line
 
 : 'Define rm()'
 rm ()
@@ -32,13 +23,11 @@ rm ()
     : 'For each FSO to be recycled'
     for HH
     do
-      case "$HH" 
-        -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never\
+      case "${HH}" 
+        -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
         --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|--verbose )
             args_rm+=( "${HH}" )
             ;;    
-            args_rm+=( "${HH}" )
-            ;;
         --help )
             command rm --help
             ;;
@@ -46,7 +35,10 @@ rm ()
             command rm --version
             ;;
         * )
-            
+            if [[ -e ${HH} ]]
+            then
+
+              if [[ $
             ;;
       esac
 
