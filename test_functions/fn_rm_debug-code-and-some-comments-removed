@@ -16,7 +16,7 @@ trap trap_rtn RETURN
 rm ()
 {
   local - 
-  set -
+  #set -
 
   local fn_command_line
   fn_command_line="${FUNCNAME[0]} $*"
