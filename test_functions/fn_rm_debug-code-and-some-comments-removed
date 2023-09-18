@@ -131,8 +131,8 @@ touch foo
 #rm -- -f foo    ##   Invalid input     Pass
 #rm -f foo --    ##   Invalid input     Pass
 #rm foo -f --    ##   Invalid input     Pass
-rm foo -- -f    ##   Invalid input     Pass
-#rm -- foo -f    ##   Invalid input     Pass
+#rm foo -- -f    ##   Invalid input     Pass
+rm -- foo -f    ##   Invalid input     Pass
 
 [[ -f foo ]] && command -- rm -i -- foo
 exit 00
