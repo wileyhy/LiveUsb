@@ -5,7 +5,7 @@ case $XX in
   bar|\
 baz|\
   quux|\
-    baz ) 
+    foo ) 
       echo blyw
       ;; 
 esac
