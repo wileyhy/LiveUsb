@@ -9,17 +9,18 @@ rm ()
   :;: 'Input must exist'
   (( ${#@} == 0 )) && return $LINENO
     
-  : 'Vars'
+  ::: 'Vars'
   local - HH delete_d time_sfx args_rm
   delete_d=~/rm.d
   time_sfx=$(date --utc +%s)
 
-  : '"Recycle bin" must exist'
+  :;: '"Recycle bin" must exist'
   if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
   then
       mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
   fi
 
+  :;: 'Process posparms'
   for HH
   do
     : 'For each FSO to be recycled'
