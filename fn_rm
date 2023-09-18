@@ -21,7 +21,7 @@ rm ()
   fi
 
   : 'For each FSO to be recycled'
-  if [[ ${end_of_options:=} = '--' ]]
+  if [[ ${end_of_options:=} = 'has_been_reached' ]]
   then
     echo options are over
     if [[ -e ${HH} ]]
@@ -39,7 +39,7 @@ rm ()
       case "${HH}" in
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
         --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
-        --verbose )
+        --verbose|-- )
           args_rm+=( "${HH}" )
           ;;    
         --help )
@@ -50,10 +50,9 @@ rm ()
           ;;
         * )
           : 'Non-option arguments'
+          end_of_options='has_been_reached'
+          
           case "${HH}" in
-            '--' )
-              end_of_options=yes
-              ;;
             * )
               if [[ -e ${HH} ]]
               then
