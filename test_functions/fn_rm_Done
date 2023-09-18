@@ -122,7 +122,7 @@ declare -fxt rm
 touch foo 
 
 ## Command              ## Syntax           ## P/F    ## kcov
-#rm foo                 ##   success           Pass
+rm foo                 ##   success           Pass
 
 #rm -f foo              ##   success           Pass
 #rm foo -f              ##   Invalid input     Pass
@@ -130,7 +130,7 @@ touch foo
 #rm -- foo              ##   success           Pass
 #rm foo --              ##   Invalid input     Pass
 
-rm -f -- foo           ##   success           Pass    
+#rm -f -- foo           ##   success           Pass    66.7%
 #rm -- -f foo           ##   Invalid input     Pass
 #rm -f foo --           ##   Invalid input     Pass
 #rm foo -f --           ##   Invalid input     Pass
