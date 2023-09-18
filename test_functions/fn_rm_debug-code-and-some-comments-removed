@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -x
 ## fn_rm -- a function for sending deleted files (etc.) to a "Recycle Bin"
 #+  Written on bash 5.2
 #+  Copyright 2023 Wiley Houston Young
@@ -16,9 +16,9 @@ trap trap_rtn RETURN
 rm ()
 {
   local - 
-  #set -
-  
-  declare fn_command_line
+  set -
+
+  local fn_command_line
   fn_command_line="${FUNCNAME[0]} $*"
  
   :;: 'Input must exist'
@@ -34,10 +34,10 @@ rm ()
     then
       case "${HH}" in
         --version )
-          command rm --version
+          command -- rm --version
           ;;
         --help )
-          command rm --help
+          command -- rm --help
           ;;
         -- )
           end_of_options='has_been_reached'
@@ -103,7 +103,7 @@ rm ()
   :;: '"Recycle bin" must exist'
   if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
   then
-      mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
+      command -- mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
   fi
 
   :;: 'If optargs exist, then  mv  the file into the recycle bucket'
@@ -135,6 +135,6 @@ touch foo
 #rm foo -- -f    ##   Invalid input     Pass
 #rm -- foo -f    ##   Invalid input     Pass
 
-[[ -f foo ]] && command rm -i -- foo
+[[ -f foo ]] && command -- rm -i -- foo
 exit 00
 
