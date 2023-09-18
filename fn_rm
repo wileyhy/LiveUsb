@@ -69,7 +69,7 @@ rm ()
 
   : 'Sanity check for options and arguments'
 
-    declare -p args_rm
+    declare -p opts_rm args_rm
     exit $LINENO
 
   :;: '"Recycle bin" must exist'
