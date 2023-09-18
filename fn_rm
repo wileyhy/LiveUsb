@@ -21,6 +21,8 @@ rm ()
   
   for HH
   do
+    : "HH, $HH"
+
     : 'If "End of Options" has been reached'
     if [[ ${end_of_options:=} = 'has_been_reached' ]]
     then
