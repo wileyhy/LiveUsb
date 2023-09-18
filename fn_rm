@@ -24,6 +24,14 @@ rm ()
   if [[ ${end_of_options:=} = '--' ]]
   then
     echo options are over
+    if [[ -e ${HH} ]]
+    then
+      args_rm+=( "${HH}" )
+    else
+      printf '\n\tInvalid imput, %s\n\n' "${HH}"
+    fi
+
+
   else
     for HH
     do
