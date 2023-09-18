@@ -602,7 +602,7 @@ function write_bashrc_strings(){ :
         then
 
           : 'Then write the function definition into the file'
-          printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}"
+          printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" |
             sudo -- tee --append -- "${file_x}" > /dev/null || er_x "${nL}"
         else
           : 'Definition exists, skipping'
