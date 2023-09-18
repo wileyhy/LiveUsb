@@ -3,7 +3,7 @@
 XX=foo
 case $XX in
   bar|\
-    baz|\
+baz|\
     quux\
     baz ) 
       echo blyw
