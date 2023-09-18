@@ -71,8 +71,8 @@ rm ()
             JJ=$( realpath -e "${HH}" )
             args_rm+=( "${JJ}" )
           else
-            : $'fn_rm: cannot access \x27'"${HH}"$'\x27: No such file or directory\n'
-            : $'GNU \x60rm\x60 silently ignores such inputs'
+            : $'rm: unrecognized option \x27'"${HH}"$'\x27\n'
+            : $'Try \x27rm --help\x27 for more information.'
           fi
           unset JJ
           ;;
