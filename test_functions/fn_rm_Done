@@ -108,12 +108,12 @@ rm ()
       command -- mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
   fi
 
-  :;: 'If optargs exist, then  mv  the file into the recycle bucket'
-  local time_sfx 
-  time_sfx=$( date --utc +%s )
-
+  :;: 'If optargs exist, then  mv  the file into the recycle bucket, appending the time'
   if [[ -n ${args_rm[*]:0:8} ]]
   then
+    local time_sfx 
+    time_sfx=$( date --utc +%s )
+    
     command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return $LINENO
   fi
 }
