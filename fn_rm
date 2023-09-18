@@ -60,9 +60,12 @@ rm ()
     done
   fi
 
+  : 'Sanity check for options and arguments'
+
+  : 'If optargs exist, then  mv  the file into the recycle bucket'
   if [[ -n ${args_rm[*]:0:8} ]]
   then
-    command mv --backup --suffix="${time_sfx}" -- "${HH}" "${delete_d}" || return 3
+    builtin command -- mv --backup --suffix="${time_sfx}" -- "${HH}" "${delete_d}" || return $LINENO
   fi
 }
 declare -fx rm
