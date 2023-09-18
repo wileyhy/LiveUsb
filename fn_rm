@@ -35,7 +35,7 @@ rm ()
         return "$LINENO"
       fi
     else
-      : 'Options continue and arguments aren\x27t yet processed'
+      : $'Options continue and arguments aren\x27t yet processed'
       : 'Static options'
       case "${HH}" in
         --version )
