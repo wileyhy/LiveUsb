@@ -122,9 +122,9 @@ declare -fx rm
 touch foo 
 
 ## Command      ## Syntax
-#rm foo         ##  succeeds == okay
+rm foo         ##  
 
-rm -f foo       ##  
+#rm -f foo       ##  
 #rm foo -f       ## 
 #rm -- foo       ## 
 #rm foo --       ## 
