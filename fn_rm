@@ -27,7 +27,7 @@ rm ()
   else
     for HH
     do
-      case "${HH}" 
+      case "${HH}" in
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
         --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
         --verbose )
