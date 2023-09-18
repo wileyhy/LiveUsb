@@ -155,7 +155,7 @@ touch foo
 #rm -f foo --    ##   Invalid input -- okay
 #rm foo -f --    ##   Invalid input -- okay
 #rm foo -- -f    ##   Invalid input -- okay
-rm -- foo -f    ## 
+#rm -- foo -f    ##   Invalid input -- okay
 
 #touch bar baz quux
 
