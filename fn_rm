@@ -33,6 +33,7 @@ rm ()
         args_rm+=( "${HH}" )
       else
         printf '\n\tInvalid imput, %s\n\n' "${HH}"
+        return $LINENO
       fi
     else
       : 'Static options'
