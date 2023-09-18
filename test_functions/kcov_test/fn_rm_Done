@@ -53,27 +53,21 @@ rm ()
           end_of_options='has_been_reached'
           
           : 'Force end of arguments on the commandline...'
-          :   $'...IF there is no next positional parameter, OR...'
-          
-          if      [[ -z ${2:-} ]]
-          then 
-            opts_rm+=( -- )  
-          
-          ## fall through means, there is a next positional parameter
+          : '...IF there is no next positional parameter...'          
+          if       [[ -z ${2:-} ]];
+          then                      opts_rm+=( -- )  
+	                                  ## fall through means, there is a next positional parameter
           else
-            :   $'...IF the next positional parameter is not "--", OR...'
-            if !  [[ $2 = -- ]]
-            then 
-              opts_rm+=( -- )  
-          
-            ## fall through means, the next positional parameter is "--"
+            : '...OR IF the next positional parameter is not "--"...'
+            if   ! [[ $2 = -- ]]  ;
+            then                    opts_rm+=( -- )  
+                                    ## fall through means, the next positional parameter is "--"
             else
-              :   $'...IF the next positional parameter does not exist on disk'
-              if !  [[ -e $2 ]]
-              then 
-                opts_rm+=( -- )  
-
-              ## fall through means, the next positional parameter does exist on disk (ie, "--" could be a filename)
+              : '...OR IF the next positional parameter does not exist on disk'
+              if ! [[ -e $2 ]]    ;
+              then                  opts_rm+=( -- )  
+                                    ## fall through means, the next positional parameter does exist on disk 
+                                    #+  (ie, "--" could be a filename)
               fi
             fi
           fi
@@ -83,22 +77,20 @@ rm ()
             JJ=$( realpath -e "${HH}" )
             args_rm+=( "${JJ}" )
           else
-            : $'rm: unrecognized option \x27'"${HH}"$'\x27\n'
-            : $'Try \x27rm --help\x27 for more information.'
+            : $'rm: unrecognized option \x27'"${HH}"$'\x27\nTry \x27rm --help\x27 for more information.'
           fi
           unset JJ
           ;;
       esac
     else 
-      : 'Yes, so options are over and only arguments are processed'
 
+      : 'Yes, so options are over and only arguments are processed'
       if [[ -e ${HH} ]]
       then
         II=$( realpath -e "${HH}" )
         args_rm+=( "${II}" )
       else
-        : $'fn_rm: cannot access \x27'"${HH}"$'\x27: No such file or directory\n'
-        : $'GNU \x60rm\x60 silently ignores such inputs'
+        : $'fn_rm: cannot access \x27'"${HH}"$'\x27: No such file or directory\nGNU \x60rm\x60 ignores such inputs'
       fi
       unset II
     fi
