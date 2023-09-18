@@ -9,7 +9,7 @@ rm ()
   :;: 'Input must exist'
   (( ${#@} == 0 )) && return $LINENO
     
-  ::: 'Vars'
+  :;: 'Vars'
   local - HH delete_d time_sfx args_rm
   delete_d=~/rm.d
   time_sfx=$(date --utc +%s)
