@@ -26,7 +26,7 @@ rm ()
     : 'If "End of Options" has been reached'
     if [[ ${end_of_options:=} = 'has_been_reached' ]]
     then
-      : 'Options are over and only arguments are processed'
+      : 'Yes, so options are over and only arguments are processed'
 
       if [[ -e ${HH} ]]
       then
@@ -37,7 +37,7 @@ rm ()
         return "$LINENO"
       fi
     else
-      : $'Options continue and arguments aren\x60t yet processed'
+      : $'No, so options continue and arguments aren\x60t yet processed'
       : 'Static options'
       case "${HH}" in
         --version )
