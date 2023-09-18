@@ -6,7 +6,7 @@
 : 'Vars and traps'
 delete_d=~/rm.d
 trap_rtn(){
-  declare -p fn_command_line
+  declare -p opts_rm args_rm fn_command_line
   command -- rm -vf -- "${delete_d}"/*
 }
 trap trap_rtn RETURN
@@ -20,8 +20,8 @@ rm ()
   declare fn_command_line
   fn_command_line="${FUNCNAME[0]} $@"
  
-    #declare -p fn_command_line
-    #exit "$LINENO"
+    #declare -p fn_command_line # <>
+    #exit "$LINENO" # <>
 
   :;: 'Input must exist'
   [[ ${#@} -eq 0 ]] && return "$LINENO"
@@ -31,8 +31,8 @@ rm ()
   
   for HH
   do
-    : "1, $1"
-    : "HH, $HH"
+    : "1, $1" # <>
+    : "HH, $HH" # <>
 
     : 'If "End of Options" has been reached'
     if ! [[ ${end_of_options:=} = 'has_been_reached' ]]
@@ -48,13 +48,13 @@ rm ()
           ;;
         -- )
           end_of_options='has_been_reached'
-          : "HH, $HH"
+          : "HH, $HH" # <>
           opts_rm+=( "${HH}" )
           ;;    
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
         --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
         --verbose )
-          : "HH, $HH"
+          : "HH, $HH" # <>
           opts_rm+=( "${HH}" )
           ;;    
         * )
@@ -80,11 +80,11 @@ rm ()
             * )
               if [[ -e ${HH} ]]
               then
-                : "HH, $HH"
+                : "HH, $HH" # <>
                 args_rm+=( "${HH}" )
               
-                  #: "ampersand, $@"
-                  #exit "$LINENO"
+                  #: "ampersand, $@" # <>
+                  #exit "$LINENO" # <>
 
               else
                 printf '\n\tInvalid imput, %s\n\n' "${HH}"
@@ -98,7 +98,7 @@ rm ()
 
       if [[ -e ${HH} ]]
       then
-        : "HH, $HH"
+        : "HH, $HH" # <>
       
         II=$( realpath -e "${HH}" )
         args_rm+=( "${II}" )
@@ -117,8 +117,8 @@ rm ()
   : 'Sanity check for options and arguments'
   [[ -z ${opts_rm:=} ]] && opts_rm=( -- )
 
-    declare -p opts_rm args_rm fn_command_line
-    echo rm "${opts_rm[@]}" "${args_rm[@]}"
+    #declare -p opts_rm args_rm fn_command_line
+    #echo rm "${opts_rm[@]}" "${args_rm[@]}"
     #exit $LINENO
 
   :;: '"Recycle bin" must exist'
