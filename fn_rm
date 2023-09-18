@@ -1,4 +1,7 @@
 #!/bin/bash -eux
+## fn_rm -- a function for sending deleted files (etc.) to a "Recycle Bin"
+#+  Written on bash 5.2
+#+  Copyright 2023 Wiley Houston Young
 
 ## Note, in case statements, the patterns can span more than one line. You just have to put a pipe
 #+  immediately before the backslash at the end of the line
