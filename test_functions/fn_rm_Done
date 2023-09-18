@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 ## fn_rm -- a function for sending deleted files (etc.) to a "Recycle Bin"
 #+  Written on bash 5.2
 #+  Copyright 2023 Wiley Houston Young
