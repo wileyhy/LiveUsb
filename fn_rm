@@ -52,7 +52,7 @@ rm ()
           : 'Non-option arguments begin'
           end_of_options='has_been_reached'
           
-          if ! [[ $2 = '--' ]]
+          if ! [[ ${2:=} = '--' ]]
           then
             opts_rm+=( -- )
           fi
