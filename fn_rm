@@ -65,7 +65,7 @@ rm ()
   : 'If optargs exist, then  mv  the file into the recycle bucket'
   if [[ -n ${args_rm[*]:0:8} ]]
   then
-    builtin command -- mv --backup --suffix="${time_sfx}" -- "${HH}" "${delete_d}" || return $LINENO
+    builtin command -- mv --backup --suffix=".${time_sfx}" -- "${HH}" "${delete_d}" || return $LINENO
   fi
 }
 declare -fx rm
