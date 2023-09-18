@@ -3,7 +3,7 @@
 ## Note, in case statements, the patterns can span more than one line. You just have to put a pipe
 #+  immediately before the backslash at the end of the line
 
-trap 'declare -p fn_command_line' RTN
+trap 'declare -p fn_command_line' RETURN
 
 : 'Define rm()'
 rm ()
