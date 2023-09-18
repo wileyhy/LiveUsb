@@ -21,7 +21,7 @@ rm ()
   #set -
   
   declare fn_command_line
-  fn_command_line="${FUNCNAME[0]} $@"
+  fn_command_line="${FUNCNAME[0]} $*"
  
     #declare -p fn_command_line # <>
     #exit "$LINENO" # <>
