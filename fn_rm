@@ -132,7 +132,7 @@ rm ()
   then
     ## Note: with the '--backup' and '--suffix' flags, `mv` doesn't append a timestamp as a suffix
     #+  on the first file moved into the "Recycle Bin"
-    builtin command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return $LINENO
+    command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return $LINENO
   fi
 }
 declare -fxt rm
