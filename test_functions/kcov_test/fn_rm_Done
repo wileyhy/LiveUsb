@@ -128,7 +128,7 @@ declare -fxt rm
 
 touch foo 
 
-## Command              ## Syntax           ## P/F    ## kcov   ## Test number
+## Command              ## Syntax           ## P/F    ## kcov   ## Test no.
 #rm foo                 ##   success           Pass    69.7%     1
 
 #rm -f foo              ##   success           Pass    71.2%     2
