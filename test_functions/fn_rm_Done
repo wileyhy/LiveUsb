@@ -118,7 +118,7 @@ declare -fxt rm
 
 touch foo 
 
-## Command              ## Syntax           ## P/F
+## Command              ## Syntax           ## P/F    ## kcov
 #rm foo                 ##   success           Pass
 
 #rm -f foo              ##   success           Pass
@@ -127,14 +127,14 @@ touch foo
 #rm -- foo              ##   success           Pass
 #rm foo --              ##   Invalid input     Pass
 
-rm -f -- foo           ##   success           Pass
+#rm -f -- foo           ##   success           Pass    69.8%
 #rm -- -f foo           ##   Invalid input     Pass
 #rm -f foo --           ##   Invalid input     Pass
 #rm foo -f --           ##   Invalid input     Pass
 #rm foo -- -f           ##   Invalid input     Pass
 #rm -- foo -f           ##   Invalid input     Pass
 
-#rm --version           ##
+rm --version           ##
 #rm --help              ##
 #rm --preserve-root -v  ##
 
