@@ -19,8 +19,9 @@ rm ()
   :;: 'For each positional parameter'
   local HH opts_rm args_rm
   
-  for HH in "$1"
+  for HH
   do
+    : "1, $1"
     : "HH, $HH"
 
     : 'If "End of Options" has been reached'
