@@ -39,7 +39,6 @@ rm ()
     else
       : $'No, so options continue and arguments aren\x60t yet processed'
       : 'Static options'
-      : "HH, $HH"
       case "${HH}" in
         --version )
           command rm --version
@@ -49,11 +48,13 @@ rm ()
           ;;
         -- )
           end_of_options='has_been_reached'
+          : "HH, $HH"
           opts_rm+=( "${HH}" )
           ;;    
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
         --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
         --verbose )
+          : "HH, $HH"
           opts_rm+=( "${HH}" )
           ;;    
         * )
@@ -61,11 +62,11 @@ rm ()
           : 'Non-option arguments'
           end_of_options='has_been_reached'
           
-          : "HH, $HH"
           case "${HH}" in
             * )
               if [[ -e ${HH} ]]
               then
+                : "HH, $HH"
                 args_rm+=( "${HH}" )
               else
                 printf '\n\tInvalid imput, %s\n\n' "${HH}"
