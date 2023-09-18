@@ -161,6 +161,7 @@ touch foo
 #rm foo -- -f    ##   Invalid input     Pass
 #rm -- foo -f    ##   Invalid input     Pass
 
+rm --verbose -f foo    ##                             15
 [[ -f foo ]] && command rm -i -- foo
 exit 00
 
