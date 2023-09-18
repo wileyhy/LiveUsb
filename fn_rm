@@ -21,7 +21,7 @@ rm ()
   fi
 
   : 'For each FSO to be recycled'
-  if [[ ${end_of_options} = '--' ]]
+  if [[ ${end_of_options:=} = '--' ]]
   then
     echo options are over
   else
