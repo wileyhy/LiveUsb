@@ -13,7 +13,7 @@ rm ()
   [[ ${#@} -eq 0 ]] && return "$LINENO"
     
   :;: 'For each positional parameter'
-  local HH args_rm
+  local HH opts_rm args_rm
 
   for HH
   do
@@ -21,7 +21,7 @@ rm ()
     if [[ ${end_of_options:=} = 'has_been_reached' ]]
     then
       : 'Options are over and only arguments are processed'
-      
+
       if [[ -e ${HH} ]]
       then
         args_rm+=( "${HH}" )
@@ -41,12 +41,12 @@ rm ()
           ;;
         -- )
           end_of_options='has_been_reached'
-          args_rm+=( "${HH}" )
+          opts_rm+=( "${HH}" )
           ;;    
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
         --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|\
         --verbose )
-          args_rm+=( "${HH}" )
+          opts_rm+=( "${HH}" )
           ;;    
         * )
           : 'Non-option arguments'
@@ -110,5 +110,4 @@ rm foo         ##  succeeds == okay
 #rm -- foo -f    ## 
 
 #touch bar baz quux
-
 
