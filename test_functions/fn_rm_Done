@@ -68,10 +68,12 @@ rm ()
 
           if [[ -e ${HH} ]]
           then
-            args_rm+=( "${HH}" )
+            JJ=$( realpath -e "${HH}" )
+            args_rm+=( "${JJ}" )
           else
             printf 'fn_rm: cannot access %b%s%b: No such file or directory\n' '\x27' "${HH}" '\x27'
           fi
+          unset JJ
           ;;
       esac
     else 
