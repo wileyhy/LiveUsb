@@ -64,8 +64,8 @@ rm ()
                 : "HH, $HH"
                 args_rm+=( "${HH}" )
               
-                  : "ampersand, $@"
-                  exit "$LINENO"
+                  #: "ampersand, $@"
+                  #exit "$LINENO"
 
               else
                 printf '\n\tInvalid imput, %s\n\n' "${HH}"
