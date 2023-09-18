@@ -7,7 +7,7 @@
 delete_d=~/rm.d
 trap_rtn(){
   declare -p fn_command_line
-  command rm -vf "${delete_d}"/*
+  command -- rm -vf -- "${delete_d}"/*
 }
 trap trap_rtn RETURN
 
