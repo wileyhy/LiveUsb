@@ -1,28 +1,81 @@
 #!/bin/bash -eux
 
+XX=foo
+case $XX in
+  bar|\
+    baz|\
+    quux\
+    baz ) 
+      echo blyw
+      ;; 
+esac
+
+exit
+
 : 'Define rm()'
 rm ()
 {
-    :
-    (( ${#@} == 0 )) && return 1
-    local - HH delete_d time_sfx opts_done
+    :;: 'Input must exist'
+    (( ${#@} == 0 )) && return $LINENO
+    
+    : 'Vars'
+    local - HH delete_d time_sfx args_rm
     delete_d=~/rm.d
     time_sfx=$(date --utc +%s)
 
+    : '"Recycle bin" must exist'
     if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
     then
-        mkdir --mode 0700 --verbose -- "${delete_d}" || return 2
+        mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
     fi
 
-    for HH in "$@" --
+    : 'For each FSO to be recycled'
+    for HH
     do
+      case "$HH" 
+        -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never\
+        --one-file-system|--no-preserve-root|--preserve-root=all|-r|-R|--recursive|-d|--dir|-v|--verbose )
+            args_rm+=( "${HH}" )
+            ;;    
+            args_rm+=( "${HH}" )
+            ;;
+        --help )
+            command rm --help
+            ;;
+        --version )
+            command rm --version
+            ;;
+        * )
+            
+            ;;
+      esac
+
+
+
+
+
+
+
+
+
+
+
+        : 'Are the rm command options done?'
         if [[ ${opts_done:=} = 'yes' ]]
         then
+            : 'Yes, command options are done'
+
+            : 'Is the current posparm an FSO?'
             if [[ -e ${HH} ]]
             then
+                : 'Yes, the current posparm is an FSO'
                 command mv --backup --suffix="${time_sfx}" -- "${HH}" "${delete_d}" || return 3
+            else
+
             fi
         else
+            : 'No, command options are not yet done'
+
             if [[ $HH = '--' ]]
             then
                 opts_done=yes
