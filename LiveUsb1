@@ -575,7 +575,7 @@ function write_bashrc_strings(){ :
 
   local - JJ file_x Aa_index Aa_element
   local -n fn_nameref
-  set -
+  #set -
 
   :;: 'Certain parameters must be defined and have non-zero values'
   (( $# == 0 )) && er_x "line ${nL}"
