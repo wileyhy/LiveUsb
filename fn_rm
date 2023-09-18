@@ -76,6 +76,8 @@ rm ()
           ;;
       esac
     fi
+
+    : 'Restart loop'
   done
 
   : 'Sanity check for options and arguments'
