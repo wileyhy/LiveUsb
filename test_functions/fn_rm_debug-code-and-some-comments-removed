@@ -119,9 +119,9 @@ declare -fxt rm
 touch foo 
 
 ## Command       ## Syntax           ## P/F
-rm foo          ##   success           Pass
+#rm foo          ##   success           Pass
 
-#rm -f foo       ##   success           Pass
+rm -f foo       ##   success           Pass
 #rm foo -f       ##   Invalid input     Pass
 
 #rm -- foo       ##   success           Pass
