@@ -77,17 +77,14 @@ touch foo
 #rm foo         ##  succeeds
 
 rm -f foo       ##   
-rm foo -f       ## 
-rm -- foo       ## 
-rm foo --       ## 
+#rm foo -f       ## 
+#rm -- foo       ## 
+#rm foo --       ## 
 
-rm -f -- foo    ## 
-rm -- -f foo    ## 
-
-rm -f foo --    ## 
-
-rm foo -f --    ## 
-rm foo -- -f    ## 
-
-
+#rm -f -- foo    ## 
+#rm -- -f foo    ## 
+#rm -f foo --    ## 
+#rm foo -f --    ## 
+#rm foo -- -f    ## 
+#rm -- foo -f    ## 
 
