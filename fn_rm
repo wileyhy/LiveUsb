@@ -20,7 +20,7 @@ rm ()
       mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
   fi
 
-  :;: 'Process posparms'
+  :;: 'Process pos-parms'
   for HH
   do
     : 'For each FSO to be recycled'
