@@ -121,25 +121,25 @@ declare -fxt rm
 
 touch foo 
 
-## Command              ## Syntax           ## P/F    ## kcov
-rm foo                 ##   success           Pass
+## Command              ## Syntax           ## P/F    ## kcov   ## Test number
+rm foo                 ##   success           Pass              1
 
-#rm -f foo              ##   success           Pass
-#rm foo -f              ##   Invalid input     Pass
+#rm -f foo              ##   success           Pass             2
+#rm foo -f              ##   Invalid input     Pass             3
 
-#rm -- foo              ##   success           Pass
-#rm foo --              ##   Invalid input     Pass
+#rm -- foo              ##   success           Pass             4
+#rm foo --              ##   Invalid input     Pass             5
 
-#rm -f -- foo           ##   success           Pass    66.7%
-#rm -- -f foo           ##   Invalid input     Pass
-#rm -f foo --           ##   Invalid input     Pass
-#rm foo -f --           ##   Invalid input     Pass
-#rm foo -- -f           ##   Invalid input     Pass
-#rm -- foo -f           ##   Invalid input     Pass
+#rm -f -- foo           ##   success           Pass    66.7%      6
+#rm -- -f foo           ##   Invalid input     Pass             7
+#rm -f foo --           ##   Invalid input     Pass             8
+#rm foo -f --           ##   Invalid input     Pass             9
+#rm foo -- -f           ##   Invalid input     Pass             10
+#rm -- foo -f           ##   Invalid input     Pass             11
 
-#rm --version           ##   success           Pass
-#rm --help              ##   success           Pass
-#rm --preserve-root -v  ##   Invalid input     Pass
+#rm --version           ##   success           Pass             12
+#rm --help              ##   success           Pass             13
+#rm --preserve-root -v  ##   Invalid input     Pass             14
 
 [[ -f foo ]] && command -- rm -i -- foo
 exit 00
