@@ -1,7 +1,7 @@
 #!/bin/bash -x
 ## fn_rm -- a function for sending deleted files (etc.) to a "Recycle Bin"
-#+  Written on bash 5.2
-#+  Copyright 2023 Wiley Houston Young
+#+  Written in bash 5.2
+#+  Copyright 2023, Wiley Houston Young
 
 
 : 'Vars and traps'
@@ -29,7 +29,7 @@ rm ()
   
   for HH
   do
-    : 'If "End of Options" has been reached'
+    : 'If "End of Options" has (not) been reached'
     if ! [[ ${end_of_options:=} = 'has_been_reached' ]]
     then
       case "${HH}" in
