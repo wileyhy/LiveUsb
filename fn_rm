@@ -5,7 +5,7 @@ rm ()
 {
     :
     (( ${#@} == 0 )) && return 1
-    local - delete_d fd time_sfx opts_done
+    local - HH delete_d time_sfx opts_done
     delete_d=~/rm.d
     time_sfx=$(date --utc +%s)
 
@@ -14,16 +14,16 @@ rm ()
         mkdir --mode 0700 --verbose -- "${delete_d}" || return 2
     fi
 
-    for fd in "$@" --
+    for HH in "$@" --
     do
         if [[ ${opts_done:=} = 'yes' ]]
         then
-            if [[ -e ${fd} ]]
+            if [[ -e ${HH} ]]
             then
-                command mv --backup --suffix="${time_sfx}" -- "${fd}" "${delete_d}" || return 3
+                command mv --backup --suffix="${time_sfx}" -- "${HH}" "${delete_d}" || return 3
             fi
         else
-            if [[ $fd = '--' ]]
+            if [[ $HH = '--' ]]
             then
                 opts_done=yes
             else
