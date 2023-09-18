@@ -85,11 +85,11 @@ touch foo
 #touch bar baz quux
 
 ## Command      ## Syntax
-#rm foo         ##  succeeds
+#rm foo         ##  succeeds == okay
 
-#rm -f foo       ##  okay
-rm foo -f       ## 
-#rm -- foo       ## 
+#rm -f foo       ##  succeeds == okay
+#rm foo -f       ## Invalid imput == okay
+rm -- foo       ## 
 #rm foo --       ## 
 
 #rm -f -- foo    ## 
