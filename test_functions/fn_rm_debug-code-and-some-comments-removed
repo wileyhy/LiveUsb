@@ -101,6 +101,9 @@ rm ()
   [[ -z ${opts_rm:=} ]] && opts_rm=( -- )
 
   :;: '"Recycle bin" must exist'
+  local delete_d
+  delete_d=~/rm.d
+
   if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
   then
       command -- mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
