@@ -117,7 +117,7 @@ rm ()
       mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
   fi
 
-  : 'If optargs exist, then  mv  the file into the recycle bucket'
+  :;: 'If optargs exist, then  mv  the file into the recycle bucket'
   local time_sfx 
   time_sfx=$( date --utc +%s )
 
