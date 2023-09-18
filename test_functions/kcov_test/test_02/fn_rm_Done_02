@@ -1,0 +1,146 @@
+#!/bin/bash -x
+## fn_rm -- a function for sending deleted files (etc.) to a "Recycle Bin"
+#+  Written in bash 5.2
+#+  Copyright 2023, Wiley Houston Young
+
+
+: 'Vars and traps'
+delete_d=~/.rm.d
+trap_rtn(){
+  declare -p opts_rm args_rm fn_command_line
+  command -- rm -vf -- "${delete_d}"/*
+}
+trap trap_rtn RETURN
+
+: 'Define rm()'
+rm ()
+{
+  local - 
+  #set -
+
+  local fn_command_line
+  fn_command_line="${FUNCNAME[0]} $*"
+ 
+  :;: 'Input must exist'
+  [[ ${#@} -eq 0 ]] && return "$LINENO"
+    
+  :;: 'For each positional parameter'
+  local HH end_of_options opts_rm args_rm
+  
+  for HH
+  do
+    : 'If "End of Options" has (not) been reached'
+    if ! [[ ${end_of_options:=} = 'has_been_reached' ]]
+    then
+      case "${HH}" in
+        --version )
+          command -- rm --version
+          ;;
+        --help )
+          command -- rm --help
+          ;;
+        -- )
+          end_of_options='has_been_reached'
+          opts_rm+=( "${HH}" )
+          ;;    
+        -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
+        --one-file-system|--no-preserve-root|--preserve-root|--preserve-root=all|-r|-R|--recursive|\
+        -d|--dir|-v|--verbose )
+          opts_rm+=( "${HH}" )
+          ;;    
+        * )
+          : 'No options found; options have concluded'
+          end_of_options='has_been_reached'
+          
+          : 'If there is no next pos-parm'
+          if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
+          then
+            : '...then force end of arguments on the CLI'
+            opts_rm+=( -- )
+          else
+            : $'...or if the next pos-parm isn\x60t a valid FSO (File System Object)'
+            if ! [[ -e $2 ]] || ! [[ -d $2 ]] 
+            then
+              : '...then force end of arguments on the CLI'
+              opts_rm+=( -- )
+            fi
+          fi
+
+          if [[ -e ${HH} ]]
+          then
+            JJ=$( realpath -e "${HH}" )
+            args_rm+=( "${JJ}" )
+          else
+            : $'fn_rm: cannot access \x27'"${HH}"$'\x27: No such file or directory\n'
+            : $'GNU \x60rm\x60 silently ignores such inputs'
+          fi
+          unset JJ
+          ;;
+      esac
+    else 
+      : 'Yes, so options are over and only arguments are processed'
+
+      if [[ -e ${HH} ]]
+      then
+        II=$( realpath -e "${HH}" )
+        args_rm+=( "${II}" )
+      else
+        : $'fn_rm: cannot access \x27'"${HH}"$'\x27: No such file or directory\n'
+        : $'GNU \x60rm\x60 silently ignores such inputs'
+      fi
+      unset II
+    fi
+
+    : 'Restart loop'
+    shift
+  done
+  : 'End of loop'
+
+  : 'Sanity check for options and arguments'
+  [[ -z ${opts_rm:=} ]] && opts_rm=( -- )
+
+  :;: '"Recycle bin" must exist'
+  local delete_d
+  delete_d=~/.rm.d
+
+  if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
+  then
+      command -- mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
+  fi
+
+  :;: 'If optargs exist, then  mv  the file into the recycle bucket, appending the time'
+  if [[ -n ${args_rm[*]:0:8} ]]
+  then
+    local time_sfx 
+    time_sfx=$( date --utc +%s )
+    
+    command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return $LINENO
+  fi
+}
+declare -fxt rm
+
+touch foo 
+
+## Command              ## Syntax           ## P/F    ## kcov   ## Test number
+#rm foo                 ##   success           Pass              1
+
+#rm -f foo              ##   success           Pass             2
+rm foo -f              ##   Invalid input     Pass             3
+
+#rm -- foo              ##   success           Pass             4
+#rm foo --              ##   Invalid input     Pass             5
+
+#rm -f -- foo           ##   success           Pass    66.7%      6
+#rm -- -f foo           ##   Invalid input     Pass             7
+#rm -f foo --           ##   Invalid input     Pass             8
+#rm foo -f --           ##   Invalid input     Pass             9
+#rm foo -- -f           ##   Invalid input     Pass             10
+#rm -- foo -f           ##   Invalid input     Pass             11
+
+#rm --version           ##   success           Pass             12
+#rm --help              ##   success           Pass             13
+#rm --preserve-root -v  ##   Invalid input     Pass             14
+
+[[ -f foo ]] && command -- rm -i -- foo
+exit 00
+
