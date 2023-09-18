@@ -141,7 +141,7 @@ touch foo
 #rm --help              ##   success           Pass    51.5%    13
 #rm --preserve-root -v  ##   Invalid input     Pass    51.5%    14
 
-#rm --verbose -f foo    ##   success           Pass    71.2%    15
+#rm --debug -f foo      ##  15
 
 [[ -f foo ]] && command -- rm -i -- foo
 exit 00
