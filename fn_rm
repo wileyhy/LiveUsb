@@ -6,10 +6,13 @@
 : 'Define rm()'
 rm ()
 {
-  local - command_line
+  local - fn_command_line
   #set -
-  command_line="$0" "$@"
-  
+  fn_command_line="$0" "$@"
+ 
+    declare -p fn_command_line
+    exit "$LINENO"
+
   :;: 'Input must exist'
   [[ ${#@} -eq 0 ]] && return "$LINENO"
     
