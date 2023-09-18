@@ -58,6 +58,7 @@ rm ()
           opts_rm+=( "${HH}" )
           ;;    
         * )
+          : 'Options have concluded'
           : 'Non-option arguments'
           end_of_options='has_been_reached'
           
