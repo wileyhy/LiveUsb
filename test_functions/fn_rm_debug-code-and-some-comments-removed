@@ -66,16 +66,12 @@ rm ()
             fi
           fi
 
-          case "${HH}" in
-            * )
-              if [[ -e ${HH} ]]
-              then
-                args_rm+=( "${HH}" )
-              else
-                printf '\n\tInvalid imput, %s\n\n' "${HH}"
-              fi
-              ;;
-          esac
+          if [[ -e ${HH} ]]
+          then
+            args_rm+=( "${HH}" )
+          else
+            printf 'fn_rm: cannot access %b%s%b: No such file or directory\n' '\x27' "${HH}" '\x27'
+          fi
           ;;
       esac
     else 
@@ -86,7 +82,7 @@ rm ()
         II=$( realpath -e "${HH}" )
         args_rm+=( "${II}" )
       else
-        printf '\n\tInvalid imput, %s\n\n' "${HH}"
+        printf 'fn_rm: cannot access %b%s%b: No such file or directory\n' '\x27' "${HH}" '\x27'
         return "$LINENO"
       fi
       unset II
