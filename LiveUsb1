@@ -1196,7 +1196,7 @@ do
   done
   unset YY
 
-    pause_to_check $nL # <>
+    pause_to_check "$nL" # <>
 
   for ZZ in "${rpms_for_upgrade[@]}" ; 
   do 
