@@ -140,11 +140,12 @@ function get_pids_for_restarting(){ :
 
 :;: 'Define gh_auth_login_command()'
 function gh_auth_login_command(){ :
-  true "${fn_bndry} gh_auth_login_command() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - _="${fn_bndry} gh_auth_login_command() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  # set -
 
-  if gh auth status 2> /dev/null 1>&2
+  if gh auth status
   then
-    gh auth logout 2> /dev/null 1>&2
+    gh auth logout
   fi
 
   ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to
@@ -711,11 +712,11 @@ unset gh_config_list_out github_configs KK
 
 :;: 'gh -- Login to github'
 ## Note, executing this command just once
-if ! gh auth status 2> /dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
+if ! gh auth status || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
 then
-  if ! pgrep 'firefox' >/dev/null
+  if ! pgrep 'firefox'
   then
-    firefox --browser 2>/dev/null &
+    firefox --browser &
     pause_to_check "$nL"
     gh_auth_login_command
   fi
