@@ -1157,6 +1157,7 @@ count="${#all_installed_rpms[@]}"
 ## Get full list of rpms to upgrade, in an array; exit on non-zero
 mapfile -d '' -t rpms_for_upgrade < <( dnf --assumeno upgrade 2>/dev/null | awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' )
 
+  echo "count, rpms_for_upgrade, ${#rpms_for_upgrade[@]}"
 
 ## For each "original rpm" in the original list
 for XX in "${!all_installed_rpms[@]}"; 
