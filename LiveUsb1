@@ -749,7 +749,7 @@ unset QQ
 printf '\n'
 gh auth status
 
-  exit $nL # <>
+  exit "$nL" # <>
 
 :;: 'Bash'
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
