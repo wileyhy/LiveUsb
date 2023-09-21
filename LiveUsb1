@@ -1215,7 +1215,7 @@ mapfile -d '' -t rpms_for_upgrade < <( dnf --assumeno upgrade 2>/dev/null | awk 
     done; 
   done
 
-
+exit 101
 
 
 
