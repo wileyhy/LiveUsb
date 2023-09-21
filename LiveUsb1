@@ -687,14 +687,14 @@ setup_network
 :;: 'Time'
 setup_time
 
-  #EC=101 LL="$nL" exit # <>
-  #set -x # <>
-
 :;: 'Minimum necessary rpms'
 min_necc_rpms
 
 :;: 'Minimum necessary git commands'
 min_necc_git_cmds
+
+  EC=101 LL="$nL" exit # <>
+  set -x # <>
 
 :;: 'gh -- github CLI configuration'
 declare -A github_configs
