@@ -1158,63 +1158,63 @@ count="${#all_installed_rpms[@]}"
 mapfile -d '' -t rpms_for_upgrade < <( dnf --assumeno upgrade 2>/dev/null | awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' )
 
 
-  ## For each "original rpm" in the original list
-  for XX in "${!all_installed_rpms[@]}"; 
-  do 
-    ## Loop A, open
+## For each "original rpm" in the original list
+for XX in "${!all_installed_rpms[@]}"; 
+do 
+  ## Loop A, open
     
-    ## Re-run the list, grepping for the "original rpm"
-    for YY in "${rpms_for_upgrade[@]}" ; 
-    do 
-      regexp="^${YY}-[0-9]{,16}(\.[0-9]{,16}){,8}-.*\.fc[0-9]{2,3}\.(noarch|x86-64)"; 
+  ## Re-run the list, grepping for the "original rpm"
+  for YY in "${rpms_for_upgrade[@]}" ; 
+  do 
+    regexp="^${YY}-[0-9]{,16}(\.[0-9]{,16}){,8}-.*\.fc[0-9]{2,3}\.(noarch|x86-64)"; 
       
-      ## If the "original rpm" needs to be upgraded
-      if [[ "${all_installed_rpms[XX]}" =~ $regexp ]]; 
-      then 
-          # <>
-          echo $XX : "${all_installed_rpms[XX]}" ; 
-          echo "${all_installed_rpms[XX]}" | grep -cEe "$regexp"
-          set -x; 
-          [[ "${all_installed_rpms[XX]}" =~ $regexp ]]; 
-          echo $?; 
-          set -; 
-      fi
-    done
-
-      pause_to_check $nL # <>
-
-    for YY in "${rpms_for_upgrade[@]}" ; 
-    do 
-      if [[ "${all_installed_rpms[XX]}" =~ $regexp ]]; 
-      then 
-
-        ## then upgrade just that one "original rpm"; exit on non-zero
-        sudo -- nice --adjustment=-20 -- dnf --verbose upgrade "$YY" || er_x "$nL" "$YY"
-
-        ## Run "needs-restarting"
-        readarray -t nr_pids < <(\
-          sudo -- nice --adjustment=-20 -- dnf --quiet needs-restarting 2>/dev/null | awk '{ print $1 }' )
-
-          declare -p nr_pids # <>
-          pause_to_check $nL # <>
-
-        ## Restart PIDs as necessary, using multiple signals; exit on non-zero
-        for WW in "${nr_pids[@]}"
-        do
-          sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
-            --timeout 1000 HUP \
-            --timeout 1000 USR1 \
-            --timeout 1000 TERM \
-            --timeout 1000 KILL -- "$WW"
-        done
-
-      ## If the "original rpm" is NA in the new list of rpms-to-be-upgraded
-      else
-        ## then unset the "original rpm" index and continue with the next iteration of Loop A
-        unset 'all_installed_rpms[XX]'
-      fi; 
-    done; 
+    ## If the "original rpm" needs to be upgraded
+    if [[ "${all_installed_rpms[XX]}" =~ $regexp ]]; 
+    then 
+        # <>
+        echo $XX : "${all_installed_rpms[XX]}" ; 
+        echo "${all_installed_rpms[XX]}" | grep -cEe "$regexp"
+        set -x; 
+        [[ "${all_installed_rpms[XX]}" =~ $regexp ]]; 
+        echo $?; 
+        set -; 
+    fi
   done
+
+    pause_to_check $nL # <>
+
+  for YY in "${rpms_for_upgrade[@]}" ; 
+  do 
+    if [[ "${all_installed_rpms[XX]}" =~ $regexp ]]; 
+    then 
+
+      ## then upgrade just that one "original rpm"; exit on non-zero
+      sudo -- nice --adjustment=-20 -- dnf --verbose upgrade "$YY" || er_x "$nL" "$YY"
+
+      ## Run "needs-restarting"
+      readarray -t nr_pids < <(\
+        sudo -- nice --adjustment=-20 -- dnf --quiet needs-restarting 2>/dev/null | awk '{ print $1 }' )
+
+        declare -p nr_pids # <>
+        pause_to_check $nL # <>
+
+      ## Restart PIDs as necessary, using multiple signals; exit on non-zero
+      for WW in "${nr_pids[@]}"
+      do
+        sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
+          --timeout 1000 HUP \
+          --timeout 1000 USR1 \
+          --timeout 1000 TERM \
+          --timeout 1000 KILL -- "$WW"
+      done
+
+    ## If the "original rpm" is NA in the new list of rpms-to-be-upgraded
+    else
+      ## then unset the "original rpm" index and continue with the next iteration of Loop A
+      unset 'all_installed_rpms[XX]'
+    fi; 
+  done; 
+done
 
 exit 101
 
