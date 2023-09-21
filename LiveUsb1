@@ -1213,7 +1213,7 @@ do
         sudo -- nice --adjustment=-20 -- dnf --quiet needs-restarting 2>/dev/null | awk '{ print $1 }' )
 
         declare -p nr_pids # <>
-        pause_to_check $nL # <>
+        pause_to_check "$nL" # <>
 
       ## Restart PIDs as necessary, using multiple signals; exit on non-zero
       for WW in "${nr_pids[@]}"
