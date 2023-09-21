@@ -202,10 +202,8 @@ function min_necc_rpms(){ :
 
 :;: 'Define must_be_root()'
 function must_be_root(){ :
-  true "${fn_bndry} must_be_root() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-
-  local -
-  set -
+  local - _="${fn_bndry} must_be_root() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
 
   if (( UID == 0 ))
   then
@@ -673,6 +671,8 @@ PS1=''
 # shellcheck disable=SC2034
 declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
+  ## Bug: gh login breaks after here
+  
   #EC=101 LL="$LINENO" exit # <>
   set -x # <>
 
@@ -689,6 +689,8 @@ reqd_user_files
 
 :;: 'Network'
 setup_network
+
+  ## Bug: gh login breaks before here
 
   EC=101 LL="$LINENO" exit # <>
   set -x # <>
