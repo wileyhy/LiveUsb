@@ -344,8 +344,8 @@ rm ()
   local - 
   #set -
 
-  local fn_command_line
-  fn_command_line="${FUNCNAME[0]} $*"
+  #local fn_command_line
+  #fn_command_line="${FUNCNAME[0]} $*"
  
   :;: 'Input must exist'
   [[ ${#@} -eq 0 ]] && return "$LINENO"
