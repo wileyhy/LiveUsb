@@ -515,12 +515,11 @@ function setup_time(){ :
 
 :;: 'Define test_dns()'
 function test_dns(){ :
-  true "${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-
-  local -
+  local - _="${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
+  ping_exit_code=$?
 
   true "${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
