@@ -219,9 +219,8 @@ function must_be_root(){ :
 :;: 'Define pause_to_check()'
 ## Usage,   pause_to_check $nL
 function pause_to_check() { EC=101 LL="$1"
-  true "${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  local -
-  set -
+  local - _="${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
 
   read -N 1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n\n' -r -s -t 600
 
