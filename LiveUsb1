@@ -1206,7 +1206,7 @@ do
     then 
 
       ## then upgrade just that one "original rpm"; exit on non-zero
-      sudo -- nice --adjustment=-20 -- dnf --verbose upgrade "$ZZ" || er_x "$nL" "$zz"
+      sudo -- nice --adjustment=-20 -- dnf --verbose upgrade "$ZZ" || er_x "$nL" "$ZZ"
 
       ## Run "needs-restarting"
       readarray -t nr_pids < <(\
