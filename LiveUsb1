@@ -18,9 +18,7 @@ umask 077
 hash -r
 
 fn_bndry=' ~~~ ~~~ ~~~ '
-export fn_bndry
 fn_lvl=0
-export fn_lvl
 scr_nm=LiveUsb1
 
 :;: 'Write to TTY'
@@ -524,6 +522,7 @@ function test_dns(){ :
   ping_exit_code=$?
 
   true "${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  return "${ping_exit_code}"
 }
 
 :;: 'Define test_os()'
