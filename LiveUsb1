@@ -684,8 +684,6 @@ reqd_user_files
 :;: 'Network'
 setup_network
 
-  exit $LINENO
-
 :;: 'Time'
 setup_time
 
