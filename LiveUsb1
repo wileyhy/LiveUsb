@@ -431,7 +431,7 @@ rm ()
 
   if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
   then
-      command -- mkdir --mode 0700 --verbose -- "${delete_d}" || return $LINENO
+      command -- mkdir --mode 0700 --verbose -- "${delete_d}" || return "$LINENO"
   fi
 
   :;: 'If optargs exist, then  mv  the file into the recycle bucket, appending the time'
@@ -440,7 +440,7 @@ rm ()
     local time_sfx 
     time_sfx=$( date --utc +%s )
     
-    command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return $LINENO
+    command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return "$LINENO"
   fi
 }
 
