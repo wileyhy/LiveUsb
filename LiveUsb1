@@ -1180,16 +1180,19 @@ do
         set -; 
     fi
   done
+  unset YY
 
     pause_to_check $nL # <>
 
-  for YY in "${rpms_for_upgrade[@]}" ; 
+  for ZZ in "${rpms_for_upgrade[@]}" ; 
   do 
+    regexp="^${ZZ}-[0-9]{,16}(\.[0-9]{,16}){,8}-.*\.fc[0-9]{2,3}\.(noarch|x86-64)"; 
+
     if [[ "${all_installed_rpms[XX]}" =~ $regexp ]]; 
     then 
 
       ## then upgrade just that one "original rpm"; exit on non-zero
-      sudo -- nice --adjustment=-20 -- dnf --verbose upgrade "$YY" || er_x "$nL" "$YY"
+      sudo -- nice --adjustment=-20 -- dnf --verbose upgrade "$ZZ" || er_x "$nL" "$zz"
 
       ## Run "needs-restarting"
       readarray -t nr_pids < <(\
@@ -1207,6 +1210,7 @@ do
           --timeout 1000 TERM \
           --timeout 1000 KILL -- "$WW"
       done
+      unset WW
 
     ## If the "original rpm" is NA in the new list of rpms-to-be-upgraded
     else
@@ -1214,7 +1218,9 @@ do
       unset 'all_installed_rpms[XX]'
     fi; 
   done; 
+  unset ZZ
 done
+unset XX
 
 exit 101
 
