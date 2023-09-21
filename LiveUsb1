@@ -1186,7 +1186,7 @@ do
     if [[ "${all_installed_rpms[XX]}" =~ $regexp ]]; 
     then 
         # <>
-        echo $XX : "${all_installed_rpms[XX]}" ; 
+        echo "$XX : ${all_installed_rpms[XX]}" ; 
         echo "${all_installed_rpms[XX]}" | grep -cEe "$regexp"
         set -x; 
         [[ "${all_installed_rpms[XX]}" =~ $regexp ]]; 
