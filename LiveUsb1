@@ -694,7 +694,7 @@ setup_network
 
   ## Bug: gh login breaks before here
 
-  EC=101 LL="$LINENO" exit # <>
+  #EC=101 LL="$LINENO" exit # <>
   set -x # <>
 
 :;: 'Time'
