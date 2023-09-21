@@ -673,7 +673,7 @@ PS1=''
 # shellcheck disable=SC2034
 declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
-  EC=101 LL="$LINENO" exit # <>
+  #EC=101 LL="$LINENO" exit # <>
   set -x # <>
 
 :;: '<Logs>'
@@ -689,6 +689,9 @@ reqd_user_files
 
 :;: 'Network'
 setup_network
+
+  EC=101 LL="$LINENO" exit # <>
+  set -x # <>
 
 :;: 'Time'
 setup_time
