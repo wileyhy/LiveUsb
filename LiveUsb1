@@ -638,7 +638,7 @@ function write_bashrc_strings(){ :
 
 ##  FUNCTION DEFINITIONS COMPLETE ##
 
-  EC=101 LL="$nL" exit # <>
+  EC=101 LL="$LINENO" exit # <>
   set -x # <>
 
 :;: 'Define trap on EXIT'
