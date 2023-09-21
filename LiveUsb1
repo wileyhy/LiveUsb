@@ -263,6 +263,8 @@ function reqd_user_files(){ :
     then
       local pttn_label pttn_path mount_pt data_dir prev_umask
 
+      ## Bug: the awk cmd should have a -v option and $pttn_label should only be defined once
+
       pttn_label='29_Mar_2023'
       pttn_path=$( lsblk --output label,path | awk '$1 ~ /29_Mar_2023/ { print $2 }' )
       mount_pt="/run/media/root/${pttn_label}"
