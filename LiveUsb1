@@ -135,7 +135,7 @@ function get_pids_for_restarting(){ :
   : pipline2, "${#pipline2}" # <>
   : a_pids,   "${#a_pids}" # <>
 
-  true "${fn_bndry} get_pids_for_restarting() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} get_pids_for_restarting()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define gh_auth_login_command()'
@@ -157,7 +157,7 @@ function gh_auth_login_command(){ :
   git config --global credential.helper "cache --timeout=3600"
   gh auth setup-git
 
-  true "${fn_bndry} gh_auth_login_command() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} gh_auth_login_command()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'min_necc_git_cmds()'
@@ -172,7 +172,7 @@ function min_necc_git_cmds(){ :
   git config --global 'user.name' 'Wiley Young'
   git config --global 'user.signingkey' 'E287D0CF528591CE'
 
-  true "${fn_bndry} min_necc_git_cmds() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} min_necc_git_cmds()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define min_necc_rpms()'
@@ -197,7 +197,7 @@ function min_necc_rpms(){ :
     fi
   done
 
-  true "${fn_bndry} min_necc_rpms() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} min_necc_rpms()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define must_be_root()'
@@ -212,7 +212,7 @@ function must_be_root(){ :
     sudo --validate || er_x "${nL}"
   fi
 
-  true "${fn_bndry} must_be_root() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} must_be_root()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define pause_to_check()'
@@ -233,7 +233,7 @@ function pause_to_check() { EC=101 LL="$1"
       ;;\
   esac
 
-  true "${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} pause_to_check()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'reqd_user_files()'
@@ -332,7 +332,7 @@ function reqd_user_files(){ :
 
     #exit 102 # <>
 
-  true "${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} reqd_user_files()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ## Bug, this rm function is broken. if the user doesn't include '--' the file is not removed
@@ -498,7 +498,7 @@ function setup_network(){ :
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
 
-  true "${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} setup_network()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_time()'
@@ -510,7 +510,7 @@ function setup_time(){ :
   sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line ${nL}"
   sudo -- chronyc makestep > /dev/null
 
-  true "${fn_bndry} setup_time() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} setup_time()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define test_dns()'
@@ -521,7 +521,7 @@ function test_dns(){ :
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   ping_exit_code=$?
 
-  true "${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} test_dns()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
   return "${ping_exit_code}"
 }
 
@@ -538,7 +538,7 @@ function test_os(){ :
     er_x "${LINENO}, OS is not Fedora"
   fi
 
-  true "${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} test_os()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2
@@ -565,7 +565,7 @@ function trap_exit(){ local - exit_trap_ec="${EC:-$?}" lineno="${LL:-$nL}"
     : 'End of EXIT trap'
   fi
 
-  true "${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} trap_exit()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
   builtin exit "${exit_trap_ec}"
 }
@@ -633,7 +633,7 @@ function write_bashrc_strings(){ :
 
     : 'Loop A - shut' ;:
   done
-  true "${fn_bndry} write_bashrc_strings() BEGINS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} write_bashrc_strings()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ##  FUNCTION DEFINITIONS COMPLETE ##
