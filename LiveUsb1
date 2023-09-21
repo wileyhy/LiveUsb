@@ -18,7 +18,9 @@ umask 077
 hash -r
 
 fn_bndry=' ~~~ ~~~ ~~~ '
+export fn_bndry
 fn_lvl=0
+export fn_lvl
 scr_nm=LiveUsb1
 
 :;: 'Write to TTY'
