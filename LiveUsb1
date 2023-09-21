@@ -286,7 +286,7 @@ function reqd_user_files(){ :
         #sudo sync -f # <>
 
       : 'If the partition is not mounted which holds the data directory, then mount it'
-      if ! lsblk --output path | grep --quiet "$pttn_path" # <>
+      if ! lsblk --output path,mountpoints | grep --quiet "$mount_pt" # <>
       then
 
         if ! [[ -d "${mount_pt}" ]]
@@ -447,7 +447,8 @@ rm ()
 :;: 'Define setup_network()'
 ## Note, 1 is Google; A is Comcast; both are global variables
 function setup_network(){ :
-  true "${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - _="${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  set -x
 
   dns_srv_1=8.8.8.8
   dns_srv_A=75.75.75.75
@@ -682,6 +683,8 @@ reqd_user_files
 
 :;: 'Network'
 setup_network
+
+  exit $LINENO
 
 :;: 'Time'
 setup_time
