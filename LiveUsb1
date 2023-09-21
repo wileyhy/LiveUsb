@@ -1054,7 +1054,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 ## Bug, the --security upgrade should be done rpm by rpm
 
   : 'Beginning section on DNF' # <>
-  #pause_to_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 ## Note, CUPS cannot be safely removed; too many dependencies
 ## Note, For some unknown reason, even when  dnf  doesn't change any programs,  dnf
