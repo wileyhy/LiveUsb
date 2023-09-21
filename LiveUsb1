@@ -693,7 +693,7 @@ min_necc_rpms
 :;: 'Minimum necessary git commands'
 min_necc_git_cmds
 
-  EC=101 LL="$nL" exit # <>
+  #EC=101 LL="$nL" exit # <>
   set -x # <>
 
 :;: 'gh -- github CLI configuration'
