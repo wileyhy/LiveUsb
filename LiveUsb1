@@ -340,7 +340,7 @@ rsync_install_if_missing()
     fi
   else
     read -r -a fn_umask < <( umask -p )
-    umask 700
+    umask 077
     mkdir --verbose --parents -- "${fn_target_dir}"
     builtin "${fn_umask[@]}"
     unset fn_umask
