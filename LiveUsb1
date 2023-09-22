@@ -334,7 +334,7 @@ rsync_install_if_missing()
 
   for HH in "${fn_source_array[@]}"
   do
-    if ! [[ -e ${HH} ]]
+    if ! [[ -e ${fn_target_dir}/${HH##*/} ]]
     then
       sudo -- rsync --archive --checksum -- "${HH}"  "${fn_target_dir}"
     fi
