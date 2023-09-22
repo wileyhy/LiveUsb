@@ -293,7 +293,7 @@ function reqd_user_files(){ :
         #sudo sync -f # <>
 
     ## Bug: gh login breaks before here
-    EC=101 LL="$LINENO" exit # <>
+    #EC=101 LL="$LINENO" exit # <>
 
       : 'If the partition is not mounted which holds the data directory, then mount it'
       if ! lsblk --output path,mountpoints | grep --quiet "$mount_pt" # <>
