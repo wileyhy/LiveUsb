@@ -340,7 +340,6 @@ function reqd_user_files(){ :
     ## Bug: gh login breaks before here
     #EC=101 LL="$LINENO" exit # <>
 
-      for 
         sudo -- rsync --archive --checksum -- "${files_lev_1_source[@]}"  "${files_lev_1_dest}"
       sudo -- rsync --archive --checksum -- "${files_lev_2_source[@]}"  "${files_lev_2_dest}"
       sudo -- rsync --archive --checksum -- "${files_lev_3_source[@]}"  "${files_lev_3_dest}"
