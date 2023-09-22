@@ -332,16 +332,18 @@ rsync_install_if_missing()
   fn_source_array="$1"
   fn_target_dir="$2"
 
-  if [[ -e "${fn_target_dir}" ]] && ! [[ -d "${fn_target_dir}" ]]
+  if [[ -e "${fn_target_dir}" ]]
   then
-    er_x "$nL" "${fn_target_dir}"
-  
-  elif ! [[ -e "${fn_target_dir}" ]]
-  then
+    if ! [[ -d "${fn_target_dir}" ]]
+    then
+      er_x "$nL" "${fn_target_dir}"
+    fi
+  else
     read -r -a fn_umask < <( umask -p )
     umask 700
     mkdir --verbose --parents -- "${fn_target_dir}"
     builtin "${fn_umask[@]}"
+    unset fn_umask
   fi
 
   for HH in "${fn_source_array[@]}"
@@ -351,6 +353,7 @@ rsync_install_if_missing()
       sudo -- rsync --archive --checksum -- "${HH}"  "${fn_target_dir}"
     fi
   done
+  unset HH fn_source_array fn_target_dir
 }         
 
 rsync_install_if_missing  files_lev_1_source "${files_lev_1_dest}"
