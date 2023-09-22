@@ -261,7 +261,7 @@ function reqd_user_files(){ :
     #command rm -fr "$BB" ; continue # <>
 
     ## Bug: gh login breaks before here
-    EC=101 LL="$LINENO" exit # <>
+    #EC=101 LL="$LINENO" exit # <>
 
     if ! [[ -e ${BB} ]]
     then
