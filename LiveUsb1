@@ -683,7 +683,7 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/col
 #trap 'set - ; exec 2>&4 1>&3' EXIT HUP INT QUIT USR2 TERM # <Logs>
 #exec 1> ./Log_begin-1.txt 2>&1 # <Logs>
 
-  EC=101 LL="$LINENO" exit # <>
+  #EC=101 LL="$LINENO" exit # <>
   set -x # <>
 
 :;: 'Regular users with sudo, only'
