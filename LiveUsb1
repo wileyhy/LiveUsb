@@ -311,7 +311,7 @@ function reqd_user_files(){ :
       fi # <>
 
     ## Bug: gh login breaks before here
-    EC=101 LL="$LINENO" exit # <>
+    #EC=101 LL="$LINENO" exit # <>
 
       local -a      files_lev_1_source
       readarray -t  files_lev_1_source < <(
