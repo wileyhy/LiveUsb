@@ -252,10 +252,16 @@ function reqd_user_files(){ :
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
     #pause_to_check $nL # <>
 
+    ## Bug: gh login breaks before here
+    EC=101 LL="$LINENO" exit # <>
+
   for BB in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
     "${files_for_use_with_github_level_3[@]}"
   do
     #command rm -fr "$BB" ; continue # <>
+
+    ## Bug: gh login breaks before here
+    EC=101 LL="$LINENO" exit # <>
 
     if ! [[ -e ${BB} ]]
     then
@@ -271,6 +277,9 @@ function reqd_user_files(){ :
       read -r -a prev_umask < <( umask -p )
       umask 077
 
+    ## Bug: gh login breaks before here
+    EC=101 LL="$LINENO" exit # <>
+
       if [[ -z $pttn_path ]]
       then
         er_x "${nL} USB device not available"
@@ -283,9 +292,15 @@ function reqd_user_files(){ :
         #fi # <>
         #sudo sync -f # <>
 
+    ## Bug: gh login breaks before here
+    EC=101 LL="$LINENO" exit # <>
+
       : 'If the partition is not mounted which holds the data directory, then mount it'
       if ! lsblk --output path,mountpoints | grep --quiet "$mount_pt" # <>
       then
+
+    ## Bug: gh login breaks before here
+    EC=101 LL="$LINENO" exit # <>
 
         if ! [[ -d "${mount_pt}" ]]
         then
@@ -294,6 +309,9 @@ function reqd_user_files(){ :
 
         sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
       fi # <>
+
+    ## Bug: gh login breaks before here
+    EC=101 LL="$LINENO" exit # <>
 
       local -a      files_lev_1_source
       readarray -t  files_lev_1_source < <(
@@ -319,6 +337,9 @@ function reqd_user_files(){ :
         #declare -p files_lev_{1,2,3}_{source,dest} # <>
         #pause_to_check $nL # <>
 
+    ## Bug: gh login breaks before here
+    EC=101 LL="$LINENO" exit # <>
+
       sudo -- rsync --archive --checksum -- "${files_lev_1_source[@]}"  "${files_lev_1_dest}"
       sudo -- rsync --archive --checksum -- "${files_lev_2_source[@]}"  "${files_lev_2_dest}"
       sudo -- rsync --archive --checksum -- "${files_lev_3_source[@]}"  "${files_lev_3_dest}"
@@ -331,6 +352,8 @@ function reqd_user_files(){ :
     fi
   done
 
+    ## Bug: gh login breaks before here
+    EC=101 LL="$LINENO" exit # <>
     #exit 102 # <>
 
   true "${fn_bndry} reqd_user_files()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
