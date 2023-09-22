@@ -245,12 +245,12 @@ function reqd_user_files(){ :
     #declare -p files_for_use_with_github_level_1 # <>
     #declare -p files_for_use_with_github_level_2 # <>
     #declare -p files_for_use_with_github_level_3 # <>
-    #: "${files_for_use_with_github_level_1[@]##*/}" # <>
-    #: "${files_for_use_with_github_level_2[@]##*/}" # <>
-    #: "${files_for_use_with_github_level_3[@]##*/}" # <>
+    : "${files_for_use_with_github_level_1[@]##*/}" # <>
+    : "${files_for_use_with_github_level_2[@]##*/}" # <>
+    : "${files_for_use_with_github_level_3[@]##*/}" # <>
 
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
-    #pause_to_check $nL # <>
+    pause_to_check $nL # <>
 
     ## Bug: gh login breaks before here
     #EC=101 LL="$LINENO" exit # <>
