@@ -326,7 +326,7 @@ function reqd_user_files(){ :
 
 rsync_install_if_missing()
 {
-  local - HH fn_target_dir
+  local - HH fn_target_dir fn_umask
   local -n fn_source_array
   #set -
   fn_source_array="$1"
@@ -338,7 +338,10 @@ rsync_install_if_missing()
   
   elif ! [[ -e "${fn_target_dir}" ]]
   then
-    mkdir -- "${fn_target_dir}"
+    read -r -a fn_umask < <( umask -p )
+    umask 700
+    mkdir --verbose --parents -- "${fn_target_dir}"
+    builtin "${fn_umask[@]}"
   fi
 
   for HH in "${fn_source_array[@]}"
