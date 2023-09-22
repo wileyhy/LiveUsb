@@ -259,7 +259,7 @@ do
   local -n NN
   NN="$AA"
 
-    declare -p AA NN
+    local -p AA NN
     pause_to_check "$nL"
 
   for BB in "${NN[@]}"
@@ -344,6 +344,7 @@ do
     fi
   done
 done
+unset AA NN
     ## Bug: gh login breaks before here
     EC=101 LL="$LINENO" exit # <>
     #exit 102 # <>
