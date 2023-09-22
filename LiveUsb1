@@ -683,18 +683,27 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/col
 #trap 'set - ; exec 2>&4 1>&3' EXIT HUP INT QUIT USR2 TERM # <Logs>
 #exec 1> ./Log_begin-1.txt 2>&1 # <Logs>
 
+  EC=101 LL="$LINENO" exit # <>
+  set -x # <>
+
 :;: 'Regular users with sudo, only'
 must_be_root
 
+  EC=101 LL="$LINENO" exit # <>
+  set -x # <>
+
 :;: 'Certain files must have been installed from off-disk'
 reqd_user_files
+
+  EC=101 LL="$LINENO" exit # <>
+  set -x # <>
 
 :;: 'Network'
 setup_network
 
   ## Bug: gh login breaks before here
 
-  #EC=101 LL="$LINENO" exit # <>
+  EC=101 LL="$LINENO" exit # <>
   set -x # <>
 
 :;: 'Time'
