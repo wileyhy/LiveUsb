@@ -252,16 +252,10 @@ function reqd_user_files(){ :
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
     #pause_to_check $nL # <>
 
-    ## Bug: gh login breaks before here
-    #EC=101 LL="$LINENO" exit # <>
-
   for BB in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
     "${files_for_use_with_github_level_3[@]}"
   do
     #command rm -fr "$BB" ; continue # <>
-
-    ## Bug: gh login breaks before here
-    #EC=101 LL="$LINENO" exit # <>
 
     if ! [[ -e ${BB} ]]
     then
@@ -277,9 +271,6 @@ function reqd_user_files(){ :
       read -r -a prev_umask < <( umask -p )
       umask 077
 
-    ## Bug: gh login breaks before here
-    #EC=101 LL="$LINENO" exit # <>
-
       if [[ -z $pttn_path ]]
       then
         er_x "${nL} USB device not available"
@@ -292,15 +283,9 @@ function reqd_user_files(){ :
         #fi # <>
         #sudo sync -f # <>
 
-    ## Bug: gh login breaks before here
-    #EC=101 LL="$LINENO" exit # <>
-
       : 'If the partition is not mounted which holds the data directory, then mount it'
       if ! lsblk --output path,mountpoints | grep --quiet "$mount_pt" # <>
       then
-
-    ## Bug: gh login breaks before here
-    #EC=101 LL="$LINENO" exit # <>
 
         if ! [[ -d "${mount_pt}" ]]
         then
@@ -309,9 +294,6 @@ function reqd_user_files(){ :
 
         sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
       fi # <>
-
-    ## Bug: gh login breaks before here
-    #EC=101 LL="$LINENO" exit # <>
 
       local -a      files_lev_1_source
       readarray -t  files_lev_1_source < <(
@@ -337,14 +319,33 @@ function reqd_user_files(){ :
         declare -p files_lev_{1,2,3}_{source,dest} # <>
         pause_to_check $nL # <>
 
+    ## Bug? Use `install` instead of `rsync`?
+
     ## Bug: gh login breaks before here
     #EC=101 LL="$LINENO" exit # <>
 
-        sudo -- rsync --archive --checksum -- "${files_lev_1_source[@]}"  "${files_lev_1_dest}"
-      sudo -- rsync --archive --checksum -- "${files_lev_2_source[@]}"  "${files_lev_2_dest}"
-      sudo -- rsync --archive --checksum -- "${files_lev_3_source[@]}"  "${files_lev_3_dest}"
+rsync_install_if_missing()
+{
+  local - HH fn_target_dir
+  local -n fn_source_array
+  #set -
+  fn_source_array="$1"
+  fn_target_dir="$2"
 
-        #pause_to_check $nL # <>
+  for HH in "${fn_source_array[@]}"
+  do
+    if ! [[ -e ${HH} ]]
+    then
+      sudo -- rsync --archive --checksum -- "${HH}"  "${fn_target_dir}"
+    fi
+  done
+}         
+
+rsync_install_if_missing "${files_lev_1_source[@]}" "${files_lev_1_dest}"
+rsync_install_if_missing "${files_lev_2_source[@]}" "${files_lev_2_dest}"
+rsync_install_if_missing "${files_lev_3_source[@]}" "${files_lev_3_dest}"
+
+        pause_to_check $nL # <>
 	      #exit 101 # <>
 
       builtin "${prev_umask[@]}"
