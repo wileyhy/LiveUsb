@@ -13,6 +13,8 @@ set -x
 files_for_use_with_github_level_1=( ~/.ssh ~/.gnupg ~/.vimrc ~/.mozilla ~/.angband )
 files_for_use_with_github_level_2=( ~/.config/gh )
 files_for_use_with_github_level_3=( ~/.config/procps/toprc )
+arrays_of_conf_files=( files_for_use_with_github_level_1 files_for_use_with_github_level_2 
+  files_for_use_with_github_level_3 )
 
 umask 077
 hash -r
@@ -239,7 +241,7 @@ function pause_to_check() { EC=101 LL="$1"
 :;: 'reqd_user_files()'
 
 function reqd_user_files(){ :
-  local - BB _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - AA BB _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
     #declare -p files_for_use_with_github_level_1 # <>
@@ -252,8 +254,15 @@ function reqd_user_files(){ :
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
     #pause_to_check $nL # <>
 
-  for BB in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
-    "${files_for_use_with_github_level_3[@]}"
+for AA in "${arrays_of_conf_files[@]}"
+do
+  local -n NN
+  NN="$AA"
+
+    declare -p AA NN
+    pause_to_check "$nL"
+
+  for BB in "${NN[@]}"
   do
     #command rm -fr "$BB" ; continue # <>
 
@@ -295,6 +304,8 @@ function reqd_user_files(){ :
         sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
       fi # <>
 
+      ## Bug: if just one file is missing, then re-install all files?  No.
+
       local -a      files_lev_1_source
       readarray -t  files_lev_1_source < <(
         printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_1[@]#~/}" )
@@ -321,9 +332,6 @@ function reqd_user_files(){ :
 
     ## Bug? Use `install` instead of `rsync`?
 
-    ## Bug: gh login breaks before here
-    #EC=101 LL="$LINENO" exit # <>
-
       rsync_install_if_missing  files_lev_1_source "${files_lev_1_dest}"
       rsync_install_if_missing  files_lev_2_source "${files_lev_2_dest}"
       rsync_install_if_missing  files_lev_3_source "${files_lev_3_dest}"
@@ -335,7 +343,7 @@ function reqd_user_files(){ :
       break
     fi
   done
-
+done
     ## Bug: gh login breaks before here
     EC=101 LL="$LINENO" exit # <>
     #exit 102 # <>
