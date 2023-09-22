@@ -689,7 +689,7 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/col
 :;: 'Regular users with sudo, only'
 must_be_root
 
-  EC=101 LL="$LINENO" exit # <>
+  #EC=101 LL="$LINENO" exit # <>
   set -x # <>
 
 :;: 'Certain files must have been installed from off-disk'
