@@ -278,7 +278,7 @@ function reqd_user_files(){ :
       umask 077
 
     ## Bug: gh login breaks before here
-    EC=101 LL="$LINENO" exit # <>
+    #EC=101 LL="$LINENO" exit # <>
 
       if [[ -z $pttn_path ]]
       then
