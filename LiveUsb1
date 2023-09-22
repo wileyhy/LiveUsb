@@ -324,41 +324,9 @@ function reqd_user_files(){ :
     ## Bug: gh login breaks before here
     #EC=101 LL="$LINENO" exit # <>
 
-rsync_install_if_missing()
-{
-  local - HH fn_target_dir fn_umask
-  local -n fn_source_array
-  #set -
-  fn_source_array="$1"
-  fn_target_dir="$2"
-
-  if [[ -e "${fn_target_dir}" ]]
-  then
-    if ! [[ -d "${fn_target_dir}" ]]
-    then
-      er_x "$nL" "${fn_target_dir}"
-    fi
-  else
-    read -r -a fn_umask < <( umask -p )
-    umask 077
-    mkdir --verbose --parents -- "${fn_target_dir}"
-    builtin "${fn_umask[@]}"
-    unset fn_umask
-  fi
-
-  for HH in "${fn_source_array[@]}"
-  do
-    if ! [[ -e ${fn_target_dir}/${HH##*/} ]]
-    then
-      sudo -- rsync --archive --checksum -- "${HH}"  "${fn_target_dir}"
-    fi
-  done
-  unset HH fn_source_array fn_target_dir
-}         
-
-rsync_install_if_missing  files_lev_1_source "${files_lev_1_dest}"
-rsync_install_if_missing  files_lev_2_source "${files_lev_2_dest}"
-rsync_install_if_missing  files_lev_3_source "${files_lev_3_dest}"
+      rsync_install_if_missing  files_lev_1_source "${files_lev_1_dest}"
+      rsync_install_if_missing  files_lev_2_source "${files_lev_2_dest}"
+      rsync_install_if_missing  files_lev_3_source "${files_lev_3_dest}"
 
         pause_to_check $nL # <>
 	      #exit 101 # <>
@@ -379,8 +347,7 @@ rsync_install_if_missing  files_lev_3_source "${files_lev_3_dest}"
 
 :;: 'Define rm() -- for bashrc only'
 ## Note, rm(), command shadowing is intended in this case
-rm ()
-{
+function rm(){ :
   local - 
   #set -
 
@@ -483,6 +450,38 @@ rm ()
     command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return "$LINENO"
   fi
 }
+
+function rsync_install_if_missing(){ :
+  local - HH fn_target_dir fn_umask
+  local -n fn_source_array
+  #set -
+  fn_source_array="$1"
+  fn_target_dir="$2"
+
+  if [[ -e "${fn_target_dir}" ]]
+  then
+    if ! [[ -d "${fn_target_dir}" ]]
+    then
+      er_x "$nL" "${fn_target_dir}"
+    fi
+  else
+    read -r -a fn_umask < <( umask -p )
+    umask 077
+    mkdir --verbose --parents -- "${fn_target_dir}"
+    builtin "${fn_umask[@]}"
+    unset fn_umask
+  fi
+
+  for HH in "${fn_source_array[@]}"
+  do
+    if ! [[ -e ${fn_target_dir}/${HH##*/} ]]
+    then
+      sudo -- rsync --archive --checksum -- "${HH}"  "${fn_target_dir}"
+    fi
+  done
+  unset HH fn_source_array fn_target_dir
+}
+
 
 :;: 'Define setup_network()'
 ## Note, 1 is Google; A is Comcast; both are global variables
