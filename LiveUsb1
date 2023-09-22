@@ -245,12 +245,12 @@ function reqd_user_files(){ :
     #declare -p files_for_use_with_github_level_1 # <>
     #declare -p files_for_use_with_github_level_2 # <>
     #declare -p files_for_use_with_github_level_3 # <>
-    : "${files_for_use_with_github_level_1[@]##*/}" # <>
-    : "${files_for_use_with_github_level_2[@]##*/}" # <>
-    : "${files_for_use_with_github_level_3[@]##*/}" # <>
+    #: "${files_for_use_with_github_level_1[@]##*/}" # <>
+    #: "${files_for_use_with_github_level_2[@]##*/}" # <>
+    #: "${files_for_use_with_github_level_3[@]##*/}" # <>
 
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
-    pause_to_check $nL # <>
+    #pause_to_check $nL # <>
 
     ## Bug: gh login breaks before here
     #EC=101 LL="$LINENO" exit # <>
@@ -334,13 +334,14 @@ function reqd_user_files(){ :
       local -a      files_lev_3_dest
                     files_lev_3_dest=~/.config/procps
 
-        #declare -p files_lev_{1,2,3}_{source,dest} # <>
-        #pause_to_check $nL # <>
+        declare -p files_lev_{1,2,3}_{source,dest} # <>
+        pause_to_check $nL # <>
 
     ## Bug: gh login breaks before here
     #EC=101 LL="$LINENO" exit # <>
 
-      sudo -- rsync --archive --checksum -- "${files_lev_1_source[@]}"  "${files_lev_1_dest}"
+      for 
+        sudo -- rsync --archive --checksum -- "${files_lev_1_source[@]}"  "${files_lev_1_dest}"
       sudo -- rsync --archive --checksum -- "${files_lev_2_source[@]}"  "${files_lev_2_dest}"
       sudo -- rsync --archive --checksum -- "${files_lev_3_source[@]}"  "${files_lev_3_dest}"
 
