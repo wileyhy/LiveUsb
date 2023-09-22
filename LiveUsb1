@@ -253,7 +253,7 @@ function reqd_user_files(){ :
     #pause_to_check $nL # <>
 
     ## Bug: gh login breaks before here
-    EC=101 LL="$LINENO" exit # <>
+    #EC=101 LL="$LINENO" exit # <>
 
   for BB in "${files_for_use_with_github_level_1[@]}" "${files_for_use_with_github_level_2[@]}" \
     "${files_for_use_with_github_level_3[@]}"
