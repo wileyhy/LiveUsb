@@ -332,6 +332,15 @@ rsync_install_if_missing()
   fn_source_array="$1"
   fn_target_dir="$2"
 
+  if [[ -e "${fn_target_dir}" ]] && ! [[ -d "${fn_target_dir}" ]]
+  then
+    er_x "$nL" "${fn_target_dir}"
+  
+  elif ! [[ -e "${fn_target_dir}" ]]
+  then
+    mkdir -- "${fn_target_dir}"
+  fi
+
   for HH in "${fn_source_array[@]}"
   do
     if ! [[ -e ${fn_target_dir}/${HH##*/} ]]
