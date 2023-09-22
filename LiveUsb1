@@ -341,9 +341,9 @@ rsync_install_if_missing()
   done
 }         
 
-rsync_install_if_missing "${files_lev_1_source[@]}" "${files_lev_1_dest}"
-rsync_install_if_missing "${files_lev_2_source[@]}" "${files_lev_2_dest}"
-rsync_install_if_missing "${files_lev_3_source[@]}" "${files_lev_3_dest}"
+rsync_install_if_missing  files_lev_1_source "${files_lev_1_dest}"
+rsync_install_if_missing  files_lev_2_source "${files_lev_2_dest}"
+rsync_install_if_missing  files_lev_3_source "${files_lev_3_dest}"
 
         pause_to_check $nL # <>
 	      #exit 101 # <>
