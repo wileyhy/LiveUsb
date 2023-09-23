@@ -277,7 +277,7 @@ do
   for BB in "${!NN[@]}"
   do
       #command rm -fr "$BB" ; continue # <>
-      local -p AA BB NN data_dir
+      local -p AA BB NN 
       echo '${NN[BB]}: '"${NN[BB]}"
 	    declare -p files_for_use_with_github_level_1 # <>
       pause_to_check $nL # <>
