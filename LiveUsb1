@@ -224,7 +224,7 @@ function pause_to_check() { EC=101 LL="$1"
 
   case $REPLY in
     Y*|y*|$'\n'|' ' )
-      printf '\ngo\n'
+      printf '\n go \n'
       ;;\
     * )
       printf '\nexiting\n'
