@@ -232,7 +232,10 @@ function pause_to_check() { EC=101 LL="$1"
       ;;\
   esac
   local
-  true "${fn_bndry} pause_to_check()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  
+  local bndry_cmd
+  if [[ $hyphn =~ x ]]; then bndry_cmd=echo; else bndry_cmd=true; fi
+  "${bndry_cmd}"  "${fn_bndry} pause_to_check()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'reqd_user_files()'
