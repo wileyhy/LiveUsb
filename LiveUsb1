@@ -231,7 +231,6 @@ function pause_to_check() { EC=101 LL="$1"
       exit
       ;;\
   esac
-  local
   
   local bndry_cmd
   if [[ $hyphn =~ x ]]; then bndry_cmd=echo; else bndry_cmd=true; fi
