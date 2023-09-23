@@ -261,7 +261,7 @@ pttn_label='29_Mar_2023'
 mount_pt="/run/media/root/${pttn_label}"
 data_dir="${mount_pt}/set-up-git"
 
-  #local -p NN
+  local -p arrays_of_conf_files
 
 :;: 'For each array of conf files and/or directories'
 for AA in "${arrays_of_conf_files[@]}"
