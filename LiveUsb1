@@ -263,28 +263,29 @@ data_dir="${mount_pt}/set-up-git"
 
   declare -p arrays_of_conf_files
 
-local AA NN
+local AA
+local -n NN 
+## It isn't necessary to declare NN as a nameref, since unsetting NN (see below) removes the nameref 
+#+  attribute, but I intend to use NN as a nameref, so declaring NN without a nameref attribute would be 
+#+  confusing
 
 :;: 'For each array of conf files and/or directories'
 for AA in "${arrays_of_conf_files[@]}"
 do
+    ## Note, the command `local -p NN` in xtrace prints as `declare -p NN`
     local -p AA
-    #local | grep NN
-    #declare | grep NN
     local -p NN
 
-  ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
-  #+  directly, `foo=bar`, then the second assignment statement will be global
 
-  ## Note, if I don't unset this nameref temporary variable on each loop, for some reason the re-assignment
-  #+  fails to clobber out the previous assignment
+  ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
+  #+  directly, `foo=bar`, then on the second loop `local -p NN` prints the former value of NN. Perhaps 
+  #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
   unset NN 
   local -n NN
   
-  #local -n NN="${AA}"
-    #local -p NN
-  
-  NN="${AA}"
+  local -n NN="${AA}"   ## good code
+  #NN="${AA}"           ## bad code
+
     declare -p NN
     pause_to_check "$nL"
 
@@ -296,10 +297,9 @@ do
       local -p BB
 
     local source_file dest_dir
-    source_file=( "${data_dir}/${NN[BB]##*/}" )
+    source_file="${data_dir}/${NN[BB]##*/}"
     dest_dir="${NN[BB]%/*}"
 
-      #command rm -fr "$BB" ; continue # <>
       local -p AA BB NN 
       : '${NN[@]}: '"${NN[@]}"
       : '${NN[BB]}: '"${NN[BB]}"
