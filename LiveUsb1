@@ -1325,7 +1325,8 @@ then
     #+  able to make that distinction and only upgrade the correct package.
     regexp_base="[0-9]{,16}(\.[0-9]{,16}){,8}-.*\.fc[0-9]{2,3}\.(noarch|x86-64)"; 
     
-    ## Bug, grepping through all the installed RPMs is slow
+    ## Bug, `test`ing through all the installed RPMs is slow; 
+    #+  grep the entire list?
 
     ## Re-run the list, grepping for the "original rpm"
     for YY in "${rpms_for_upgrade[@]}" ; 
