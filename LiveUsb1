@@ -3,6 +3,7 @@
 
 ## Note, written for Fedora, see hardcoded /run/media/root'
 ## Note, style, function definition syntax, '(){ :' makes plain xtrace easier to read
+## Note, style, `! [[` doesn't show the '!' in xtrace, whereas `[[ !` does.
 ## Note, idempotent script
 
 # <> Debugging
