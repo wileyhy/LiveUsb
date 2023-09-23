@@ -233,7 +233,7 @@ function pause_to_check() { EC=101 LL="$1"
   esac
   
   local bndry_cmd
-  if [[ $hyphn =~ x ]]; then bndry_cmd=echo; else bndry_cmd=true; fi
+  if [[ $hyphn =~ x ]]; then bndry_cmd='echo'; else bndry_cmd='true'; fi
   "${bndry_cmd}"  "${fn_bndry} pause_to_check()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
@@ -242,15 +242,15 @@ function reqd_user_files(){ :
   local - hyphn="$-" _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
-    declare -p files_for_use_with_github_level_1 # <>
-    declare -p files_for_use_with_github_level_2 # <>
-    declare -p files_for_use_with_github_level_3 # <>
+    #declare -p files_for_use_with_github_level_1 # <>
+    #declare -p files_for_use_with_github_level_2 # <>
+    #declare -p files_for_use_with_github_level_3 # <>
     #: "${files_for_use_with_github_level_1[@]##*/}" # <>
     #: "${files_for_use_with_github_level_2[@]##*/}" # <>
     #: "${files_for_use_with_github_level_3[@]##*/}" # <>
 
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
-    pause_to_check $nL # <>
+    #pause_to_check $nL # <>
 
 ## Note, NN must be declared as local before unsetting it inside the function so that the `unset` will 
 #+  effect the local variable
@@ -259,7 +259,7 @@ pttn_label='29_Mar_2023'
 mount_pt="/run/media/root/${pttn_label}"
 data_dir="${mount_pt}/skel-Live_Usb"
 
-  declare -p arrays_of_conf_files
+  #declare -p arrays_of_conf_files
 
 local AA
 local -n NN 
@@ -267,54 +267,75 @@ local -n NN
 #+  attribute, but I intend to use NN as a nameref, so declaring NN without a nameref attribute would be 
 #+  confusing
 
+: 'Vars: get list of mounts'
+## Note, and yet, when locally declaring and assigning separately a regular variable, ie, 
+#+  `local lsblk_out` \n `lsblk_out=''` the assignment doesn't need a preceding `local`
+## Note, I'm using an array with $lsblk_out so I can work around `set -u` by using a ':=' PE, and so that 
+#+  I can limit xtrace output by testing for a shortened version of the output of `lsblk`. I.e., I'm testing
+#+  the last line of the array, index '-1', but this is really just a practice, since a lot of times index
+#+  zero gets unset for whatever reason, but if there are any values in the array at all, then index
+#+  '-1' is guaranteed to exist. ...unless the array is completely empty...
+#+	but I don't want to UNSET ie RESET the array on each loop. If it's actually empty, I want to fill
+#+  it, but i
+#+ In this script, index zero should exist, barring any future changes. So,
+#+  it's a bit of future-proofing. 
+local -a lsblk_out
+readarray -t lsblk_out < <( lsblk --output label,path,mountpoints )
+
 :;: 'For each array of conf files and/or directories'
 for AA in "${arrays_of_conf_files[@]}"
 do
+  :;: 'Loop A'
+
     ## Note, the command `local -p NN` in xtrace prints as `declare -p NN`
-    local -p AA
-    local -p NN
+    #local -p AA
+    #local -p NN
 
-
+  : 'Vars'
   ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
   #+  directly, `foo=bar`, then on the second loop `local -p NN` prints the former value of NN. Perhaps 
   #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
   ## Note, remember, namerefs can only be unset with the -n flag to the `unset` builtin
+  local BB
   unset -n NN 
   local -n NN
-  
   local -n NN="${AA}"   ## good code
   #NN="${AA}"           ## bad code
 
-    declare -p NN
-    pause_to_check "$nL"
+    #declare -p NN
+    #pause_to_check "$nL"
 
-  local BB
-
+  : $'Vars: Get device name where label \x24pttn_label can be found'
+  local pttn_path
+  pttn_path=$( awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' <<< "${lsblk_out[@]}" )
+ 
   :;: 'For each conf file or dir'
   for BB in "${!NN[@]}"
   do
-      local -p BB
+    :;: 'Loop B'
 
+      #local -p BB
+      #declare -p data_dir NN
+      #echo '{NN[BB]}: '"${NN[BB]}"
+      #pause_to_check $nL # <>
+
+    : 'Vars'
     local source_file dest_dir
-    source_file="${data_dir}/${NN[BB]##*/}"
+    source_file="${data_dir}/${NN[BB]#~/}"
     dest_dir="${NN[BB]%/*}"
 
-      local -p AA BB NN 
-      : '${NN[@]}: '"${NN[@]}"
-      : '${NN[BB]}: '"${NN[BB]}"
-      declare -p files_for_use_with_github_level_{1,2,3} # <>
-      #pause_to_check $nL # <>
+      #local -p AA BB NN 
+      #: '{NN[@]}: '"${NN[*]}"
+      #: '{NN[BB]}: '"${NN[BB]}"
+      #declare -p files_for_use_with_github_level_{1,2,3} # <>
+      #exit 101
 
     :;: 'If the target conf file/dir does not exist'
     if ! [[ -e ${NN[BB]} ]]
     then
-      local lsblk_out pttn_path
-
-      lsblk_out=$( lsblk --output label,path,mountpoints )
-      pttn_path=$( awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' <<< "${lsblk_out}" )
       
       :;: 'If the source conf file/dir does not exist, then find it'
-      if ! [[ -e "${data_dir}/${NN[BB]##*/}" ]]
+      if ! [[ -e "${source_file}" ]]
       then
 
         : 'If the USB device is NA, then exit'
@@ -324,7 +345,7 @@ do
         fi
 
         : 'If the partition is not mounted which holds the data directory, then mount it'
-        if ! grep --quiet "$mount_pt" <<< "${lsblk_out}" # <>
+        if ! grep --quiet "$mount_pt" <<< "${lsblk_out[@]}" # <>
         then
 
           : 'Mountpoint must exist'
@@ -335,13 +356,14 @@ do
 
           : $'Perform mount operation and re-sample \x60lsblk\x60'
           sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
-          lsblk_out=$( lsblk --output label,path,mountpoints )
+          
+          readarray -t lsblk_out < <( lsblk --output label,path,mountpoints )
         fi
 
         :;: 'If the source conf still file/dir does not exist, then throw an error'
-        if ! [[ -e "${data_dir}/${NN[BB]##*/}" ]]
+        if ! [[ -e "${source_file}" ]]
         then
-          er_x "$nL" "$NN" "${data_dir}/${NN[BB]##*/}"
+          er_x "$nL" "$NN" "${source_file}"
         fi
       fi
       
@@ -374,9 +396,10 @@ do
 
         #declare -p files_lev_{1,2,3}_{source,dest} # <>
         
-        pause_to_check $nL # <>
+        #pause_to_check $nL # <>
 
-    ## Bug? Use `install` instead of `rsync`?
+    ## Note, Using `install` instead of `rsync` would require each FSO to have written, in script, a set of 
+    #+  metadata for `install` to write. Too much information for now.
 
       rsync_install_if_missing  "${source_file}" "${dest_dir}"
 
@@ -384,17 +407,16 @@ do
       #rsync_install_if_missing  files_lev_2_source "${files_lev_2_dest}"
       #rsync_install_if_missing  files_lev_3_source "${files_lev_3_dest}"
 
-        pause_to_check $nL # <>
+        #pause_to_check $nL # <>
 	      #exit 101 # <>
 
       builtin "${prev_umask[@]}"
-      break
     fi
   done
 done
 unset AA NN
     ## Bug: gh login breaks before here
-    EC=101 LL="$LINENO" exit # <>
+    #EC=101 LL="$LINENO" exit # <>
     #exit 102 # <>
 
   true "${fn_bndry} reqd_user_files()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -532,9 +554,9 @@ function rsync_install_if_missing(){ :
     unset fn_umask
   fi
 
-  if ! [[ -e ${fn_target_dir}/${fn_source_var##*/} ]]
+  if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
-    sudo -- rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}"
+    sudo -- rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || er_x "${nL}" "${fn_target_dir}"
   fi
   unset fn_source_var fn_target_dir
 
