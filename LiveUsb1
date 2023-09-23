@@ -256,7 +256,8 @@ function reqd_user_files(){ :
 
 local AA
 local -n NN
-local -p NN
+
+  #local -p NN
 
 :;: 'For each array of conf files and/or directories'
 for AA in "${arrays_of_conf_files[@]}"
@@ -265,17 +266,17 @@ do
     #local | grep NN
     #declare | grep NN
 
-  unset NN 
   ## Note, if I don't unset this nameref temporary variable on each loop, for some reason the re-assignment
   #+  fails to clobber out the previous assignment
+  unset NN 
 
   local -n NN
 
-    local -p NN
+    #local -p NN
 
   NN="${AA}"
 
-    local -p NN
+    #local -p NN
     #pause_to_check "$nL"
 
   local BB
