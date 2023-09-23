@@ -244,9 +244,9 @@ function reqd_user_files(){ :
   local - hyphn="$-" _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
-    #declare -p files_for_use_with_github_level_1 # <>
+    declare -p files_for_use_with_github_level_1 # <>
     declare -p files_for_use_with_github_level_2 # <>
-    #declare -p files_for_use_with_github_level_3 # <>
+    declare -p files_for_use_with_github_level_3 # <>
     #: "${files_for_use_with_github_level_1[@]##*/}" # <>
     #: "${files_for_use_with_github_level_2[@]##*/}" # <>
     #: "${files_for_use_with_github_level_3[@]##*/}" # <>
