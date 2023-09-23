@@ -186,7 +186,7 @@ function min_necc_rpms(){ :
 
   for XX in git gh ShellCheck
   do
-    if ! rpm --query "$XX"
+    if ! rpm --query --quiet "$XX"
     then
       set -x
       sudo dnf --assumeyes install "$XX"
