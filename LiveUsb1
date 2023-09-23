@@ -306,7 +306,7 @@ do
         declare -p files_for_use_with_github_level_1 # <>
         declare -p files_for_use_with_github_level_2 # <>
         declare -p files_for_use_with_github_level_3 # <>
-        pause_to_check "$nL"
+        pause_to_check "$LINENO"
 
       local -a      files_lev_1_source
       readarray -t  files_lev_1_source < <(
