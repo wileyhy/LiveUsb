@@ -1331,6 +1331,7 @@ then
     done
     unset YY
 
+      declare -p XX
       pause_to_check "$nL" # <>
 
     for ZZ in "${rpms_for_upgrade[@]}" ; 
