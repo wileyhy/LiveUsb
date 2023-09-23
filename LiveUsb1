@@ -256,6 +256,7 @@ function reqd_user_files(){ :
 local AA
 local -n NN
 
+:;: 'For each array of conf files and/or directories'
 for AA in "${arrays_of_conf_files[@]}"
 do
     local -p AA
@@ -263,34 +264,39 @@ do
   NN="$AA"
 
     local -p NN
-    pause_to_check "$nL"
+    #pause_to_check "$nL"
 
   local BB
 
-  for BB in "${NN[@]}"
+  :;: 'For each conf file or dir'
+  for BB in "${!NN[@]}"
   do
       #command rm -fr "$BB" ; continue # <>
-      local -p BB
+      local -p BB 
 
-    if ! [[ -e ${BB} ]]
+    :;: 'If the conf FSO does not exist'
+    if ! [[ -e ${NN[BB]} ]]
     then
-      local pttn_label pttn_path mount_pt data_dir prev_umask
+      local pttn_label lsblk_out pttn_path mount_pt data_dir prev_umask
 
       pttn_label='29_Mar_2023'
-      pttn_path=$( lsblk --output label,path | awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' )
+      lsblk_out=$( lsblk --output label,path,mountpoints )
+      pttn_path=$( awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' <<< "${lsblk_out}" )
       mount_pt="/run/media/root/${pttn_label}"
       data_dir="${mount_pt}/set-up-git"
 
-      read -r -a prev_umask < <( umask -p )
-      umask 077
-
+      : 'If the USB device is NA, then exit'
       if [[ -z $pttn_path ]]
       then
         er_x "${nL} USB device not available"
       fi
 
+      : 'Capture previous umask'
+      read -r -a prev_umask < <( umask -p )
+      umask 077
+
       : 'If the partition is not mounted which holds the data directory, then mount it'
-      if ! lsblk --output path,mountpoints | grep --quiet "$mount_pt" # <>
+      if ! grep --quiet "$mount_pt" <<< "${lsblk_out}" # <>
       then
 
         : 'Mountpoint must exist'
@@ -299,46 +305,49 @@ do
           sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
         fi
 
+	: 'Mount operation'
         sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
-      fi # <>
+      fi
 
       ## Bug: if just one file is missing, then re-install all files?  No.
 
-        local -p AA BB NN
-        declare -p files_for_use_with_github_level_1 # <>
-        declare -p files_for_use_with_github_level_2 # <>
-        declare -p files_for_use_with_github_level_3 # <>
-        pause_to_check "$LINENO"
+        local -p AA BB NN data_dir
+        echo '${NN[BB]}: '"${NN[BB]}"
+	declare -p files_for_use_with_github_level_1 # <>
+        #declare -p files_for_use_with_github_level_2 # <>
+        #declare -p files_for_use_with_github_level_3 # <>
+        #pause_to_check "$LINENO"
 
-      local -a      files_lev_1_source
-      readarray -t  files_lev_1_source < <(
-        printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_1[@]#~/}" )
-      
-      local -a      files_lev_2_source
-      readarray -t  files_lev_2_source < <(
-        printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_2[@]#~/}" )
-      
-      local -a      files_lev_3_source
-      readarray -t  files_lev_3_source < <(
-        printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_3[@]#~/}" )
-      
-      local -a      files_lev_1_dest
-                    files_lev_1_dest=~
-      
-      local -a      files_lev_2_dest
-                    files_lev_2_dest=~/.config
-      
-      local -a      files_lev_3_dest
-                    files_lev_3_dest=~/.config/procps
+      local source_file dest_dir
+      source_file="${data_dir}/${NN[BB]##*/}"
+      dest_dir="${NN[BB]%/*}"
 
-        declare -p files_lev_{1,2,3}_{source,dest} # <>
+      #local -a      files_lev_1_source
+      #readarray -t  files_lev_1_source < <(
+        #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_1[@]#~/}" )
+      #local -a      files_lev_2_source
+      #readarray -t  files_lev_2_source < <(
+        #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_2[@]#~/}" )
+      #local -a      files_lev_3_source
+      #readarray -t  files_lev_3_source < <(
+        #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_3[@]#~/}" )
+      #local -a      files_lev_1_dest
+                    #files_lev_1_dest=~
+      #local -a      files_lev_2_dest
+                    #files_lev_2_dest=~/.config
+      #local -a      files_lev_3_dest
+                    #files_lev_3_dest=~/.config/procps
+
+        #declare -p files_lev_{1,2,3}_{source,dest} # <>
         pause_to_check $nL # <>
 
     ## Bug? Use `install` instead of `rsync`?
 
-      rsync_install_if_missing  files_lev_1_source "${files_lev_1_dest}"
-      rsync_install_if_missing  files_lev_2_source "${files_lev_2_dest}"
-      rsync_install_if_missing  files_lev_3_source "${files_lev_3_dest}"
+      rsync_install_if_missing  "${source_file}" "${dest_dir}"
+
+      #rsync_install_if_missing  files_lev_1_source "${files_lev_1_dest}"
+      #rsync_install_if_missing  files_lev_2_source "${files_lev_2_dest}"
+      #rsync_install_if_missing  files_lev_3_source "${files_lev_3_dest}"
 
         pause_to_check $nL # <>
 	      #exit 101 # <>
@@ -465,8 +474,10 @@ function rm(){ :
 }
 
 function rsync_install_if_missing(){ :
-  local - hyphn="$-" HH fn_target_dir fn_umask
-  local -n fn_source_array
+  local - hyphn="$-" _="${fn_bndry} rsync_install_if_missing() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  set -x
+
+  local HH fn_target_dir fn_umask fn_source_array
   #set -
   fn_source_array="$1"
   fn_target_dir="$2"
@@ -487,12 +498,14 @@ function rsync_install_if_missing(){ :
 
   for HH in "${fn_source_array[@]}"
   do
-    if ! [[ -e ${fn_target_dir}/${HH##*/} ]]
+    if [[ ! -e ${fn_target_dir}/${HH##*/} ]]
     then
       sudo -- rsync --archive --checksum -- "${HH}"  "${fn_target_dir}"
     fi
   done
   unset HH fn_source_array fn_target_dir
+
+  true "${fn_bndry} rsync_install_if_missing() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 }
 
 
