@@ -292,7 +292,7 @@ do
       local -p AA BB NN 
       : '${NN[@]}: '"${NN[@]}"
       : '${NN[BB]}: '"${NN[BB]}"
-      #declare -p files_for_use_with_github_level_1 # <>
+      declare -p files_for_use_with_github_level_{1,2,3} # <>
       #pause_to_check $nL # <>
 
     :;: 'If the target conf file/dir does not exist'
