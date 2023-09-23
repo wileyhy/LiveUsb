@@ -266,7 +266,7 @@ do
     #declare | grep NN
   
   local -n NN
-  NN=AA
+  NN="${AA}"
 
     local -p NN
     pause_to_check "$nL"
