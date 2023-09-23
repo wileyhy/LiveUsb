@@ -1308,6 +1308,8 @@ mapfile -d '' -t rpms_for_upgrade < <( sudo -- dnf --assumeno --security upgrade
 
   echo "count, rpms_for_upgrade, ${#rpms_for_upgrade[@]}"
 
+## TODO: make a loop removing all *kernel* and *firmware* rpms
+
 ## If there are any rpms that need security upgrades
 if [[ -n "${rpms_for_upgrade[*]:0:1}" ]]
 then
@@ -1348,7 +1350,7 @@ then
     unset YY regexp_YY
 
       declare -p all_installed_rpms
-      declare -p XX 
+      declare -p XX
       pause_to_check "$nL" # <>
 
     for ZZ in "${rpms_for_upgrade[@]}" ; 
