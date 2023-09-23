@@ -8,7 +8,7 @@
 
 # <> Debugging
 set -aCuTeo pipefail # <>
-set -x
+#set -x
 
 :;: 'Variables likely to be manually changed with some regularity'
 # shellcheck disable=SC2034
@@ -1199,8 +1199,8 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 ## Bug, the --security upgrade should be done rpm by rpm
 
   : 'Beginning section on DNF' # <>
-  pause_to_check "$nL" # <>
-  set -x
+  #pause_to_check "$nL" # <>
+  #set -x
 
 ## Note, CUPS cannot be safely removed; too many dependencies
 ## Note, For some unknown reason, even when  dnf  doesn't change any programs,  dnf
@@ -1296,6 +1296,7 @@ fi
 #+  one by one
 
   pause_to_check "$nL" # <>
+  set -x
 
 ## Count the original number of rpms installed
 mapfile -d '' -t all_installed_rpms < <( rpm -qa 2>/dev/null | awk '{ printf "%s\0", $1 }' )
