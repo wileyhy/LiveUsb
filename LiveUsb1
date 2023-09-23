@@ -323,16 +323,16 @@ do
             sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
           fi
 
-	  : 'Mount operation'
+          : $'Perform mount operation and re-sample \x60lsblk\x60'
           sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
           lsblk_out=$( lsblk --output label,path,mountpoints )
         fi
-      fi
 
-      :;: 'If the source conf still file/dir does not exist, then throw an error'
-      if ! [[ -e "${data_dir}/${NN[BB]##*/}" ]]
-      then
-        er_x "$nL" "$NN" "${data_dir}/${NN[BB]##*/}"
+        :;: 'If the source conf still file/dir does not exist, then throw an error'
+        if ! [[ -e "${data_dir}/${NN[BB]##*/}" ]]
+        then
+          er_x "$nL" "$NN" "${data_dir}/${NN[BB]##*/}"
+        fi
       fi
       
       : 'Capture previous umask'
