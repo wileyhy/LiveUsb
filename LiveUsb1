@@ -220,7 +220,7 @@ function pause_to_check() { EC=101 LL="$1"
   local - hyphn="$-" reply _="${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
 
-  read -N 1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n\n' -r -s -t 600
+  read -N1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n\n' -rst 600 reply
 
   case $reply in
     Y*|y*|$'\n'|' ' )
