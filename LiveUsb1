@@ -1292,8 +1292,8 @@ fi
 ## Note, the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to
 #+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest.
 
-
-  #pause_to_check "$nL" # <>
+  ## Buggy -- this entire section, still. 23 Sep 2023
+  pause_to_check "$nL" # <>
 
 ## Count the original number of rpms installed
 mapfile -d '' -t all_installed_rpms < <( rpm -qa 2>/dev/null | awk '{ printf "%s\0", $1 }' )
