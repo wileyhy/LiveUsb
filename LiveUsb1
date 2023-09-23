@@ -3,7 +3,7 @@
 
 ## Note, written for Fedora, see hardcoded /run/media/root'
 ## Note, style, function definition syntax, '(){ :' makes plain xtrace easier to read
-## Note, style, `! [[` doesn't show the '!' in xtrace, whereas `[[ !` does.
+## Note, style, `! [[ -e` doesn't show the '!' in xtrace, whereas `[[ ! -e` does.
 ## Note, idempotent script
 
 # <> Debugging
@@ -90,7 +90,7 @@ function __vte_prompt_command(){ :
   prompt_cmd="${prompt_cmd//;/ }"
   pwd=~
 
-  if [[ ${PWD} != ~ ]]
+  if ! [[ ${PWD} = ~ ]]
   then
     pwd="${PWD/#"${HOME}"\//\~\/}"
     pwd="${pwd//[[:cntrl:]]}"
@@ -276,7 +276,7 @@ do
       local -p BB 
 
     :;: 'If the conf FSO does not exist'
-    if [[ ! -e ${NN[BB]} ]]
+    if ! [[ -e ${NN[BB]} ]]
     then
       local pttn_label lsblk_out pttn_path mount_pt data_dir prev_umask
 
@@ -301,7 +301,7 @@ do
       then
 
         : 'Mountpoint must exist'
-        if [[ ! -d "${mount_pt}" ]]
+        if ! [[ -d "${mount_pt}" ]]
         then
           sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
         fi
@@ -386,7 +386,7 @@ function rm(){ :
   for HH
   do
     : 'If "End of Options" has (not) been reached'
-    if [[ ${end_of_options:=} != 'has_been_reached' ]]
+    if ! [[ ${end_of_options:=} = 'has_been_reached' ]]
     then
       case "${HH}" in
         --version )
@@ -409,13 +409,13 @@ function rm(){ :
           end_of_options='has_been_reached'
           
           : 'If there is no next pos-parm'
-          if [[ -z ${2:-} ]] || [[ $2 != -- ]]
+          if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
           then
             : '...then force end of arguments on the CLI'
             opts_rm+=( -- )
           else
             : $'...or if the next pos-parm isn\x60t a valid FSO (File System Object)'
-            if [[ ! -e $2 ]] || [[ ! -d $2 ]] 
+            if ! [[ -e $2 ]] || ! [[ -d $2 ]] 
             then
               : '...then force end of arguments on the CLI'
               opts_rm+=( -- )
@@ -459,7 +459,7 @@ function rm(){ :
   local delete_d
   delete_d=~/.rm.d
 
-  if [[ ! -e ${delete_d} ]] || [[ ! -d ${delete_d} ]]
+  if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
   then
       command -- mkdir --mode 0700 --verbose -- "${delete_d}" || return "$LINENO"
   fi
@@ -485,7 +485,7 @@ function rsync_install_if_missing(){ :
 
   if [[ -e "${fn_target_dir}" ]]
   then
-    if [[ ! -d "${fn_target_dir}" ]]
+    if ! [[ -d "${fn_target_dir}" ]]
     then
       er_x "$nL" "${fn_target_dir}"
     fi
@@ -499,7 +499,7 @@ function rsync_install_if_missing(){ :
 
   for HH in "${fn_source_array[@]}"
   do
-    if [[ ! -e ${fn_target_dir}/${HH##*/} ]]
+    if ! [[ -e ${fn_target_dir}/${HH##*/} ]]
     then
       sudo -- rsync --archive --checksum -- "${HH}"  "${fn_target_dir}"
     fi
@@ -791,7 +791,7 @@ gh_config_list_out=$( gh config list | tr '\n' ' ' )
 
 for KK in "${!github_configs[@]}"
 do
-  if ! [[ ${gh_config_list_out} != "${KK}=${github_configs[$KK]}" ]]
+  if ! [[ ${gh_config_list_out} = "${KK}=${github_configs[$KK]}" ]]
   then
     gh config set "${KK}" "${github_configs[$KK]}"
   fi
@@ -978,7 +978,7 @@ else
 fi
 
 : 'Write .vimrc'
-if (( ${#arr_vrc[@]} == 0 )) || [[ ${WW} != "${YY}" ]]
+if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${WW} = "${YY}" ]]
 then
   : $'Test returned \x22true,\x22 the number didn\x27t match, so write to .vimrc'
 
@@ -1417,14 +1417,14 @@ get_pids_for_restarting
 
 hash_of_installed_rpms_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
-if [[ ${hash_of_installed_rpms_A} != "${hash_of_installed_rpms_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
+if ! [[ ${hash_of_installed_rpms_A} = "${hash_of_installed_rpms_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
 then
   while true
   do
 
     ## Note,  [[ ... = , this second test,  [[ ${a_pids[*]} = 1 ]]  is correct; ie, do not use ((...))
     :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
-    if [[ -n ${a_pids[*]: -1:1} ]] && [[ ${a_pids[*]} != 1 ]]
+    if [[ -n ${a_pids[*]: -1:1} ]] && ! [[ ${a_pids[*]} = 1 ]]
     then
       II=0
       XX="${#a_pids[@]}"
