@@ -1309,7 +1309,7 @@ mapfile -d '' -t rpms_for_upgrade < <( sudo -- dnf --assumeno --security upgrade
   echo "count, rpms_for_upgrade, ${#rpms_for_upgrade[@]}"
 
 ## If there are any rpms that need security upgrades
-if [[ -n "${rpms_for_upgrade[*]:0:8}" ]]
+if [[ -n "${rpms_for_upgrade[*]:0:1}" ]]
 then
   ## For each "original rpm" in the original list
   for XX in "${!all_installed_rpms[@]}"; 
