@@ -791,7 +791,7 @@ gh_config_list_out=$( gh config list | tr '\n' ' ' )
 
 for KK in "${!github_configs[@]}"
 do
-  if [[ ! ${gh_config_list_out} = "${KK}=${github_configs[$KK]}" ]]
+  if ! [[ ${gh_config_list_out} != "${KK}=${github_configs[$KK]}" ]]
   then
     gh config set "${KK}" "${github_configs[$KK]}"
   fi
@@ -978,7 +978,7 @@ else
 fi
 
 : 'Write .vimrc'
-if (( ${#arr_vrc[@]} == 0 )) || [[ ! ${WW} = "${YY}" ]]
+if (( ${#arr_vrc[@]} == 0 )) || [[ ${WW} != "${YY}" ]]
 then
   : $'Test returned \x22true,\x22 the number didn\x27t match, so write to .vimrc'
 
@@ -1417,14 +1417,14 @@ get_pids_for_restarting
 
 hash_of_installed_rpms_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
-if [[ ! ${hash_of_installed_rpms_A} = "${hash_of_installed_rpms_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
+if [[ ${hash_of_installed_rpms_A} != "${hash_of_installed_rpms_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
 then
   while true
   do
 
     ## Note,  [[ ... = , this second test,  [[ ${a_pids[*]} = 1 ]]  is correct; ie, do not use ((...))
     :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
-    if [[ -n ${a_pids[*]: -1:1} ]] && [[ ! ${a_pids[*]} = 1 ]]
+    if [[ -n ${a_pids[*]: -1:1} ]] && [[ ${a_pids[*]} != 1 ]]
     then
       II=0
       XX="${#a_pids[@]}"
