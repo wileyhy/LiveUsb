@@ -1331,7 +1331,7 @@ then
     done
     unset YY
 
-      declare -p XX
+      declare -p XX all_installed_rpms
       pause_to_check "$nL" # <>
 
     for ZZ in "${rpms_for_upgrade[@]}" ; 
