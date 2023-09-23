@@ -277,7 +277,10 @@ do
   for BB in "${!NN[@]}"
   do
       #command rm -fr "$BB" ; continue # <>
-      local -p BB 
+      local -p AA BB NN data_dir
+      echo '${NN[BB]}: '"${NN[BB]}"
+	    declare -p files_for_use_with_github_level_1 # <>
+      pause_to_check $nL # <>
 
     :;: 'If the conf FSO does not exist'
     if ! [[ -e ${NN[BB]} ]]
@@ -316,9 +319,6 @@ do
 
       ## Bug: if just one file is missing, then re-install all files?  No.
 
-        local -p AA BB NN data_dir
-        echo '${NN[BB]}: '"${NN[BB]}"
-	declare -p files_for_use_with_github_level_1 # <>
         #declare -p files_for_use_with_github_level_2 # <>
         #declare -p files_for_use_with_github_level_3 # <>
         #pause_to_check "$LINENO"
@@ -344,6 +344,7 @@ do
                     #files_lev_3_dest=~/.config/procps
 
         #declare -p files_lev_{1,2,3}_{source,dest} # <>
+        
         pause_to_check $nL # <>
 
     ## Bug? Use `install` instead of `rsync`?
