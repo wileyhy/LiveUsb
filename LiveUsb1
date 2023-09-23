@@ -264,8 +264,9 @@ do
     unset NN 
     local | grep NN
     declare | grep NN
-
-  NN="$AA"
+  
+  local -n NN
+  NN=AA
 
     local -p NN
     pause_to_check "$nL"
