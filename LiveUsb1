@@ -254,7 +254,12 @@ function reqd_user_files(){ :
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
     #pause_to_check $nL # <>
 
-local AA NN
+## Note, NN must be declared as local before unsetting it inside the function so that the `unset` will 
+#+  effect the local variable
+local pttn_label mount_pt data_dir AA NN
+pttn_label='29_Mar_2023'
+mount_pt="/run/media/root/${pttn_label}"
+data_dir="${mount_pt}/set-up-git"
 
   #local -p NN
 
@@ -279,47 +284,61 @@ do
   :;: 'For each conf file or dir'
   for BB in "${!NN[@]}"
   do
+    local source_file dest_dir
+    source_file=( "${data_dir}/${NN[BB]##*/}" )
+    dest_dir="${NN[BB]%/*}"
+
       #command rm -fr "$BB" ; continue # <>
       #local -p AA BB NN 
       #echo '${NN[@]}: '"${NN[@]}"
       #echo '${NN[BB]}: '"${NN[BB]}"
-	    #declare -p files_for_use_with_github_level_1 # <>
+      #declare -p files_for_use_with_github_level_1 # <>
       #pause_to_check $nL # <>
 
-    :;: 'If the conf FSO does not exist'
+    :;: 'If the target conf file/dir does not exist'
     if ! [[ -e ${NN[BB]} ]]
     then
-      local pttn_label lsblk_out pttn_path mount_pt data_dir prev_umask
+      local lsblk_out pttn_path
 
-      pttn_label='29_Mar_2023'
       lsblk_out=$( lsblk --output label,path,mountpoints )
       pttn_path=$( awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' <<< "${lsblk_out}" )
-      mount_pt="/run/media/root/${pttn_label}"
-      data_dir="${mount_pt}/set-up-git"
-
-      : 'If the USB device is NA, then exit'
-      if [[ -z $pttn_path ]]
-      then
-        er_x "${nL} USB device not available"
-      fi
-
-      : 'Capture previous umask'
-      read -r -a prev_umask < <( umask -p )
-      umask 077
-
-      : 'If the partition is not mounted which holds the data directory, then mount it'
-      if ! grep --quiet "$mount_pt" <<< "${lsblk_out}" # <>
+      
+      :;: 'If the source conf file/dir does not exist, then find it'
+      if ! [[ -e "${data_dir}/${NN[BB]##*/}" ]]
       then
 
-        : 'Mountpoint must exist'
-        if ! [[ -d "${mount_pt}" ]]
+        : 'If the USB device is NA, then exit'
+        if [[ -z $pttn_path ]]
         then
-          sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
+          er_x "${nL} USB device not available, ${pttn_label}"
         fi
 
-	: 'Mount operation'
-        sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
+        : 'If the partition is not mounted which holds the data directory, then mount it'
+        if ! grep --quiet "$mount_pt" <<< "${lsblk_out}" # <>
+        then
+
+          : 'Mountpoint must exist'
+          if ! [[ -d "${mount_pt}" ]]
+          then
+            sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
+          fi
+
+	  : 'Mount operation'
+          sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
+          lsblk_out=$( lsblk --output label,path,mountpoints )
+        fi
       fi
+
+      :;: 'If the source conf still file/dir does not exist, then throw an error'
+      if ! [[ -e "${data_dir}/${NN[BB]##*/}" ]]
+      then
+        er_x "$nL" "$NN" "${data_dir}/${NN[BB]##*/}"
+      fi
+      
+      : 'Capture previous umask'
+      local prev_umask
+      read -r -a prev_umask < <( umask -p )
+      umask 077
 
       ## Bug: if just one file is missing, then re-install all files?  No.
 
@@ -327,25 +346,21 @@ do
         #declare -p files_for_use_with_github_level_3 # <>
         #pause_to_check "$LINENO"
 
-      local source_file dest_dir
-      source_file="${data_dir}/${NN[BB]##*/}"
-      dest_dir="${NN[BB]%/*}"
-
       #local -a      files_lev_1_source
       #readarray -t  files_lev_1_source < <(
-        #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_1[@]#~/}" )
+      # #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_1[@]#~/}" )
       #local -a      files_lev_2_source
       #readarray -t  files_lev_2_source < <(
-        #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_2[@]#~/}" )
+      # #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_2[@]#~/}" )
       #local -a      files_lev_3_source
       #readarray -t  files_lev_3_source < <(
-        #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_3[@]#~/}" )
+      # #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_3[@]#~/}" )
       #local -a      files_lev_1_dest
-                    #files_lev_1_dest=~
+      #             #files_lev_1_dest=~
       #local -a      files_lev_2_dest
-                    #files_lev_2_dest=~/.config
+      #             #files_lev_2_dest=~/.config
       #local -a      files_lev_3_dest
-                    #files_lev_3_dest=~/.config/procps
+      #             #files_lev_3_dest=~/.config/procps
 
         #declare -p files_lev_{1,2,3}_{source,dest} # <>
         
