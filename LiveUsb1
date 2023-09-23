@@ -577,7 +577,7 @@ function test_dns(){ :
 
 :;: 'Define test_os()'
 function test_os(){ :
-  local - hyphn="$-" "${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   local kern_rel
   kern_rel=$( uname --kernel-release )
