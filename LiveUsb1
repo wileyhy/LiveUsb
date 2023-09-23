@@ -266,6 +266,9 @@ do
     #declare | grep NN
 
   unset NN 
+  ## Note, if I don't unset this nameref temporary variable on each loop, for some reason the re-assignment
+  #+  fails to clobber out the previous assignment
+
   local -n NN
 
     local -p NN
