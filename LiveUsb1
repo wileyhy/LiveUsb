@@ -270,7 +270,7 @@ do
   for BB in "${NN[@]}"
   do
       #command rm -fr "$BB" ; continue # <>
-      local
+      local -p BB
 
     if ! [[ -e ${BB} ]]
     then
