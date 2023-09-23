@@ -765,7 +765,8 @@ must_be_root
   set -x # <>
 
   ## Bug: gh login breaks after here
-  
+  unset NN; unset -n NN
+
 :;: 'Certain files must have been installed from off-disk'
 reqd_user_files
 
