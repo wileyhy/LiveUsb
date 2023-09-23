@@ -43,6 +43,7 @@ unset TT
   #+  'pause_to_check()'
   #+  'reqd_user_files()'
   #+	'rm()'
+  #+  'rsync_install_if_missing()'
   #+  'setup_network()'
   #+  'setup_time()'
   #+	'test_dns()'
@@ -101,8 +102,7 @@ function __vte_prompt_command(){ :
 }
 
 :;: 'Define er_x()'
-function er_x(){ local - exit_code="$?"
-  true "${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function er_x(){ local - hyphn="$-" exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   printf '%s, Error, %s\n' "$scr_nm" "$*" >&2
 
@@ -113,7 +113,7 @@ function er_x(){ local - exit_code="$?"
 
 :;: 'Define get_pids_for_restarting()'
 function get_pids_for_restarting(){ :
-  true "${fn_bndry} get_pids_for_restarting() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} get_pids_for_restarting() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
 
   ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global
   #+  scope.
@@ -142,7 +142,7 @@ function get_pids_for_restarting(){ :
 
 :;: 'Define gh_auth_login_command()'
 function gh_auth_login_command(){ :
-  local - _="${fn_bndry} gh_auth_login_command() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} gh_auth_login_command() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   # set -
 
   if gh auth status
@@ -165,9 +165,7 @@ function gh_auth_login_command(){ :
 :;: 'min_necc_git_cmds()'
 
 function min_necc_git_cmds(){ :
-  true "${fn_bndry} min_necc_git_cmds() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-
-  local -
+  local - hyphn="$-" _="${fn_bndry} min_necc_git_cmds() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
 
   git config --global 'user.email' '84648683+wileyhy@users.noreply.github.com'
@@ -179,9 +177,8 @@ function min_necc_git_cmds(){ :
 
 :;: 'Define min_necc_rpms()'
 function min_necc_rpms(){ :
-  true "${fn_bndry} min_necc_rpms() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-
-  local - XX
+  local - hyphn="$-" _="${fn_bndry} min_necc_rpms() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local XX
   #set -
 
   for XX in git gh ShellCheck
@@ -204,7 +201,7 @@ function min_necc_rpms(){ :
 
 :;: 'Define must_be_root()'
 function must_be_root(){ :
-  local - _="${fn_bndry} must_be_root() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} must_be_root() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   if (( UID == 0 ))
@@ -277,10 +274,8 @@ do
     then
       local pttn_label pttn_path mount_pt data_dir prev_umask
 
-      ## Bug: the awk cmd should have a -v option and $pttn_label should only be defined once
-
       pttn_label='29_Mar_2023'
-      pttn_path=$( lsblk --output label,path | awk '$1 ~ /29_Mar_2023/ { print $2 }' )
+      pttn_path=$( lsblk --output label,path | awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' )
       mount_pt="/run/media/root/${pttn_label}"
       data_dir="${mount_pt}/set-up-git"
 
@@ -502,7 +497,7 @@ function rsync_install_if_missing(){ :
 :;: 'Define setup_network()'
 ## Note, 1 is Google; A is Comcast; both are global variables
 function setup_network(){ :
-  local - _="${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
 
   dns_srv_1=8.8.8.8
@@ -582,9 +577,9 @@ function test_dns(){ :
 
 :;: 'Define test_os()'
 function test_os(){ :
-  true "${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" "${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
-  local - kern_rel
+  local kern_rel
   kern_rel=$( uname --kernel-release )
 
   ## Note, test of $kern_rel is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
@@ -602,7 +597,7 @@ function test_os(){ :
 :;: 'Define trap_exit()'
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - exit_trap_ec="${EC:-$?}" lineno="${LL:-$nL}"
+function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LL:-$nL}"
   true "${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
 
@@ -627,9 +622,9 @@ function trap_exit(){ local - exit_trap_ec="${EC:-$?}" lineno="${LL:-$nL}"
 
 :;: 'Define write_bashrc_strings()'
 function write_bashrc_strings(){ :
-  true "${fn_bndry} write_bashrc_strings() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} write_bashrc_strings() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
 
-  local - JJ file_x Aa_index Aa_element
+  local JJ file_x Aa_index Aa_element
   local -n fn_nameref
   #set -
 
