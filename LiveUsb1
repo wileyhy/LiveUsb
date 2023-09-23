@@ -264,10 +264,11 @@ do
     #local -p AA
     #local | grep NN
     #declare | grep NN
-  
+
   unset NN 
-  local -p NN
-  exit $nL
+
+    local -p NN
+
   NN="${AA}"
 
     local -p NN
