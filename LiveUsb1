@@ -277,11 +277,11 @@ do
   for BB in "${!NN[@]}"
   do
       #command rm -fr "$BB" ; continue # <>
-      local -p AA BB NN 
-      echo '${NN[@]}: '"${NN[@]}"
-      echo '${NN[BB]}: '"${NN[BB]}"
-	    declare -p files_for_use_with_github_level_1 # <>
-      pause_to_check $nL # <>
+      #local -p AA BB NN 
+      #echo '${NN[@]}: '"${NN[@]}"
+      #echo '${NN[BB]}: '"${NN[BB]}"
+	    #declare -p files_for_use_with_github_level_1 # <>
+      #pause_to_check $nL # <>
 
     :;: 'If the conf FSO does not exist'
     if ! [[ -e ${NN[BB]} ]]
