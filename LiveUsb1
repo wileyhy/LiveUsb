@@ -1316,7 +1316,7 @@ then
   ## For each "original rpm" in the original list
   for XX in "${!all_installed_rpms[@]}"; 
   do 
-    ## Loop A, open
+    : 'Loop A, open'
    
     : 'Define the basic regular expression structure for each RPM, without any package basenames' 
     ## Note, why are these RE's necessary? a lot of rpms begin with the same prefix, such as "dnf*.rpm". The
@@ -1330,6 +1330,8 @@ then
     ## Re-run the list, grepping for the "original rpm"
     for YY in "${rpms_for_upgrade[@]}" ; 
     do 
+      : 'Loop B-1, open'
+
       regexp_YY="^${YY}-${regexp_base}";
       :
   
@@ -1346,7 +1348,9 @@ then
           set -; 
       fi
       :
+      : 'Loop B-1, close'
     done
+    : 'Loop B-1, complete'
     unset YY regexp_YY
 
       declare -p all_installed_rpms
@@ -1355,6 +1359,8 @@ then
 
     for ZZ in "${rpms_for_upgrade[@]}" ; 
     do 
+      : 'Loop B-2, open'
+
       regexp_ZZ="^${ZZ}-${regexp_base}";
       :
 
@@ -1363,7 +1369,7 @@ then
         :
 
         ## then unset the "original rpm" index and continue with the next iteration of Loop A
-        unset 'all_installed_rpms[XX]'
+        #unset 'all_installed_rpms[XX]'
       
       else :
 
@@ -1380,25 +1386,30 @@ then
         ## Restart PIDs as necessary, using multiple signals; exit on non-zero
         for WW in "${nr_pids[@]}"
         do
+          : 'Loop C, open'
           sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
             --timeout 1000 HUP \
             --timeout 1000 USR1 \
             --timeout 1000 TERM \
             --timeout 1000 KILL -- "$WW"
+          : 'Loop C, close'
         done
         unset WW
+        : 'Loop C, complete'
 
       ## If the "original rpm" is NA in the new list of rpms-to-be-upgraded
       fi;
       :;
-
+      : 'Loop B-2, close'
     done; 
     unset ZZ regexp_ZZ
+    : 'Loop B-2, complete'
 
   done
   unset XX
-
+  : 'Loop A, close'
 fi
+: 'Loop A, complete'
 exit 101
 
   ## Loop A, shut
