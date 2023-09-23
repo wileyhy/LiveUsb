@@ -761,7 +761,7 @@ function write_bashrc_strings(){ :
 ##  FUNCTION DEFINITIONS COMPLETE ##
 
   #EC=101 LL="$LINENO" exit # <>
-  set -x # <>
+  #set -x # <>
 
 :;: 'Define trap on EXIT'
 trap trap_exit EXIT
@@ -796,7 +796,7 @@ PS1=''
 declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
   #EC=101 LL="$LINENO" exit # <>
-  set -x # <>
+  #set -x # <>
 
 :;: '<Logs>'
 #exec 3>&1 4>&2 # <Logs>
@@ -804,13 +804,13 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/col
 #exec 1> ./Log_begin-1.txt 2>&1 # <Logs>
 
   #EC=101 LL="$LINENO" exit # <>
-  set -x # <>
+  #set -x # <>
 
 :;: 'Regular users with sudo, only'
 must_be_root
 
   #EC=101 LL="$LINENO" exit # <>
-  set -x # <>
+  #set -x # <>
 
   ## Bug: gh login breaks after here
   unset NN; unset -n NN
@@ -821,13 +821,13 @@ reqd_user_files
   ## Bug: gh login breaks before here
 
   #EC=101 LL="$LINENO" exit # <>
-  set -x # <>
+  #set -x # <>
 
 :;: 'Network'
 setup_network
 
   #EC=101 LL="$LINENO" exit # <>
-  set -x # <>
+  #set -x # <>
 
 :;: 'Time'
 setup_time
@@ -839,7 +839,7 @@ min_necc_rpms
 min_necc_git_cmds
 
   #EC=101 LL="$nL" exit # <>
-  set -x # <>
+  #set -x # <>
 
 :;: 'gh -- github CLI configuration'
 declare -A github_configs
