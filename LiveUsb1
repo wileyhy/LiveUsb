@@ -53,14 +53,14 @@ unset TT
   #+	'write_bashrc_strings()'
   #+)
 
-functions_for_appending_into_bashrc=(
+fns_for_appending_into_bashrc=(
   '__vte_osc7'
   '__vte_prompt_command'
   'rm'
   )
 
 :;: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
-for AA in "${functions_for_appending_into_bashrc[@]}"
+for AA in "${fns_for_appending_into_bashrc[@]}"
 do
   unset -f "$AA"
 done
@@ -164,7 +164,6 @@ function gh_auth_login_command(){ :
 }
 
 :;: 'min_necc_git_cmds()'
-
 function min_necc_git_cmds(){ :
   local - hyphn="$-" _="${fn_bndry} min_necc_git_cmds() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
@@ -239,7 +238,6 @@ function pause_to_check() { EC=101 LL="$1"
 }
 
 :;: 'reqd_user_files()'
-
 function reqd_user_files(){ :
   local - hyphn="$-" _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
@@ -509,7 +507,7 @@ function rm(){ :
   fi
 }
 
-: 'Define rsync_install_if_missing()'
+:;: 'Define rsync_install_if_missing()'
 function rsync_install_if_missing(){ :
   local - hyphn="$-" _="${fn_bndry} rsync_install_if_missing() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
@@ -895,7 +893,7 @@ missing_fns=()
 :;: 'Append user variables and functions into .bashrc.'
 ## Note, these arrays include some command substitutions which depend on some function definitions, which in
 #+ turn must be defined prior to defining these arrays
-for UU in "${functions_for_appending_into_bashrc[@]}"
+for UU in "${fns_for_appending_into_bashrc[@]}"
 do
   if [[ $( declare -pF "${UU}" 2>&1 ) =~ 'not found' ]]
   then
