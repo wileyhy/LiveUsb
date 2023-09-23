@@ -220,7 +220,7 @@ function must_be_root(){ :
 :;: 'Define pause_to_check()'
 ## Usage,   pause_to_check $nL
 function pause_to_check() { EC=101 LL="$1"
-  local - _="${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
 
   read -N 1 -p $'\nReady?\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n\n' -r -s -t 600
@@ -234,14 +234,14 @@ function pause_to_check() { EC=101 LL="$1"
       exit
       ;;\
   esac
-  local +
+  local
   true "${fn_bndry} pause_to_check()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'reqd_user_files()'
 
 function reqd_user_files(){ :
-  local - _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
     #declare -p files_for_use_with_github_level_1 # <>
@@ -468,7 +468,7 @@ function rm(){ :
 }
 
 function rsync_install_if_missing(){ :
-  local - HH fn_target_dir fn_umask
+  local - hyphn="$-" HH fn_target_dir fn_umask
   local -n fn_source_array
   #set -
   fn_source_array="$1"
@@ -558,7 +558,7 @@ function setup_network(){ :
 
 :;: 'Define setup_time()'
 function setup_time(){ :
-  true "${fn_bndry} setup_time() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} setup_time() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
@@ -570,7 +570,7 @@ function setup_time(){ :
 
 :;: 'Define test_dns()'
 function test_dns(){ :
-  local - _="${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
