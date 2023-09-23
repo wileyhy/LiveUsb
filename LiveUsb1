@@ -1347,7 +1347,8 @@ then
     done
     unset YY regexp_YY
 
-      declare -p XX all_installed_rpms
+      declare -p all_installed_rpms
+      declare -p XX 
       pause_to_check "$nL" # <>
 
     for ZZ in "${rpms_for_upgrade[@]}" ; 
