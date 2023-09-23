@@ -509,13 +509,14 @@ function rm(){ :
   fi
 }
 
+: 'Define rsync_install_if_missing()'
 function rsync_install_if_missing(){ :
   local - hyphn="$-" _="${fn_bndry} rsync_install_if_missing() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
 
-  local HH fn_target_dir fn_umask fn_source_array
+  local fn_target_dir fn_umask fn_source_var
   #set -
-  fn_source_array="$1"
+  fn_source_var="$1"
   fn_target_dir="$2"
 
   if [[ -e "${fn_target_dir}" ]]
@@ -532,18 +533,14 @@ function rsync_install_if_missing(){ :
     unset fn_umask
   fi
 
-  for HH in "${fn_source_array[@]}"
-  do
-    if ! [[ -e ${fn_target_dir}/${HH##*/} ]]
-    then
-      sudo -- rsync --archive --checksum -- "${HH}"  "${fn_target_dir}"
-    fi
-  done
-  unset HH fn_source_array fn_target_dir
+  if ! [[ -e ${fn_target_dir}/${fn_source_var##*/} ]]
+  then
+    sudo -- rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}"
+  fi
+  unset fn_source_var fn_target_dir
 
   true "${fn_bndry} rsync_install_if_missing() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 }
-
 
 :;: 'Define setup_network()'
 ## Note, 1 is Google; A is Comcast; both are global variables
