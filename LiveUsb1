@@ -271,6 +271,7 @@ do
     local -p AA
     #local | grep NN
     #declare | grep NN
+    local -p NN
 
   ## Note, if I don't unset this nameref temporary variable on each loop, for some reason the re-assignment
   #+  fails to clobber out the previous assignment
