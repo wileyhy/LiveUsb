@@ -273,14 +273,19 @@ do
     #declare | grep NN
     local -p NN
 
+  ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
+  #+  directly, `foo=bar`, then the second assignment statement will be global
+
   ## Note, if I don't unset this nameref temporary variable on each loop, for some reason the re-assignment
   #+  fails to clobber out the previous assignment
   unset NN 
   local -n NN
   local -n NN="${AA}"
-
     local -p NN
-    #pause_to_check "$nL"
+  
+  NN="${AA}"
+    declare -p NN
+    pause_to_check "$nL"
 
   local BB
 
