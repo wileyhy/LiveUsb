@@ -1317,8 +1317,14 @@ then
     ## Loop A, open
    
     : 'Define the basic regular expression structure for each RPM, without any package basenames' 
+    ## Note, why are these RE's necessary? a lot of rpms begin with the same prefix, such as "dnf*.rpm". The
+    #+  RE is a sort of right hand side delimiter of the package basename, so that if dnf-4.16.2-1.fc38.noarch
+    #+  needs a security upgrade, but not dnfdragora-updater-2.1.2-4.fc38.noarch, then this script will be 
+    #+  able to make that distinction and only upgrade the correct package.
     regexp_base="[0-9]{,16}(\.[0-9]{,16}){,8}-.*\.fc[0-9]{2,3}\.(noarch|x86-64)"; 
     
+    ## Bug, grepping through all the installed RPMs is slow
+
     ## Re-run the list, grepping for the "original rpm"
     for YY in "${rpms_for_upgrade[@]}" ; 
     do 
@@ -1328,8 +1334,8 @@ then
       if [[ "${all_installed_rpms[XX]}" =~ $regexp_YY ]]; 
       then 
           # <>
-          echo "$XX : ${all_installed_rpms[XX]}" ; 
-          echo "${all_installed_rpms[XX]}" | grep -cEe "$regexp_YY"
+          printf '%s\n' "$XX : ${all_installed_rpms[XX]}" ; 
+          printf '%s\n' "${all_installed_rpms[XX]}" | grep -cEe "$regexp_YY"
           set -x; 
           [[ "${all_installed_rpms[XX]}" =~ $regexp_YY ]]; 
           echo $?; 
