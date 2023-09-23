@@ -727,7 +727,7 @@ export PATH
 
 :;: 'Vars... -- Working dir'
 unset tmpd
-tmpd=$( TMPDIR='' mktemp --directory --suffix=-scf 2>&1 || er_x "${nL}" )
+tmpd=$( TMPDIR='' mktemp --directory --suffix=-LiveUSB 2>&1 || er_x "${nL}" )
 [[ -d ${tmpd} ]] || er_x "${nL}"
 
 :;: 'Vars... -- Other environment variables'
