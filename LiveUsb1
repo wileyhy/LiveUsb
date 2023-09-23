@@ -261,11 +261,14 @@ local -n NN
 for AA in "${arrays_of_conf_files[@]}"
 do
     local -p AA
-  
+    unset NN 
+    local | grep NN
+    declare | grep NN
+
   NN="$AA"
 
     local -p NN
-    #pause_to_check "$nL"
+    pause_to_check "$nL"
 
   local BB
 
