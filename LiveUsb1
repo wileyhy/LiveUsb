@@ -570,7 +570,7 @@ function rsync_install_if_missing(){ :
 ## Note, 1 is Google; A is Comcast; both are global variables
 function setup_network(){ :
   local - hyphn="$-" _="${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  set -x
+  #set -x
 
   dns_srv_1=8.8.8.8
   dns_srv_A=75.75.75.75
