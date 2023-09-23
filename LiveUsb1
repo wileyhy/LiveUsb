@@ -12,11 +12,13 @@ set -x
 
 :;: 'Variables likely to be manually changed with some regularity'
 # shellcheck disable=SC2034
-files_for_use_with_github_level_1=( ~/.ssh ~/.gnupg ~/.vimrc ~/.mozilla ~/.angband )
-files_for_use_with_github_level_2=( ~/.config/gh )
-files_for_use_with_github_level_3=( ~/.config/procps/toprc )
-arrays_of_conf_files=( files_for_use_with_github_level_1 files_for_use_with_github_level_2 
-  files_for_use_with_github_level_3 )
+{ 
+  files_for_use_with_github_level_1=( ~/.ssh ~/.gnupg ~/.vimrc ~/.mozilla ~/.angband )
+  files_for_use_with_github_level_2=( ~/.config/gh )
+  files_for_use_with_github_level_3=( ~/.config/procps/toprc )
+  arrays_of_conf_files=( files_for_use_with_github_level_1 files_for_use_with_github_level_2 
+    files_for_use_with_github_level_3 )
+}
 
 umask 077
 hash -r
