@@ -1290,7 +1290,8 @@ fi
 :;: 'Then do a blanket security upgrade'
 
 ## Note, the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to
-#+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest.
+#+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest
+#+  one by one
 
   ## Buggy -- this entire section, still. 23 Sep 2023
   pause_to_check "$nL" # <>
