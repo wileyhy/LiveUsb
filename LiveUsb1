@@ -278,7 +278,8 @@ do
   ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
   #+  directly, `foo=bar`, then on the second loop `local -p NN` prints the former value of NN. Perhaps 
   #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
-  unset NN 
+  ## Note, remember, namerefs can only be unset with the -n flag to the `unset` builtin
+  unset -n NN 
   local -n NN
   
   local -n NN="${AA}"   ## good code
