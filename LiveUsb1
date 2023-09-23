@@ -254,8 +254,7 @@ function reqd_user_files(){ :
     #files_for_use_with_github_level_1+=( ~/.foo) # <>
     #pause_to_check $nL # <>
 
-local AA
-local -n NN
+local AA NN
 
   #local -p NN
 
@@ -269,11 +268,7 @@ do
   ## Note, if I don't unset this nameref temporary variable on each loop, for some reason the re-assignment
   #+  fails to clobber out the previous assignment
   unset NN 
-
   local -n NN
-
-    #local -p NN
-
   NN="${AA}"
 
     #local -p NN
