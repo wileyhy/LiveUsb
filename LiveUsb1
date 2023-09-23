@@ -1358,9 +1358,14 @@ then
       regexp_ZZ="^${ZZ}-${regexp_base}";
       :
 
-      if [[ "${all_installed_rpms[XX]}" =~ $regexp_ZZ ]]; 
+      if ! [[ "${all_installed_rpms[XX]}" =~ $regexp_ZZ ]]; 
       then 
         :
+
+        ## then unset the "original rpm" index and continue with the next iteration of Loop A
+        unset 'all_installed_rpms[XX]'
+      
+      else :
 
         ## then upgrade just that one "original rpm"; exit on non-zero
         sudo -- nice --adjustment=-20 -- dnf --verbose upgrade "$ZZ" || er_x "$nL" "$ZZ"
@@ -1384,11 +1389,6 @@ then
         unset WW
 
       ## If the "original rpm" is NA in the new list of rpms-to-be-upgraded
-      else :
-
-        ## then unset the "original rpm" index and continue with the next iteration of Loop A
-        unset 'all_installed_rpms[XX]'
-      
       fi;
       :;
 
