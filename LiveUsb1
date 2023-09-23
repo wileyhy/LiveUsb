@@ -287,17 +287,11 @@ do
         er_x "${nL} USB device not available"
       fi
 
-      	#if lsblk -o path | grep -q "$pttn_path" # <>
-        #then
-      	  #sudo umount "${pttn_path}" # <>
-          #sudo rmdir  "${mount_pt}" # <>
-        #fi # <>
-        #sudo sync -f # <>
-
       : 'If the partition is not mounted which holds the data directory, then mount it'
       if ! lsblk --output path,mountpoints | grep --quiet "$mount_pt" # <>
       then
 
+        : 'Mountpoint must exist'
         if ! [[ -d "${mount_pt}" ]]
         then
           sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
@@ -307,6 +301,12 @@ do
       fi # <>
 
       ## Bug: if just one file is missing, then re-install all files?  No.
+
+        local -p AA BB NN
+        declare -p files_for_use_with_github_level_1 # <>
+        declare -p files_for_use_with_github_level_2 # <>
+        declare -p files_for_use_with_github_level_3 # <>
+        pause_to_check "$nL"
 
       local -a      files_lev_1_source
       readarray -t  files_lev_1_source < <(
