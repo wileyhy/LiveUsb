@@ -263,7 +263,7 @@ do
     local -p AA
     unset NN 
     local | grep NN
-    declare | grep NN
+    #declare | grep NN
   
   local -n NN
   NN=AA
