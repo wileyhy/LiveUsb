@@ -877,9 +877,9 @@ do
 done
 unset QQ
 
-:;: 'gh -- Review auth'
-printf '\n'
-gh auth status
+#:;: 'gh -- Review auth'
+#printf '\n'
+#gh auth status
 
   #exit "$nL" # <>
 
