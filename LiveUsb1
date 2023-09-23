@@ -597,7 +597,7 @@ function test_os(){ :
 :;: 'Define trap_exit()'
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LL:-$nL}"
+function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LL:-$LINENO}"
   true "${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
 
