@@ -256,17 +256,19 @@ function reqd_user_files(){ :
 
 ## Note, NN must be declared as local before unsetting it inside the function so that the `unset` will 
 #+  effect the local variable
-local pttn_label mount_pt data_dir AA NN
+local pttn_label mount_pt data_dir
 pttn_label='29_Mar_2023'
 mount_pt="/run/media/root/${pttn_label}"
 data_dir="${mount_pt}/set-up-git"
 
   declare -p arrays_of_conf_files
 
+local AA NN
+
 :;: 'For each array of conf files and/or directories'
 for AA in "${arrays_of_conf_files[@]}"
 do
-    #local -p AA
+    local -p AA
     #local | grep NN
     #declare | grep NN
 
@@ -276,7 +278,7 @@ do
   local -n NN
   NN="${AA}"
 
-    #local -p NN
+    local -p NN
     #pause_to_check "$nL"
 
   local BB
@@ -284,6 +286,8 @@ do
   :;: 'For each conf file or dir'
   for BB in "${!NN[@]}"
   do
+      local -p BB
+
     local source_file dest_dir
     source_file=( "${data_dir}/${NN[BB]##*/}" )
     dest_dir="${NN[BB]%/*}"
