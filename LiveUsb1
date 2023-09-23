@@ -1329,10 +1329,12 @@ then
     for YY in "${rpms_for_upgrade[@]}" ; 
     do 
       regexp_YY="^${YY}-${regexp_base}";
-      
+      :
+  
       ## If the "original rpm" needs to be upgraded
       if [[ "${all_installed_rpms[XX]}" =~ $regexp_YY ]]; 
       then 
+          :
           # <>
           printf '%s\n' "$XX : ${all_installed_rpms[XX]}" ; 
           printf '%s\n' "${all_installed_rpms[XX]}" | grep -cEe "$regexp_YY"
@@ -1341,6 +1343,7 @@ then
           echo $?; 
           set -; 
       fi
+      :
     done
     unset YY regexp_YY
 
