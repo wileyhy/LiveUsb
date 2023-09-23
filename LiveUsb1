@@ -1353,7 +1353,7 @@ then
     : 'Loop B-1, complete'
     unset YY regexp_YY
 
-      echo "count, all_installed_rpms: ${all_installed_rpms[@]}"
+      echo "count, all_installed_rpms: ${#all_installed_rpms[@]}"
       declare -p XX
       pause_to_check "$nL" # <>
 
