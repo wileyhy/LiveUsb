@@ -266,6 +266,7 @@ do
     #declare | grep NN
 
   unset NN 
+  local -n NN
 
     local -p NN
 
