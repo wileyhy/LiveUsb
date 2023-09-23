@@ -277,7 +277,7 @@ do
   #+  fails to clobber out the previous assignment
   unset NN 
   local -n NN
-  NN="${AA}"
+  local -n NN="${AA}"
 
     local -p NN
     #pause_to_check "$nL"
