@@ -697,7 +697,7 @@ PATH='/usr/bin:/usr/sbin'
 export PATH
 
 :;: 'Vars... -- Working dir'
-tmpd=$( TMPDIR='' mktemp --directory --suffix=-LiveUSB 2>&1 || er_x "${nL}" )
+tmpd=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || er_x "${nL}" )
 [[ -d ${tmpd} ]] || er_x "${nL}"
 scr_tt=$( printf '%(%s)T' )
 logf="${tmpd}/log.${scr_nm}.${scr_tt}.txt"
