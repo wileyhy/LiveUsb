@@ -34,6 +34,14 @@ unset TT
 
 ##  FUNCTION DEFINITIONS BEGIN ##
 
+:;: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
+fns_for_appending_into_bashrc=( '__vte_osc7' '__vte_prompt_command' 'rm' )
+for AA in "${fns_for_appending_into_bashrc[@]}"
+do
+  unset -f "$AA"
+done
+unset AA
+
 :;: 'Functions TOC...'
   ## functions_this_script=(
   #+	'__vte_osc7()'
@@ -42,7 +50,7 @@ unset TT
   #+	'get_pids_for_restarting()'
   #+  'gh_auth_login_command()'
   #+  'min_necc_git_cmds()'
-  #+  'min_necc_rpms()'
+  #+  'min_necc_packages()'
   #+	'must_be_root()'
   #+  'pause_to_check()'
   #+  'reqd_user_files()'
@@ -55,19 +63,6 @@ unset TT
   #+  'trap_exit()'
   #+	'write_bashrc_strings()'
   #+)
-
-fns_for_appending_into_bashrc=(
-  '__vte_osc7'
-  '__vte_prompt_command'
-  'rm'
-  )
-
-:;: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
-for AA in "${fns_for_appending_into_bashrc[@]}"
-do
-  unset -f "$AA"
-done
-unset AA
 
 :;: 'Define __vte_osc7() -- for bashrc only'
 # shellcheck disable=SC2317
@@ -169,9 +164,9 @@ function min_necc_git_cmds(){ :
   true "${fn_bndry} min_necc_git_cmds()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-:;: 'Define min_necc_rpms()'
-function min_necc_rpms(){ :
-  local - hyphn="$-" _="${fn_bndry} min_necc_rpms() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+:;: 'Define min_necc_packages()'
+function min_necc_packages(){ :
+  local - hyphn="$-" _="${fn_bndry} min_necc_packages() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   local XX
   #set -
 
@@ -190,7 +185,7 @@ function min_necc_rpms(){ :
     fi
   done
 
-  true "${fn_bndry} min_necc_rpms()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} min_necc_packages()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define must_be_root()'
@@ -728,7 +723,7 @@ setup_network
 setup_time
 
 :;: 'Minimum necessary rpms'
-min_necc_rpms
+min_necc_packages
 
 :;: 'Minimum necessary git commands'
 min_necc_git_cmds
@@ -1058,10 +1053,10 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
 ## Removals for disk space
-rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
+pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
 
 ## Removals for security
-#rpm_nms_for_removal+=( blueman bluez )
+#pkg_nms_for_removal+=( blueman bluez )
 
 # shellcheck disable=SC2206
 {
@@ -1095,11 +1090,11 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
 
 :;: 'Start with removing any unnecessary RPMs'
 
-if [[ -n ${rpm_nms_for_removal:0:8} ]]
+if [[ -n ${pkg_nms_for_removal:0:8} ]]
 then
   ## Note, this  printf  command uses nulls so that '-e' and '%s.*' will be read as separate indices
   #+  by  readarray
-  readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${rpm_nms_for_removal[@]}" )
+  readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${pkg_nms_for_removal[@]}" )
   readarray -t removable_pkgs < <(
     rpm --all --query | grep --ignore-case --extended-regexp "${grep_args[@]}" )
 
@@ -1187,7 +1182,7 @@ for UU in "${!addl_pkgs[@]}"
 do
   if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${addl_pkgs[UU]}"
   then
-    installed_rpms+=( "${addl_pkgs[UU]}" )
+    pkgs_installed+=( "${addl_pkgs[UU]}" )
     unset 'addl_pkgs[UU]'
   fi
 done
@@ -1198,22 +1193,22 @@ unset UU
 ## Note, this section should upgrade rpms one by one
 
 :;: 'Upgrade any installed RPMs from the main list, en masse'
-if [[ -n ${installed_rpms[*]: -1:1} ]]
+if [[ -n ${pkgs_installed[*]: -1:1} ]]
 then
-  sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${installed_rpms[@]}" || er_x "${nL}"
+  sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || er_x "${nL}"
 fi
 
   #pause_to_check "$nL" # <>
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
-not_yet_installed_rpms=( "${addl_pkgs[@]}" )
+not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
 
-if [[ -n ${not_yet_installed_rpms[*]: -1:1} ]]
+if [[ -n ${not_yet_installed_pkgs[*]: -1:1} ]]
 then
   ## Note, if you install multiple rpms at the same time, and one of them causes some error, then you have
   #+  no immediate way of knowing which one caused the error
 
-  for VV in "${not_yet_installed_rpms[@]}"
+  for VV in "${not_yet_installed_pkgs[@]}"
   do
     sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" || er_x "${nL}"
 
@@ -1247,10 +1242,10 @@ then
   done
   unset VV
 fi
-unset rpm_nms_for_removal addl_pkgs
+unset pkg_nms_for_removal addl_pkgs
 unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
 unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
-unset grep_args removable_pkgs rr installed_rpms not_yet_installed_rpms
+unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
   #EC=101 LL="$nL" exit # <>
