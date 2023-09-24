@@ -1042,10 +1042,10 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 
 :;: '<Logs>'
 printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}"
+set -x
 exec 3>&1 4>&2 # <Logs>
 trap 'set - ; exec 2>&4 1>&3' EXIT HUP INT QUIT USR2 TERM # <Logs>
 exec 1> "${logf}" 2>&1 # <Logs>
-set -x
 
 :;: 'Dnf'
 
