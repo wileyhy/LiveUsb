@@ -205,7 +205,7 @@ function must_be_root(){ :
 
 :;: 'Define pause_to_check()'
 ## Usage,   pause_to_check $nL
-function pause_to_check() { EC=101 LL="$1"
+function pause_to_check() { local EC=101 LL="$1"
   local - hyphn="$-" reply _="${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
   shift
@@ -217,11 +217,11 @@ function pause_to_check() { EC=101 LL="$1"
 
   case $reply in
     Y*|y*|$'\n'|' ' )
-      printf '\n go \n'
+      printf '\nOkay\n\n'
       ;;\
     * )
-      printf '\nexiting\n'
-      exit
+      printf '\nExiting, line %d\n\n' "${LL}"
+      builtin exit
       ;;\
   esac
 
