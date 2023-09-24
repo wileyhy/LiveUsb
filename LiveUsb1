@@ -66,7 +66,7 @@ unset AA
 
 :;: 'Define __vte_osc7() -- for bashrc only'
 # shellcheck disable=SC2317
-function __vte_osc7(){ :
+function __vte_osc7(){
   local - cmd urlencode_o
   set -
 
@@ -80,7 +80,7 @@ function __vte_osc7(){ :
 
 :;: 'Define __vte_prompt_command() -- for bashrc only'
 # shellcheck disable=SC2317
-function __vte_prompt_command(){ :
+function __vte_prompt_command(){
   local - prompt_cmd pwd
   set -
 
@@ -1054,7 +1054,9 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 :;: '<Logs>'
 printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
 set -x # <Logs>
-exec > >( tee "${logf}" ) 2>&1 ## this works. however, there aren't any colors. 
+#exec > >( tee "${logf}" ) 2>&1 ## this works. however, there aren't any colors. 
+exec > >( tee --append "${logf}" ) ## 
+exec 2> >( GREP_COLORS='mt=01;33' grep --color=always -Ee '.*' | tee --append "${logf}" ) ## 
 
 :;: 'Dnf'
 
