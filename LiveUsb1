@@ -716,12 +716,12 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/col
 #printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}"
 #exec 3>&1 4>&2 # <Logs>
 #trap 'trap - INT QUIT USR2; exec 2>&4 1>&3' INT QUIT USR2 # <Logs>
-#exec 3> "${logf}" 4>&3 # <Logs>
+#exec 1> "${logf}" 2>&1 # <Logs>
 
+## Note, traps
 # EXIT -- for exiting
 # HUP USR1 TERM KILL -- for restarting processes
 # INT QUIT USR2 -- for stopping logging
-#
 
 :;: 'Regular users with sudo, only'
 must_be_root
@@ -1051,7 +1051,7 @@ set -x # <Logs>
 printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
 exec 3>&1 4>&2 # <Logs>
 trap 'trap - INT QUIT USR2; exec 2>&4 1>&3' INT QUIT USR2 # <Logs>
-exec 3> "${logf}" 4>&3 # <Logs>
+exec 1> "${logf}" 2>&1 # <Logs>
 
 :;: 'Dnf'
 
