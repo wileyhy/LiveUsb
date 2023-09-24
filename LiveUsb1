@@ -1133,34 +1133,34 @@ fi
 while true
 do
   ## Get full list of rpms to upgrade, in an array; exit on non-zero
-  mapfile -d '' -t rpms_for_upgrade < <(
+  mapfile -d '' -t pkgs_for_upgrade < <(
     sudo -- dnf --assumeno --security upgrade 2>/dev/null |
       awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }'
     )
 
-  ## remove all *kernel* and *firmware* rpms from $rpms_for_upgrade array
-  for HH in "${!rpms_for_upgrade[@]}"
+  ## remove all *kernel* and *firmware* rpms from $pkgs_for_upgrade array
+  for HH in "${!pkgs_for_upgrade[@]}"
   do
-    if [[ ${rpms_for_upgrade[HH]} =~ kernel|firmware ]]
+    if [[ ${pkgs_for_upgrade[HH]} =~ kernel|firmware ]]
     then
       unset_reason+=( [HH]="${BASH_REMATCH[*]}" )
-      unset 'rpms_for_upgrade[HH]'
+      unset 'pkgs_for_upgrade[HH]'
     fi
   done
   unset HH
 
   ## If count of upgradeable rpms is 0, then break loop
-  if [[ "${#rpms_for_upgrade[@]}" -eq 0 ]]
+  if [[ "${#pkgs_for_upgrade[@]}" -eq 0 ]]
   then
     break
   fi
 
   ## Upgrade the RPM's one at a time
-  for II in "${!rpms_for_upgrade[@]}"
+  for II in "${!pkgs_for_upgrade[@]}"
   do
-    if sudo -- dnf --assumeyes --security upgrade -- "${rpms_for_upgrade[II]}"
+    if sudo -- dnf --assumeyes --security upgrade -- "${pkgs_for_upgrade[II]}"
     then
-      unset 'rpms_for_upgrade[II]'
+      unset 'pkgs_for_upgrade[II]'
     else
       echo ERROR "${II}"
       break
