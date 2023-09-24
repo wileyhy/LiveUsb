@@ -212,16 +212,16 @@ function pause_to_check() { local EC=101 LL="$1"
   shift
   local -a MM=( "$@" )
 
-  [[ -n ${MM[*]:0:1} ]] && printf '\n%s, pause_to_check(), %s\n' "${scr_nm}" "${MM[@]}"
-  printf '\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n'
-  read -N1 -p $'\nReady?\n' -rst 600 reply
+  [[ -n ${MM[*]:0:1} ]] && printf '\n%s, pause_to_check(), %s\n' "${scr_nm}" "${MM[@]}" >&2
+  printf '\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n' >&2
+  read -N1 -p $'\nReady?\n' -rst 600 reply >&2
 
   case $reply in
     Y*|y*|$'\n'|' ' )
-      printf '\nOkay\n\n'
+      printf '\nOkay\n\n' >&2
       ;;\
     * )
-      printf '\nExiting, line %d\n\n' "${LL}"
+      printf '\nExiting, line %d\n\n' "${LL}" >&2
       builtin exit
       ;;\
   esac
@@ -889,9 +889,9 @@ case "${#arr_vrc[@]}" in
       strng_vrc="${arr_vrc[*]:=/root/.vimrc}"
     ;;\
   *)
-      printf '\n  Multiple .vimrc files found, please edit the filesystem.\n'
-      printf '\t%s\n' "${arr_vrc[@]}"
-      printf '\n'
+      printf '\n  Multiple .vimrc files found, please edit the filesystem.\n' >&2
+      printf '\t%s\n' "${arr_vrc[@]}" >&2
+      er_x "${nL}"
     ;;\
 esac
 
@@ -1179,7 +1179,7 @@ do
     then
       unset 'pkgs_for_upgrade[II]'
     else
-      echo ERROR "${II}"
+      printf 'ERROR %d\n' "${II}"
       break
     fi
   done
