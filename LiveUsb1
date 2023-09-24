@@ -211,7 +211,7 @@ function pause_to_check() { local EC=101 LL="$1"
   shift
   local -a MM="$@"
 
-  [[ -n ${MM} ]] && printf '\nscript, pause_to_check(), %s\n' "${MM}"
+  [[ -n ${MM} ]] && printf '\n%s, pause_to_check(), %s\n' "${scr_nm}" "${MM}"
   printf '\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n'
   read -N1 -p $'\nReady?\n' -rst 600 reply
 
