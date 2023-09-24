@@ -210,7 +210,6 @@ function pause_to_check() { local EC=101 LL="$1"
   local - hyphn="$-" reply _="${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set - ## sb local ?
   shift
-  declare -a MM
   local -a MM=( "$@" )
 
   [[ -n ${MM[*]:0:1} ]] && printf '\n%s, pause_to_check(), %s\n' "${scr_nm}" "${MM[@]}"
