@@ -1053,6 +1053,9 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 #trap 'trap - INT QUIT USR2; exec 2>&4 1>&3' INT QUIT USR2 # <Logs>
 #exec 1> "${logf}" 2>&1 # <Logs>
 
+:;: '<Logs>'
+exec > >( tee "${logf}" )
+
 :;: 'Dnf'
 
 ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
