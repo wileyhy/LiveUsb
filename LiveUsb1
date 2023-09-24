@@ -1206,14 +1206,14 @@ fi
   #pause_to_check "$nL" # <>
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
-uninstalled_rpms=( "${addl_pkgs[@]}" )
+not_yet_installed_rpms=( "${addl_pkgs[@]}" )
 
-if [[ -n ${uninstalled_rpms[*]: -1:1} ]]
+if [[ -n ${not_yet_installed_rpms[*]: -1:1} ]]
 then
   ## Note, if you install multiple rpms at the same time, and one of them causes some error, then you have
   #+  no immediate way of knowing which one caused the error
 
-  for VV in "${uninstalled_rpms[@]}"
+  for VV in "${not_yet_installed_rpms[@]}"
   do
     sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" || er_x "${nL}"
 
@@ -1250,7 +1250,7 @@ fi
 unset rpm_nms_for_removal addl_pkgs
 unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
 unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
-unset grep_args removable_pkgs rr installed_rpms uninstalled_rpms
+unset grep_args removable_pkgs rr installed_rpms not_yet_installed_rpms
 
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
   #EC=101 LL="$nL" exit # <>
