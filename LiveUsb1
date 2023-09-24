@@ -1180,10 +1180,9 @@ do
 
 done
 
-:;: 'Find out whether an RPM is installed, one by one'
-
   #pause_to_check "$nL" # <>
 
+:;: 'Find out whether an RPM is installed, one by one'
 for UU in "${!addl_pkgs[@]}"
 do
   if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${addl_pkgs[UU]}"
@@ -1194,21 +1193,19 @@ do
 done
 unset UU
 
-:;: 'Upgrade any installed RPMs from the main list, en masse'
+  #pause_to_check "$nL" # <>
 
 ## Note, this section should upgrade rpms one by one
 
-  #pause_to_check "$nL" # <>
-
+:;: 'Upgrade any installed RPMs from the main list, en masse'
 if [[ -n ${installed_rpms[*]: -1:1} ]]
 then
   sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${installed_rpms[@]}" || er_x "${nL}"
 fi
 
-:;: 'Install any as yet uninstalled RPMs from the main list as necessary'
-
   #pause_to_check "$nL" # <>
 
+:;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 uninstalled_rpms=( "${addl_pkgs[@]}" )
 
 if [[ -n ${uninstalled_rpms[*]: -1:1} ]]
