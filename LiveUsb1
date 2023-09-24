@@ -1121,9 +1121,6 @@ fi
 #+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest
 #+  one by one
 
-  pause_to_check "$nL" # <>
-  set -x
-
 ## Run this loop until `dnf --security upgrade` returns 0, or 0 upgradable, rpms
 while true
 do
@@ -1175,7 +1172,7 @@ do
 
 done
 
-  #pause_to_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 :;: 'Find out whether an RPM is installed, one by one'
 for UU in "${!addl_pkgs[@]}"
@@ -1188,7 +1185,7 @@ do
 done
 unset UU
 
-  #pause_to_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 ## Note, this section should upgrade rpms one by one
 
@@ -1198,7 +1195,7 @@ then
   sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || er_x "${nL}"
 fi
 
-  #pause_to_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
@@ -1224,7 +1221,7 @@ then
       do
         ps aux | awk "\$2 ~ /${WW}/ { print }"
 
-        #pause_to_check "$nL"
+        pause_to_check "$nL"
 
         sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
           --timeout 1000 HUP \
@@ -1234,7 +1231,7 @@ then
 
         : 'Now restart some PID ??'
 
-        #pause_to_check "$nL"
+        pause_to_check "$nL"
 
       done
       unset WW
@@ -1253,7 +1250,7 @@ unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 
-  #pause_to_check "$nL" # <>
+  pause_to_check "$nL" # <>
 
 a_pids=()
 get_pids_for_restarting
@@ -1290,13 +1287,13 @@ then
         (( ZZ == 1 )) && continue 001
         sleep 1
 
-          #pause_to_check "$nL" # <>
+          pause_to_check "$nL" # <>
 
         for AA in HUP USR1 TERM KILL
         do
 
             : "To kill PID $ZZ with signal $AA" # <>
-            #pause_to_check "$nL" # <>
+            pause_to_check "$nL" # <>
 
           #sleep 1
           sync --file-system
@@ -1348,8 +1345,6 @@ fi
   #set -x # <>
 
 :;: 'Restart NetworkManager if necessary'
-
-  #pause_to_check "$nL" # <>
 
 ## TODO: use written function here
 for BB in "${dns_srv_A}" "${dns_srv_1}"
