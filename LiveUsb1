@@ -12,11 +12,11 @@ set -aCuTeo pipefail # <>
 
 :;: 'Variables likely to be manually changed with some regularity'
 # shellcheck disable=SC2034
-{ 
+{
   files_for_use_with_github_level_1=( ~/.ssh ~/.gnupg ~/.vimrc ~/.mozilla ~/.angband )
   files_for_use_with_github_level_2=( ~/.config/gh )
   files_for_use_with_github_level_3=( ~/.config/procps/toprc )
-  arrays_of_conf_files=( files_for_use_with_github_level_1 files_for_use_with_github_level_2 
+  arrays_of_conf_files=( files_for_use_with_github_level_1 files_for_use_with_github_level_2
     files_for_use_with_github_level_3 )
 }
 
@@ -100,7 +100,6 @@ function __vte_prompt_command(){ :
   fi
 
   ## Bug, what does this cmd do?
-
   printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${pwd}"
   __vte_osc7
 }
@@ -132,14 +131,6 @@ function get_pids_for_restarting(){ :
   pipline2=$( grep --only-matching --extended-regexp ^'[0-9]*'$ <<< "${pipline1}" )
 
   readarray -d '' -t a_pids < <( tr '\n' '\0' <<< "${pipline2}" )
-
-  : 'lengths of variables' # <>
-  : $(( ++pr_counter )) # <>
-  : Lengths of vars, measurement no., "${pr_counter}" # <>
-  : dnf_o,    "${#dnf_o}" # <>
-  : pipline1, "${#pipline1}" # <>
-  : pipline2, "${#pipline2}" # <>
-  : a_pids,   "${#a_pids}" # <>
 
   true "${fn_bndry} get_pids_for_restarting()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
@@ -234,7 +225,7 @@ function pause_to_check() { EC=101 LL="$1"
       exit
       ;;\
   esac
-  
+
   local bndry_cmd
   if [[ $hyphn =~ x ]]; then bndry_cmd='echo'; else bndry_cmd='true'; fi
   "${bndry_cmd}"  "${fn_bndry} pause_to_check()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -245,203 +236,129 @@ function reqd_user_files(){ :
   local - hyphn="$-" _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
-    #declare -p files_for_use_with_github_level_1 # <>
-    #declare -p files_for_use_with_github_level_2 # <>
-    #declare -p files_for_use_with_github_level_3 # <>
-    #: "${files_for_use_with_github_level_1[@]##*/}" # <>
-    #: "${files_for_use_with_github_level_2[@]##*/}" # <>
-    #: "${files_for_use_with_github_level_3[@]##*/}" # <>
+  ## Note, NN must be declared as local before unsetting it inside the function so that the `unset` will
+  #+  effect the local variable
+  local pttn_label mount_pt data_dir
+  pttn_label='29_Mar_2023'
+  mount_pt="/run/media/root/${pttn_label}"
+  data_dir="${mount_pt}/skel-Live_Usb"
 
-    #files_for_use_with_github_level_1+=( ~/.foo) # <>
-    #pause_to_check $nL # <>
-
-## Note, NN must be declared as local before unsetting it inside the function so that the `unset` will 
-#+  effect the local variable
-local pttn_label mount_pt data_dir
-pttn_label='29_Mar_2023'
-mount_pt="/run/media/root/${pttn_label}"
-data_dir="${mount_pt}/skel-Live_Usb"
-
-  #declare -p arrays_of_conf_files
-
-local AA
-local -n NN 
-## It isn't necessary to declare NN as a nameref, since unsetting NN (see below) removes the nameref 
-#+  attribute, but I intend to use NN as a nameref, so declaring NN without a nameref attribute would be 
-#+  confusing
-
-: 'Vars: get list of mounts'
-## Note, and yet, when locally declaring and assigning separately a regular variable, ie, 
-#+  `local lsblk_out` \n `lsblk_out=''` the assignment doesn't need a preceding `local`
-## Note, I'm using an array with $lsblk_out so I can work around `set -u` by using a ':=' PE, and so that 
-#+  I can limit xtrace output by testing for a shortened version of the output of `lsblk`. I.e., I'm testing
-#+  the last line of the array, index '-1', but this is really just a practice, since a lot of times index
-#+  zero gets unset for whatever reason, but if there are any values in the array at all, then index
-#+  '-1' is guaranteed to exist. ...unless the array is completely empty...
-#+	but I don't want to UNSET ie RESET the array on each loop. If it's actually empty, I want to fill
-#+  it, but i
-#+ In this script, index zero should exist, barring any future changes. So,
-#+  it's a bit of future-proofing. 
-local -a lsblk_out
-readarray -t lsblk_out < <( lsblk --output label,path,mountpoints )
-
-:;: 'For each array of conf files and/or directories'
-for AA in "${arrays_of_conf_files[@]}"
-do
-  :;: 'Loop A'
-
-    ## Note, the command `local -p NN` in xtrace prints as `declare -p NN`
-    #local -p AA
-    #local -p NN
-
-  : 'Vars'
-  ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
-  #+  directly, `foo=bar`, then on the second loop `local -p NN` prints the former value of NN. Perhaps 
-  #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
-  ## Note, remember, namerefs can only be unset with the -n flag to the `unset` builtin
-  local BB
-  unset -n NN 
+  local AA
   local -n NN
-  local -n NN="${AA}"   ## good code
-  #NN="${AA}"           ## bad code
+  ## It isn't necessary to declare NN as a nameref, since unsetting NN (see below) removes the nameref
+  #+  attribute, but I intend to use NN as a nameref, so declaring NN without a nameref attribute would be
+  #+  confusing
 
-    #declare -p NN
-    #pause_to_check "$nL"
+  : 'Vars: get list of mounts'
+  ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
+  #+  `local lsblk_out` \n `lsblk_out=''` the assignment doesn't need a preceding `local`
+  ## Note, I'm using an array with $lsblk_out so I can work around `set -u` by using a ':=' PE, and so that
+  #+  I can limit xtrace output by testing for a shortened version of the output of `lsblk`. I.e., I'm testing
+  #+  the last line of the array, index '-1', but this is really just a practice, since a lot of times index
+  #+  zero gets unset for whatever reason, but if there are any values in the array at all, then index
+  #+  '-1' is guaranteed to exist. ...unless the array is completely empty...
+  #+	but I don't want to UNSET ie RESET the array on each loop. If it's actually empty, I want to fill
+  #+  it, but i
+  #+ In this script, index zero should exist, barring any future changes. So,
+  #+  it's a bit of future-proofing.
+  local -a lsblk_out
+  readarray -t lsblk_out < <( lsblk --output label,path,mountpoints )
 
-  : $'Vars: Get device name where label \x24pttn_label can be found'
-  local pttn_path
-  pttn_path=$( awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' <<< "${lsblk_out[@]}" )
- 
-  :;: 'For each conf file or dir'
-  for BB in "${!NN[@]}"
+  :;: 'For each array of conf files and/or directories'
+  for AA in "${arrays_of_conf_files[@]}"
   do
-    :;: 'Loop B'
-
-      #local -p BB
-      #declare -p data_dir NN
-      #echo '{NN[BB]}: '"${NN[BB]}"
-      #pause_to_check $nL # <>
+    :;: 'Loop A'
 
     : 'Vars'
-    local source_file dest_dir
-    source_file="${data_dir}/${NN[BB]#~/}"
-    dest_dir="${NN[BB]%/*}"
+    ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
+    #+  directly, `foo=bar`, then on the second loop `local -p NN` prints the former value of NN. Perhaps
+    #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
+    ## Note, remember, namerefs can only be unset with the -n flag to the `unset` builtin
+    local BB
+    unset -n NN
+    local -n NN
+    local -n NN="${AA}"   ## good code
+    #NN="${AA}"           ## bad code
 
-      #local -p AA BB NN 
-      #: '{NN[@]}: '"${NN[*]}"
-      #: '{NN[BB]}: '"${NN[BB]}"
-      #declare -p files_for_use_with_github_level_{1,2,3} # <>
-      #exit 101
+    : $'Vars: Get device name where label \x24pttn_label can be found'
+    local pttn_path
+    pttn_path=$( awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' <<< "${lsblk_out[@]}" )
 
-    :;: 'If the target conf file/dir does not exist'
-    if ! [[ -e ${NN[BB]} ]]
-    then
-      
-      :;: 'If the source conf file/dir does not exist, then find it'
-      if ! [[ -e "${source_file}" ]]
+    :;: 'For each conf file or dir'
+    for BB in "${!NN[@]}"
+    do
+      :;: 'Loop B'
+
+      : 'Vars'
+      local source_file dest_dir
+      source_file="${data_dir}/${NN[BB]#~/}"
+      dest_dir="${NN[BB]%/*}"
+
+      :;: 'If the target conf file/dir does not exist'
+      if ! [[ -e ${NN[BB]} ]]
       then
 
-        : 'If the USB device is NA, then exit'
-        if [[ -z $pttn_path ]]
-        then
-          er_x "${nL} USB device not available, ${pttn_label}"
-        fi
-
-        : 'If the partition is not mounted which holds the data directory, then mount it'
-        if ! grep --quiet "$mount_pt" <<< "${lsblk_out[@]}" # <>
-        then
-
-          : 'Mountpoint must exist'
-          if ! [[ -d "${mount_pt}" ]]
-          then
-            sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
-          fi
-
-          : $'Perform mount operation and re-sample \x60lsblk\x60'
-          sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
-          
-          readarray -t lsblk_out < <( lsblk --output label,path,mountpoints )
-        fi
-
-        :;: 'If the source conf still file/dir does not exist, then throw an error'
+        :;: 'If the source conf file/dir does not exist, then find it'
         if ! [[ -e "${source_file}" ]]
         then
-          er_x "$nL" "$NN" "${source_file}"
+
+          : 'If the USB device is NA, then exit'
+          if [[ -z $pttn_path ]]
+          then
+            er_x "${nL} USB device not available, ${pttn_label}"
+          fi
+
+          : 'If the partition is not mounted which holds the data directory, then mount it'
+          if ! grep --quiet "$mount_pt" <<< "${lsblk_out[@]}" # <>
+          then
+
+            : 'Mountpoint must exist'
+            if ! [[ -d "${mount_pt}" ]]
+            then
+              sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
+            fi
+
+            : $'Perform mount operation and re-sample \x60lsblk\x60'
+            sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
+
+            readarray -t lsblk_out < <( lsblk --output label,path,mountpoints )
+          fi
+
+          :;: 'If the source conf still file/dir does not exist, then throw an error'
+          if ! [[ -e "${source_file}" ]]
+          then
+            er_x "$nL" "$NN" "${source_file}"
+          fi
         fi
+
+        : 'Capture previous umask'
+        local prev_umask
+        read -r -a prev_umask < <( umask -p )
+        umask 077
+
+        rsync_install_if_missing  "${source_file}" "${dest_dir}"
+
+        builtin "${prev_umask[@]}"
       fi
-      
-      : 'Capture previous umask'
-      local prev_umask
-      read -r -a prev_umask < <( umask -p )
-      umask 077
-
-      ## Bug: if just one file is missing, then re-install all files?  No.
-
-        #declare -p files_for_use_with_github_level_2 # <>
-        #declare -p files_for_use_with_github_level_3 # <>
-        #pause_to_check "$LINENO"
-
-      #local -a      files_lev_1_source
-      #readarray -t  files_lev_1_source < <(
-      # #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_1[@]#~/}" )
-      #local -a      files_lev_2_source
-      #readarray -t  files_lev_2_source < <(
-      # #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_2[@]#~/}" )
-      #local -a      files_lev_3_source
-      #readarray -t  files_lev_3_source < <(
-      # #printf "${data_dir}"'/%s\n' "${files_for_use_with_github_level_3[@]#~/}" )
-      #local -a      files_lev_1_dest
-      #             #files_lev_1_dest=~
-      #local -a      files_lev_2_dest
-      #             #files_lev_2_dest=~/.config
-      #local -a      files_lev_3_dest
-      #             #files_lev_3_dest=~/.config/procps
-
-        #declare -p files_lev_{1,2,3}_{source,dest} # <>
-        
-        #pause_to_check $nL # <>
-
-    ## Note, Using `install` instead of `rsync` would require each FSO to have written, in script, a set of 
-    #+  metadata for `install` to write. Too much information for now.
-
-      rsync_install_if_missing  "${source_file}" "${dest_dir}"
-
-      #rsync_install_if_missing  files_lev_1_source "${files_lev_1_dest}"
-      #rsync_install_if_missing  files_lev_2_source "${files_lev_2_dest}"
-      #rsync_install_if_missing  files_lev_3_source "${files_lev_3_dest}"
-
-        #pause_to_check $nL # <>
-	      #exit 101 # <>
-
-      builtin "${prev_umask[@]}"
-    fi
+    done
   done
-done
-unset AA NN
-    ## Bug: gh login breaks before here
-    #EC=101 LL="$LINENO" exit # <>
-    #exit 102 # <>
+  unset AA NN
 
   true "${fn_bndry} reqd_user_files()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-## Bug, this rm function is broken. if the user doesn't include '--' the file is not removed
-
 :;: 'Define rm() -- for bashrc only'
 ## Note, rm(), command shadowing is intended in this case
 function rm(){ :
-  local - 
+  local -
   #set -
 
-  #local fn_command_line
-  #fn_command_line="${FUNCNAME[0]} $*"
- 
   :;: 'Input must exist'
   [[ ${#@} -eq 0 ]] && return "$LINENO"
-    
+
   :;: 'For each positional parameter'
   local HH end_of_options opts_rm args_rm
-  
+
   for HH
   do
     : 'If "End of Options" has (not) been reached'
@@ -457,16 +374,16 @@ function rm(){ :
         -- )
           end_of_options='has_been_reached'
           opts_rm+=( "${HH}" )
-          ;;    
+          ;;
         -f|--force|-i|--interactive|--interactive=always|-I|--interactive=once|--interactive=never|\
         --one-file-system|--no-preserve-root|--preserve-root|--preserve-root=all|-r|-R|--recursive|\
         -d|--dir|-v|--verbose )
           opts_rm+=( "${HH}" )
-          ;;    
+          ;;
         * )
           : 'No options found; options have concluded'
           end_of_options='has_been_reached'
-          
+
           : 'If there is no next pos-parm'
           if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
           then
@@ -474,7 +391,7 @@ function rm(){ :
             opts_rm+=( -- )
           else
             : $'...or if the next pos-parm isn\x60t a valid FSO (File System Object)'
-            if ! [[ -e $2 ]] || ! [[ -d $2 ]] 
+            if ! [[ -e $2 ]] || ! [[ -d $2 ]]
             then
               : '...then force end of arguments on the CLI'
               opts_rm+=( -- )
@@ -492,7 +409,7 @@ function rm(){ :
           unset JJ
           ;;
       esac
-    else 
+    else
       : 'Yes, so options are over and only arguments are processed'
 
       if [[ -e ${HH} ]]
@@ -526,9 +443,9 @@ function rm(){ :
   :;: 'If optargs exist, then  mv  the file into the recycle bucket, appending the time'
   if [[ -n ${args_rm[*]:0:8} ]]
   then
-    local time_sfx 
+    local time_sfx
     time_sfx=$( date --utc +%s )
-    
+
     command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return "$LINENO"
   fi
 }
@@ -567,7 +484,6 @@ function rsync_install_if_missing(){ :
 }
 
 :;: 'Define setup_network()'
-## Note, 1 is Google; A is Comcast; both are global variables
 function setup_network(){ :
   local - hyphn="$-" _="${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -761,7 +677,6 @@ function write_bashrc_strings(){ :
 ##  FUNCTION DEFINITIONS COMPLETE ##
 
   #EC=101 LL="$LINENO" exit # <>
-  #set -x # <>
 
 :;: 'Define trap on EXIT'
 trap trap_exit EXIT
@@ -795,39 +710,19 @@ PS1=''
 # shellcheck disable=SC2034
 declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
-  #EC=101 LL="$LINENO" exit # <>
-  #set -x # <>
-
 :;: '<Logs>'
 #exec 3>&1 4>&2 # <Logs>
 #trap 'set - ; exec 2>&4 1>&3' EXIT HUP INT QUIT USR2 TERM # <Logs>
 #exec 1> ./Log_begin-1.txt 2>&1 # <Logs>
 
-  #EC=101 LL="$LINENO" exit # <>
-  #set -x # <>
-
 :;: 'Regular users with sudo, only'
 must_be_root
-
-  #EC=101 LL="$LINENO" exit # <>
-  #set -x # <>
-
-  ## Bug: gh login breaks after here
-  unset NN; unset -n NN
 
 :;: 'Certain files must have been installed from off-disk'
 reqd_user_files
 
-  ## Bug: gh login breaks before here
-
-  #EC=101 LL="$LINENO" exit # <>
-  #set -x # <>
-
 :;: 'Network'
 setup_network
-
-  #EC=101 LL="$LINENO" exit # <>
-  #set -x # <>
 
 :;: 'Time'
 setup_time
@@ -837,9 +732,6 @@ min_necc_rpms
 
 :;: 'Minimum necessary git commands'
 min_necc_git_cmds
-
-  #EC=101 LL="$nL" exit # <>
-  #set -x # <>
 
 :;: 'gh -- github CLI configuration'
 declare -A github_configs
@@ -877,12 +769,6 @@ do
 done
 unset QQ
 
-#:;: 'gh -- Review auth'
-#printf '\n'
-#gh auth status
-
-  #exit "$nL" # <>
-
 :;: 'Bash'
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
 ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
@@ -903,22 +789,13 @@ PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-  ## Note, TERM_SESSION_ID, 1, added in order to identify which TTY is using which terminal emulator
-  #+  program. See also, https://stackoverflow.com/questions/42710685/bash-identify-a-terminal-session
-  #TERM_SESSION_ID="${TERM_SESSION_ID:-}"
-  #if [[ -z "$TERM_SESSION_ID" ]]
-  #then
-  #TERM_SESSION_ID=$( uuidgen )
-  #export TERM_SESSION_ID
-  #fi
-
 declare -A bashrc_strings_1 bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_fns=()
 
 :;: 'Append user variables and functions into .bashrc.'
 ## Note, these arrays include some command substitutions which depend on some function definitions, which in
-#+ turn must be defined prior to defining these arrays
+#+  turn must be defined prior to defining these arrays
 for UU in "${fns_for_appending_into_bashrc[@]}"
 do
   if [[ $( declare -pF "${UU}" 2>&1 ) =~ 'not found' ]]
@@ -943,10 +820,7 @@ bashrc_strings_2+=(                 ['export EDITOR']=$(            declare -p E
 bashrc_strings_2+=(         ['define PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
 bashrc_strings_2+=(                    ['export PS0']=$(            declare -p PS0  ) )
 
-  #declare -p files_for_use_with_bash # <>
-
 :;: 'Do some backups'
-## Note,  sudo  cannot find  [[  , and  [  requires internal quotes
 for VV in "${files_for_use_with_bash[@]}"
 do
   : 'File must exist'
@@ -964,7 +838,6 @@ do
   fi
 
   : '...per script-execution'
-  ## Note, ~, quoted tildas do not expand
   sudo -- cp --archive -- "${VV}" "${VV}~" || er_x "line ${nL}, ${VV}"
 done
 unset VV
@@ -972,15 +845,9 @@ unset VV
 :;: 'Alter the array files_for_use_with_bash'
 write_bashrc_strings "bashrc_strings_1" "bashrc_strings_2"
 
-  #exit $nL # <>
-
 ## Clean up from section Bash
 unset files_for_use_with_bash bashrc_strings_1 bashrc_strings_2
 unset -f write_bashrc_strings
-
-  #EC=101 LL="$nL" exit # <>
-  #set -x # <>
-  #set +e # <>
 
 :;: 'Vim'
 
@@ -1005,8 +872,6 @@ cat <<- \EOF | tee -- "${tmpd}/vim-conf-text" > /dev/null
 
 EOF
 
-  #set -x # <>
-
 : $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29'
 readarray -d '' -t arr_vrc < <( sudo -- find /root -name '*vimrc*' -print0 )
 
@@ -1023,8 +888,6 @@ case "${#arr_vrc[@]}" in
       printf '\n'
     ;;\
 esac
-
-  #exit $nL # <>
 
 if (( "${#arr_vrc[@]}" == 1 ))
 then
@@ -1059,9 +922,6 @@ fi
 command -- rm --one-file-system --preserve-root=all --force -- "${tmpd}/vim-conf-text"
 unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 
-  #EC=101 LL="$nL" exit # <>
-  #set -x # <>
-
 :;: 'Disk space, increase available by removing non-local locales'
 
 ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
@@ -1076,17 +936,11 @@ unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 declare -A fsos5
 readarray -d '' -t dirs1 < <( find / ! -path / -prune -type d -print0 )
 
-  #declare -p dirs1 # <>
-
 readarray -d '' -t dirs2 < <(
   find "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
 
-  #declare -p dirs2 # <>
-
 readarray -d '' -t fsos3 < <(
   find "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
-
-  #declare -p fsos3 # <>
 
 if (( ${#fsos3[@]} > 0 ))
 then
@@ -1099,8 +953,6 @@ then
       sort --unique |
       tr --delete '\n'
     )
-
-    #declare -p fsos4 # <>
 
   ## Question, does this assoc array fsos5 need to be declared as such? (I don't think so, but...)
 
@@ -1117,8 +969,6 @@ then
     (( $# == 0 )) && break 1
   done
 fi
-
-  #declare -p fsos5 # <>
 
 : 'If any larger local data files were found, then remove them interactively'
 if [[ -n ${!fsos5[*]} ]]
@@ -1145,8 +995,6 @@ then
         read -r -p ' > [yN] ' -t 600 yes_or_no
         yes_or_no="${yes_or_no,,?}"
         yes_or_no="${yes_or_no:=n}"
-
-          #declare -p yes_or_no # <>
 
         case "${yes_or_no}" in
           0|1)  printf '  Zero and one are ambiguous, please use letters. \n'
@@ -1190,17 +1038,12 @@ fi
 ## Clean up from section "Disk space"
 unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 
-  #set -x # <>
-  #EC=101 LL="$nL" exit # <>
-
 :;: 'Dnf'
 
 ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
 ## Bug, the --security upgrade should be done rpm by rpm
 
   : 'Beginning section on DNF' # <>
-  #pause_to_check "$nL" # <>
-  #set -x
 
 ## Note, CUPS cannot be safely removed; too many dependencies
 ## Note, For some unknown reason, even when  dnf  doesn't change any programs,  dnf
@@ -1218,7 +1061,7 @@ hash_of_installed_rpms_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
 
 ## Removals for security
-#rpm_nms_for_removal+=( claws-mail blueman bluez )
+#rpm_nms_for_removal+=( blueman bluez )
 
 # shellcheck disable=SC2206
 {
@@ -1251,8 +1094,6 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
 
 :;: 'Start with removing any unnecessary RPMs'
 
-  #pause_to_check "$nL" # <>
-
 if [[ -n ${rpm_nms_for_removal:0:8} ]]
 then
   ## Note, this  printf  command uses nulls so that '-e' and '%s.*' will be read as separate indices
@@ -1261,15 +1102,11 @@ then
   readarray -t removable_rpms < <(
     rpm --all --query | grep --ignore-case --extended-regexp "${grep_args[@]}" )
 
-    #declare -p grep_args removable_rpms # <>
-
   :;: 'Keep a list, just in case an rpm removal accidentally erases something vital'
   if [[ -n ${removable_rpms[*]:0:8} ]]
   then
     for QQ in "${!removable_rpms[@]}"
     do
-      #declare -p removable_rpms | tee -- "${tmpd}/removable_rpms.array"
-
       ## Note,  dnf , do not use [-y|--yes] with this particular command
       if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_rpms[QQ]}"
       then
@@ -1279,17 +1116,10 @@ then
       fi
     done
     unset QQ
-
-    #[[ -f "${tmpd}/removable_rpms.array" ]] &&
-      #command rm --one-file-system --preserve-root=all --force -- "${tmpd}/removable_rpms.array" # <>
   fi
 fi
 
-  #df --sync --output=fstype,avail,pcent,target -- . # <>
-
 :;: 'Then do a blanket security upgrade'
-
-## Buggy -- this entire section, still. 23 Sep 2023
 
 ## Note, the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to
 #+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest
@@ -1298,19 +1128,15 @@ fi
   pause_to_check "$nL" # <>
   set -x
 
-## Count the original number of rpms installed -- why???
-#mapfile -d '' -t all_installed_rpms < <( rpm -qa 2>/dev/null | awk '{ printf "%s\0", $1 }' )
-  #echo "count, all_installed_rpms, ${#all_installed_rpms[@]}"
-
 ## Run this loop until `dnf --security upgrade` returns 0, or 0 upgradable, rpms
 while true
 do
   ## Get full list of rpms to upgrade, in an array; exit on non-zero
-  mapfile -d '' -t rpms_for_upgrade < <( 
-    sudo -- dnf --assumeno --security upgrade 2>/dev/null | 
-      awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' 
+  mapfile -d '' -t rpms_for_upgrade < <(
+    sudo -- dnf --assumeno --security upgrade 2>/dev/null |
+      awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }'
     )
-  
+
   ## remove all *kernel* and *firmware* rpms from $rpms_for_upgrade array
   for HH in "${!rpms_for_upgrade[@]}"
   do
@@ -1340,128 +1166,20 @@ do
   done
 
   ## Run `dnf needs-restarting`, collecting PID/commandline pairs
+  a_pids=()
+  get_pids_for_restarting
 
+    declare -p a_pids
 
-  ## Send signals to "needs-restarting" PID's, one at a time, with pauses and descriptions between each 
+  ## Send signals to "needs-restarting" PID's, one at a time, with pauses and descriptions between each
   #+  one, so I can see which signal/process combinations cause any problems. This would be a great job
-  #+  for logging. 
+  #+  for logging.
 
-    
+
 
 done
 
-## Bug: what the hell was I thinking with this section?? 
-
-## If there are any rpms that need security upgrades
-if [[ -n "${rpms_for_upgrade[*]:0:1}" ]]
-then
-  ## For each "original rpm" in the original list
-  for XX in "${!all_installed_rpms[@]}"; 
-  do 
-    : 'Loop A, open'
-
-    : 'Define the basic regular expression structure for each RPM, without any package basenames' 
-    ## Note, why are these RE's necessary? a lot of rpms begin with the same prefix, such as "dnf*.rpm". The
-    #+  RE is a sort of right hand side delimiter of the package basename, so that if dnf-4.16.2-1.fc38.noarch
-    #+  needs a security upgrade, but not dnfdragora-updater-2.1.2-4.fc38.noarch, then this script will be 
-    #+  able to make that distinction and only upgrade the correct package.
-    regexp_base="[0-9]{,16}(\.[0-9]{,16}){,8}-.*\.fc[0-9]{2,3}\.(noarch|x86-64)"; 
-    
-    ## Bug, `test`ing through all the installed RPMs is slow; 
-    #+  grep the entire list?
-
-    ## Re-run the list, grepping for the "original rpm"
-    for YY in "${rpms_for_upgrade[@]}" ; 
-    do 
-      : 'Loop B-1, open'
-
-      regexp_YY="^${YY}-${regexp_base}";
-      :
-  
-      ## If the "original rpm" needs to be upgraded
-      if [[ "${all_installed_rpms[XX]}" =~ $regexp_YY ]]; 
-      then 
-          :
-          # <>
-          printf '%s\n' "$XX : ${all_installed_rpms[XX]}" ; 
-          printf '%s\n' "${all_installed_rpms[XX]}" | grep -cEe "$regexp_YY"
-          set -x; 
-          [[ "${all_installed_rpms[XX]}" =~ $regexp_YY ]]; 
-          echo $?; 
-          set -; 
-      fi
-      :
-      : 'Loop B-1, close'
-    done
-    : 'Loop B-1, complete'
-    unset YY regexp_YY
-
-      echo "count, all_installed_rpms: ${#all_installed_rpms[@]}"
-      declare -p XX
-      pause_to_check "$nL" # <>
-
-    for ZZ in "${rpms_for_upgrade[@]}" ; 
-    do 
-      : 'Loop B-2, open'
-
-      regexp_ZZ="^${ZZ}-${regexp_base}";
-      :
-
-      if ! [[ "${all_installed_rpms[XX]}" =~ $regexp_ZZ ]]; 
-      then 
-        :
-
-        ## then unset the "original rpm" index and continue with the next iteration of Loop A
-        #unset 'all_installed_rpms[XX]'
-      
-      else :
-
-        ## then upgrade just that one "original rpm"; exit on non-zero
-        sudo -- nice --adjustment=-20 -- dnf --verbose upgrade "$ZZ" || er_x "$nL" "$ZZ"
-
-        ## Run "needs-restarting"
-        readarray -t nr_pids < <(\
-          sudo -- nice --adjustment=-20 -- dnf --quiet needs-restarting 2>/dev/null | awk '{ print $1 }' )
-
-          declare -p nr_pids # <>
-          pause_to_check "$nL" # <>
-
-        ## Restart PIDs as necessary, using multiple signals; exit on non-zero
-        for WW in "${nr_pids[@]}"
-        do
-          : 'Loop C, open'
-          sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
-            --timeout 1000 HUP \
-            --timeout 1000 USR1 \
-            --timeout 1000 TERM \
-            --timeout 1000 KILL -- "$WW"
-          : 'Loop C, close'
-        done
-        unset WW
-        : 'Loop C, complete'
-
-      ## If the "original rpm" is NA in the new list of rpms-to-be-upgraded
-      fi;
-      :;
-      : 'Loop B-2, close'
-    done; 
-    unset ZZ regexp_ZZ
-    : 'Loop B-2, complete'
-
-  done
-  unset XX
-  : 'Loop A, close'
-fi
-: 'Loop A, complete'
 exit 101
-
-  ## Loop A, shut
-
-## Loop A, end
-
-sudo -- nice --adjustment=-20 -- dnf --assumeyes --security upgrade || er_x "${nL}"
-
-  #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
 
 :;: 'Find out whether an RPM is installed, one by one'
 
