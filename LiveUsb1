@@ -1184,12 +1184,12 @@ done
 
   #pause_to_check "$nL" # <>
 
-for UU in "${!rpms[@]}"
+for UU in "${!addl_pkgs[@]}"
 do
-  if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${rpms[UU]}"
+  if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${addl_pkgs[UU]}"
   then
-    installed_rpms+=( "${rpms[UU]}" )
-    unset 'rpms[UU]'
+    installed_rpms+=( "${addl_pkgs[UU]}" )
+    unset 'addl_pkgs[UU]'
   fi
 done
 unset UU
@@ -1209,7 +1209,7 @@ fi
 
   #pause_to_check "$nL" # <>
 
-uninstalled_rpms=( "${rpms[@]}" )
+uninstalled_rpms=( "${addl_pkgs[@]}" )
 
 if [[ -n ${uninstalled_rpms[*]: -1:1} ]]
 then
@@ -1250,7 +1250,7 @@ then
   done
   unset VV
 fi
-unset rpm_nms_for_removal rpms
+unset rpm_nms_for_removal addl_pkgs
 unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
 unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
 unset grep_args removable_rpms rr installed_rpms uninstalled_rpms
