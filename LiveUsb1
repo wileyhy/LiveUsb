@@ -980,7 +980,7 @@ fi
 if [[ -n ${!fsos5[*]} ]]
 then
   : 'Inform user of any found FSOs'
-  printf '  Script, delete these files? \n'
+  printf '%s, Delete these files? \n' "${scr_nm}"
   declare -p fsos5
   sleep 3
 
@@ -989,15 +989,19 @@ then
     HH=0
     II=0
     JJ="${fsos5[$AA]#.}"
-    printf '  File %d, \n' $(( ++II ))
+    printf '%s,   File %d, \n' "${scr_nm}" "$(( ++II ))"
 
     while true
     do
       if [[ -e ${JJ} ]]
       then
+        declare ls_out        
+        readarray -t ls_out < <( ls -l --all --human-readable --classify --inode --directory --zero "${JJ}" )
         ## Note, '\x60' is a "backtick"
-        printf '  Script, output of %b, %s \n' '\x60ls\x60' \
-          "$( ls -l --all --human-readable --classify --inode --directory "${JJ}" )"
+        printf '%s, output of %bls%b, %s \n' "${scr_nm}" '\x60' '\x60' "$( realpath -e "${JJ}" )"
+        printf '%s\n' "${ls_out[@]}"
+        unset ls_out
+
         read -r -p ' > [yN] ' -t 600 yes_or_no
         yes_or_no="${yes_or_no,,?}"
         yes_or_no="${yes_or_no:=n}"
