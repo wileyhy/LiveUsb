@@ -1302,6 +1302,7 @@ fi
 #mapfile -d '' -t all_installed_rpms < <( rpm -qa 2>/dev/null | awk '{ printf "%s\0", $1 }' )
   #echo "count, all_installed_rpms, ${#all_installed_rpms[@]}"
 
+## Run this loop until `dnf --security upgrade` returns 0, or 0 upgradable, rpms
 while true
 do
   ## Get full list of rpms to upgrade, in an array; exit on non-zero
@@ -1310,12 +1311,7 @@ do
       awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' 
     )
   
-  if [[ "${#rpms_for_upgrade[@]}" -eq 0 ]]
-  then
-    break
-  fi
-
-  ## TODO: make a loop removing all *kernel* and *firmware* rpms
+  ## remove all *kernel* and *firmware* rpms from $rpms_for_upgrade array
   for HH in "${!rpms_for_upgrade[@]}"
   do
     if [[ ${rpms_for_upgrade[HH]} =~ kernel|firmware ]]
@@ -1325,16 +1321,13 @@ do
     fi
   done
 
-  ## For each RPM to be upgraded, print out the list of other RPM's that would be upgraded and/or installed along with it
-  for JJ in "${!rpms_for_upgrade[@]}"
-  do 
-    readarray -t per_rpm_package_list < <( 
-      sudo -- dnf --assumeno --security upgrade "${rpms_for_upgrade[JJ]}" 2>/dev/null | 
-        awk '$2 ~ /x86_64|noarch/ { printf "%s\n", $1 }' 
-      )
-  done
+  ## If count of upgradeable rpms is 0, then break loop
+  if [[ "${#rpms_for_upgrade[@]}" -eq 0 ]]
+  then
+    break
+  fi
 
-  ## Upgrade the remaining RPM's
+  ## Upgrade the RPM's one at a time
   for II in "${!rpms_for_upgrade[@]}"
   do
     if sudo -- dnf --assumeyes --security upgrade -- "${rpms_for_upgrade[II]}"
@@ -1346,7 +1339,18 @@ do
     fi
   done
 
+  ## Run `dnf needs-restarting`, collecting PID/commandline pairs
 
+
+  ## Send signals to "needs-restarting" PID's, one at a time, with pauses and descriptions between each 
+  #+  one, so I can see which signal/process combinations cause any problems. This would be a great job
+  #+  for logging. 
+
+    
+
+done
+
+## Bug: what the hell was I thinking with this section?? 
 
 ## If there are any rpms that need security upgrades
 if [[ -n "${rpms_for_upgrade[*]:0:1}" ]]
@@ -1355,7 +1359,7 @@ then
   for XX in "${!all_installed_rpms[@]}"; 
   do 
     : 'Loop A, open'
-   
+
     : 'Define the basic regular expression structure for each RPM, without any package basenames' 
     ## Note, why are these RE's necessary? a lot of rpms begin with the same prefix, such as "dnf*.rpm". The
     #+  RE is a sort of right hand side delimiter of the package basename, so that if dnf-4.16.2-1.fc38.noarch
