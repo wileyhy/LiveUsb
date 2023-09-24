@@ -697,9 +697,10 @@ PATH='/usr/bin:/usr/sbin'
 export PATH
 
 :;: 'Vars... -- Working dir'
-unset tmpd
 tmpd=$( TMPDIR='' mktemp --directory --suffix=-LiveUSB 2>&1 || er_x "${nL}" )
 [[ -d ${tmpd} ]] || er_x "${nL}"
+scr_tt=$( printf '%(%s)T' )
+logf="${tmpd}/log.${scr_nm}.${scr_tt}.txt"
 
 :;: 'Vars... -- Other environment variables'
 ## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
@@ -713,7 +714,7 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/col
 :;: '<Logs>'
 #exec 3>&1 4>&2 # <Logs>
 #trap 'set - ; exec 2>&4 1>&3' EXIT HUP INT QUIT USR2 TERM # <Logs>
-#exec 1> ./Log_begin-1.txt 2>&1 # <Logs>
+#exec 1> "${logf}" 2>&1 # <Logs>
 
 :;: 'Regular users with sudo, only'
 must_be_root
@@ -1042,7 +1043,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 set -x
 exec 3>&1 4>&2 # <Logs>
 trap 'set - ; exec 2>&4 1>&3' EXIT HUP INT QUIT USR2 TERM # <Logs>
-exec 1> ./Log_begin-1.txt 2>&1 # <Logs>
+exec 1> "${logf}" 2>&1 # <Logs>
 
 :;: 'Dnf'
 
