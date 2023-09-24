@@ -117,7 +117,7 @@ function get_pids_for_restarting(){ :
   #+  scope.
   # shellcheck disable=SC2034
   local - dnf_o pipeline1 pipeline2
-  local -Ig a_pids pr_counter
+  local -Ig a_pids
   dnf_o=$( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
 
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
