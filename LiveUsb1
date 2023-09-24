@@ -1146,6 +1146,9 @@ do
       unset 'rpms_for_upgrade[HH]'
     fi
   done
+  unset HH
+
+    declare -p rpms_for_upgrade unset_reason
 
   ## If count of upgradeable rpms is 0, then break loop
   if [[ "${#rpms_for_upgrade[@]}" -eq 0 ]]
