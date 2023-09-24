@@ -753,7 +753,7 @@ then
   if ! pgrep 'firefox'
   then
     firefox --browser &
-    pause_to_check "$nL"
+    pause_to_check "$nL" 'Waiting till browser is open before running  gh auth  command'
     gh_auth_login_command
   fi
 fi
@@ -1176,7 +1176,7 @@ do
 
 done
 
-  pause_to_check "$nL" # <>
+  pause_to_check "$nL" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
 
 :;: 'Find out whether an RPM is installed, one by one'
 for UU in "${!addl_pkgs[@]}"
@@ -1189,7 +1189,7 @@ do
 done
 unset UU
 
-  pause_to_check "$nL" # <>
+  pause_to_check "$nL" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
 
 ## Note, this section should upgrade rpms one by one
 
@@ -1199,7 +1199,7 @@ then
   sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || er_x "${nL}"
 fi
 
-  pause_to_check "$nL" # <>
+  pause_to_check "$nL" $'From the \x24addl_pkgs array, install the remainder' # <>
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
