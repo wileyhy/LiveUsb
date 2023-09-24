@@ -211,9 +211,9 @@ function pause_to_check() { EC=101 LL="$1"
   shift
   local -a MM="$@"
 
-  [[ -n ${MM} ]] && printf '%s\n\n' "${MM}"
-  printf '[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n'
-  read -N1 -p $'\nReady?\n\n' -rst 600 reply
+  [[ -n ${MM} ]] && printf '\n%s\n' "${MM}"
+  printf '\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n'
+  read -N1 -p $'\nReady?\n' -rst 600 reply
 
   case $reply in
     Y*|y*|$'\n'|' ' )
