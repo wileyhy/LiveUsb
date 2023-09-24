@@ -1256,10 +1256,8 @@ unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
   #pause_to_check "$nL" # <>
 
 a_pids=()
-pr_counter=0
 get_pids_for_restarting
 
-  #declare -p pr_counter # <>
   #EC=101 LL="$nL" exit # <>
 
 hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
