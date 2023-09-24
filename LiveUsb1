@@ -714,9 +714,7 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/col
 :;: '<Logs>'
 #set -x
 #printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}"
-#exec 3>&1 4>&2 # <Logs>
-#trap 'trap - INT QUIT USR2; exec 2>&4 1>&3' INT QUIT USR2 # <Logs>
-#exec 1> "${logf}" 2>&1 # <Logs>
+#exec > >( tee "${logf}" ) 2>&1
 
 ## Note, traps
 # EXIT -- for exiting
@@ -1056,9 +1054,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 :;: '<Logs>'
 printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
 set -x # <Logs>
-#exec > >( tee "${logf}" ) ## copies only stdout to log file
-#exec > 2>&1 >( tee "${logf}" ) ## "./LiveUsb1: line 1060: syntax error near unexpected token `2'"
-exec > >( tee "${logf}" ) 2>&1 ## 
+exec > >( tee "${logf}" ) 2>&1 ## this works. however, there aren't any colors. 
 
 :;: 'Dnf'
 
