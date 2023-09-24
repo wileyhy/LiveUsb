@@ -1055,7 +1055,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
 set -x # <Logs>
 #exec > >( tee "${logf}" ) 2>&1 ## this works. however, there aren't any colors. 
-exec > >( tee --append "${logf}" ) ## 
+#exec > >( tee --append "${logf}" ) ## 
 exec 2> >( GREP_COLORS='mt=01;33' grep --color=always -Ee '.*' | tee --append "${logf}" ) ## 
 
 :;: 'Dnf'
