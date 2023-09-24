@@ -167,21 +167,21 @@ function min_necc_git_cmds(){ :
 :;: 'Define min_necc_packages()'
 function min_necc_packages(){ :
   local - hyphn="$-" _="${fn_bndry} min_necc_packages() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  local XX
   #set -
+
+  local XX 
+  local -a a_pids
 
   for XX in git gh ShellCheck
   do
     if ! rpm --query --quiet "$XX"
     then
-      set -x
       sudo dnf --assumeyes install "$XX"
 
-      if ! sudo -- dnf needs-restarting
-      then
-        er_x "${nL}" needs-restarting "$XX"
-      fi
-      set -
+      unset -v a_pids
+      local -a a_pids=()
+      get_pids_for_restarting
+
     fi
   done
 
@@ -1220,15 +1220,13 @@ then
   do
     sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" || er_x "${nL}"
 
-    readarray -t nr_pids < <(
-      sudo -- nice --adjustment=-20 -- dnf --quiet needs-restarting 2> /dev/null | awk '{ print $1 }')
+    a_pids=()
+    get_pids_for_restarting
 
-      declare -p nr_pids # <>
-
-    if [[ -n ${nr_pids[*]:0:1} ]]
+    if [[ -n ${a_pids[*]:0:1} ]]
     then
 
-      for WW in "${nr_pids[@]}"
+      for WW in "${a_pids[@]}"
       do
         ps aux | awk "\$2 ~ /${WW}/ { print }"
 
@@ -1240,9 +1238,11 @@ then
           --timeout 1000 TERM \
           --timeout 1000 KILL -- "$WW"
 
-        : 'Now restart some PID ??'
+        sleep 3
 
-        pause_to_check "$nL"
+        ps aux | awk "\$2 ~ /${WW}/ { print }"
+
+        pause_to_check "$nL" 'Now do you need to manually restart anything?'
 
       done
       unset WW
@@ -1259,10 +1259,9 @@ unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
   #EC=101 LL="$nL" exit # <>
   #set -x # <>
 
+  pause_to_check "$nL" 'Begin section on restarting processes?' # <>
+
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
-
-  pause_to_check "$nL" # <>
-
 a_pids=()
 get_pids_for_restarting
 
@@ -1298,7 +1297,7 @@ then
         (( ZZ == 1 )) && continue 001
         sleep 1
 
-          pause_to_check "$nL" # <>
+          pause_to_check "$nL" '' # <>
 
         for AA in HUP USR1 TERM KILL
         do
