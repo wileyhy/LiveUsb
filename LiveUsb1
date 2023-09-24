@@ -1054,6 +1054,8 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 #exec 1> "${logf}" 2>&1 # <Logs>
 
 :;: '<Logs>'
+set -x # <Logs>
+printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
 exec > >( tee "${logf}" )
 
 :;: 'Dnf'
