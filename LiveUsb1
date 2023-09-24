@@ -1065,31 +1065,32 @@ rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
 
 # shellcheck disable=SC2206
 {
-  rpms=(  ${for_admin:=}        ncdu pwgen )
-  rpms+=( ${for_bash:=}         bash bash-completion )
-  #rpms+=( ${for_bashdb:=}       bash-devel make autoconf )
-  rpms+=( ${for_critical_A:=}   sudo nss openssh chrony dnf gpgme xfce4-terminal )
-  rpms+=( ${for_critical_B:=}   NetworkManager NetworkManager-{adsl,bluetooth,libnm,ppp,team,wifi,wwan} )
-  #rpms+=( ${for_careful:=}      systemd auditd sssd )
-  #rpms+=( ${for_db_ish:=}       libreoffice-calc )
-  #rpms+=( ${for_bug_rpts:=}     inxi zsh dash mksh lynx )
-  #rpms+=( ${for_char_sets:=}    enca moreutils uchardet )
-  rpms+=( ${for_duh:=}          info plocate pdfgrep wdiff )
-  rpms+=( ${for_firefox:=}      mozilla-noscript mozilla-privacy-badger mozilla-https-everywhere )
-  rpms+=( ${for_fun:=}          angband )
-  #rpms+=( ${for_gcov:=}         gcc )
-  rpms+=( ${for_git:=}          git gh )
-  #rpms+=( ${for_internet:=}     chromium )
-  #rpms+=( ${for_later_other:=}  memstomp gdb valgrind memstrack kernelshark )
-  #rpms+=( ${for_later_trace:=}  bpftrace python3-ptrace fatrace apitrace x11trace )
-  rpms+=( ${for_linting:=}      ShellCheck strace )
-  #rpms+=( ${for_mo_linting:=}   kcov shfmt patch ltrace )
-  #rpms+=( ${for_lockfile:=}     procmail )
-  #rpms+=( ${for_os_dnlds:=}     debian-keyring )
-  rpms+=( ${for_strings:=}      binutils )
-  #rpms+=( ${for_term_tests:=}   gnome-terminal )
-  #rpms+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
-  rpms+=( ${for_security:=}     orca protonvpn-cli xsecurelock )
+    addl_pkgs=(  ${for_admin:=}        ncdu pwgen )
+    addl_pkgs+=( ${for_bash:=}         bash bash-completion )
+  # addl_pkgs+=( ${for_bashdb:=}       bash-devel make autoconf )
+    addl_pkgs+=( ${for_critical_A:=}   sudo nss openssh chrony dnf gpgme xfce4-terminal )
+    addl_pkgs+=( ${for_critical_B:=}   NetworkManager NetworkManager-{adsl,bluetooth,libnm,ppp} )
+    addl_pkgs+=( ${for_critical_C:=}   NetworkManager-{team,wifi,wwan} )
+  # addl_pkgs+=( ${for_careful:=}      systemd auditd sssd )
+  # addl_pkgs+=( ${for_db_ish:=}       libreoffice-calc )
+  # addl_pkgs+=( ${for_bug_rpts:=}     inxi zsh dash mksh lynx )
+  # addl_pkgs+=( ${for_char_sets:=}    enca moreutils uchardet )
+    addl_pkgs+=( ${for_duh:=}          info plocate pdfgrep wdiff )
+    addl_pkgs+=( ${for_firefox:=}      mozilla-noscript mozilla-privacy-badger mozilla-https-everywhere )
+    addl_pkgs+=( ${for_fun:=}          angband )
+  # addl_pkgs+=( ${for_gcov:=}         gcc )
+    addl_pkgs+=( ${for_git:=}          git gh )
+  # addl_pkgs+=( ${for_internet:=}     chromium )
+  # addl_pkgs+=( ${for_later_other:=}  memstomp gdb valgrind memstrack kernelshark )
+  # addl_pkgs+=( ${for_later_trace:=}  bpftrace python3-ptrace fatrace apitrace x11trace )
+    addl_pkgs+=( ${for_linting:=}      ShellCheck strace )
+  # addl_pkgs+=( ${for_mo_linting:=}   kcov shfmt patch ltrace )
+  # addl_pkgs+=( ${for_lockfile:=}     procmail )
+  # addl_pkgs+=( ${for_os_dnlds:=}     debian-keyring )
+    addl_pkgs+=( ${for_strings:=}      binutils )
+  # addl_pkgs+=( ${for_term_tests:=}   gnome-terminal )
+  # addl_pkgs+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
+    addl_pkgs+=( ${for_security:=}     orca protonvpn-cli xsecurelock )
 }
 
 :;: 'Start with removing any unnecessary RPMs'
@@ -1148,8 +1149,6 @@ do
   done
   unset HH
 
-    declare -p rpms_for_upgrade unset_reason
-
   ## If count of upgradeable rpms is 0, then break loop
   if [[ "${#rpms_for_upgrade[@]}" -eq 0 ]]
   then
@@ -1173,16 +1172,13 @@ do
   get_pids_for_restarting
 
     declare -p a_pids
+    exit 101
 
   ## Send signals to "needs-restarting" PID's, one at a time, with pauses and descriptions between each
   #+  one, so I can see which signal/process combinations cause any problems. This would be a great job
   #+  for logging.
 
-
-
 done
-
-exit 101
 
 :;: 'Find out whether an RPM is installed, one by one'
 
