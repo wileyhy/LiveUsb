@@ -1055,7 +1055,7 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 ## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will
 #+  apply to the entire block
 
-hash_of_installed_rpms_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
+hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
 ## Removals for disk space
 rpm_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
@@ -1270,9 +1270,9 @@ get_pids_for_restarting
   #declare -p pr_counter # <>
   #EC=101 LL="$nL" exit # <>
 
-hash_of_installed_rpms_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
+hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
-if ! [[ ${hash_of_installed_rpms_A} = "${hash_of_installed_rpms_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
+if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
 then
   while true
   do
