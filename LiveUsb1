@@ -775,6 +775,8 @@ do
 done
 unset QQ
 
+  set -x
+
 :;: 'Bash'
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
 ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
@@ -854,6 +856,8 @@ write_bashrc_strings "bashrc_strings_1" "bashrc_strings_2"
 ## Clean up from section Bash
 unset files_for_use_with_bash bashrc_strings_1 bashrc_strings_2
 unset -f write_bashrc_strings
+
+  EC=101 LL="${nL}" exit
 
 :;: 'Vim'
 
