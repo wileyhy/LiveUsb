@@ -589,10 +589,10 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LL:-
   true "${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -
 
-  if [[ -e ${tmpd} ]]
-  then
-    command rm --one-file-system --preserve-root=all --force --recursive -- "${tmpd}"
-  fi
+  #if [[ -e ${tmpd} ]]
+  #then
+    #command rm --one-file-system --preserve-root=all --force --recursive -- "${tmpd}"
+  #fi
 
   trap - EXIT
 
