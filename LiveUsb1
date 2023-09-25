@@ -241,7 +241,7 @@ function reqd_user_files(){ :
   local pttn_label mount_pt data_dir
   pttn_label='29_Mar_2023'
   mount_pt="/run/media/root/${pttn_label}"
-  data_dir="${mount_pt}/skel-Live_Usb"
+  data_dir="${mount_pt}/skel-LiveUsb"
 
   local AA
   local -n NN
