@@ -25,7 +25,7 @@ hash -r
 
 fn_bndry=' ~~~ ~~~ ~~~ '
 fn_lvl=0
-scr_nm=LiveUsb1
+scr_nm='LiveUsb1.sh'
 
 :;: 'Write to TTY'
 TT=$( date +%H:%M:%S )
