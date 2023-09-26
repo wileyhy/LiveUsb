@@ -526,9 +526,9 @@ function setup_network(){ :
 
     if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
     then
-      printf '\n%s  Network  Giving up; exiting.\n\n' "$scr_nm"
+      printf '\n%s, Network, Giving up, exiting.\n\n' "$scr_nm"
     else
-      printf '\n%s  Network  Success! \n\n' "$scr_nm"
+      printf '\n%s, Network, Success!\n\n' "$scr_nm"
     fi
   fi
 
