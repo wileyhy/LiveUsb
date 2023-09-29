@@ -243,7 +243,7 @@ function reqd_user_files(){ :
   mount_pt="/run/media/root/${pttn_label}"
   data_dir="${mount_pt}/skel-LiveUsb"
 
-  local AA
+  local AA source_file dest_dir
   local -n NN
   ## It isn't necessary to declare NN as a nameref, since unsetting NN (see below) removes the nameref
   #+  attribute, but I intend to use NN as a nameref, so declaring NN without a nameref attribute would be
@@ -291,6 +291,7 @@ function reqd_user_files(){ :
       :;: 'Loop B'
 
       : 'Vars'
+      unset source_file dest_dir
       local source_file dest_dir
       source_file="${data_dir}/${NN[BB]#~/}"
       dest_dir="${NN[BB]%/*}"
