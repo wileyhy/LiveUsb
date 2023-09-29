@@ -270,7 +270,7 @@ function reqd_user_files(){ :
     
   : $'Vars: Get device name where label \x24pttn_label can be found'
   local pttn_path
-  pttn_path=$( awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' <<< "${lsblk_out[@]}" )
+  pttn_path=$( printf '%s\n' "${lsblk_out[@]}" | awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' )
 
   :;: 'For each array of conf files and/or directories'
   for AA in "${arrays_of_conf_files[@]}"
