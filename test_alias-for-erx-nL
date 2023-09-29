@@ -1,9 +1,10 @@
-#!/bin/bash -euvx
+#!/bin/bash -eux
 
 ## Q: Will line numbers print correctly?
 
-unset -f rm __vte_osc7() __vte_prompt_command
+unset -f rm __vte_osc7 __vte_prompt_command
 declare -n nL=LINENO
+set -v
 
 function er_x()
 {
