@@ -1,7 +1,15 @@
 #!/bin/bash
+#!/bin/env -iS bash -euvx
+
+## Note: use `env -i` or else the script's execution environment will inherit any exported anything, 
+#+  including functions, from its caller, e.g., any locally defined functions which might be intended
+#+  to supercede any aliases which the various distributions define and commonly provide for users
+#+  convenience.  ...however, using `env` messes up vim's default bash-colorizations
+
+
 ## LiveUsb1
 
-## Note, written for Fedora, see hardcoded /run/media/root'
+## Note, written from within a Fedora instance, see hardcoded /run/media/root'
 ## Note, style, function definition syntax, '(){ :' makes plain xtrace easier to read
 ## Note, style, `! [[ -e` doesn't show the '!' in xtrace, whereas `[[ ! -e` does.
 ## Note, idempotent script
@@ -618,8 +626,8 @@ function write_bashrc_strings(){ :
   local -n fn_nameref
 
   :;: 'Certain parameters must be defined and have non-zero values'
-  (( $# == 0 ))                               && er_x "line ${nL}"
-  (( ${#files_for_use_with_bash[@]} == 0 ))   && er_x "line ${nL}"
+  (( $#                             == 0 )) && er_x "line ${nL}"
+  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line ${nL}"
 
   for JJ
   do :;: 'Loop A - For each set of strings to append into bashrc'
