@@ -18,11 +18,14 @@ function foo()
 {
   local -
   : 'Printed strings, ie, no aliases'
-  (( $#                             == 0 )) && er_x "line ${nL}"
+  (( $#                             == 1 )) && er_x "line ${nL}"
   : 'Using alias'
-  (( $#                             == 0 )) && alias_erx
+  (( $#                             == 2 )) && alias_erx
   echo count $#
 }
 
-foo
+foo alias_n
+
+foo alias_y alias_y
+
 
