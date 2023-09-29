@@ -1,41 +1,8 @@
 #!/bin/bash
-#set -x
-
-## Tests:
-#+    #!/bin/env -S bash -vx
-#+    # set -vx"
-
-#+    #!/bin/env -S bash -v
-#+
-
-#+    #!/bin/env -S bash -x
-#+
-
-
-## Also happens when called as 
-#+    sh -v ./test_shebang-exported-functions
-#+ with shebangs
-#+    #!/bin/env -S bash
-#+    #!/bin/bash
-
 
 ## `man bash`: "-v      Print shell input lines as they are read."
 
+##  FYI, when a script is called as './script' and the hashbang is '#!/bin/bash -v' (with any of -x -e and/or -u additionally) or '#!/bin/env -S bash', but not '#!/bin/env -iS bash', if there are any exported functions in the environment of the caller, then when the script is executed, it will print the exported functions before the hashbang
 
+# Also, the same output occurs when the exported functions exist in the environment of the caller, when the script is executed as 'sh -v ./script' and when the hashbang is '#!/bin/bash' or '#!/bin/env -S bash', but not '#!/bin/env -iS bash' 
 
-
-echo '#####################################################'
-
-
-
-
-## `help export`: "-p	display a list of all exported variables and functions"
-## `man bash`: "If no names are given, or if the -p option is supplied, a list of names of all exported 
-#+  variables is printed."
-#export -p ; echo $?
-
-#export | wc ; echo $?
-
-
-
-## `help export`: "-f	refer to shell functions
