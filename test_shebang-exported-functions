@@ -5,5 +5,8 @@
 #+  to supercede any aliases which the various distributions define and commonly provide for users
 #+  convenience
 
-echo foo
+echo '#####################################################'
+
+export -p
+export | wc
 
