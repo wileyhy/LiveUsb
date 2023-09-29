@@ -2,9 +2,11 @@
 ## #!/bin/env -iS bash
 
 ## Note: use `env -i` or else the script's execution environment will inherit any exported anything, 
-#+  including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`!) which might be intended to supercede any of the aliases which some Linux distributions often define and provide for users' convenience.  These exported functions which are received from the caller's environment get printed above the script's shebang in xtrace when vebose is enabled.
+#+  including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`!)
+#+  which might be intended to supercede any of the aliases which some Linux distributions often define and
+#+  provide for users' convenience.  These exported functions which are received from the caller's 
+#+  environment get printed above the script's shebang in xtrace when vebose is enabled.
 #+  ...also, using `env` messes up vim's default bash-colorizations
-
 
 ## LiveUsb1
 
