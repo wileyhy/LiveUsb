@@ -41,7 +41,7 @@ TT=$( date +%H:%M:%S )
 printf '  %s - Executing %s \n' "${TT}" "$0"
 unset TT
 
-##  FUNCTION DEFINITIONS BEGIN ##
+##  FUNCTION DEFINITIONS, BEGIN ##
 
 :;: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
 fns_for_appending_into_bashrc=( '__vte_osc7' '__vte_prompt_command' 'rm' )
