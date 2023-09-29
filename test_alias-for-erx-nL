@@ -1,0 +1,17 @@
+#!/bin/bash -eux
+
+## Q: Will line numbers print correctly?
+
+shopt -s expand_aliases
+alias alias_erx='er_x "line ${nL}"
+
+function foo()
+{
+  : 'Printed strings, ie, no aliases'
+  (( $#                             == 0 )) && er_x "line ${nL}"
+  : 'Using alias'
+  (( $#                             == 0 )) && alias_erx
+  echo count $#
+}
+
+
