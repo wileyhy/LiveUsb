@@ -3,8 +3,18 @@ set -x
 
 ## Tests:
 #+  "#!/bin/env -S bash -vx"
+#+
+
 #+  "#!/bin/env -S bash -v"
+#+
+
 #+  "#!/bin/env -S bash -x"
+#+
+
+
+## `man bash`: "-v      Print shell input lines as they are read."
+
+
 
 
 echo '#####################################################'
