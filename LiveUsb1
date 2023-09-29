@@ -329,7 +329,7 @@ function reqd_user_files(){ :
           :;: 'If the source conf still file/dir does not exist, then throw an error'
           if ! [[ -e "${source_file}" ]]
           then
-            er_x "$nL" "$NN" "${source_file}"
+            er_x "$nL" "${NN[BB]}" "${source_file}"
           fi
         fi
 
