@@ -234,7 +234,7 @@ function pause_to_check() { local EC=101 LL="$1"
 :;: 'reqd_user_files()'
 function reqd_user_files(){ :
   local - hyphn="$-" _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  set -x
+  #set -
 
   ## Note, NN must be declared as local before unsetting it inside the function so that the `unset` will
   #+  effect the local variable
