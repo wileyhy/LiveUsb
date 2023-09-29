@@ -269,9 +269,6 @@ function reqd_user_files(){ :
   local pttn_path
   pttn_path=$( printf '%s\n' "${lsblk_out[@]}" | awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' )
 
-    declare -p pttn_path
-    exit 101
-    
   :;: 'For each array of conf files and/or directories'
   for AA in "${arrays_of_conf_files[@]}"
   do
