@@ -1,4 +1,4 @@
-#!/bin/bash -euvx --norc
+#!/bin/env -iS bash -euvx --norc
 
 ## Q: Will line numbers print correctly?
 
