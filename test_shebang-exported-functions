@@ -12,6 +12,12 @@
 #+
 
 
+## Also happens when called as 
+#+    sh -v ./test_shebang-exported-functions
+#+ with shebang
+#+    #!/bin/env -S bash
+
+
 ## `man bash`: "-v      Print shell input lines as they are read."
 
 
