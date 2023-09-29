@@ -1,14 +1,14 @@
-#!/bin/env -S bash
-set -x
+#!/bin/env -S bash -v
+#set -x
 
 ## Tests:
-#+  "#!/bin/env -S bash -vx"
+#+    #!/bin/env -S bash -vx
+#+    # set -vx"
+
+#+    #!/bin/env -S bash -v
 #+
 
-#+  "#!/bin/env -S bash -v"
-#+
-
-#+  "#!/bin/env -S bash -x"
+#+    #!/bin/env -S bash -x
 #+
 
 
