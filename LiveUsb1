@@ -849,7 +849,7 @@ do
     sudo -- chattr +i -- "${VV}.orig"
   fi
 
-  : '...per script-execution'
+  : '...per-script-execution file backup'
   sudo -- cp --archive -- "${VV}" "${VV}~" || er_x "line ${nL}, ${VV}"
 done
 unset VV
