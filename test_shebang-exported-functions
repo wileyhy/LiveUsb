@@ -14,9 +14,10 @@ echo '#####################################################'
 ## `help export`: "-p	display a list of all exported variables and functions"
 ## `man bash`: "If no names are given, or if the -p option is supplied, a list of names of all exported 
 #+  variables is printed."
-export -p ; echo $?
+#export -p ; echo $?
 
-export | w ; echo $?c
+#export | wc ; echo $?
+
 
 
 ## `help export`: "-f	refer to shell functions
