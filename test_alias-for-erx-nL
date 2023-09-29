@@ -1,12 +1,8 @@
-#!/bin/env -iS bash -euvx
-
-## Note: use `env -i` or else the script's execution environment will inherit any exported anything, 
-#+  including functions, from its caller, e.g., any locally defined functions which might be intended
-#+  to supercede any aliases which the various distributions define and commonly provide for users
-#+  convenience
+#!/bin/bash -euvx
 
 ## Q: Will line numbers print correctly?
 
+unset -f rm __vte_osc7() __vte_prompt_command
 declare -n nL=LINENO
 
 function er_x()
