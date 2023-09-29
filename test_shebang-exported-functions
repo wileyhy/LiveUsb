@@ -1,12 +1,13 @@
 #!/bin/env -S bash -euvx
 
-## Note: use `env -i` or else the script's execution environment will inherit any exported anything, 
-#+  including functions, from its caller, e.g., any locally defined functions which might be intended
-#+  to supercede any aliases which the various distributions define and commonly provide for users
-#+  convenience
 
 echo '#####################################################'
 
+
+
+
+# `help export`: "-p	display a list of all exported variables and functions"
 export -p
+
 export | wc
 
