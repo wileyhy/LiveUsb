@@ -2,7 +2,7 @@
 
 ## `man bash`: "-v      Print shell input lines as they are read."
 
-##  FYI, when a script is called as './script' and the hashbang is '#!/bin/bash -v' (with any of -x -e and/or -u additionally) or '#!/bin/env -S bash', but not '#!/bin/env -iS bash', if there are any exported functions in the environment of the caller, then when the script is executed, it will print the exported functions before the hashbang
+##  FYI, when a script is called as './script' and the hashbang is '#!/bin/bash -v' (with any of -x -e and/or -u additionally) or '#!/bin/env -S bash -v', but not '#!/bin/env -iS bash -v', if there are any exported functions in the environment of the caller, then when the script is executed, it will print the exported functions before the hashbang
 
 # Also, the same output occurs when the exported functions exist in the environment of the caller, when the script is executed as 'sh -v ./script' and when the hashbang is '#!/bin/bash' or '#!/bin/env -S bash', but not '#!/bin/env -iS bash' 
 
