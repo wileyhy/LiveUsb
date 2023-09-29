@@ -821,13 +821,13 @@ fi
 
 :;: 'Define bashrc_strings_*'
 ## Note, you want for these array values to each represent just one parameter or function
-bashrc_strings_1=(            ['function __vte_osc7']="function $(  declare -pf __vte_osc7 )")
-bashrc_strings_1+=( ['function __vte_prompt_command']="function $(  declare -pf __vte_prompt_command )")
-bashrc_strings_1+=(                   ['function rm']="function $(  declare -pf rm )")
-bashrc_strings_2=(                 ['export BROWSER']=$(            declare -p BROWSER ) )
-bashrc_strings_2+=(                 ['export EDITOR']=$(            declare -p EDITOR ) )
-bashrc_strings_2+=(         ['define PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
-bashrc_strings_2+=(                    ['export PS0']=$(            declare -p PS0  ) )
+bashrc_strings_1=(            ['subroutine __vte_osc7']="function $(  declare -pf __vte_osc7 )")
+bashrc_strings_1+=( ['subroutine __vte_prompt_command']="function $(  declare -pf __vte_prompt_command )")
+bashrc_strings_1+=(                   ['subroutine rm']="function $(  declare -pf rm )")
+bashrc_strings_2=(                   ['define BROWSER']=$(            declare -p BROWSER ) )
+bashrc_strings_2+=(                   ['define EDITOR']=$(            declare -p EDITOR ) )
+bashrc_strings_2+=(           ['define PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
+bashrc_strings_2+=(                      ['define PS0']=$(            declare -p PS0  ) )
 
 :;: 'Do some backups'
 for VV in "${files_for_use_with_bash[@]}"
