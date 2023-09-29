@@ -265,6 +265,9 @@ function reqd_user_files(){ :
   readarray -d '' -t lsblk_out < <( lsblk --output label,path,mountpoints | tr '\n' '\0' )
   [[ -n ${lsblk_out[@]} ]] || er_x "${nL}"
 
+    declare -p lsblk_out
+    exit 101
+    
   : $'Vars: Get device name where label \x24pttn_label can be found'
   local pttn_path
   pttn_path=$( awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' <<< "${lsblk_out[@]}" )
