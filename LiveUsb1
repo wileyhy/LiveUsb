@@ -262,7 +262,7 @@ function reqd_user_files(){ :
   #+ In this script, index zero should exist, barring any future changes. So,
   #+  it's a bit of future-proofing.
   local -a lsblk_out
-  readarray -d '' -t lsblk_out < <( lsblk --output label,path,mountpoints | tr '\n' '\0' )
+  readarray -d '' -t lsblk_out < <( lsblk --output label,path,mountpoints | awk '{ print $1,$2,$3 }' )
   [[ -n ${lsblk_out[@]} ]] || er_x "${nL}"
 
     declare -p lsblk_out
