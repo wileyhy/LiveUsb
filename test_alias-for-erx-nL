@@ -8,7 +8,7 @@ function er_x()
 {
   local - fn_exit_code=$?
   : "$@"
-  return "${fn_exit_code}"
+  builtin exit "${fn_exit_code}"
 }
 
 shopt -s expand_aliases
