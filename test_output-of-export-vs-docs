@@ -1,0 +1,41 @@
+#!/bin/bash
+#set -x
+
+## Tests:
+#+    #!/bin/env -S bash -vx
+#+    # set -vx"
+
+#+    #!/bin/env -S bash -v
+#+
+
+#+    #!/bin/env -S bash -x
+#+
+
+
+## Also happens when called as 
+#+    sh -v ./test_shebang-exported-functions
+#+ with shebangs
+#+    #!/bin/env -S bash
+#+    #!/bin/bash
+
+
+## `man bash`: "-v      Print shell input lines as they are read."
+
+
+
+
+echo '#####################################################'
+
+
+
+
+## `help export`: "-p	display a list of all exported variables and functions"
+## `man bash`: "If no names are given, or if the -p option is supplied, a list of names of all exported 
+#+  variables is printed."
+#export -p ; echo $?
+
+#export | wc ; echo $?
+
+
+
+## `help export`: "-f	refer to shell functions
