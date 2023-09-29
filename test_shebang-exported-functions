@@ -1,21 +1,9 @@
 #!/bin/env -S bash -vx
 
 ## Tests:
-#+  "#!/bin/env -S bash -euvx"
-#+  "#!/bin/env -S bash -euv"
-#+  "#!/bin/env -S bash -evx"
-
 #+  "#!/bin/env -S bash -vx"
 #+  "#!/bin/env -S bash -v"
 #+  "#!/bin/env -S bash -x"
-
-#+  "#!/bin/env -S bash -evx"
-#+  "#!/bin/env -S bash -ev"
-#+  "#!/bin/env -S bash -ex"
-
-#+  "#!/bin/env -S bash -uvx"
-#+  "#!/bin/env -S bash -uv"
-#+  "#!/bin/env -S bash -ux"
 
 
 echo '#####################################################'
@@ -23,8 +11,12 @@ echo '#####################################################'
 
 
 
-# `help export`: "-p	display a list of all exported variables and functions"
-export -p
+## `help export`: "-p	display a list of all exported variables and functions"
+## `man bash`: "If no names are given, or if the -p option is supplied, a list of names of all exported 
+#+  variables is printed."
+export -p ; echo $?
 
-export | wc
+export | w ; echo $?c
 
+
+## `help export`: "-f	refer to shell functions
