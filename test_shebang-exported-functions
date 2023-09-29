@@ -1,5 +1,22 @@
 #!/bin/env -S bash -euvx
 
+## Tests:
+#+  "#!/bin/env -S bash -euvx"
+#+  "#!/bin/env -S bash -euv"
+#+  "#!/bin/env -S bash -evx"
+
+#+  "#!/bin/env -S bash -vx"
+#+  "#!/bin/env -S bash -v"
+#+  "#!/bin/env -S bash -x"
+
+#+  "#!/bin/env -S bash -evx"
+#+  "#!/bin/env -S bash -ev"
+#+  "#!/bin/env -S bash -ex"
+
+#+  "#!/bin/env -S bash -uvx"
+#+  "#!/bin/env -S bash -uv"
+#+  "#!/bin/env -S bash -ux"
+
 
 echo '#####################################################'
 
