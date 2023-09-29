@@ -779,6 +779,7 @@ unset QQ
   set -x
 
 :;: 'Bash'
+
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
 ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
 
@@ -805,6 +806,8 @@ missing_fns=()
 :;: 'Append user variables and functions into .bashrc.'
 ## Note, these arrays include some command substitutions which depend on some function definitions, which in
 #+  turn must be defined prior to defining these arrays
+[[ -z ${fns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
+
 for UU in "${fns_for_appending_into_bashrc[@]}"
 do
   if [[ $( declare -pF "${UU}" 2>&1 ) =~ 'not found' ]]
