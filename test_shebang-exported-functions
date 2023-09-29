@@ -1,4 +1,4 @@
-#!/bin/env -S bash -euvx
+#!/bin/env -S bash -euv
 
 ## Note: use `env -i` or else the script's execution environment will inherit any exported anything, 
 #+  including functions, from its caller, e.g., any locally defined functions which might be intended
