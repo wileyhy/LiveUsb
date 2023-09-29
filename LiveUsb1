@@ -1106,7 +1106,7 @@ pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
   # addl_pkgs+=( ${for_char_sets:=}    enca moreutils uchardet )
     addl_pkgs+=( ${for_duh:=}          info plocate pdfgrep wdiff )
     addl_pkgs+=( ${for_firefox:=}      mozilla-noscript mozilla-privacy-badger mozilla-https-everywhere )
-    addl_pkgs+=( ${for_fun:=}          angband )
+    addl_pkgs+=( ${for_fun:=}          supertuxkart )
   # addl_pkgs+=( ${for_gcov:=}         gcc )
     addl_pkgs+=( ${for_git:=}          git gh )
   # addl_pkgs+=( ${for_internet:=}     chromium )
