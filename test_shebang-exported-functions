@@ -1,4 +1,4 @@
-#!/bin/env -S bash -xv
+#!/bin/env -S bash -x -v
 #set -x
 
 ## Tests:
