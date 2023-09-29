@@ -618,8 +618,8 @@ function write_bashrc_strings(){ :
   local -n fn_nameref
 
   :;: 'Certain parameters must be defined and have non-zero values'
-  (( $# == 0 )) && er_x "line ${nL}"
-  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line ${nL}"
+  (( $# == 0 ))                               && er_x "line ${nL}"
+  (( ${#files_for_use_with_bash[@]} == 0 ))   && er_x "line ${nL}"
 
   for JJ
   do :;: 'Loop A - For each set of strings to append into bashrc'
@@ -854,7 +854,7 @@ do
 done
 unset VV
 
-:;: 'Alter the array files_for_use_with_bash'
+:;: 'Alter the array files_for_use_with_bash -- ie, Write functions and variable definitions into bashrc files'
 write_bashrc_strings "bashrc_strings_1" "bashrc_strings_2"
 
 ## Clean up from section Bash
