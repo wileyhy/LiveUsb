@@ -1,4 +1,4 @@
-#!/bin/env -S bash -vx
+#!/bin/env -S bash -x
 
 ## Tests:
 #+  "#!/bin/env -S bash -vx"
