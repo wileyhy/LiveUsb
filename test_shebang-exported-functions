@@ -1,4 +1,4 @@
-#!/bin/env -iS bash -v
+#!/bin/bash -v
 
 ## `man bash`: "-v      Print shell input lines as they are read."
 
