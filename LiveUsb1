@@ -612,10 +612,10 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LL:-
 :;: 'Define write_bashrc_strings()'
 function write_bashrc_strings(){ :
   local - hyphn="$-" _="${fn_bndry} write_bashrc_strings() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  set -x
 
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
-  #set -
 
   :;: 'Certain parameters must be defined and have non-zero values'
   (( $# == 0 )) && er_x "line ${nL}"
