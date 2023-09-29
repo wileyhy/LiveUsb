@@ -1,5 +1,5 @@
 #!/bin/env -S bash
-set -vx
+set -v
 
 ## Tests:
 #+  "#!/bin/env -S bash -vx"
