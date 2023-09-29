@@ -1,4 +1,4 @@
-#!/bin/bash --norc -euvx
+#!/bin/bash -euvx --norc
 
 ## Q: Will line numbers print correctly?
 
