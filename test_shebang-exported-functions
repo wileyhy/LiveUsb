@@ -6,3 +6,5 @@
 
 # Also, the same output occurs when the exported functions exist in the environment of the caller, when the script is executed as 'sh -v ./script' and when the hashbang is '#!/bin/bash', '#!/bin/env bash', '#!/bin/env -i bash', '#!/bin/env -S bash' or '#!/bin/env -iS bash' 
 
+# Also, when the script is executed as 'bash -v ./script' and when the hashbang is '#!/bin/bash', '#!/bin/env bash', '#!/bin/env -i bash', '#!/bin/env -S bash' or '#!/bin/env -iS bash' 
+
