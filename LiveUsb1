@@ -630,7 +630,8 @@ function write_bashrc_strings(){ :
   for JJ
   do :;: 'Loop A - For each set of strings to append into bashrc'
 
-    fn_nameref="$JJ"
+    unset -n fn_nameref
+    local -n fn_nameref="$JJ"
 
     for file_x in "${files_for_use_with_bash[@]}"
     do :;: 'Loop B - For each .bashrc'
@@ -675,7 +676,6 @@ function write_bashrc_strings(){ :
 
     :;: 'Reset for the next loop, assuming there is one'
     ## Note, ?? use  unset  so that values from previous loops will not interfere with the current loop
-    unset -n fn_nameref
     shift
 
     : 'Loop A - shut' ;:
