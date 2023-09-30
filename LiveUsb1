@@ -801,7 +801,6 @@ fi
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-declare -A bashrc_strings_F bashrc_strings_V
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_vars_and_fns=()
 
@@ -846,7 +845,8 @@ fi
 
 :;: 'Define bashrc_strings_*'
 ## Note, you want for these array elements to represent just one parameter or function each
-unset bashrc_strings_V bashrc_strings_F 
+unset       bashrc_strings_F bashrc_strings_V
+declare -A  bashrc_strings_F bashrc_strings_V
 
 : '  bashrc: Variables'
 for VV in "${vars_for_appending_into_bashrc[@]}"
