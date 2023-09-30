@@ -902,6 +902,8 @@ unset -f write_bashrc_strings
 
   #EC=101 LL="${nL}" exit
 
+## TODO: move vim section up above bash section
+
 :;: 'Vim'
 
 : 'Heredoc of vim-conf-text'
