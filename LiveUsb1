@@ -651,6 +651,8 @@ function write_bashrc_strings(){ :
           : 'Definition exists, skipping'
         fi
 
+        ## Bug: what if it\s a multiline alias?
+
         :;: '(2) If there is an alias by the same name, then delete it from the bashrc file at hand...'
         sudo -- sed --in-place "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
@@ -802,7 +804,8 @@ PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-declare -A bashrc_strings_1 bashrc_strings_2
+declare -A bashrc_strings_1
+declare -A bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_fns=()
 
