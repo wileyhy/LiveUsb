@@ -793,7 +793,7 @@ else
 fi
 PS1="[\\u@\\h]\\\$ "
 PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" )
-if ! [[ "$( printf -pF __vte_prompt_command )" = "not found" ]]
+if ! [[ "$( printf -pF __vte_prompt_command 2>&1 )" = "not found" ]]
 then
   PROMPT_COMMAND+=( __vte_prompt_command )
 fi
@@ -815,16 +815,26 @@ vars_for_appending_into_bashrc=(
   'PROMPT_COMMAND'
   'PS0'
 )
-fns_for_appending_into_bashrc=( 
+fcns_for_appending_into_bashrc=( 
   'rm' 
   #'__vte_osc7' '__vte_prompt_command' 
 )
 
-: 'Said functions must have already been defined'
-[[ -z ${var_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
-[[ -z ${fcns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
+#[[ -z ${vars_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
+#[[ -z ${fcns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
 
-for UU in "${fns_for_appending_into_bashrc[@]}"
+: 'Said variables must have already been defined'
+for UU in "${vars_for_appending_into_bashrc[@]}"
+do
+  if [[ $( declare -p "${UU}" 2>&1 ) =~ 'not found' ]]
+  then
+    missing_fns+=( "${UU}" )
+  fi
+done
+unset UU
+
+: 'Said functions must have already been defined'
+for UU in "${fcns_for_appending_into_bashrc[@]}"
 do
   if [[ $( declare -pF "${UU}" 2>&1 ) =~ 'not found' ]]
   then
@@ -843,7 +853,7 @@ fi
 unset bashrc_strings_1 bashrc_strings_2
 
 : '  bashrc: Functions (a.k.a. "subroutines")'
-for LL in "${fns_for_appending_into_bashrc[@]}"
+for LL in "${fcns_for_appending_into_bashrc[@]}"
 do
   if ! [[ "$( printf -pF __vte_prompt_command )" = "not found" ]]
   then
