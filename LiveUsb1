@@ -823,7 +823,8 @@ fcns_for_appending_into_bashrc=(
 #[[ -z ${vars_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
 #[[ -z ${fcns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
 
-: 'Said variables must have already been defined'
+:;: 'Said variables and functions must have already been defined';:
+: 'variables'
 for AA in "${vars_for_appending_into_bashrc[@]}"
 do
   if [[ $( declare -p "${AA}" 2>&1 ) =~ 'not found' ]]
@@ -833,7 +834,7 @@ do
 done
 unset AA
 
-: 'Said functions must have already been defined'
+: 'functions'
 for UU in "${fcns_for_appending_into_bashrc[@]}"
 do
   if [[ $( declare -pF "${UU}" 2>&1 ) =~ 'not found' ]]
@@ -843,6 +844,7 @@ do
 done
 unset UU
 
+: 'test for any missing parameters'
 if (( ${#missing_vars_and_fns[@]} > 0 ))
 then
   er_x "${nL}", "${missing_vars_and_fns[@]}"
