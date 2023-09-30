@@ -782,6 +782,7 @@ unset QQ
 
 :;: 'Env parameters for bashrc'
 regexp='not found$'
+pr_cmd_0='printf "%b" "$(tput sgr0)"'
 
 :;: 'Color code assigned to PS0, ducking xtrace'
 if [[ -o xtrace ]]
@@ -793,7 +794,6 @@ else
   PS0=$( tput setaf 43 )
 fi
 PS1="[\\u@\\h]\\\$ "
-pr_cmd_0='printf "%b" "$(tput sgr0)"'
 PROMPT_COMMAND=( [0]="${pr_cmd_0}" )
 if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${regexp} ]]
 then
@@ -889,6 +889,7 @@ unset VV
 write_bashrc_strings bashrc_strings_F bashrc_strings_V
 
 ## Clean up from section Bash
+unset regexp pr_cmd_0
 unset files_for_use_with_bash bashrc_strings_F bashrc_strings_V
 unset -f write_bashrc_strings
 
