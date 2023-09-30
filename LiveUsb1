@@ -793,7 +793,7 @@ else
 fi
 PS1="[\\u@\\h]\\\$ "
 PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" )
-if ! [[ "$( printf -pF __vte_prompt_command 2>&1 )" = "not found" ]]
+if ! [[ "$( printf -pF __vte_prompt_command 2>&1 )" =~ "not found" ]]
 then
   PROMPT_COMMAND+=( __vte_prompt_command )
 fi
@@ -857,7 +857,7 @@ unset bashrc_strings_F bashrc_strings_V
 : '  bashrc: Variables'
 for LL in "${vars_for_appending_into_bashrc[@]}"
 do
-  if ! [[ "$( printf -pF __vte_prompt_command )" = "not found" ]]
+  if ! [[ "$( printf -p "${LL}" )" =~ "not found" ]]
   then
     bashrc_strings_F+=( ["subroutine ${LL}"]="function $( declare -pf "${LL}" )" )
   fi
@@ -867,7 +867,7 @@ unset LL
 : '  bashrc: Functions (a.k.a. "subroutines")'
 for MM in "${fcns_for_appending_into_bashrc[@]}"
 do
-  if ! [[ "$( printf -pF __vte_prompt_command )" = "not found" ]]
+  if ! [[ "$( printf -pF "${MM}" )" =~ "not found" ]]
   then
     bashrc_strings_F+=( ["subroutine ${MM}"]="function $( declare -pf "${MM}" )" )
   fi
