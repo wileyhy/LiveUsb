@@ -795,7 +795,8 @@ fi
 :;: 'Set up PROMPT_COMMAND'
 unset PROMPT_COMMAND
 declare -a PROMPT_COMMAND
-pr_cmd_0='printf "%b" "$(tput sgr0)"'
+reset=$(tput sgr0)
+pr_cmd_0='printf "%b" "${reset}"'
 regexp='not found$'
 PROMPT_COMMAND=( [0]="${pr_cmd_0}" )
 if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${regexp} ]]
@@ -803,7 +804,7 @@ then
   PROMPT_COMMAND+=( __vte_prompt_command )
 fi
 
-:;: 'Other paramters'
+:;: 'Other parameters'
 PS1="[\\u@\\h]\\\$ "
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
