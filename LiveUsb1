@@ -815,6 +815,8 @@ missing_fns=()
 :;: 'Append user variables and functions into .bashrc.'
 ## Note, these arrays include some command substitutions which depend on some function definitions, which in
 #+  turn must be defined prior to defining these arrays
+
+: 'Said functions must have already been defined'
 [[ -z ${fns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
 
 for UU in "${fns_for_appending_into_bashrc[@]}"
