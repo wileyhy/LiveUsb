@@ -800,7 +800,7 @@ fi
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-declare -A bashrc_strings_1 bashrc_strings_2
+declare -A bashrc_strings_F bashrc_strings_V
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_vars_and_fns=()
 
@@ -852,14 +852,14 @@ fi
 
 :;: 'Define bashrc_strings_*'
 ## Note, you want for these array elements to represent just one parameter or function each
-unset bashrc_strings_1 bashrc_strings_2
+unset bashrc_strings_F bashrc_strings_V
 
 : '  bashrc: Variables'
 for LL in "${vars_for_appending_into_bashrc[@]}"
 do
   if ! [[ "$( printf -pF __vte_prompt_command )" = "not found" ]]
   then
-    bashrc_strings_1+=( ["subroutine ${LL}"]="function $( declare -pf "${LL}" )" )
+    bashrc_strings_F+=( ["subroutine ${LL}"]="function $( declare -pf "${LL}" )" )
   fi
 done
 unset LL
@@ -869,16 +869,16 @@ for MM in "${fcns_for_appending_into_bashrc[@]}"
 do
   if ! [[ "$( printf -pF __vte_prompt_command )" = "not found" ]]
   then
-    bashrc_strings_1+=( ["subroutine ${MM}"]="function $( declare -pf "${MM}" )" )
+    bashrc_strings_F+=( ["subroutine ${MM}"]="function $( declare -pf "${MM}" )" )
   fi
 done
 unset MM
 
 : '  bashrc: Variables'
-bashrc_strings_2=(                   ['define BROWSER']=$(            declare -p BROWSER ) )
-bashrc_strings_2+=(                   ['define EDITOR']=$(            declare -p EDITOR ) )
-bashrc_strings_2+=(           ['define PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
-bashrc_strings_2+=(                      ['define PS0']=$(            declare -p PS0  ) )
+bashrc_strings_V=(                   ['define BROWSER']=$(            declare -p BROWSER ) )
+bashrc_strings_V+=(                   ['define EDITOR']=$(            declare -p EDITOR ) )
+bashrc_strings_V+=(           ['define PROMPT_COMMAND']=$(            declare -p PROMPT_COMMAND ) )
+bashrc_strings_V+=(                      ['define PS0']=$(            declare -p PS0  ) )
 
 :;: 'Do some backups'
 for VV in "${files_for_use_with_bash[@]}"
@@ -903,10 +903,10 @@ done
 unset VV
 
 :;: 'Write functions and variable definitions into bashrc files'
-write_bashrc_strings bashrc_strings_1 bashrc_strings_2
+write_bashrc_strings bashrc_strings_F bashrc_strings_V
 
 ## Clean up from section Bash
-unset files_for_use_with_bash bashrc_strings_1 bashrc_strings_2
+unset files_for_use_with_bash bashrc_strings_F bashrc_strings_V
 unset -f write_bashrc_strings
 
   EC=101 LL="${nL}" exit
