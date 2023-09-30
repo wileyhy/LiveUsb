@@ -781,10 +781,8 @@ unset QQ
 ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
 
 :;: 'Env parameters for bashrc'
-regexp='not found$'
-pr_cmd_0='printf "%b" "$(tput sgr0)"'
 
-:;: 'Color code assigned to PS0, ducking xtrace'
+: 'Color code assigned to PS0, ducking xtrace'
 if [[ -o xtrace ]]
 then
   set -
@@ -793,12 +791,20 @@ then
 else
   PS0=$( tput setaf 43 )
 fi
-PS1="[\\u@\\h]\\\$ "
+
+: 'Set up PROMPT_COMMAND'
+unset PROMPT_COMMAND
+declare -a PROMPT_COMMAND
+pr_cmd_0='printf "%b" "$(tput sgr0)"'
+regexp='not found$'
 PROMPT_COMMAND=( [0]="${pr_cmd_0}" )
 if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${regexp} ]]
 then
   PROMPT_COMMAND+=( __vte_prompt_command )
 fi
+
+: 'Other paramters'
+PS1="[\\u@\\h]\\\$ "
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
