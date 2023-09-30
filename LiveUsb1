@@ -1202,10 +1202,14 @@ fi
 ## Run this loop until `dnf --security upgrade` returns 0, or 0 upgradable, rpms
 while true
 do
+
+  ## Bug: extra grep - sb wi same awk cmd
+
   ## Get full list of rpms to upgrade, in an array; exit on non-zero
   mapfile -d '' -t pkgs_for_upgrade < <(
     sudo -- dnf --assumeno --security upgrade 2>/dev/null |
-      awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }'
+      awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' |
+      grep -vEe ^'replacing'$
     )
 
   ## remove all *kernel* and *firmware* rpms from $pkgs_for_upgrade array
