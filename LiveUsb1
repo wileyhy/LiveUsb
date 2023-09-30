@@ -1102,12 +1102,12 @@ unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 #trap 'trap - INT QUIT USR2; exec 2>&4 1>&3' INT QUIT USR2 # <Logs>
 #exec 1> "${logf}" 2>&1 # <Logs>
 
-:;: '<Logs>'
-printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
-set -x # <Logs>
+#:;: '<Logs>'
+#printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
+#set -x # <Logs>
 #exec > >( tee "${logf}" ) 2>&1 ## this works. however, there aren't any colors. 
 #exec > >( tee --append "${logf}" ) ## 
-exec 2> >( GREP_COLORS='mt=01;33' grep --color=always -Ee '.*' | tee --append "${logf}" ) ## 
+#exec 2> >( GREP_COLORS='mt=01;33' grep --color=always -Ee '.*' | tee --append "${logf}" ) ## Buggy
 
 :;: 'Dnf'
 
