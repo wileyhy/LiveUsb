@@ -617,9 +617,6 @@ function write_bashrc_strings(){ :
   local - hyphn="$-" _="${fn_bndry} write_bashrc_strings() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   set -x
 
-    declare -p "$@"
-    exit 101
-
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
 
