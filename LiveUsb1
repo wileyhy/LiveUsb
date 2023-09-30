@@ -794,7 +794,7 @@ else
 fi
 PS1="[\\u@\\h]\\\$ "
 color_reset=$( tput sgr0 )
-PROMPT_COMMAND=( [0]="${color_reset}" ) )
+PROMPT_COMMAND=( [0]="${color_reset}" )
 if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${regexp} ]]
 then
   PROMPT_COMMAND+=( __vte_prompt_command )
