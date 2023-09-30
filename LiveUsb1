@@ -83,29 +83,23 @@ function __vte_osc7(){
   [[ -n ${cmd} ]] || return
   urlencode_o=$( "${cmd}" )
 
-  ## Bug, what does this cmd do?
+  #printf 'file://%s%s\n' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
   printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 }
 
 :;: 'Define __vte_prompt_command() -- for bashrc only'
 # shellcheck disable=SC2317
-function __vte_prompt_command(){
-  local - prompt_cmd pwd
-  set -
-
-  prompt_cmd=$( HISTTIMEFORMAT='' history 1 | sed 's/^ *[0-9]\+ *//' )
-  prompt_cmd="${prompt_cmd//;/ }"
-  pwd=~
-
-  if ! [[ ${PWD} = ~ ]]
-  then
-    pwd="${PWD/#"${HOME}"\//\~\/}"
-    pwd="${pwd//[[:cntrl:]]}"
-  fi
-
-  ## Bug, what does this cmd do?
-  printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${pwd}"
-  __vte_osc7
+function __vte_prompt_command(){ 
+    local - fn_pwd;
+    #set -;
+    fn_pwd=~;
+    if ! [[ ${PWD} = ~ ]]; then
+        fn_pwd="${fn_pwd//[[:cntrl:]]}";
+        fn_pwd="${PWD/#"${HOME}"\//\~\/}";
+    fi;
+    #printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${fn_pwd}";
+    printf '%s@%s:%s\n' "${USER}" "${HOSTNAME%%.*}" "${fn_pwd}";
+    __vte_osc7
 }
 
 :;: 'Define er_x()'
