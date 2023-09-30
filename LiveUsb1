@@ -43,17 +43,6 @@ unset TT
 
 ##  FUNCTION DEFINITIONS, BEGIN ##
 
-:;: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
-fns_for_appending_into_bashrc=( 
-  'rm' 
-  #'__vte_osc7' '__vte_prompt_command' 
-)
-for AA in "${fns_for_appending_into_bashrc[@]}"
-do
-  unset -f "$AA"
-done
-unset AA
-
 :;: 'Functions TOC...'
   ## functions_this_script=(
   #+	'__vte_osc7()'
@@ -791,7 +780,7 @@ unset QQ
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
 ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
 
-:;: 'Env vars for bashrc'
+:;: 'Env parameters for bashrc'
 
 :;: 'Color code assigned to PS0, ducking xtrace'
 if [[ -o xtrace ]]
@@ -803,7 +792,11 @@ else
   PS0=$( tput setaf 43 )
 fi
 PS1="[\\u@\\h]\\\$ "
-PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
+PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" )
+if ! [[ "$( printf -pF __vte_prompt_command )" = "not found" ]]
+then
+  PROMPT_COMMAND+=( __vte_prompt_command )
+fi
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
@@ -815,8 +808,21 @@ missing_fns=()
 ## Note, these arrays include some command substitutions which depend on some function definitions, which in
 #+  turn must be defined prior to defining these arrays
 
+:;: 'Define lists of parameters to be appended into bashrc'
+vars_for_appending_into_bashrc=( 
+  'BROWSER'
+  'EDITOR'
+  'PROMPT_COMMAND'
+  'PS0'
+)
+fns_for_appending_into_bashrc=( 
+  'rm' 
+  #'__vte_osc7' '__vte_prompt_command' 
+)
+
 : 'Said functions must have already been defined'
-[[ -z ${fns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
+[[ -z ${var_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
+[[ -z ${fcns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
 
 for UU in "${fns_for_appending_into_bashrc[@]}"
 do
@@ -834,11 +840,16 @@ fi
 
 :;: 'Define bashrc_strings_*'
 ## Note, you want for these array elements to represent just one parameter or function each
+unset bashrc_strings_1 bashrc_strings_2
 
 : '  bashrc: Functions (a.k.a. "subroutines")'
-bashrc_strings_1=(            ['subroutine __vte_osc7']="function $(  declare -pf __vte_osc7 )")
-bashrc_strings_1+=( ['subroutine __vte_prompt_command']="function $(  declare -pf __vte_prompt_command )")
-bashrc_strings_1+=(                   ['subroutine rm']="function $(  declare -pf rm )")
+for LL in "${fns_for_appending_into_bashrc[@]}"
+do
+  if ! [[ "$( printf -pF __vte_prompt_command )" = "not found" ]]
+  then
+    bashrc_strings_1+=( ["subroutine ${LL}"]="function $( declare -pf "${LL}" )" )
+  fi
+done
 
 : '  bashrc: Variables'
 bashrc_strings_2=(                   ['define BROWSER']=$(            declare -p BROWSER ) )
