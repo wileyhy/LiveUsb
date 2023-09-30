@@ -793,8 +793,8 @@ else
   PS0=$( tput setaf 43 )
 fi
 PS1="[\\u@\\h]\\\$ "
-color_reset=$( tput sgr0 )
-PROMPT_COMMAND=( [0]="${color_reset}" )
+pr_cmd_0='printf "%b" "$(tput sgr0)"'
+PROMPT_COMMAND=( [0]="${pr_cmd_0}" )
 if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${regexp} ]]
 then
   PROMPT_COMMAND+=( __vte_prompt_command )
