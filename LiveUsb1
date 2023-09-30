@@ -802,7 +802,7 @@ EDITOR=$( command -v vim )
 
 declare -A bashrc_strings_1 bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
-missing_fns=()
+missing_vars_and_fns=()
 
 :;: 'Append user variables and functions into .bashrc.'
 ## Note, these arrays include some command substitutions which depend on some function definitions, which in
@@ -824,28 +824,28 @@ fcns_for_appending_into_bashrc=(
 #[[ -z ${fcns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
 
 : 'Said variables must have already been defined'
-for UU in "${vars_for_appending_into_bashrc[@]}"
+for AA in "${vars_for_appending_into_bashrc[@]}"
 do
-  if [[ $( declare -p "${UU}" 2>&1 ) =~ 'not found' ]]
+  if [[ $( declare -p "${AA}" 2>&1 ) =~ 'not found' ]]
   then
-    missing_fns+=( "${UU}" )
+    missing_vars_and_fns+=( "${AA}" )
   fi
 done
-unset UU
+unset AA
 
 : 'Said functions must have already been defined'
 for UU in "${fcns_for_appending_into_bashrc[@]}"
 do
   if [[ $( declare -pF "${UU}" 2>&1 ) =~ 'not found' ]]
   then
-    missing_fns+=( "${UU}" )
+    missing_vars_and_fns+=( "${UU}" )
   fi
 done
 unset UU
 
-if (( ${#missing_fns[@]} > 0 ))
+if (( ${#missing_vars_and_fns[@]} > 0 ))
 then
-  er_x "${nL}", "${missing_fns[@]}"
+  er_x "${nL}", "${missing_vars_and_fns[@]}"
 fi
 
 :;: 'Define bashrc_strings_*'
