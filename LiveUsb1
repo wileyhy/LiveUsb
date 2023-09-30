@@ -44,7 +44,10 @@ unset TT
 ##  FUNCTION DEFINITIONS, BEGIN ##
 
 :;: $'redefine all functions to be appended into bashrc, so start by \x60unset\x60ing them'
-fns_for_appending_into_bashrc=( '__vte_osc7' '__vte_prompt_command' 'rm' )
+fns_for_appending_into_bashrc=( 
+  'rm' 
+  #'__vte_osc7' '__vte_prompt_command' 
+)
 for AA in "${fns_for_appending_into_bashrc[@]}"
 do
   unset -f "$AA"
@@ -73,34 +76,34 @@ unset AA
   #+	'write_bashrc_strings()'
   #+)
 
-:;: 'Define __vte_osc7() -- for bashrc only'
+#:;: 'Define __vte_osc7() -- for bashrc only'
 # shellcheck disable=SC2317
-function __vte_osc7(){
-  local - cmd urlencode_o
+#function __vte_osc7(){
+  #local - cmd urlencode_o
   #set -
 
-  cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
-  [[ -n ${cmd} ]] || return
-  urlencode_o=$( "${cmd}" )
+  #cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
+  #[[ -n ${cmd} ]] || return
+  #urlencode_o=$( "${cmd}" )
 
   #printf 'file://%s%s\n' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
-  printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
-}
+  #printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
+#}
 
-:;: 'Define __vte_prompt_command() -- for bashrc only'
+#:;: 'Define __vte_prompt_command() -- for bashrc only'
 # shellcheck disable=SC2317
-function __vte_prompt_command(){ 
-    local - fn_pwd;
+#function __vte_prompt_command(){ 
+    #local - fn_pwd;
     #set -;
-    fn_pwd=~;
-    if ! [[ ${PWD} = ~ ]]; then
-        fn_pwd="${fn_pwd//[[:cntrl:]]}";
-        fn_pwd="${PWD/#"${HOME}"\//\~\/}";
-    fi;
+    #fn_pwd=~;
+    #if ! [[ ${PWD} = ~ ]]; then
+        #fn_pwd="${fn_pwd//[[:cntrl:]]}";
+        #fn_pwd="${PWD/#"${HOME}"\//\~\/}";
+    #fi;
     #printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${fn_pwd}";
-    printf '%s@%s:%s\n' "${USER}" "${HOSTNAME%%.*}" "${fn_pwd}";
-    __vte_osc7
-}
+    #printf '%s@%s:%s\n' "${USER}" "${HOSTNAME%%.*}" "${fn_pwd}";
+    #__vte_osc7
+#}
 
 :;: 'Define er_x()'
 function er_x(){ local - hyphn="$-" exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -437,7 +440,7 @@ function rm(){ :
 
   :;: '"Recycle bin" must exist'
   local delete_d
-  delete_d=~/.rm.d
+  delete_d=~/.recycle.bin
 
   if ! [[ -e ${delete_d} ]] || ! [[ -d ${delete_d} ]]
   then
