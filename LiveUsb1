@@ -782,7 +782,7 @@ unset QQ
 
 :;: 'Env parameters for bashrc'
 
-: 'Color code assigned to PS0, ducking xtrace'
+:;: 'Color code assigned to PS0, ducking xtrace'
 if [[ -o xtrace ]]
 then
   set -
@@ -792,7 +792,7 @@ else
   PS0=$( tput setaf 43 )
 fi
 
-: 'Set up PROMPT_COMMAND'
+:;: 'Set up PROMPT_COMMAND'
 unset PROMPT_COMMAND
 declare -a PROMPT_COMMAND
 pr_cmd_0='printf "%b" "$(tput sgr0)"'
@@ -803,7 +803,7 @@ then
   PROMPT_COMMAND+=( __vte_prompt_command )
 fi
 
-: 'Other paramters'
+:;: 'Other paramters'
 PS1="[\\u@\\h]\\\$ "
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
@@ -819,12 +819,12 @@ missing_vars_and_fns=()
 vars_for_appending_into_bashrc=( 'BROWSER' 'EDITOR' 'PROMPT_COMMAND' 'PS0' )
 fcns_for_appending_into_bashrc=( 'rm' ) #'__vte_osc7' '__vte_prompt_command' 
 
-#: 'Arrays must exist'
+#:;: 'Arrays must exist'
 #[[ -z ${vars_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
 #[[ -z ${fcns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
 
 :;: 'Said variables and functions must have already been defined';:
-: 'variables'
+:;: '  Variables'
 for AA in "${vars_for_appending_into_bashrc[@]}"
 do
   if [[ $( declare -p "${AA}" 2>&1 ) =~ ${regexp} ]]
@@ -834,7 +834,7 @@ do
 done
 unset AA
 
-: 'functions'
+:;: '  Functions'
 for UU in "${fcns_for_appending_into_bashrc[@]}"
 do
   if [[ $( declare -pF "${UU}" 2>&1 ) =~ ${regexp} ]]
@@ -844,7 +844,7 @@ do
 done
 unset UU
 
-: 'test for any missing parameters'
+:;: '  Test for any missing parameters'
 if (( ${#missing_vars_and_fns[@]} > 0 ))
 then
   er_x "${nL}", "${missing_vars_and_fns[@]}"
