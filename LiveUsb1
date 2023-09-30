@@ -851,20 +851,14 @@ unset bashrc_strings_V bashrc_strings_F
 : '  bashrc: Variables'
 for VV in "${vars_for_appending_into_bashrc[@]}"
 do
-  if ! [[ "$( declare -p "${VV}" )" =~ ${regexp} ]]
-  then
-    bashrc_strings_V+=( ["define variable ${VV}"]=$( declare -p "${VV}" ) )
-  fi
+  bashrc_strings_V+=( ["define variable ${VV}"]=$( declare -p "${VV}" ) )
 done
 unset VV
 
 : '  bashrc: Functions (a.k.a. "subroutines")'
 for FF in "${fcns_for_appending_into_bashrc[@]}"
 do
-  if ! [[ "$( declare -pF "${FF}" )" =~ ${regexp} ]]
-  then
-    bashrc_strings_F+=( ["define subroutine ${FF}"]="function $( declare -pf "${FF}" )" )
-  fi
+  bashrc_strings_F+=( ["define subroutine ${FF}"]="function $( declare -pf "${FF}" )" )
 done
 unset FF
 
