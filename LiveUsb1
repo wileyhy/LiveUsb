@@ -869,7 +869,7 @@ do
 done
 unset VV
 
-:;: $'Alter the array \x24files_for_use_with_bash -- ie, Write functions and variable definitions into bashrc files'
+:;: 'Write functions and variable definitions into bashrc files'
 write_bashrc_strings "bashrc_strings_1" "bashrc_strings_2"
 
 ## Clean up from section Bash
