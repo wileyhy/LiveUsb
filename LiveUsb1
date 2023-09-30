@@ -77,7 +77,7 @@ unset AA
 # shellcheck disable=SC2317
 function __vte_osc7(){
   local - cmd urlencode_o
-  set -
+  #set -
 
   cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
   [[ -n ${cmd} ]] || return
