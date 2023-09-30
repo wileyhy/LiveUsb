@@ -804,8 +804,7 @@ PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" [1]="__vte_prompt_command" )
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-declare -A bashrc_strings_1
-declare -A bashrc_strings_2
+declare -A bashrc_strings_1 bashrc_strings_2
 files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 missing_fns=()
 
@@ -867,7 +866,7 @@ done
 unset VV
 
 :;: 'Write functions and variable definitions into bashrc files'
-write_bashrc_strings "bashrc_strings_1" "bashrc_strings_2"
+write_bashrc_strings bashrc_strings_1 bashrc_strings_2
 
 ## Clean up from section Bash
 unset files_for_use_with_bash bashrc_strings_1 bashrc_strings_2
