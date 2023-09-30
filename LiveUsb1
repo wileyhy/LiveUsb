@@ -900,7 +900,7 @@ unset regexp pr_cmd_0
 unset files_for_use_with_bash bashrc_strings_F bashrc_strings_V
 unset -f write_bashrc_strings
 
-  EC=101 LL="${nL}" exit
+  #EC=101 LL="${nL}" exit
 
 :;: 'Vim'
 
