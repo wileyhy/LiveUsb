@@ -781,6 +781,7 @@ unset QQ
 ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
 
 :;: 'Env parameters for bashrc'
+regexp='not found$'
 
 :;: 'Color code assigned to PS0, ducking xtrace'
 if [[ -o xtrace ]]
@@ -793,7 +794,7 @@ else
 fi
 PS1="[\\u@\\h]\\\$ "
 PROMPT_COMMAND=( [0]="printf '%b' '\\033[m'" )
-if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ "not found" ]]
+if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${regexp} ]]
 then
   PROMPT_COMMAND+=( __vte_prompt_command )
 fi
@@ -820,7 +821,7 @@ fcns_for_appending_into_bashrc=( 'rm' ) #'__vte_osc7' '__vte_prompt_command'
 : 'variables'
 for AA in "${vars_for_appending_into_bashrc[@]}"
 do
-  if [[ $( declare -p "${AA}" 2>&1 ) =~ 'not found' ]]
+  if [[ $( declare -p "${AA}" 2>&1 ) =~ ${regexp} ]]
   then
     missing_vars_and_fns+=( "${AA}" )
   fi
@@ -830,7 +831,7 @@ unset AA
 : 'functions'
 for UU in "${fcns_for_appending_into_bashrc[@]}"
 do
-  if [[ $( declare -pF "${UU}" 2>&1 ) =~ 'not found' ]]
+  if [[ $( declare -pF "${UU}" 2>&1 ) =~ ${regexp} ]]
   then
     missing_vars_and_fns+=( "${UU}" )
   fi
@@ -850,7 +851,7 @@ unset bashrc_strings_V bashrc_strings_F
 : '  bashrc: Variables'
 for VV in "${vars_for_appending_into_bashrc[@]}"
 do
-  if ! [[ "$( declare -p "${VV}" )" =~ "not found" ]]
+  if ! [[ "$( declare -p "${VV}" )" =~ ${regexp} ]]
   then
     bashrc_strings_V+=( ["define variable ${VV}"]=$( declare -p "${VV}" ) )
   fi
@@ -860,7 +861,7 @@ unset VV
 : '  bashrc: Functions (a.k.a. "subroutines")'
 for FF in "${fcns_for_appending_into_bashrc[@]}"
 do
-  if ! [[ "$( declare -pF "${FF}" )" =~ "not found" ]]
+  if ! [[ "$( declare -pF "${FF}" )" =~ ${regexp} ]]
   then
     bashrc_strings_F+=( ["define subroutine ${FF}"]="function $( declare -pf "${FF}" )" )
   fi
