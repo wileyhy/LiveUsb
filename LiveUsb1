@@ -47,6 +47,9 @@ alias .^:=': $color_reset'
 :;: 'Variables likely to be manually changed with some regularity'
 # shellcheck disable=SC2034
 {
+  user_real_name
+  user_github_email_address
+  user_github_gpg_key='E287D0CF528591CE'
   scr_repo_nm=LiveUsb
   files_for_use_with_github_level_1=( ~/.ssh ~/.gnupg ~/.vimrc ~/.mozilla )
   files_for_use_with_github_level_2=( ~/.config/gh )
@@ -85,6 +88,7 @@ scr_nm='LiveUsb1.sh'
   #+  'setup_ssh()'
   #+  'setup_tempd()'setup_tempd()''
   #+  'setup_time()'
+  #+  'setup_vars()'
   #+  'setup_vim()'
   #+  'test_dns()'
   #+  'test_os()'
@@ -135,7 +139,7 @@ function enable_git_debug_settings(){ :
   GIT_TRACE_PERFORMANCE=true
   GIT_TRACE_SETUP=true
   GIT_TRACE_SHALLOW=true
-  git config --global --list --show-origin --show-scope | cat
+  [[ -f /home/liveuser/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat
 
   true "${fn_bndry} enable_git_debug_settings()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
@@ -608,7 +612,7 @@ function setup_git(){ :
     ['init.defaultBranch']='main'
     ['user.email']='84648683+wileyhy@users.noreply.github.com'
     ['user.name']='Wiley Young'
-    ['user.signingkey']='E287D0CF528591CE'
+    ['user.signingkey']="${user_github_gpg_key}"
   )
 
   :;: 'Files must exist and Permissions'
@@ -932,6 +936,42 @@ function setup_time(){ :
   true "${fn_bndry} setup_time()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+
+:;: 'Define setup_vars()'
+function setup_vars(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_vars() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+
+:;: 'Vars, dirs, etc'
+## Bug, only way to export namerefs?  `declare -nx nL=...`
+
+:;: 'Vars... -- Error handling, variables and functions'
+## Note, variable assignments, backslash escape bc  sed -i
+# shellcheck disable=SC1001
+declare -nx nL=L\INENO
+
+:;: 'Vars... -- PATH'
+PATH='/usr/bin:/usr/sbin'
+export PATH
+
+:;: 'Vars... -- Other environment variables'
+## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
+## Note, local style, inline comments, ie, ': foo ## Note, blah', are useful for rebutting false positives
+#+  from ShellCheck
+LC_ALL=''
+PS1=''
+if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); readonly RUID; fi
+if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); readonly RGID; fi
+# shellcheck disable=SC2034
+declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
+
+  true "${fn_bndry} setup_vars()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+
+
+
+
+
 :;: 'Define setup_vim()'
 function setup_vim(){ :
   local - hyphn="$-" _="${fn_bndry} setup_vim() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -1162,30 +1202,8 @@ trap trap_exit EXIT
 :;: 'Test OS'
 test_os
 
-
-
-:;: 'Vars, dirs, etc'
-## Bug, only way to export namerefs?  `declare -nx nL=...`
-
-:;: 'Vars... -- Error handling, variables and functions'
-## Note, variable assignments, backslash escape bc  sed -i
-# shellcheck disable=SC1001
-declare -nx nL=L\INENO
-
-:;: 'Vars... -- PATH'
-PATH='/usr/bin:/usr/sbin'
-export PATH
-
-:;: 'Vars... -- Other environment variables'
-## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
-## Note, local style, inline comments, ie, ': foo ## Note, blah', are useful for rebutting false positives
-#+  from ShellCheck
-LC_ALL=''
-PS1=''
-if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); readonly RUID; fi
-if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); readonly RGID; fi
-# shellcheck disable=SC2034
-declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
+:;: 'Variables'
+setup_vars
 
 
 
@@ -1223,8 +1241,8 @@ setup_vim
 :;: 'Minimum necessary rpms'
 min_necc_packages
 
-:;: 'Git debug settings'
-enable_git_debug_settings
+#:;: 'Git debug settings'
+#enable_git_debug_settings
 
 :;: 'Minimum necessary git commands'
 setup_git
@@ -1237,6 +1255,10 @@ setup_ssh
 
 :;: 'GPG'
 gpg_d=~/.gnupg
+
+: 'If the current ~/.gnupg directory is the default (ie, empty) one, then delete it' 
+#if ! [[ -f ${}/gpg-agent.conf
+
 sudo -- \
   find "${gpg_d}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
     chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' || 
