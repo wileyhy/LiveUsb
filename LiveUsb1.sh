@@ -23,7 +23,7 @@ set -a # <>
 set -C # <>
 set -u # <>
 set -T # <>
-#set -e # <>
+set -e # <>
 set -x # <>
 set -o pipefail # <>
 
