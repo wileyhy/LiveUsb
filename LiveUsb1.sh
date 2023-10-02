@@ -1322,7 +1322,7 @@ then
   if ! pgrep 'firefox'
   then
     firefox --browser &
-    #pause_to_check "$nL" 'Waiting till browser is open before running  gh auth  command'
+    pause_to_check "$nL" 'Waiting till browser is open before running  gh auth  command'
     gh_auth_login_command
   fi
 fi
