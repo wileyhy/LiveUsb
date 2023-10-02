@@ -1,0 +1,33 @@
+#!/bin/bash -eux
+
+## Q: Will line numbers print correctly?
+
+unset -f rm __vte_osc7 __vte_prompt_command
+declare -n nL=LINENO
+set -v
+
+function er_x()
+{
+  local - fn_exit_code=$?
+  : "$@"
+  builtin exit "${fn_exit_code}"
+}
+
+shopt -s expand_aliases
+alias alias_erx='er_x "line ${nL}"'
+
+function foo()
+{
+  local -
+  : 'Printed strings, ie, no aliases'
+  (( $#                             == 1 )) && er_x "line ${nL}"
+  : 'Using alias'
+  (( $#                             == 2 )) && alias_erx
+  echo count $#
+}
+
+#foo alias_n
+
+foo alias_y alias_y
+
+
