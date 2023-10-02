@@ -306,6 +306,11 @@ function reqd_user_files(){ :
   local pttn_path
   pttn_path=$( printf '%s\n' "${lsblk_out[@]}" | awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' )
 
+  : 'Capture previous umask and set a new one'
+  local prev_umask
+  read -r -a prev_umask < <( umask -p )
+  umask 177
+
   :;: 'For each array of conf files and/or directories'
   local -n QQ
   ## It isn't necessary to declare QQ as a nameref, since unsetting QQ (see below) removes the nameref
@@ -375,20 +380,28 @@ function reqd_user_files(){ :
           fi
         fi
 
-        : 'Capture previous umask'
-        local prev_umask
-        read -r -a prev_umask < <( umask -p )
-        umask 177
-
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
 
-        builtin "${prev_umask[@]}"
+      :;: 'If the target conf file/dir _does_ exist...'
+      else
+        : '...and that conf file/dir is for GPG ...'
+        if [[ ${QQ[BB]} = ~/.gnupg ]]
+        then
+          : $'...if the user\x60s Github GPG key is _not_ found in ~/.gnupg ...'
+          count_of_user_keys=$( gpg2 --list-keys 2>&1 | grep -c "${user_github_gpg_key}" )
+      
+          if [[ ${count_of_user_keys} -eq 0 ]]
+          then
+
       fi
     done
     unset BB
   done
   unset AA QQ
   
+  : 'Restore previous umask'
+  builtin "${prev_umask[@]}"
+      
     #EC=101 LN="$LINENO" exit # <>
 
   true "${fn_bndry} reqd_user_files()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -1257,7 +1270,6 @@ setup_ssh
 gpg_d=~/.gnupg
 
 : 'If the current ~/.gnupg directory is the default (ie, empty) one, then delete it' 
-#if ! gpg2 --list-keys 2>&1 | grep -c E287D0CF528591CE
 
 sudo -- \
   find "${gpg_d}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
