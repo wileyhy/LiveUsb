@@ -1288,7 +1288,7 @@ min_necc_packages
 #:;: 'Git debug settings'
 #enable_git_debug_settings
 
-:;: 'Minimum necessary git commands'
+:;: 'Git'
 setup_git
 
 :;: 'Make and change into directories'
