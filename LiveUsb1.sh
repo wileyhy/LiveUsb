@@ -1239,8 +1239,8 @@ function write_ssh_conf() { :
 
 
 
-#:;: 'Define trap on ERR'
-#trap trap_err ERR
+:;: 'Define trap on ERR'
+trap trap_err ERR
 
 :;: 'Define trap on EXIT'
 trap trap_exit EXIT
