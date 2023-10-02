@@ -812,14 +812,6 @@ function setup_ssh(){ :
   local ssh_user_conf_file
   ssh_user_conf_file=~/.ssh/config
  
-  function write_ssh_conf() { :
-    cat <<- \EOF > "${ssh_user_conf_file}"
-		Host github.com
-		ForwardAgent yes
-
-		EOF
-  }
-
   if [[ -f ${ssh_user_conf_file} ]]
   then
     if ! grep 'ForwardAgent yes' "${qui__[@]}" "${ssh_user_conf_file}"
@@ -1143,6 +1135,13 @@ function write_bashrc_strings(){ :
   unset JJ
 
   true "${fn_bndry} write_bashrc_strings()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+function write_ssh_conf() { :
+  cat <<- \EOF > "${ssh_user_conf_file}"
+Host github.com
+ForwardAgent ye
+EOF
 }
 
 ##  FUNCTION DEFINITIONS COMPLETE ##
