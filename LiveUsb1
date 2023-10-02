@@ -610,7 +610,7 @@ function setup_git(){ :
     ['gpg.program']='/usr/bin/gpg2'
     ['help.autocorrect']='prompt'
     ['init.defaultBranch']='main'
-    ['user.email']='84648683+wileyhy@users.noreply.github.com'
+    ['user.email']="${user_github_email_address}"
     ['user.name']="${user_real_name}"
     ['user.signingkey']="${user_github_gpg_key}"
   )
