@@ -20,7 +20,7 @@
 
 # <> Debugging
 #set -a # <>
-set -C # <>
+#set -C # <>
 set -u # <>
 set -T # <>
 set -e # <>
