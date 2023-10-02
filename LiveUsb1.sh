@@ -614,9 +614,7 @@ function setup_git(){ :
   #+  uses files in etc...?
   #+    "$XDG_CONFIG_HOME/git/ignore, $GIT_DIR/info/exclude, .gitignore" - `man gitignore`
 
-  :;: 'Git'
-
-  :;: 'Git parameters, dependency level 1'
+  :;: 'Git -- parameters, dependency level 1'
   local git_conf_sys git_config_sys_conf_file git_files_a git_files_b git_ignr git_mesg
   git_conf_sys=''
   git_config_sys_conf_file=/etc/gitconfig
@@ -625,7 +623,7 @@ function setup_git(){ :
   git_ignr=/etc/.gitignore_system
   git_mesg=/etc/.gitmessage_system
 
-  :;: 'Git parameters, dependency level 2'
+  :;: 'Git -- parameters, dependency level 2'
   if sudo -- [ -f "${git_config_sys_conf_file}" ]
   then
     git_conf_sys=$( git config --global --list )
@@ -649,7 +647,7 @@ function setup_git(){ :
     ['user.signingkey']="${user_github_gpg_key}"
   )
 
-  :;: 'Files must exist and Permissions'
+  :;: 'Git -- Files must exist and Permissions'
   read -r -a prev_umask < <( umask -p )
   umask 133
 
@@ -677,13 +675,13 @@ function setup_git(){ :
   unset AA
   builtin "${prev_umask[@]}"
 
-  :;: 'git config, remove a config if present'
+  :;: 'Git -- remove a configuration key/value pair if present'
   if grep gpg.format "${qui__[@]}" <<< "${git_conf_sys[@]}"
   then
     git config --global --unset gpg.format 
   fi
 
-  :;: 'git config, assigning - Loop A'
+  :;: 'Git -- setup configuration - Loop A'
   local BB
   for BB in "${!git_keys[@]}"
   do
@@ -699,10 +697,10 @@ function setup_git(){ :
   done
   unset BB
 
-  :;: 'gitmessage (system)'
+  :;: 'Git -- gitmessage (system)'
   if ! [[ -f ${git_mesg} ]]
   then
-    :;: 'Heredoc: gitmessage'
+    :;: '  Heredoc: gitmessage'
     cat <<- \EOF > "${tmp_dir}/msg"
 	  Subject line (try to keep under 50 characters)
 
@@ -721,10 +719,10 @@ function setup_git(){ :
 
     #set -x # <>
 
-  :;: 'gitignore (system)'
+  :;: 'Git -- gitignore (system)'
   if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui__[@]}" "${git_ignr}"
   then
-    :;: 'Heredoc: gitignore'
+    :;: '  Heredoc: gitignore'
     cat <<- \EOF > "${tmp_dir}/ign"
 	  *~
 	  .*.swp
@@ -740,7 +738,7 @@ function setup_git(){ :
 
     #exit $LINENO # <>
 
-  :;: 'Copy root-user files to USER'
+  :;: 'Git -- Copy root-user files to USER'
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
@@ -750,7 +748,7 @@ function setup_git(){ :
   done
   unset HH
 
-  :;: 'Rename files'
+  :;: 'Git -- Rename files'
   local II
   for II in "${git_files_b[@]}"
   do
