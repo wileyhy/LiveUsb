@@ -1289,12 +1289,13 @@ sudo -- \
 find "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
 find "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
 
+: 'GPG -- If a gpg-agent daemon is running, kill it' ## Why???
 if grep --extended-regexp '[g]pg-a.*daemon' "${qui__[@]}" <<< "${ps_o}"
 then
-  gpgconf --kill gpg-agent
+  gpgconf --verbose --kill gpg-agent
 fi
 
-gpg-connect-agent /bye 2> /dev/null
+gpg-connect-agent --verbose /bye
 GPG_TTY=$( tty )
 export GPG_TTY
 
