@@ -323,10 +323,6 @@ function setup_ssh(){ :
   true "${fn_bndry} setup_ssh()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-
-
-
-
 :;: 'setup_tempd()'
 function setup_tempd(){ :
   local - hyphn="$-" _="${fn_bndry} setup_tempd() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
