@@ -105,6 +105,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  'setup_vim()'
   #+  'test_dns()'
   #+  'test_os()'
+  #+  'trap_err()'
   #+  'trap_exit()'
   #+  'write_bashrc_strings()'
   #+)
@@ -1103,6 +1104,15 @@ function test_os(){ :
   fi
 
   true "${fn_bndry} test_os()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+:;: 'Define trap_err()'
+function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_"
+  true "${fn_bndry} trap_err() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
+  declare -p err_trap_hyphn err_trap_ec err_trap_undersc
+
+  true "${fn_bndry} trap_err()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2
