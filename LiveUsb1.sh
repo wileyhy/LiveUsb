@@ -1248,7 +1248,7 @@ must_be_root
 :;: 'Certain files must have been installed from off-disk'
 reqd_user_files
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: 'Network'
 setup_network
