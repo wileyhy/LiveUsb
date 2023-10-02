@@ -19,7 +19,7 @@
 ## TODO: add colors to xtrace comments
 
 # <> Debugging
-set -a # <>
+#set -a # <>
 set -C # <>
 set -u # <>
 set -T # <>
