@@ -1340,6 +1340,7 @@ done
 unset KK gh_config_list_out github_configs
 
   wait -f # <>
+  hash -r
 
 :;: 'GH -- Login to github'
 ## Note, executing this command just once
