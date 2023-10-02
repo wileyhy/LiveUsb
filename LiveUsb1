@@ -44,14 +44,20 @@ alias .^:=': $color_reset'
   #.:;: $'TESTING\x60s -- \x56\x61\x72\x69\x61\x62\x6c\x65\x73\x20\x6c\x69\x6b\x65\x6c\x79\x20\x74\x6f\x20\x62\x65\x20\x6d\x61\x6e\x75\x61\x6c\x6c\x79\x20\x63\x68\x61\x6e\x67\x65\x64\x20\x77\x69\x74\x68\x20\x73\x6f\x6d\x65\x20\x72\x65\x67\x75\x6c\x61\x72\x69\x74\x79';.^: # <>
   #exit 101 # <>
 
-:;: 'Variables likely to be manually changed with some regularity'
+:;: 'Variables likely to be manually changed with some regularity, or which absolutely must be defined early on'
 # shellcheck disable=SC2034
 {
+  scr_repo_nm='LiveUsb'
+  
+  script_start_time=$( date +%H:%M:%S )
+  readonly script_start_time
+  
   user_real_name='Wiley Young'
   user_github_email_address='84648683+wileyhy@users.noreply.github.com'
   user_github_gpg_key='E287D0CF528591CE'
-  scr_repo_nm='LiveUsb'
-  files_for_use_with_github_level_1=( ~/.ssh ~/.gnupg ~/.vimrc ~/.mozilla )
+  gpg_d=~/.gnupg
+  
+  files_for_use_with_github_level_1=( ~/.ssh "${gpg_d}" ~/.vimrc ~/.mozilla )
   files_for_use_with_github_level_2=( ~/.config/gh )
   files_for_use_with_github_level_3=( ~/.config/procps/toprc )
   arrays_of_conf_files=( files_for_use_with_github_level_1 files_for_use_with_github_level_2
@@ -59,8 +65,6 @@ alias .^:=': $color_reset'
 }
 
 :;: 'Write to TTY'
-script_start_time=$( date +%H:%M:%S )
-readonly script_start_time
 printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 
 ##  FUNCTION DEFINITIONS, BEGIN ##
@@ -392,7 +396,9 @@ function reqd_user_files(){ :
       
           if [[ ${count_of_user_keys} -eq 0 ]]
           then
-
+            rsync_install_if_missing  "${source_file}" "${dest_dir}"
+          fi
+        fi
       fi
     done
     unset BB
@@ -1267,7 +1273,6 @@ setup_dirs
 setup_ssh
 
 :;: 'GPG'
-gpg_d=~/.gnupg
 
 : 'If the current ~/.gnupg directory is the default (ie, empty) one, then delete it' 
 
