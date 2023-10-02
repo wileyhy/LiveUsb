@@ -688,7 +688,7 @@ function setup_git(){ :
   local BB
   for BB in "${!git_keys[@]}"
   do
-    :;: 'Loop A - open'
+    :;: '  Loop A - open'
   
     : "BB:$BB"
 
@@ -696,7 +696,7 @@ function setup_git(){ :
     then
       git config --global "${BB}" "${git_keys[$BB]}"
     fi
-    : "Loop A - shut" ;:
+    : "  Loop A - shut" ;:
   done
   unset BB
 
