@@ -659,6 +659,9 @@ function setup_git(){ :
   
     if [[ ${git_files_a[ZZ]} =~ ${regexp} ]]
     then
+      
+        declare -p BASH_REMATCH # <>
+
       unset 'git_files_a[ZZ]'
     fi
   done
