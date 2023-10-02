@@ -1139,9 +1139,10 @@ function write_bashrc_strings(){ :
 
 function write_ssh_conf() { :
   cat <<- \EOF > "${ssh_user_conf_file}"
-Host github.com
-ForwardAgent ye
-EOF
+	Host github.com
+	ForwardAgent yes
+
+	EOF
 }
 
 ##  FUNCTION DEFINITIONS COMPLETE ##
