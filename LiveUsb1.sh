@@ -390,7 +390,7 @@ function reqd_user_files(){ :
         : '...and that conf file/dir is for GPG ...'
         ## Note, pattern `~'/.gnupg'` fails and expands as "+ [[ /home/liveuser/.gnupg = ~\/\.\g\n\u\p\g ]]"
         #+  pattern "~/'.gnupg'" ok; expands as "+ [[ /home/liveuser/.gnupg = \/\h\o\m\e\/\l\i\v\e\u\s\e\r/\.\g\n\u\p\g ]]"
-        if [[ ${QQ[BB]} = ~/'.gnupg' ]]
+        if [[ ${QQ[BB]} = ~/.gnupg ]]
         then
           : $'...if the user\x60s Github GPG key is _not_ found in ~/.gnupg ...'
           count_of_user_keys=$( gpg2 --list-keys 2>&1 | grep -c "${user_github_gpg_key}" )
