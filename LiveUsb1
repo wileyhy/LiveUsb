@@ -697,6 +697,8 @@ function reqd_user_files(){ :
     unset BB
   done
   unset AA QQ
+  
+    EC=101 LN="$LINENO" exit # <>
 
   true "${fn_bndry} reqd_user_files()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
@@ -1148,6 +1150,8 @@ function write_bashrc_strings(){ :
 
   #EC=101 LN="$LINENO" exit # <>
 
+
+
 :;: 'Define trap on EXIT'
 trap trap_exit EXIT
 
@@ -1245,7 +1249,6 @@ export GPG_TTY
 
 
 
-
 :;: 'gh -- github CLI configuration'
 declare -A github_configs
 github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
@@ -1284,6 +1287,8 @@ unset QQ
 
   set -x
 
+
+
 :;: 'Clone repo'
 [[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
 
@@ -1291,6 +1296,8 @@ if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
 then
   git clone --verbose --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
 fi
+
+
 
 :;: 'Bash'
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
