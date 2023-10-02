@@ -624,7 +624,7 @@ function setup_git(){ :
   git_mesg=/etc/.gitmessage_system          ## Q, "" "" ""
 
   :;: 'Git -- parameters, dependency level 2'
-  if sudo -- [ -f "${git_config_sys_conf_file}" ]
+  if sudo -- [ -f "${git_conf_global_f}" ]
   then
     git_conf_global_f=$( git config --global --list )
   fi
