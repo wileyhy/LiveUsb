@@ -66,6 +66,9 @@ alias .^:=': $color_reset ; :'
   files_for_use_with_github_level_3=( ~/.config/procps/toprc )
   arrays_of_conf_files=( files_for_use_with_github_level_1 files_for_use_with_github_level_2
     files_for_use_with_github_level_3 )
+  
+  ps_o=$( ps aux )
+  readonly ps_o
 }
 
 :;: 'Write to TTY'
@@ -857,9 +860,6 @@ function setup_ssh(){ :
   :;: $'Collect output of \x60ps\x60, but without printing it to xtrace'
   local xon
   [[ -o xtrace ]] && xon=yes && set -
-  local ps_o
-  ps_o=$( ps aux )
-  readonly ps_o
   [[ ${xon:=} = yes ]] && set -x
   unset xon
 
