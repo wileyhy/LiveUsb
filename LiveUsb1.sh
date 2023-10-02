@@ -965,7 +965,6 @@ function setup_time(){ :
   true "${fn_bndry} setup_time()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-
 :;: 'Define setup_vars()'
 function setup_vars(){ :
   local - hyphn="$-" _="${fn_bndry} setup_vars() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -995,11 +994,6 @@ function setup_vars(){ :
 
   true "${fn_bndry} setup_vars()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
-
-
-
-
-
 
 :;: 'Define setup_vim()'
 function setup_vim(){ :
