@@ -698,7 +698,7 @@ function reqd_user_files(){ :
   done
   unset AA QQ
   
-    EC=101 LN="$LINENO" exit # <>
+    #EC=101 LN="$LINENO" exit # <>
 
   true "${fn_bndry} reqd_user_files()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
