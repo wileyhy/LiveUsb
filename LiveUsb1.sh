@@ -19,10 +19,13 @@
 ## TODO: add colors to xtrace comments
 
 # <> Debugging
-set -aCTo pipefail # <>
+set -a # <>
+set -C # <>
 set -u # <>
+set -T # <>
 #set -e # <>
 set -x # <>
+set -o pipefail # <>
 
 if [[ -o xtrace ]]
 then
