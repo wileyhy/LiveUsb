@@ -4,8 +4,8 @@ gh auth logout
 
 set -o pipefail
 
-trap_err(){ local - ec="$?"; : 'exit code:' "$ec"; }
-trap trap_err ERR
+#trap_err(){ local - ec="$?"; : 'exit code:' "$ec"; }
+#trap trap_err ERR
 
 get_gh_auth_stat=$( gh auth status )
 
