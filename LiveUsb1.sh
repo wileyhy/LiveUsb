@@ -25,7 +25,7 @@ set -u # <>
 set -T # <>
 set -e # <>
 set -x # <>
-set -o pipefail # <>
+#set -o pipefail # <>
 
 if [[ -o xtrace ]]
 then
