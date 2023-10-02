@@ -21,7 +21,7 @@
 # <> Debugging
 #set -a # <>
 #set -C # <>
-set -u # <>
+#set -u # <>
 set -T # <>
 set -e # <>
 set -x # <>
