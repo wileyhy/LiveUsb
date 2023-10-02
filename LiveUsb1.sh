@@ -35,11 +35,11 @@ umask 077
 hash -r
 
 ## How to add colors to xtrace comments
-highlight=$( tput setaf 11 )
+color_yellow=$( tput setaf 11 )
 color_reset=$( tput sgr0 )
 shopt -s expand_aliases
-alias .:=': $highlight'
-alias .^:=': $color_reset'
+alias .y:=': $color_yellow ; :'
+alias .^:=': $color_reset ; :'
 
   #.:;: $'TESTING\x60s -- \x56\x61\x72\x69\x61\x62\x6c\x65\x73\x20\x6c\x69\x6b\x65\x6c\x79\x20\x74\x6f\x20\x62\x65\x20\x6d\x61\x6e\x75\x61\x6c\x6c\x79\x20\x63\x68\x61\x6e\x67\x65\x64\x20\x77\x69\x74\x68\x20\x73\x6f\x6d\x65\x20\x72\x65\x67\x75\x6c\x61\x72\x69\x74\x79';.^: # <>
   #exit 101 # <>
