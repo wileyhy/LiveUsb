@@ -963,28 +963,28 @@ function setup_time(){ :
 function setup_vars(){ :
   local - hyphn="$-" _="${fn_bndry} setup_vars() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
-:;: 'Vars, dirs, etc'
-## Bug, only way to export namerefs?  `declare -nx nL=...`
+  :;: 'Vars, dirs, etc'
+  ## Bug, only way to export namerefs?  `declare -nx nL=...`
 
-:;: 'Vars... -- Error handling, variables and functions'
-## Note, variable assignments, backslash escape bc  sed -i
-# shellcheck disable=SC1001
-declare -nx nL=L\INENO
+  :;: 'Vars... -- Error handling, variables and functions'
+  ## Note, variable assignments, backslash escape bc  sed -i
+  # shellcheck disable=SC1001
+  local -gnx nL=L\INENO
 
-:;: 'Vars... -- PATH'
-PATH='/usr/bin:/usr/sbin'
-export PATH
+  :;: 'Vars... -- PATH'
+  PATH='/usr/bin:/usr/sbin'
+  export PATH
 
-:;: 'Vars... -- Other environment variables'
-## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
-## Note, local style, inline comments, ie, ': foo ## Note, blah', are useful for rebutting false positives
-#+  from ShellCheck
-LC_ALL=''
-PS1=''
-if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); readonly RUID; fi
-if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); readonly RGID; fi
-# shellcheck disable=SC2034
-declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
+  :;: 'Vars... -- Other environment variables'
+  ## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
+  ## Note, local style, inline comments, ie, ': foo ## Note, blah', are useful for rebutting false positives
+  #+  from ShellCheck
+  LC_ALL=''
+  PS1=''
+  if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); readonly RUID; fi
+  if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); readonly RGID; fi
+  # shellcheck disable=SC2034
+  declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
   true "${fn_bndry} setup_vars()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
