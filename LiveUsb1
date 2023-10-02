@@ -1257,7 +1257,7 @@ setup_ssh
 gpg_d=~/.gnupg
 
 : 'If the current ~/.gnupg directory is the default (ie, empty) one, then delete it' 
-#if ! [[ -f ${}/gpg-agent.conf
+#if ! gpg2 --list-keys 2>&1 | grep -c E287D0CF528591CE
 
 sudo -- \
   find "${gpg_d}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
