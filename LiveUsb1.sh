@@ -1346,8 +1346,8 @@ unset KK gh_config_list_out github_configs
 :;: 'GH -- Login to github'
 ## Note, executing this command just once
 #get_gh_auth_stat=$( gh auth status )
-count_gh_auth_checkmarks=$( gh auth status |& grep --only $'\xe2\x9c\x93' | wc -l )
-#printf -v count_gh_auth_checkmarks '%s' $( gh auth status |& grep --count $'\xe2\x9c\x93' )
+#count_gh_auth_checkmarks=$( gh auth status |& grep --only $'\xe2\x9c\x93' | wc -l )
+printf -v count_gh_auth_checkmarks '%s' $( gh auth status |& grep --count $'\xe2\x9c\x93' )
 
   wait -f # <>
   declare -p count_gh_auth_checkmarks
