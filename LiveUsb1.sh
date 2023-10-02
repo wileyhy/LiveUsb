@@ -1323,6 +1323,8 @@ unset KK gh_config_list_out github_configs
 printf -v count_gh_auth_checkmarks '%s' $( gh auth status |& grep --count $'\xe2\x9c\x93' )
 
   wait -f # <>
+  declare -p count_gh_auth_checkmarks
+  EC=101 LN="${nL}" exit
 
 if ! gh auth status 2>/dev/null 1>&2 || [[ ${count_gh_auth_checkmarks} -ne 4 ]]
 then
