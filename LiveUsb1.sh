@@ -376,7 +376,7 @@ function reqd_user_files(){ :
             readarray -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints )
           fi
 
-          :;: 'If the source conf still file/dir does not exist, then throw an error'
+          :;: 'If the source conf file/dir still does not exist, then throw an error'
           if ! sudo [ -e "${source_file}" ]
           then
             er_x "$nL" "${QQ[BB]}" "${source_file}"
