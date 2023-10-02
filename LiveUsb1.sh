@@ -616,12 +616,12 @@ function setup_git(){ :
 
   :;: 'Git -- parameters, dependency level 1'
   local git_conf_global_f git_config_sys_conf_file git_files_a git_files_b git_ignr git_mesg
-  git_conf_global_f=''
+  git_conf_global_f=~/.gitconfig
   git_config_sys_conf_file=/etc/gitconfig
-  git_files_a=( /etc/git* /etc/.git* )
+  git_files_a=( /etc/git* /etc/.git* )      ## Q, shouldn't "~/.git*" be included in this list? 
   git_files_b=( ~/.git*_system )
-  git_ignr=/etc/.gitignore_system
-  git_mesg=/etc/.gitmessage_system
+  git_ignr=/etc/.gitignore_system           ## Q, are these real git-default files, or just something I made up?
+  git_mesg=/etc/.gitmessage_system          ## Q, "" "" ""
 
   :;: 'Git -- parameters, dependency level 2'
   if sudo -- [ -f "${git_config_sys_conf_file}" ]
