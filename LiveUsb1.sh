@@ -1287,15 +1287,18 @@ sudo -- \
 find "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
 find "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
 
-: 'GPG -- If a gpg-agent daemon is running, kill it' ## Why???
-if ! grep --extended-regexp '[g]pg-a.*daemon' "${qui__[@]}" <<< "${ps_o}"
+: 'GPG -- If a gpg-agent daemon is running, or not, then, either way say so' ## Why???
+if grep --extended-regexp '[g]pg-a.*daemon' "${qui__[@]}" <<< "${ps_o}"
 then
-  gpgconf --verbose --kill gpg-agent
+  printf '\n\tgpg-agent daemon IS RUNNING\n\n'
+  
+  #gpgconf --verbose --kill gpg-agent
 else
-  printf '\n\tgpg-agent daemon is running\n\n'
+  printf '\n\tgpg-agent daemon is NOT running\n\n'
 fi
 
 #gpg-connect-agent --verbose /bye
+
 GPG_TTY=$( tty )
 export GPG_TTY
 
