@@ -385,8 +385,8 @@ function reqd_user_files(){ :
 
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
 
-      :;: 'If the target conf file/dir _does_ exist...'
       else
+        :;: 'If the target conf file/dir _does_ exist...'
         : '...and that conf file/dir is for GPG ...'
         ## Note, pattern `~'/.gnupg'` fails and expands as "+ [[ /home/liveuser/.gnupg = ~\/\.\g\n\u\p\g ]]"
         #+  pattern "~/'.gnupg'" ok; expands as "+ [[ /home/liveuser/.gnupg = \/\h\o\m\e\/\l\i\v\e\u\s\e\r/\.\g\n\u\p\g ]]"
