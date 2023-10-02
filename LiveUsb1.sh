@@ -21,10 +21,10 @@
 # <> Debugging
 set -x # <>
 
-#set -a # <>
-#set -C # <>
-#set -u # <>
-#set -T # <>
+set -a # <>
+set -C # <>
+set -u # <>
+set -T # <>
 set -e # <>
 set -o pipefail # <>
 
@@ -1360,7 +1360,7 @@ unset KK gh_config_list_out github_configs
 #count_gh_auth_checkmarks=$( gh auth status |& grep --only $'\xe2\x9c\x93' | wc -l )
 
 ## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
-printf -v count_gh_auth_checkmarks '%s' $( gh auth status |& grep --count $'\xe2\x9c\x93' )
+printf -v count_gh_auth_checkmarks '%s' "$( gh auth status |& grep --count $'\xe2\x9c\x93' )"
 
 if ! gh auth status 2>/dev/null 1>&2 || [[ ${count_gh_auth_checkmarks} -ne 4 ]]
 then
