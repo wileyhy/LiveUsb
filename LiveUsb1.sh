@@ -1110,7 +1110,8 @@ function test_os(){ :
 function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_"
   true "${fn_bndry} trap_err() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
-  declare -p err_trap_hyphn err_trap_ec err_trap_undersc
+  declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_ENV BASH_LINENO BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASH_XTRACEFD BASHOPTS BASHPID DIRSTACK ENV EUID FUNCNAME HISTCMD IFS INPUTRC LC_ALL LINENO PATH PIPESTATUS POSIXLY_CORRECT PPID PWD SHELL SHELLOPTS SHLVL TMPDIR UID
+  declare -p err_trap_hyphn err_trap_ec err_trap_undersc 
 
   true "${fn_bndry} trap_err()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
