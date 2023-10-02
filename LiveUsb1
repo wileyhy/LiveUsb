@@ -1233,8 +1233,12 @@ setup_ssh
 
 :;: 'GPG'
 gpg_d=~/.gnupg
-sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
-chmod --recursive 700 "${gpg_d}"
+sudo -- \
+  find "${gpg_d}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
+    chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' || 
+      exit "${nL}"
+find "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
+find "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
 
 if grep --extended-regexp '[g]pg-a.*daemon' "${qui__[@]}" <<< "${ps_o}"
 then
@@ -1249,7 +1253,7 @@ export GPG_TTY
 
 
 
-:;: 'gh -- github CLI configuration'
+:;: 'GH -- github CLI configuration'
 declare -A github_configs
 github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
 gh_config_list_out=$( gh config list | tr '\n' ' ' )
