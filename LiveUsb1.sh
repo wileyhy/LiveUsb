@@ -73,8 +73,10 @@ alias .^:=': $color_reset ; :'
   arrays_of_conf_files=( files_for_use_with_github_level_1 files_for_use_with_github_level_2
     files_for_use_with_github_level_3 )
   
+  [[ -o xtrace ]] && xon=yes && set +x
   ps_o=$( ps aux )
   readonly ps_o
+  [[ ${xon:=} = 'yes' ]] && set -x
 }
 
 :;: 'Write to TTY'
