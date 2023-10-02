@@ -1138,11 +1138,16 @@ function write_bashrc_strings(){ :
 }
 
 function write_ssh_conf() { :
+  local - hyphn="$-" _="${fn_bndry} write_ssh_conf() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  set -x
+
   cat <<- \EOF > "${ssh_user_conf_file}"
 	Host github.com
 	ForwardAgent yes
 
 	EOF
+  
+  true "${fn_bndry} write_ssh_conf()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ##  FUNCTION DEFINITIONS COMPLETE ##
