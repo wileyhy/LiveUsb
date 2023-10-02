@@ -73,13 +73,13 @@ scr_nm='LiveUsb1.sh'
   #+  'er_x()'
   #+  'get_pids_for_restarting()'
   #+  'gh_auth_login_command()'
-  #+  'setup_git()'
   #+  'min_necc_packages()'
   #+  'must_be_root()'
   #+  'pause_to_check()'
   #+  'reqd_user_files()'
   #+  'rm()'
   #+  'rsync_install_if_missing()'
+  #+  'setup_git()'
   #+  'setup_network()'
   #+  'setup_time()'
   #+  'test_dns()'
@@ -187,320 +187,6 @@ function gh_auth_login_command(){ :
   gh auth setup-git
 
   true "${fn_bndry} gh_auth_login_command()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
-}
-
-
-
-:;: 'Define setup_ssh()'
-function setup_ssh(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_ssh() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
-  # set -
-
-  ## Note, Unused var?
-  #ssh_system_conf=/etc/ssh/ssh_config
-  
-  local ssh_usr_conf_dir
-  ssh_usr_conf_dir=~/.ssh/
-
-  if [[ -d ${ssh_usr_conf_dir} ]]
-  then
-    sudo -- \
-      find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
-        chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' || 
-          er_x "${nL}"
-    find "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
-    find "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
-  else
-    er_x "${nL}"
-  fi
-  unset ssh_usr_conf_dir
-
-  local ssh_user_conf_file
-  ssh_user_conf_file=~/.ssh/config
- 
-  function write_ssh_conf() { :
-    cat <<- \EOF > "${ssh_user_conf_file}"
-		Host github.com
-		ForwardAgent yes
-
-		EOF
-  }
-
-  if [[ -f ${ssh_user_conf_file} ]]
-  then
-    if ! grep 'ForwardAgent yes' "${qui__[@]}" "${ssh_user_conf_file}"
-    then
-      /bin/rm -f "${qui__[@]}" "${ssh_user_conf_file}"
-      write_ssh_conf
-    fi
-  else
-    write_ssh_conf
-  fi
-  unset ssh_user_conf_file
-  unset -f write_ssh_conf
-
-  ## Bug? not necc to restart ssh-agent if both of these vars exist?
-  ## TODO, I do this duck-xtrace dance a few time in this script, but the procedure isn't normalized yet; do so
-
-  :;: $'Collect output of \x60ps\x60, but without printing it to xtrace'
-  local xon
-  [[ -o xtrace ]] && xon=yes && set -
-  local ps_o
-  ps_o=$( ps aux )
-  readonly ps_o
-  [[ ${xon:=} = yes ]] && set -x
-  unset xon
-
-  : 'Make sure ssh daemon is running (?)'
-  if [[ -z ${SSH_AUTH_SOCK} ]] || [[ -z ${SSH_AGENT_PID} ]]
-  then
-    
-    ## Bug, window manager is hard coded, "startxfce4"
-    
-    awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /exec -l/ { print $2 }' <<< "${ps_o}" )
-
-    if [[ -n ${awk_o} ]]
-    then
-      readarray -t ssh_agent_pids <<< "${awk_o}"
-    fi
-   
-    ## Bug? `command -p kill "$AA"` executes the bash builtin, judging by the output of `command -p kill` 
-    #+  without any operands. The output of `$( type -P kill )"` without operands is the same as the output
-    #+  of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points.
-    #+    `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what
-    #+  is intended is, "...suppressing shell function lookup, but still allowing builtins to be executed,"
-    #+  and possibly also aliases and keywords, though I haven't tested those. The description of the '-p'
-    #+  option is particularly misleading: "use a default value for PATH that is guaranteed to find all of 
-    #+  the standard utilities." That "guarantee" sounds as if use of the '-p' option "shall" (using the 
-    #+  POSIX defition of the word) result in a binary utility being used, when actually that is not the case.
-    #+    Binary `kill` has a few options not available with the builtin, such as '--timeout', which can be
-    #+  used to avoid writing an extra for loop...
-    #+
-    #+      sudo /bin/kill --verbose \
-    #+          --timeout 1000 HUP \
-    #+          --timeout 1000 USR1 \
-    #+          --timeout 1000 TERM \
-    #+          --timeout 1000 KILL -- "$WW"
-    #+
-    #+    And while we're on the topic, can `kill --help` please show the help file for /bin/kill, since
-    #+  using that syntax most likely indicates that intention?
-
-    if [[ ${#ssh_agent_pids[@]} -gt 0 ]]
-    then
-      case "${#ssh_agent_pids[@]}" in
-        1)  if [[ -v SSH_AGENT_PID ]]
-            then
-              ## Note:  ssh-agent  doesn't have any long options.  ssh-agent -k  is "kill the current agent."
-              ssh-agent -k
-            else
-              "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[*]}"
-            fi
-          ;;\
-        *)  for VV in "${ssh_agent_pids[@]}"
-            do
-              "$( type -P kill )" "${verb__[@]}" "${VV}"
-            done
-            unset VV
-          ;;\
-      esac
-    fi
-
-    ## Note:  ssh-agent -s  is "generate Bourne shell commands on stdout."
-
-    ssh_agent_o=$( ssh-agent -s )
-    eval "${ssh_agent_o}"
-
-    ## Note:  ssh-add  and  ssh  don't have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
-    #+ pseudo-terminal allocation.
-
-    ## Bug? hardcoded filename
-
-    ssh-add ~/.ssh/id_ed25519
-    ssh-add -L
-    ssh -T git@github.com
-  fi
-
-  true "${fn_bndry} setup_ssh()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
-}
-
-:;: 'setup_tempd()'
-function setup_tempd(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_tempd() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-
-  tmp_dir=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || er_x "${nL}" )
-  [[ -d ${tmp_dir} ]] || er_x "${nL}"
-  readonly tmp_dir
-
-  true "${fn_bndry} setup_tempd()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
-}
-
-:;: 'setup_git()'
-function setup_git(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_git() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  #set -
-
-  ## Note: git ui colors: normal black red green yellow blue magenta cyan white
-  #+  git ui attributes: bold dim ul (underline blink reverse)
-  ## Note: In vim, since 'expandtab' is set in .vimrc, to make some actual tabs, press Ctrl-v-[tab]
-
-  ## Bug? in vim, when quoting 'EOF', $tmp_dir changes color, but bash still expands the redirection
-  #+ destination file.
-
-  ## Buggy.  I think there's some bugginess going on with these system files. ie, I don't think git actually 
-  #+  uses files in etc...?
-  #+    "$XDG_CONFIG_HOME/git/ignore, $GIT_DIR/info/exclude, .gitignore" - `man gitignore`
-
-  :;: 'Git'
-
-  :;: 'Git parameters, dependency level 1'
-  local git_conf_sys git_config_sys_conf_file git_files_a git_files_b git_ignr git_mesg
-  git_conf_sys=''
-  git_config_sys_conf_file=/etc/gitconfig
-  git_files_a=( /etc/git* /etc/.git* )
-  git_files_b=( ~/.git*_system )
-  git_ignr=/etc/.gitignore_system
-  git_mesg=/etc/.gitmessage_system
-
-  :;: 'Git parameters, dependency level 2'
-  if sudo -- [ -f $git_config_sys_conf_file ]
-  then
-    git_conf_sys=$( git config --global --list )
-  fi
-  local -A git_keys
-  git_keys=(
-    ['color.diff']='always'
-    ['color.diff.meta']='blue black bold'
-    ['color.interactive']='always'
-    ['color.ui']='true'
-    ['commit.gpgsign']='true'
-    ['commit.template']="${git_mesg}"
-    ['core.editor']='vim'
-    ['core.excludesfile']="${git_ignr}"
-    ['core.pager']='/usr/bin/less'
-    ['gpg.program']='/usr/bin/gpg2'
-    ['help.autocorrect']='prompt'
-    ['init.defaultBranch']='main'
-    ['user.email']='84648683+wileyhy@users.noreply.github.com'
-    ['user.name']='Wiley Young'
-    ['user.signingkey']='E287D0CF528591CE'
-  )
-
-  :;: 'Files must exist and Permissions'
-  read -r -a prev_umask < <( umask -p )
-  umask 133
-
-  local regexp="(/etc|~)/[.]*git"
-  local ZZ
-  for ZZ in "${!git_files_a[@]}"
-  do
-      #declare -p git_files_a ZZ
-  
-    if [[ ${git_files_a[ZZ]} =~ ${regexp} ]]
-    then
-      unset 'git_files_a[ZZ]'
-    fi
-  done
-  unset ZZ regexp
-
-    #EC=101 LN="$LINENO" exit # <>
-
-  local AA
-  for AA in "${git_files_a[@]}"
-  do
-    sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
-    sudo -- chmod 0644 "${verb__[@]}" "${AA}"
-  done
-  unset AA
-  builtin "${prev_umask[@]}"
-
-  :;: 'git config, remove a config if present'
-  if grep gpg.format "${qui__[@]}" <<< "${git_conf_sys[@]}"
-  then
-    git config --global --unset gpg.format 
-  fi
-
-  :;: 'git config, assigning - Loop A'
-  local BB
-  for BB in "${!git_keys[@]}"
-  do
-    :;: 'Loop A - open'
-  
-    : "BB:$BB"
-
-    if ! grep "${BB}=${git_keys[$BB]}" "${qui__[@]}" <<< "${git_conf_sys[@]}"
-    then
-      git config --global "${BB}" "${git_keys[$BB]}"
-    fi
-    : "Loop A - shut" ;:
-  done
-  unset BB
-
-  :;: 'gitmessage (system)'
-  if ! [[ -f ${git_mesg} ]]
-  then
-    :;: 'Heredoc: gitmessage'
-    cat <<- \EOF > "${tmp_dir}/msg"
-	  Subject line (try to keep under 50 characters)
-
-	  Multi-line description of commit,
-	  feel free to be detailed.
-
-	  [Ticket: X]
-
-		EOF
-
-    ## Note: this use of  sudo  is for giving write permissions to  tee
-    # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
-    sudo -- tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || exit "${nL}"
-    sudo -- chmod 0644 "${verb__[@]}" "${git_mesg}" || exit "${nL}"
-  fi
-
-    #set -x # <>
-
-  :;: 'gitignore (system)'
-  if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui__[@]}" "${git_ignr}"
-  then
-    :;: 'Heredoc: gitignore'
-    cat <<- \EOF > "${tmp_dir}/ign"
-	  *~
-	  .*.swp
-	  .DS_Store
-
-		EOF
-
-    ## Note: this use of  sudo  is for giving write permissions to  tee
-    # shellcheck disable=SC2024
-    sudo -- tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || exit "${nL}"
-    sudo -- chmod 0644 "${verb__[@]}" "${git_ignr}" || exit "${nL}"
-  fi
-
-    #exit $LINENO # <>
-
-  :;: 'Copy root-user files to USER'
-  local HH
-  for HH in "${git_mesg}" "${git_ignr}"
-  do
-    sudo -- rsync --checksum --archive "${verb__[@]}" "${HH}" ~
-    sudo -- chown "${UID}:${UID}" "${verb__[@]}" ~/"${HH##*/}"
-    chmod 0400 -- ~/"${HH##*/}"
-  done
-  unset HH
-
-  :;: 'Rename files'
-  local II
-  for II in "${git_files_b[@]}"
-  do
-    if [[ -e $II ]]
-    then
-      sudo -- mv --force "${verb__[@]}" "${II}" "${II%_system}"
-    fi
-  done
-  unset II
-
-  ## Clean up after section "Git"
-  unset git_files_a git_config_sys_conf_file git_conf_sys git_mesg git_ignr git_keys git_files_b
-
-  true "${fn_bndry} setup_git()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define min_necc_packages()'
@@ -870,6 +556,175 @@ function setup_dirs(){ :
   true "${fn_bndry} setup_dirs()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+:;: 'setup_git()'
+function setup_git(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_git() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
+
+  ## Note: git ui colors: normal black red green yellow blue magenta cyan white
+  #+  git ui attributes: bold dim ul (underline blink reverse)
+  ## Note: In vim, since 'expandtab' is set in .vimrc, to make some actual tabs, press Ctrl-v-[tab]
+
+  ## Bug? in vim, when quoting 'EOF', $tmp_dir changes color, but bash still expands the redirection
+  #+ destination file.
+
+  ## Buggy.  I think there's some bugginess going on with these system files. ie, I don't think git actually 
+  #+  uses files in etc...?
+  #+    "$XDG_CONFIG_HOME/git/ignore, $GIT_DIR/info/exclude, .gitignore" - `man gitignore`
+
+  :;: 'Git'
+
+  :;: 'Git parameters, dependency level 1'
+  local git_conf_sys git_config_sys_conf_file git_files_a git_files_b git_ignr git_mesg
+  git_conf_sys=''
+  git_config_sys_conf_file=/etc/gitconfig
+  git_files_a=( /etc/git* /etc/.git* )
+  git_files_b=( ~/.git*_system )
+  git_ignr=/etc/.gitignore_system
+  git_mesg=/etc/.gitmessage_system
+
+  :;: 'Git parameters, dependency level 2'
+  if sudo -- [ -f $git_config_sys_conf_file ]
+  then
+    git_conf_sys=$( git config --global --list )
+  fi
+  local -A git_keys
+  git_keys=(
+    ['color.diff']='always'
+    ['color.diff.meta']='blue black bold'
+    ['color.interactive']='always'
+    ['color.ui']='true'
+    ['commit.gpgsign']='true'
+    ['commit.template']="${git_mesg}"
+    ['core.editor']='vim'
+    ['core.excludesfile']="${git_ignr}"
+    ['core.pager']='/usr/bin/less'
+    ['gpg.program']='/usr/bin/gpg2'
+    ['help.autocorrect']='prompt'
+    ['init.defaultBranch']='main'
+    ['user.email']='84648683+wileyhy@users.noreply.github.com'
+    ['user.name']='Wiley Young'
+    ['user.signingkey']='E287D0CF528591CE'
+  )
+
+  :;: 'Files must exist and Permissions'
+  read -r -a prev_umask < <( umask -p )
+  umask 133
+
+  local regexp="(/etc|~)/[.]*git"
+  local ZZ
+  for ZZ in "${!git_files_a[@]}"
+  do
+      #declare -p git_files_a ZZ
+  
+    if [[ ${git_files_a[ZZ]} =~ ${regexp} ]]
+    then
+      unset 'git_files_a[ZZ]'
+    fi
+  done
+  unset ZZ regexp
+
+    #EC=101 LN="$LINENO" exit # <>
+
+  local AA
+  for AA in "${git_files_a[@]}"
+  do
+    sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
+    sudo -- chmod 0644 "${verb__[@]}" "${AA}"
+  done
+  unset AA
+  builtin "${prev_umask[@]}"
+
+  :;: 'git config, remove a config if present'
+  if grep gpg.format "${qui__[@]}" <<< "${git_conf_sys[@]}"
+  then
+    git config --global --unset gpg.format 
+  fi
+
+  :;: 'git config, assigning - Loop A'
+  local BB
+  for BB in "${!git_keys[@]}"
+  do
+    :;: 'Loop A - open'
+  
+    : "BB:$BB"
+
+    if ! grep "${BB}=${git_keys[$BB]}" "${qui__[@]}" <<< "${git_conf_sys[@]}"
+    then
+      git config --global "${BB}" "${git_keys[$BB]}"
+    fi
+    : "Loop A - shut" ;:
+  done
+  unset BB
+
+  :;: 'gitmessage (system)'
+  if ! [[ -f ${git_mesg} ]]
+  then
+    :;: 'Heredoc: gitmessage'
+    cat <<- \EOF > "${tmp_dir}/msg"
+	  Subject line (try to keep under 50 characters)
+
+	  Multi-line description of commit,
+	  feel free to be detailed.
+
+	  [Ticket: X]
+
+		EOF
+
+    ## Note: this use of  sudo  is for giving write permissions to  tee
+    # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
+    sudo -- tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || exit "${nL}"
+    sudo -- chmod 0644 "${verb__[@]}" "${git_mesg}" || exit "${nL}"
+  fi
+
+    #set -x # <>
+
+  :;: 'gitignore (system)'
+  if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui__[@]}" "${git_ignr}"
+  then
+    :;: 'Heredoc: gitignore'
+    cat <<- \EOF > "${tmp_dir}/ign"
+	  *~
+	  .*.swp
+	  .DS_Store
+
+		EOF
+
+    ## Note: this use of  sudo  is for giving write permissions to  tee
+    # shellcheck disable=SC2024
+    sudo -- tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || exit "${nL}"
+    sudo -- chmod 0644 "${verb__[@]}" "${git_ignr}" || exit "${nL}"
+  fi
+
+    #exit $LINENO # <>
+
+  :;: 'Copy root-user files to USER'
+  local HH
+  for HH in "${git_mesg}" "${git_ignr}"
+  do
+    sudo -- rsync --checksum --archive "${verb__[@]}" "${HH}" ~
+    sudo -- chown "${UID}:${UID}" "${verb__[@]}" ~/"${HH##*/}"
+    chmod 0400 -- ~/"${HH##*/}"
+  done
+  unset HH
+
+  :;: 'Rename files'
+  local II
+  for II in "${git_files_b[@]}"
+  do
+    if [[ -e $II ]]
+    then
+      sudo -- mv --force "${verb__[@]}" "${II}" "${II%_system}"
+    fi
+  done
+  unset II
+
+  ## Clean up after section "Git"
+  unset git_files_a git_config_sys_conf_file git_conf_sys git_mesg git_ignr git_keys git_files_b
+
+  true "${fn_bndry} setup_git()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
 :;: 'Define setup_network()'
 function setup_network(){ :
   local - hyphn="$-" _="${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -924,6 +779,149 @@ function setup_network(){ :
   unset -f test_dns
 
   true "${fn_bndry} setup_network()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+:;: 'Define setup_ssh()'
+function setup_ssh(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_ssh() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  # set -
+
+  ## Note, Unused var?
+  #ssh_system_conf=/etc/ssh/ssh_config
+  
+  local ssh_usr_conf_dir
+  ssh_usr_conf_dir=~/.ssh/
+
+  if [[ -d ${ssh_usr_conf_dir} ]]
+  then
+    sudo -- \
+      find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
+        chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' || 
+          er_x "${nL}"
+    find "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
+    find "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
+  else
+    er_x "${nL}"
+  fi
+  unset ssh_usr_conf_dir
+
+  local ssh_user_conf_file
+  ssh_user_conf_file=~/.ssh/config
+ 
+  function write_ssh_conf() { :
+    cat <<- \EOF > "${ssh_user_conf_file}"
+		Host github.com
+		ForwardAgent yes
+
+		EOF
+  }
+
+  if [[ -f ${ssh_user_conf_file} ]]
+  then
+    if ! grep 'ForwardAgent yes' "${qui__[@]}" "${ssh_user_conf_file}"
+    then
+      /bin/rm -f "${qui__[@]}" "${ssh_user_conf_file}"
+      write_ssh_conf
+    fi
+  else
+    write_ssh_conf
+  fi
+  unset ssh_user_conf_file
+  unset -f write_ssh_conf
+
+  ## Bug? not necc to restart ssh-agent if both of these vars exist?
+  ## TODO, I do this duck-xtrace dance a few time in this script, but the procedure isn't normalized yet; do so
+
+  :;: $'Collect output of \x60ps\x60, but without printing it to xtrace'
+  local xon
+  [[ -o xtrace ]] && xon=yes && set -
+  local ps_o
+  ps_o=$( ps aux )
+  readonly ps_o
+  [[ ${xon:=} = yes ]] && set -x
+  unset xon
+
+  : 'Make sure ssh daemon is running (?)'
+  if [[ -z ${SSH_AUTH_SOCK} ]] || [[ -z ${SSH_AGENT_PID} ]]
+  then
+    
+    ## Bug, window manager is hard coded, "startxfce4"
+    
+    awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /exec -l/ { print $2 }' <<< "${ps_o}" )
+
+    if [[ -n ${awk_o} ]]
+    then
+      readarray -t ssh_agent_pids <<< "${awk_o}"
+    fi
+   
+    ## Bug? `command -p kill "$AA"` executes the bash builtin, judging by the output of `command -p kill` 
+    #+  without any operands. The output of `$( type -P kill )"` without operands is the same as the output
+    #+  of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points.
+    #+    `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what
+    #+  is intended is, "...suppressing shell function lookup, but still allowing builtins to be executed,"
+    #+  and possibly also aliases and keywords, though I haven't tested those. The description of the '-p'
+    #+  option is particularly misleading: "use a default value for PATH that is guaranteed to find all of 
+    #+  the standard utilities." That "guarantee" sounds as if use of the '-p' option "shall" (using the 
+    #+  POSIX defition of the word) result in a binary utility being used, when actually that is not the case.
+    #+    Binary `kill` has a few options not available with the builtin, such as '--timeout', which can be
+    #+  used to avoid writing an extra for loop...
+    #+
+    #+      sudo /bin/kill --verbose \
+    #+          --timeout 1000 HUP \
+    #+          --timeout 1000 USR1 \
+    #+          --timeout 1000 TERM \
+    #+          --timeout 1000 KILL -- "$WW"
+    #+
+    #+    And while we're on the topic, can `kill --help` please show the help file for /bin/kill, since
+    #+  using that syntax most likely indicates that intention?
+
+    if [[ ${#ssh_agent_pids[@]} -gt 0 ]]
+    then
+      case "${#ssh_agent_pids[@]}" in
+        1)  if [[ -v SSH_AGENT_PID ]]
+            then
+              ## Note:  ssh-agent  doesn't have any long options.  ssh-agent -k  is "kill the current agent."
+              ssh-agent -k
+            else
+              "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[*]}"
+            fi
+          ;;\
+        *)  for VV in "${ssh_agent_pids[@]}"
+            do
+              "$( type -P kill )" "${verb__[@]}" "${VV}"
+            done
+            unset VV
+          ;;\
+      esac
+    fi
+
+    ## Note:  ssh-agent -s  is "generate Bourne shell commands on stdout."
+
+    ssh_agent_o=$( ssh-agent -s )
+    eval "${ssh_agent_o}"
+
+    ## Note:  ssh-add  and  ssh  don't have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
+    #+ pseudo-terminal allocation.
+
+    ## Bug? hardcoded filename
+
+    ssh-add ~/.ssh/id_ed25519
+    ssh-add -L
+    ssh -T git@github.com
+  fi
+
+  true "${fn_bndry} setup_ssh()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+:;: 'setup_tempd()'
+function setup_tempd(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_tempd() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+
+  tmp_dir=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || er_x "${nL}" )
+  [[ -d ${tmp_dir} ]] || er_x "${nL}"
+  readonly tmp_dir
+
+  true "${fn_bndry} setup_tempd()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_time()'
