@@ -687,7 +687,7 @@ function reqd_user_files(){ :
         : 'Capture previous umask'
         local prev_umask
         read -r -a prev_umask < <( umask -p )
-        umask 077
+        umask 177
 
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
 
