@@ -1317,7 +1317,9 @@ unset KK gh_config_list_out github_configs
 
 :;: 'GH -- Login to github'
 ## Note, executing this command just once
-if ! gh auth status 2>/dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\xe2\x9c\x93' ) -ne 4 ]]
+count_gh_auth_checkmarks=$( gh auth status |& grep --count $'\xe2\x9c\x93' )
+
+if ! gh auth status 2>/dev/null 1>&2 || [[ ${count_gh_auth_checkmarks} -ne 4 ]]
 then
   if ! pgrep 'firefox'
   then
