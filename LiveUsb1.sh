@@ -1321,7 +1321,7 @@ if ! gh auth status 2>/dev/null 1>&2 || [[ $( gh auth status |& grep --count $'\
 then
   if ! pgrep 'firefox'
   then
-    firefox --browser &
+    firefox --browser 2>/dev/null &
     pause_to_check "$nL" 'Waiting till browser is open before running  gh auth  command'
     gh_auth_login_command
   fi
