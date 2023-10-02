@@ -552,7 +552,7 @@ function rsync_install_if_missing(){ :
   fi
   unset fn_source_var fn_target_dir
 
-  true "${fn_bndry} rsync_install_if_missing() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} rsync_install_if_missing()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_dirs()'
