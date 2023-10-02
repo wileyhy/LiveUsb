@@ -1109,9 +1109,12 @@ function test_os(){ :
 
 :;: 'Define trap_err()'
 function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_"
+  #set -
   true "${fn_bndry} trap_err() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
-  declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS LC_ALL LINENO PATH PIPESTATUS PPID PWD SHELL SHELLOPTS SHLVL UID
+  declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
+  declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
+  declare -p LC_ALL LINENO PATH PIPESTATUS PPID PWD SHELL SHELLOPTS SHLVL UID
   declare -p err_trap_hyphn err_trap_ec err_trap_undersc 
 
   true "${fn_bndry} trap_err()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
