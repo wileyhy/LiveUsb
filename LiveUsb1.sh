@@ -615,8 +615,8 @@ function setup_git(){ :
   #+    "$XDG_CONFIG_HOME/git/ignore, $GIT_DIR/info/exclude, .gitignore" - `man gitignore`
 
   :;: 'Git -- parameters, dependency level 1'
-  local git_conf_sys git_config_sys_conf_file git_files_a git_files_b git_ignr git_mesg
-  git_conf_sys=''
+  local git_conf_global_f git_config_sys_conf_file git_files_a git_files_b git_ignr git_mesg
+  git_conf_global_f=''
   git_config_sys_conf_file=/etc/gitconfig
   git_files_a=( /etc/git* /etc/.git* )
   git_files_b=( ~/.git*_system )
@@ -626,7 +626,7 @@ function setup_git(){ :
   :;: 'Git -- parameters, dependency level 2'
   if sudo -- [ -f "${git_config_sys_conf_file}" ]
   then
-    git_conf_sys=$( git config --global --list )
+    git_conf_global_f=$( git config --global --list )
   fi
   local -A git_keys
   git_keys=(
@@ -679,7 +679,7 @@ function setup_git(){ :
   builtin "${prev_umask[@]}"
 
   :;: 'Git -- remove a configuration key/value pair if present'
-  if grep gpg.format "${qui__[@]}" <<< "${git_conf_sys[@]}"
+  if grep gpg.format "${qui__[@]}" <<< "${git_conf_global_f[@]}"
   then
     git config --global --unset gpg.format 
   fi
@@ -692,7 +692,7 @@ function setup_git(){ :
   
     : "BB:$BB"
 
-    if ! grep "${BB}=${git_keys[$BB]}" "${qui__[@]}" <<< "${git_conf_sys[@]}"
+    if ! grep "${BB}=${git_keys[$BB]}" "${qui__[@]}" <<< "${git_conf_global_f[@]}"
     then
       git config --global "${BB}" "${git_keys[$BB]}"
     fi
@@ -763,7 +763,7 @@ function setup_git(){ :
   unset II
 
   ## Clean up after section "Git"
-  unset git_files_a git_config_sys_conf_file git_conf_sys git_mesg git_ignr git_keys git_files_b
+  unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys git_files_b
 
   true "${fn_bndry} setup_git()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
