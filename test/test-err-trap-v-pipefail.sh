@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+gh auth logout
+
 set -o pipefail
 
 trap_err(){ local - ec="$?"; : 'exit code:' "$ec"; }
