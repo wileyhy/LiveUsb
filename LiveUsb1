@@ -47,7 +47,7 @@ alias .^:=': $color_reset'
 :;: 'Variables likely to be manually changed with some regularity'
 # shellcheck disable=SC2034
 {
-  user_real_name
+  user_real_name='Wiley Young'
   user_github_email_address
   user_github_gpg_key='E287D0CF528591CE'
   scr_repo_nm=LiveUsb
@@ -611,7 +611,7 @@ function setup_git(){ :
     ['help.autocorrect']='prompt'
     ['init.defaultBranch']='main'
     ['user.email']='84648683+wileyhy@users.noreply.github.com'
-    ['user.name']='Wiley Young'
+    ['user.name']="${user_real_name}"
     ['user.signingkey']="${user_github_gpg_key}"
   )
 
