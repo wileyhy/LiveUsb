@@ -1,27 +1,53 @@
 #!/bin/bash
 ## #!/bin/env -iS bash
 
-## Note: use `env -i` or else the script's execution environment will inherit any exported anything, 
+## Note: ...undocumented feature??
+#+    Use `env -i` or else the script's execution environment will inherit any exported anything, 
 #+  including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`!)
 #+  which might be intended to supercede any of the aliases which some Linux distributions often define and
 #+  provide for users' convenience.  These exported functions which are received from the caller's
 #+  environment get printed above the script's shebang in xtrace when xtrace and vebose are both enabled on the shebang line.
-#+  ...also, using `env` messes up vim's default bash-colorizations
+#+    ...also, using `env` messes up vim's default bash-colorizations
 
 ## LiveUsb1
 
 ## Note, written from within a Fedora instance, see hardcoded /run/media/root'
 ## Note, style, function definition syntax, '(){ :' makes plain xtrace easier to read
-## Note, style, `! [[ -e` doesn't show the '!' in xtrace, whereas `[[ ! -e` does.
+## Note, style, `! [[ -e` doesn't show the '!' in xtrace, whereas `[[ ! -e` does, and yet, for `grep`.....
 ## Note, idempotent script
+
+## TODO: add colors to xtrace comments
 
 # <> Debugging
 set -aCuTeo pipefail # <>
-#set -x
+set -x
+
+if [[ -o xtrace ]]
+then
+  qui__=( '--' )
+  verb__=( '--verbose' '--' )
+else
+  qui__=( '--quiet' '--' )
+  verb__=( '--' )
+fi
+
+umask 077
+hash -r
+
+## How to add colors to xtrace comments
+highlight=$( tput setaf 11 )
+color_reset=$( tput sgr0 )
+shopt -s expand_aliases
+alias .:=': $highlight'
+alias .^:=': $color_reset'
+
+  #.:;: $'TESTING\x60s -- \x56\x61\x72\x69\x61\x62\x6c\x65\x73\x20\x6c\x69\x6b\x65\x6c\x79\x20\x74\x6f\x20\x62\x65\x20\x6d\x61\x6e\x75\x61\x6c\x6c\x79\x20\x63\x68\x61\x6e\x67\x65\x64\x20\x77\x69\x74\x68\x20\x73\x6f\x6d\x65\x20\x72\x65\x67\x75\x6c\x61\x72\x69\x74\x79';.^: # <>
+  #exit 101 # <>
 
 :;: 'Variables likely to be manually changed with some regularity'
 # shellcheck disable=SC2034
 {
+  scr_repo_nm=LiveUsb
   files_for_use_with_github_level_1=( ~/.ssh ~/.gnupg ~/.vimrc ~/.mozilla )
   files_for_use_with_github_level_2=( ~/.config/gh )
   files_for_use_with_github_level_3=( ~/.config/procps/toprc )
@@ -29,19 +55,15 @@ set -aCuTeo pipefail # <>
     files_for_use_with_github_level_3 )
 }
 
-umask 077
-hash -r
+:;: 'Write to TTY'
+script_start_time=$( date +%H:%M:%S )
+readonly script_start_time
+printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 
+##  FUNCTION DEFINITIONS, BEGIN ##
 fn_bndry=' ~~~ ~~~ ~~~ '
 fn_lvl=0
 scr_nm='LiveUsb1.sh'
-
-:;: 'Write to TTY'
-TT=$( date +%H:%M:%S )
-printf '  %s - Executing %s \n' "${TT}" "$0"
-unset TT
-
-##  FUNCTION DEFINITIONS, BEGIN ##
 
 :;: 'Functions TOC...'
   ## functions_this_script=(
@@ -50,7 +72,7 @@ unset TT
   #+	'er_x()'
   #+	'get_pids_for_restarting()'
   #+  'gh_auth_login_command()'
-  #+  'min_necc_git_cmds()'
+  #+  'setup_git()'
   #+  'min_necc_packages()'
   #+	'must_be_root()'
   #+  'pause_to_check()'
@@ -93,6 +115,25 @@ unset TT
     #printf '%s@%s:%s\n' "${USER}" "${HOSTNAME%%.*}" "${fn_pwd}";
     #__vte_osc7
 #}
+
+:;: 'Define enable_git_debug_settings()'
+function enable_git_debug_settings(){ :
+  local - hyphn="$-" _="${fn_bndry} enable_git_debug_settings() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+
+  :;: 'Variables -- Global git debug settings'
+  GIT_TRACE=true
+  GIT_CURL_VERBOSE=true
+  GIT_SSH_COMMAND="ssh -vvv"
+  GIT_TRACE_PACK_ACCESS=true
+  GIT_TRACE_PACKET=true
+  GIT_TRACE_PACKFILE=true
+  GIT_TRACE_PERFORMANCE=true
+  GIT_TRACE_SETUP=true
+  GIT_TRACE_SHALLOW=true
+  git config --global --list --show-origin --show-scope | cat
+
+  true "${fn_bndry} enable_git_debug_settings()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
 
 :;: 'Define er_x()'
 function er_x(){ local - hyphn="$-" exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -147,16 +188,322 @@ function gh_auth_login_command(){ :
   true "${fn_bndry} gh_auth_login_command()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-:;: 'min_necc_git_cmds()'
-function min_necc_git_cmds(){ :
-  local - hyphn="$-" _="${fn_bndry} min_necc_git_cmds() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  set -
 
-  git config --global 'user.email' '84648683+wileyhy@users.noreply.github.com'
-  git config --global 'user.name' 'Wiley Young'
-  git config --global 'user.signingkey' 'E287D0CF528591CE'
 
-  true "${fn_bndry} min_necc_git_cmds()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+:;: 'Define setup_ssh()'
+function setup_ssh(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_ssh() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  # set -
+
+  ## Note, Unused var?
+  #ssh_system_conf=/etc/ssh/ssh_config
+  
+  local ssh_usr_conf_dir
+  ssh_usr_conf_dir=~/.ssh/
+
+  if [[ -d ${ssh_usr_conf_dir} ]]
+  then
+    sudo -- \
+      find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
+        chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' || 
+          er_x "${nL}"
+    find "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
+    find "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
+  else
+    er_x "${nL}"
+  fi
+  unset ssh_usr_conf_dir
+
+  local ssh_user_conf_file
+  ssh_user_conf_file=~/.ssh/config
+ 
+  function write_ssh_conf() { :
+    cat <<- \EOF > "${ssh_user_conf_file}"
+		Host github.com
+		ForwardAgent yes
+
+		EOF
+  }
+
+  if [[ -f ${ssh_user_conf_file} ]]
+  then
+    if ! grep 'ForwardAgent yes' "${qui__[@]}" "${ssh_user_conf_file}"
+    then
+      /bin/rm -f "${qui__[@]}" "${ssh_user_conf_file}"
+      write_ssh_conf
+    fi
+  else
+    write_ssh_conf
+  fi
+  unset ssh_user_conf_file
+  unset -f write_ssh_conf
+
+  ## Bug? not necc to restart ssh-agent if both of these vars exist?
+  ## TODO, I do this duck-xtrace dance a few time in this script, but the procedure isn't normalized yet; do so
+
+  :;: $'Collect output of \x60ps\x60, but without printing it to xtrace'
+  local xon
+  [[ -o xtrace ]] && xon=yes && set -
+  local ps_o
+  ps_o=$( ps aux )
+  readonly ps_o
+  [[ ${xon:=} = yes ]] && set -x
+  unset xon
+
+  : 'Make sure ssh daemon is running (?)'
+  if [[ -z ${SSH_AUTH_SOCK} ]] || [[ -z ${SSH_AGENT_PID} ]]
+  then
+    
+    ## Bug, window manager is hard coded, "startxfce4"
+    
+    awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /exec -l/ { print $2 }' <<< "${ps_o}" )
+
+    if [[ -n ${awk_o} ]]
+    then
+      readarray -t ssh_agent_pids <<< "${awk_o}"
+    fi
+   
+    ## Bug? `command -p kill "$AA"` executes the bash builtin, judging by the output of `command -p kill` 
+    #+  without any operands. The output of `$( type -P kill )"` without operands is the same as the output
+    #+  of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points.
+    #+    `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what
+    #+  is intended is, "...suppressing shell function lookup, but still allowing builtins to be executed,"
+    #+  and possibly also aliases and keywords, though I haven't tested those. The description of the '-p'
+    #+  option is particularly misleading: "use a default value for PATH that is guaranteed to find all of 
+    #+  the standard utilities." That "guarantee" sounds as if use of the '-p' option "shall" (using the 
+    #+  POSIX defition of the word) result in a binary utility being used, when actually that is not the case.
+    #+    Binary `kill` has a few options not available with the builtin, such as '--timeout', which can be
+    #+  used to avoid writing an extra for loop...
+    #+
+    #+      sudo /bin/kill --verbose \
+    #+          --timeout 1000 HUP \
+    #+          --timeout 1000 USR1 \
+    #+          --timeout 1000 TERM \
+    #+          --timeout 1000 KILL -- "$WW"
+    #+
+    #+    And while we're on the topic, can `kill --help` please show the help file for /bin/kill, since
+    #+  using that syntax most likely indicates that intention?
+
+    if [[ ${#ssh_agent_pids[@]} -gt 0 ]]
+    then
+      case "${#ssh_agent_pids[@]}" in
+        1)  if [[ -v SSH_AGENT_PID ]]
+            then
+              ## Note:  ssh-agent  doesn't have any long options.  ssh-agent -k  is "kill the current agent."
+              ssh-agent -k
+            else
+              "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[*]}"
+            fi
+          ;;\
+        *)  for VV in "${ssh_agent_pids[@]}"
+            do
+              "$( type -P kill )" "${verb__[@]}" "${VV}"
+            done
+            unset VV
+          ;;\
+      esac
+    fi
+
+    ## Note:  ssh-agent -s  is "generate Bourne shell commands on stdout."
+
+    ssh_agent_o=$( ssh-agent -s )
+    eval "${ssh_agent_o}"
+
+    ## Note:  ssh-add  and  ssh  don't have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
+    #+ pseudo-terminal allocation.
+
+    ## Bug? hardcoded filename
+
+    ssh-add ~/.ssh/id_ed25519
+    ssh-add -L
+    ssh -T git@github.com
+  fi
+
+  true "${fn_bndry} setup_ssh()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+
+
+
+
+:;: 'setup_tempd()'
+function setup_tempd(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_tempd() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+
+  tmp_dir=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || er_x "${nL}" )
+  [[ -d ${tmp_dir} ]] || er_x "${nL}"
+  readonly tmp_dir
+
+  true "${fn_bndry} setup_tempd()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+:;: 'setup_git()'
+function setup_git(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_git() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
+
+  ## Note: git ui colors: normal black red green yellow blue magenta cyan white
+  #+  git ui attributes: bold dim ul (underline blink reverse)
+  ## Note: In vim, since 'expandtab' is set in .vimrc, to make some actual tabs, press Ctrl-v-[tab]
+
+  ## Bug? in vim, when quoting 'EOF', $tmp_dir changes color, but bash still expands the redirection
+  #+ destination file.
+
+  ## Buggy.  I think there's some bugginess going on with these system files. ie, I don't think git actually 
+  #+  uses files in etc...?
+  #+    "$XDG_CONFIG_HOME/git/ignore, $GIT_DIR/info/exclude, .gitignore" - `man gitignore`
+
+  :;: 'Git'
+
+  :;: 'Git parameters, dependency level 1'
+  local git_conf_sys git_config_sys_conf_file git_files_a git_files_b git_ignr git_mesg
+  git_conf_sys=''
+  git_config_sys_conf_file=/etc/gitconfig
+  git_files_a=( /etc/git* /etc/.git* )
+  git_files_b=( ~/.git*_system )
+  git_ignr=/etc/.gitignore_system
+  git_mesg=/etc/.gitmessage_system
+
+  :;: 'Git parameters, dependency level 2'
+  if sudo -- [ -f $git_config_sys_conf_file ]
+  then
+    git_conf_sys=$( git config --global --list )
+  fi
+  local -A git_keys
+  git_keys=(
+    ['color.diff']='always'
+    ['color.diff.meta']='blue black bold'
+    ['color.interactive']='always'
+    ['color.ui']='true'
+    ['commit.gpgsign']='true'
+    ['commit.template']="${git_mesg}"
+    ['core.editor']='vim'
+    ['core.excludesfile']="${git_ignr}"
+    ['core.pager']='/usr/bin/less'
+    ['gpg.program']='/usr/bin/gpg2'
+    ['help.autocorrect']='prompt'
+    ['init.defaultBranch']='main'
+    ['user.email']='84648683+wileyhy@users.noreply.github.com'
+    ['user.name']='Wiley Young'
+    ['user.signingkey']='E287D0CF528591CE'
+  )
+
+  :;: 'Files must exist and Permissions'
+  read -r -a prev_umask < <( umask -p )
+  umask 133
+
+  local regexp="(/etc|~)/[.]*git"
+  local ZZ
+  for ZZ in "${!git_files_a[@]}"
+  do
+      #declare -p git_files_a ZZ
+  
+    if [[ ${git_files_a[ZZ]} =~ ${regexp} ]]
+    then
+      unset 'git_files_a[ZZ]'
+    fi
+  done
+  unset ZZ regexp
+
+    #EC=101 LN="$LINENO" exit # <>
+
+  local AA
+  for AA in "${git_files_a[@]}"
+  do
+    sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
+    sudo -- chmod 0644 "${verb__[@]}" "${AA}"
+  done
+  unset AA
+  builtin "${prev_umask[@]}"
+
+  :;: 'git config, remove a config if present'
+  if grep gpg.format "${qui__[@]}" <<< "${git_conf_sys[@]}"
+  then
+    git config --global --unset gpg.format 
+  fi
+
+  :;: 'git config, assigning - Loop A'
+  local BB
+  for BB in "${!git_keys[@]}"
+  do
+    :;: 'Loop A - open'
+  
+    : "BB:$BB"
+
+    if ! grep "${BB}=${git_keys[$BB]}" "${qui__[@]}" <<< "${git_conf_sys[@]}"
+    then
+      git config --global "${BB}" "${git_keys[$BB]}"
+    fi
+    : "Loop A - shut" ;:
+  done
+  unset BB
+
+  :;: 'gitmessage (system)'
+  if ! [[ -f ${git_mesg} ]]
+  then
+    :;: 'Heredoc: gitmessage'
+    cat <<- \EOF > "${tmp_dir}/msg"
+	  Subject line (try to keep under 50 characters)
+
+	  Multi-line description of commit,
+	  feel free to be detailed.
+
+	  [Ticket: X]
+
+		EOF
+
+    ## Note: this use of  sudo  is for giving write permissions to  tee
+    # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
+    sudo -- tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || exit "${nL}"
+    sudo -- chmod 0644 "${verb__[@]}" "${git_mesg}" || exit "${nL}"
+  fi
+
+    #set -x # <>
+
+  :;: 'gitignore (system)'
+  if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui__[@]}" "${git_ignr}"
+  then
+    :;: 'Heredoc: gitignore'
+    cat <<- \EOF > "${tmp_dir}/ign"
+	  *~
+	  .*.swp
+	  .DS_Store
+
+		EOF
+
+    ## Note: this use of  sudo  is for giving write permissions to  tee
+    # shellcheck disable=SC2024
+    sudo -- tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || exit "${nL}"
+    sudo -- chmod 0644 "${verb__[@]}" "${git_ignr}" || exit "${nL}"
+  fi
+
+    #exit $LINENO # <>
+
+  :;: 'Copy root-user files to USER'
+  local HH
+  for HH in "${git_mesg}" "${git_ignr}"
+  do
+    sudo -- rsync --checksum --archive "${verb__[@]}" "${HH}" ~
+    sudo -- chown "${UID}:${UID}" "${verb__[@]}" ~/"${HH##*/}"
+    chmod 0400 -- ~/"${HH##*/}"
+  done
+  unset HH
+
+  :;: 'Rename files'
+  local II
+  for II in "${git_files_b[@]}"
+  do
+    if [[ -e $II ]]
+    then
+      sudo -- mv --force "${verb__[@]}" "${II}" "${II%_system}"
+    fi
+  done
+  unset II
+
+  ## Clean up after section "Git"
+  unset git_files_a git_config_sys_conf_file git_conf_sys git_mesg git_ignr git_keys git_files_b
+
+  true "${fn_bndry} setup_git()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define min_necc_packages()'
@@ -173,12 +520,14 @@ function min_necc_packages(){ :
     then
       sudo dnf --assumeyes install "$XX"
 
+      ## TODO: comment out this use of $a_pids, re declaring and unsetting
       unset -v a_pids
       local -a a_pids=()
       get_pids_for_restarting
 
     fi
   done
+  unset XX
 
   true "${fn_bndry} min_necc_packages()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
@@ -200,19 +549,19 @@ function must_be_root(){ :
 
 :;: 'Define pause_to_check()'
 ## Usage,   pause_to_check $nL
-function pause_to_check() { local EC=101 LL="$1"
+function pause_to_check() { local -I EC=101 LN="$1"
   set -x ## sb global ?
   local - hyphn="$-" reply _="${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set - ## sb local ?
   shift
-  local -a MM=( "$@" )
+  local -a KK=( "$@" )
 
-  [[ -n ${MM[*]:0:1} ]] && printf '\n%s, pause_to_check(), %s\n' "${scr_nm}" "${MM[@]}" >&2
+  [[ -n ${KK[*]:0:1} ]] && printf '\n%s, pause_to_check(), %s\n' "${scr_nm}" "${KK[@]}" >&2
   printf '\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n' >&2
   
   if ! read -N1 -p $'\nReady?\n' -rst 600 reply >&2
   then
-    printf '\nExiting, line %d\n\n' "${LL}" >&2
+    printf '\nExiting, line %d\n\n' "${KK}" >&2
     builtin exit
   fi
 
@@ -221,10 +570,13 @@ function pause_to_check() { local EC=101 LL="$1"
       printf '\nOkay\n\n' >&2
       ;;\
     * )
-      printf '\nExiting, line %d\n\n' "${LL}" >&2
+      printf '\nExiting, line %d\n\n' "${KK}" >&2
       builtin exit
       ;;\
   esac
+  unset KK
+
+  ## TODO: copy out this construct to the rest of the functions, re bndry_cmd
 
   local bndry_cmd
   if [[ $hyphn =~ x ]]; then bndry_cmd='echo'; else bndry_cmd='true'; fi
@@ -236,18 +588,12 @@ function reqd_user_files(){ :
   local - hyphn="$-" _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
-  ## Note, NN must be declared as local before unsetting it inside the function so that the `unset` will
+  ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
   #+  effect the local variable
   local pttn_label mount_pt data_dir
   pttn_label='29_Mar_2023'
   mount_pt="/run/media/root/${pttn_label}"
   data_dir="${mount_pt}/skel-LiveUsb"
-
-  local AA
-  local -n NN
-  ## It isn't necessary to declare NN as a nameref, since unsetting NN (see below) removes the nameref
-  #+  attribute, but I intend to use NN as a nameref, so declaring NN without a nameref attribute would be
-  #+  confusing
 
   : 'Vars: get list of mounts'
   ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
@@ -270,33 +616,39 @@ function reqd_user_files(){ :
   pttn_path=$( printf '%s\n' "${lsblk_out[@]}" | awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' )
 
   :;: 'For each array of conf files and/or directories'
+  local -n QQ
+  ## It isn't necessary to declare QQ as a nameref, since unsetting QQ (see below) removes the nameref
+  #+  attribute, but I intend to use QQ as a nameref, so declaring QQ without a nameref attribute would be
+  #+  confusing
+
+  local AA
   for AA in "${arrays_of_conf_files[@]}"
   do
     :;: 'Loop A'
 
     : 'Vars'
     ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
-    #+  directly, `foo=bar`, then on the second loop `local -p NN` prints the former value of NN. Perhaps
+    #+  directly, `foo=bar`, then on the second loop `local -p QQ` prints the former value of QQ. Perhaps
     #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
     ## Note, remember, namerefs can only be unset with the -n flag to the `unset` builtin
-    local BB
-    unset -n NN
-    local -n NN
-    local -n NN="${AA}"   ## good code
-    #NN="${AA}"           ## bad code
+    unset -n QQ
+    local -n QQ
+    local -n QQ="${AA}"   ## good code
+    #QQ="${AA}"           ## baad code
 
     :;: 'For each conf file or dir'
-    for BB in "${!NN[@]}"
+    local BB
+    for BB in "${!QQ[@]}"
     do
       :;: 'Loop B'
 
       : 'Vars'
       local source_file dest_dir
-      source_file="${data_dir}/${NN[BB]#~/}"
-      dest_dir="${NN[BB]%/*}"
+      source_file="${data_dir}/${QQ[BB]#~/}"
+      dest_dir="${QQ[BB]%/*}"
 
       :;: 'If the target conf file/dir does not exist'
-      if ! [[ -e ${NN[BB]} ]]
+      if ! [[ -e ${QQ[BB]} ]]
       then
 
         :;: 'If the source conf file/dir does not exist, then find it'
@@ -326,9 +678,9 @@ function reqd_user_files(){ :
           fi
 
           :;: 'If the source conf still file/dir does not exist, then throw an error'
-          if ! [[ -e "${source_file}" ]]
+          if ! sudo [ -e "${source_file}" ]
           then
-            er_x "$nL" "${NN[BB]}" "${source_file}"
+            er_x "$nL" "${QQ[BB]}" "${source_file}"
           fi
         fi
 
@@ -342,8 +694,9 @@ function reqd_user_files(){ :
         builtin "${prev_umask[@]}"
       fi
     done
+    unset BB
   done
-  unset AA NN
+  unset AA QQ
 
   true "${fn_bndry} reqd_user_files()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
@@ -401,13 +754,14 @@ function rm(){ :
 
           if [[ -e ${HH} ]]
           then
+            local JJ
             JJ=$( realpath -e "${HH}" )
             args_rm+=( "${JJ}" )
+            unset JJ
           else
             : $'rm: unrecognized option \x27'"${HH}"$'\x27\n'
             : $'Try \x27rm --help\x27 for more information.'
           fi
-          unset JJ
           ;;
       esac
     else
@@ -415,13 +769,14 @@ function rm(){ :
 
       if [[ -e ${HH} ]]
       then
+        local II
         II=$( realpath -e "${HH}" )
         args_rm+=( "${II}" )
+        unset II
       else
         : $'fn_rm: cannot access \x27'"${HH}"$'\x27: No such file or directory\n'
         : $'GNU \x60rm\x60 silently ignores such inputs'
       fi
-      unset II
     fi
 
     : 'Restart loop'
@@ -449,6 +804,7 @@ function rm(){ :
 
     command -- mv --verbose -- "${HH}" "${delete_d}/${HH}.${time_sfx}" || return "$LINENO"
   fi
+  unset HH
 }
 
 :;: 'Define rsync_install_if_missing()'
@@ -482,6 +838,37 @@ function rsync_install_if_missing(){ :
   unset fn_source_var fn_target_dir
 
   true "${fn_bndry} rsync_install_if_missing() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+}
+
+:;: 'Define setup_dirs()'
+function setup_dirs(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_dirs() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -x
+
+  ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  / 
+  #+   popd 
+
+  :;: 'Variables -- global, for use for entire script'
+  dev_d1=~/MYPROJECTS
+  dev_d2=~/OTHERSPROJECTS
+  readonly dev_d1
+  readonly dev_d2
+
+  :;: 'Make dirs'
+  local UU
+  for UU in "${dev_d1}" "${dev_d2}"
+  do
+    if ! [[ -d ${UU} ]]
+    then
+      mkdir --mode=0700 "${verb__[@]}" "${UU}" || exit "${nL}"
+    fi
+  done
+  unset UU
+
+  :;: 'Change dirs'
+  pushd "${dev_d1}" > /dev/null || exit "${nL}"
+
+  true "${fn_bndry} setup_dirs()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_network()'
@@ -552,6 +939,84 @@ function setup_time(){ :
   true "${fn_bndry} setup_time()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+:;: 'Define setup_vim()'
+function setup_vim(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_vim() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
+  : 'Heredoc of vim-conf-text'
+  cat <<- \EOF | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
+		" ~/.vimrc
+
+		" per Google
+		set number
+
+		" per https://stackoverflow.com/questions/234564/tab-key-4-spaces-and-auto-indent-after-curly-braces-in-vim
+		filetype plugin indent on
+		" show existing tab with 2 spaces width
+		set tabstop=2
+		" when indenting with '>', use 2 spaces width
+		set shiftwidth=2
+		" On pressing tab, insert 2 spaces
+		set expandtab
+
+		" per https://superuser.com/questions/286290/is-there-any-way-to-hook-saving-in-vim-up-to-commiting-in-git
+		autocmd BufWritePost * execute '! if [[ -d .git ]]; then git commit -S -a -F -; fi'
+
+		EOF
+
+  : $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29'
+  readarray -d '' -t arr_vrc < <( sudo -- find /root -name '*vimrc*' -print0 )
+
+  case "${#arr_vrc[@]}" in
+    0 )
+        strng_vrc=/root/.vimrc
+      ;;\
+    1 )
+        strng_vrc="${arr_vrc[*]:=/root/.vimrc}"
+      ;;\
+    *)
+        printf '\n  Multiple .vimrc files found, please edit the filesystem.\n' >&2
+        printf '\t%s\n' "${arr_vrc[@]}" >&2
+        er_x "${nL}"
+      ;;\
+  esac
+
+  if (( "${#arr_vrc[@]}" == 1 ))
+  then
+    read -r WW XX < <( sudo -- sha256sum -- "${tmp_dir}/vim-conf-text" 2>&1 )
+    read -r YY XX < <( sudo -- sha256sum -- "${strng_vrc}" 2>&1 )
+  else
+    sudo -- touch -- "${strng_vrc}" # <> set-e
+  fi
+
+  : 'Write .vimrc'
+  if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${WW} = "${YY}" ]]
+  then
+    : $'Test returned \x22true,\x22 the number didn\x27t match, so write to .vimrc'
+
+    : 'Set the umask'
+    read -ra umask_prior < <( umask -p )
+    umask 177
+
+    : 'Write the root file'
+    sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || er_x "${nL}"
+
+    : $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
+    sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
+    sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
+    chmod 0400 -- "/home/${USER}/.vimrc"
+
+    : 'Reset the umask'
+    builtin "${umask_prior[@]}"
+  fi
+
+  ## Clean up after section Vim
+  command -- rm --one-file-system --preserve-root=all --force -- "${tmp_dir}/vim-conf-text"
+  unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
+
+  true "${fn_bndry} setup_vim()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
 :;: 'Define test_dns()'
 function test_dns(){ :
   local - hyphn="$-" _="${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -586,13 +1051,13 @@ function test_os(){ :
 :;: 'Define trap_exit()'
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LL:-$LINENO}"
+function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$LINENO}"
   true "${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  set -
+  #set -
 
-  #if [[ -e ${tmpd} ]]
+  #if [[ -e ${tmp_dir} ]]
   #then
-    #command rm --one-file-system --preserve-root=all --force --recursive -- "${tmpd}"
+    #command rm --one-file-system --preserve-root=all --force --recursive -- "${tmp_dir}"
   #fi
 
   trap - EXIT
@@ -614,12 +1079,12 @@ function write_bashrc_strings(){ :
   local - hyphn="$-" _="${fn_bndry} write_bashrc_strings() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   set -x
 
+  :;: 'Certain parameters must be defined and have non-zero values'
+  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line ${nL}"
+  (( $# == 0 ))                             && er_x "line ${nL}"
+
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
-
-  :;: 'Certain parameters must be defined and have non-zero values'
-  ((                             $# == 0 )) && er_x "line ${nL}"
-  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line ${nL}"
 
   for JJ
   do :;: 'Loop A - For each set of strings to append into bashrc'
@@ -674,12 +1139,14 @@ function write_bashrc_strings(){ :
 
     : 'Loop A - shut' ;:
   done
+  unset JJ
+
   true "${fn_bndry} write_bashrc_strings()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ##  FUNCTION DEFINITIONS COMPLETE ##
 
-  #EC=101 LL="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: 'Define trap on EXIT'
 trap trap_exit EXIT
@@ -687,11 +1154,13 @@ trap trap_exit EXIT
 :;: 'Test OS'
 test_os
 
+
+
 :;: 'Vars, dirs, etc'
 ## Bug, only way to export namerefs?  `declare -nx nL=...`
 
 :;: 'Vars... -- Error handling, variables and functions'
-## Note, variable assignments, Backslash escape bc  sed -i
+## Note, variable assignments, backslash escape bc  sed -i
 # shellcheck disable=SC1001
 declare -nx nL=L\INENO
 
@@ -699,23 +1168,22 @@ declare -nx nL=L\INENO
 PATH='/usr/bin:/usr/sbin'
 export PATH
 
-:;: 'Vars... -- Working dir'
-tmpd=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || er_x "${nL}" )
-[[ -d ${tmpd} ]] || er_x "${nL}"
-scr_tt=$( printf '%(%s)T' )
-logf="${tmpd}/log.${scr_nm}.${scr_tt}.txt"
-
 :;: 'Vars... -- Other environment variables'
 ## Note, Initialize some env vars found in sourced files, as a workaround for nounset'
 ## Note, local style, inline comments, ie, ': foo ## Note, blah', are useful for rebutting false positives
 #+  from ShellCheck
 LC_ALL=''
 PS1=''
+if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); readonly RUID; fi
+if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); readonly RGID; fi
 # shellcheck disable=SC2034
 declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
+
+
 :;: '<Logs>'
 #set -x
+#logf="${tmp_dir}/log.${scr_nm}.${script_start_time}.txt"
 #printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}"
 #exec > >( tee "${logf}" ) 2>&1
 
@@ -723,6 +1191,8 @@ declare BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/col
 # EXIT -- for exiting
 # HUP USR1 TERM KILL -- for restarting processes
 # INT QUIT USR2 -- for stopping logging
+
+
 
 :;: 'Regular users with sudo, only'
 must_be_root
@@ -736,11 +1206,45 @@ setup_network
 :;: 'Time'
 setup_time
 
+:;: 'Temporary directory'
+setup_tempd
+
+:;: 'Vim'
+setup_vim
+
 :;: 'Minimum necessary rpms'
 min_necc_packages
 
+:;: 'Git debug settings'
+enable_git_debug_settings
+
 :;: 'Minimum necessary git commands'
-min_necc_git_cmds
+setup_git
+
+:;: 'Make and change into directories'
+setup_dirs
+
+:;: 'SSH'
+setup_ssh
+
+:;: 'GPG'
+gpg_d=~/.gnupg
+sudo -- chown "${UID}:${UID}" "${gpg_d}" || exit "${nL}"
+chmod --recursive 700 "${gpg_d}"
+
+if grep --extended-regexp '[g]pg-a.*daemon' "${qui__[@]}" <<< "${ps_o}"
+then
+  gpgconf --kill gpg-agent
+fi
+
+gpg-connect-agent /bye 2> /dev/null
+GPG_TTY=$( tty )
+export GPG_TTY
+
+  #set -x # <>
+
+
+
 
 :;: 'gh -- github CLI configuration'
 declare -A github_configs
@@ -754,7 +1258,7 @@ do
     gh config set "${KK}" "${github_configs[$KK]}"
   fi
 done
-unset gh_config_list_out github_configs KK
+unset KK gh_config_list_out github_configs
 
 :;: 'gh -- Login to github'
 ## Note, executing this command just once
@@ -763,7 +1267,7 @@ then
   if ! pgrep 'firefox'
   then
     firefox --browser &
-    pause_to_check "$nL" 'Waiting till browser is open before running  gh auth  command'
+    #pause_to_check "$nL" 'Waiting till browser is open before running  gh auth  command'
     gh_auth_login_command
   fi
 fi
@@ -780,14 +1284,45 @@ unset QQ
 
   set -x
 
-:;: 'Bash'
+:;: 'Clone repo'
+[[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
 
+if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
+then
+  git clone --verbose --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
+fi
+
+:;: 'Bash'
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
-## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
+
+:;: 'Do some backups'
+files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
+
+for WW in "${files_for_use_with_bash[@]}"
+do
+  : 'File must exist'
+  if ! sudo -- [ -f "${WW}" ]
+  then
+    er_x "line ${nL}, ${WW}"
+  fi
+
+  : '...of the array files_for_use_with_bash'
+  if ! sudo -- [ -e "${WW}.orig" ]
+  then
+    sudo -- rsync --checksum --archive -- "${WW}" "${WW}.orig"
+    sudo -- chmod 400 -- "${WW}.orig"
+    sudo -- chattr +i -- "${WW}.orig"
+  fi
+
+  : '...per-script-execution file backup'
+  sudo -- cp --archive -- "${WW}" "${WW}~" || er_x "line ${nL}, ${WW}"
+done
+unset WW
 
 :;: 'Env parameters for bashrc'
 
 :;: 'Color code assigned to PS0, ducking xtrace'
+## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
 if [[ -o xtrace ]]
 then
   set -
@@ -798,13 +1333,20 @@ else
 fi
 
 :;: 'Set up PROMPT_COMMAND'
+: 'Variables dependency level 1'
+pc_regx='not found$'
+propmt_colors_reset=$(tput sgr0)
+
+: 'Variables dependency level 2'
+prompt_cmd_0='printf "%b" "${propmt_colors_reset}"'
+
+: 'Variables dependency level 3'
+## Note, PROMPT_COMMAND could have been inherited as a string variable
 unset PROMPT_COMMAND
 declare -a PROMPT_COMMAND
-reset=$(tput sgr0)
-pr_cmd_0='printf "%b" "${reset}"'
-regexp='not found$'
-PROMPT_COMMAND=( [0]="${pr_cmd_0}" )
-if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${regexp} ]]
+PROMPT_COMMAND=( [0]="${prompt_cmd_0}" )
+
+if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${pc_regx} ]]
 then
   PROMPT_COMMAND+=( __vte_prompt_command )
 fi
@@ -814,36 +1356,36 @@ PS1="[\\u@\\h]\\\$ "
 BROWSER=$( command -v firefox )
 EDITOR=$( command -v vim )
 
-files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
-missing_vars_and_fns=()
-
 :;: 'Append user variables and functions into .bashrc.'
 ## Note, these arrays include some command substitutions which depend on some function definitions, which in
 #+  turn must be defined prior to defining these arrays
 
 :;: 'Define lists of parameters to be appended into bashrc'
-vars_for_appending_into_bashrc=( 'BROWSER' 'EDITOR' 'PROMPT_COMMAND' 'PS0' )
-fcns_for_appending_into_bashrc=( 'rm' ) #'__vte_osc7' '__vte_prompt_command' 
-
-#:;: 'Arrays must exist'
-#[[ -z ${vars_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
-#[[ -z ${fcns_for_appending_into_bashrc[*]} ]] && er_x "${nL}"
+## Note, there are multiple lists for variables due to layers of dependencies. Later in the process, 
+#+  each of these groups is relayed using associative arrays, which do not reliably maintain their internal
+#+  ordering, so, some consistent ordering must be imposed here.
+vars_for_bashrc_1=( 'BROWSER' 'EDITOR' 'PS0' 'propmt_colors_reset' )
+vars_for_bashrc_2=( 'prompt_cmd_0' )
+vars_for_bashrc_3=( 'PROMPT_COMMAND' )
+fcns_for_bashrc_1=( 'rm' ) #'__vte_osc7' '__vte_prompt_command' 
 
 :;: 'Said variables and functions must have already been defined';:
 :;: '  Variables'
-for AA in "${vars_for_appending_into_bashrc[@]}"
+missing_vars_and_fns=()
+
+for QQ in "${vars_for_bashrc_1[@]}" "${vars_for_bashrc_2[@]}" "${vars_for_bashrc_3[@]}"
 do
-  if [[ $( declare -p "${AA}" 2>&1 ) =~ ${regexp} ]]
+  if [[ $( declare -p "${QQ}" 2>&1 ) =~ ${pc_regx} ]]
   then
-    missing_vars_and_fns+=( "${AA}" )
+    missing_vars_and_fns+=( "${QQ}" )
   fi
 done
-unset AA
+unset QQ
 
 :;: '  Functions'
-for UU in "${fcns_for_appending_into_bashrc[@]}"
+for UU in "${fcns_for_bashrc_1[@]}"
 do
-  if [[ $( declare -pF "${UU}" 2>&1 ) =~ ${regexp} ]]
+  if [[ $( declare -pF "${UU}" 2>&1 ) =~ ${pc_regx} ]]
   then
     missing_vars_and_fns+=( "${UU}" )
   fi
@@ -858,129 +1400,34 @@ fi
 
 :;: 'Define bashrc_strings_*'
 ## Note, you want for these array elements to represent just one parameter or function each
-unset       bashrc_strings_F bashrc_strings_V
-declare -A  bashrc_strings_F bashrc_strings_V
+unset       bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
+declare -A  bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
 
 : '  bashrc: Variables'
-for VV in "${vars_for_appending_into_bashrc[@]}"
-do
-  bashrc_strings_V+=( ["define variable ${VV}"]=$( declare -p "${VV}" ) )
-done
-unset VV
+for XX in "${vars_for_bashrc_2[@]}"; do bashrc_strings_V1+=( ["define parameter ${XX}"]=$( declare -p "${XX}" ) ); done
+for YY in "${vars_for_bashrc_2[@]}"; do bashrc_strings_V2+=( ["define parameter ${YY}"]=$( declare -p "${YY}" ) ); done
+for ZZ in "${vars_for_bashrc_3[@]}"; do bashrc_strings_V3+=( ["define parameter ${ZZ}"]=$( declare -p "${ZZ}" ) ); done
+unset XX YY ZZ
 
 : '  bashrc: Functions (a.k.a. "subroutines")'
-for FF in "${fcns_for_appending_into_bashrc[@]}"
+for AA in "${fcns_for_bashrc_1[@]}"
 do
-  bashrc_strings_F+=( ["define subroutine ${FF}"]="function $( declare -pf "${FF}" )" )
+  bashrc_strings_F1+=( ["define subroutines ${AA}"]="function $( declare -pf "${AA}" )" )
 done
-unset FF
-
-:;: 'Do some backups'
-for VV in "${files_for_use_with_bash[@]}"
-do
-  : 'File must exist'
-  if ! sudo -- [ -f "${VV}" ]
-  then
-    er_x "line ${nL}, ${VV}"
-  fi
-
-  : '...of the array files_for_use_with_bash'
-  if ! sudo -- [ -e "${VV}.orig" ]
-  then
-    sudo -- rsync --checksum --archive -- "${VV}" "${VV}.orig"
-    sudo -- chmod 400 -- "${VV}.orig"
-    sudo -- chattr +i -- "${VV}.orig"
-  fi
-
-  : '...per-script-execution file backup'
-  sudo -- cp --archive -- "${VV}" "${VV}~" || er_x "line ${nL}, ${VV}"
-done
-unset VV
+unset AA
 
 :;: 'Write functions and variable definitions into bashrc files'
-write_bashrc_strings bashrc_strings_F bashrc_strings_V
+write_bashrc_strings bashrc_strings_F1 
+write_bashrc_strings bashrc_strings_V1
+write_bashrc_strings bashrc_strings_V2
+write_bashrc_strings bashrc_strings_V3
 
 ## Clean up from section Bash
-unset regexp pr_cmd_0
+unset pc_regx prompt_cmd_0
 unset files_for_use_with_bash bashrc_strings_F bashrc_strings_V
 unset -f write_bashrc_strings
 
-  #EC=101 LL="${nL}" exit
-
-## TODO: move vim section up above bash section
-
-:;: 'Vim'
-
-: 'Heredoc of vim-conf-text'
-cat <<- \EOF | tee -- "${tmpd}/vim-conf-text" > /dev/null
-	" ~/.vimrc
-
-	" per Google
-	set number
-
-	" per https://stackoverflow.com/questions/234564/tab-key-4-spaces-and-auto-indent-after-curly-braces-in-vim
-	filetype plugin indent on
-	" show existing tab with 2 spaces width
-	set tabstop=2
-	" when indenting with '>', use 2 spaces width
-	set shiftwidth=2
-	" On pressing tab, insert 2 spaces
-	set expandtab
-
-	" per https://superuser.com/questions/286290/is-there-any-way-to-hook-saving-in-vim-up-to-commiting-in-git
-  autocmd BufWritePost * execute '! if [[ -d .git ]]; then git commit -S -a -F -; fi'
-
-EOF
-
-: $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29'
-readarray -d '' -t arr_vrc < <( sudo -- find /root -name '*vimrc*' -print0 )
-
-case "${#arr_vrc[@]}" in
-  0 )
-      strng_vrc=/root/.vimrc
-    ;;\
-  1 )
-      strng_vrc="${arr_vrc[*]:=/root/.vimrc}"
-    ;;\
-  *)
-      printf '\n  Multiple .vimrc files found, please edit the filesystem.\n' >&2
-      printf '\t%s\n' "${arr_vrc[@]}" >&2
-      er_x "${nL}"
-    ;;\
-esac
-
-if (( "${#arr_vrc[@]}" == 1 ))
-then
-  read -r WW XX < <( sudo -- sha256sum -- "${tmpd}/vim-conf-text" 2>&1 )
-  read -r YY XX < <( sudo -- sha256sum -- "${strng_vrc}" 2>&1 )
-else
-  sudo -- touch -- "${strng_vrc}" # <> set-e
-fi
-
-: 'Write .vimrc'
-if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${WW} = "${YY}" ]]
-then
-  : $'Test returned \x22true,\x22 the number didn\x27t match, so write to .vimrc'
-
-  : 'Set the umask'
-  read -ra umask_prior < <( umask -p )
-  umask 177
-
-  : 'Write the root file'
-  sudo -- rsync --archive --checksum -- "${tmpd}/vim-conf-text" "${strng_vrc}" || er_x "${nL}"
-
-  : $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
-  sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
-  sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
-  chmod 0400 -- "/home/${USER}/.vimrc"
-
-  : 'Reset the umask'
-  builtin "${umask_prior[@]}"
-fi
-
-## Clean up after section Vim
-command -- rm --one-file-system --preserve-root=all --force -- "${tmpd}/vim-conf-text"
-unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
+  #EC=101 LN="${nL}" exit
 
 :;: 'Disk space, increase available by removing non-local locales'
 
@@ -1004,14 +1451,14 @@ readarray -d '' -t fsos3 < <(
 
 if (( ${#fsos3[@]} > 0 ))
 then
-  ## Note, for loop is run in a subshell, so unsetting ZZ is unnecessary
+  ## Note, for loop is run in a process substitution subshell, so unsetting BB is unnecessary
   readarray -d '' -t fsos4 < <( {
-    for ZZ in "${fsos3[@]}"
+    for BB in "${fsos3[@]}"
     do
-      printf '%s\0' "$( stat --printf='%i %n\n' -- "${ZZ}" )"
+      printf '%s\0' "$( stat --printf='%i %n\n' -- "${BB}" )"
     done ; } |
       sort --unique |
-      tr --delete '\n'
+      tr --delete '\n';
     )
 
   ## Question, does this assoc array fsos5 need to be declared as such? (I don't think so, but...)
@@ -1175,7 +1622,7 @@ pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons tr
 
 if [[ -n ${pkg_nms_for_removal:0:8} ]]
 then
-  ## Note, this  printf  command uses nulls so that '-e' and '%s.*' will be read as separate indices
+  ## Note, this  printf  command uses nulls so that  -e  and  %s...  will be read as separate indices
   #+  by  readarray
   readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${pkg_nms_for_removal[@]}" )
   readarray -t removable_pkgs < <(
@@ -1217,7 +1664,7 @@ do
       grep -vEe ^'replacing'$
     )
 
-  ## remove all *kernel* and *firmware* rpms from $pkgs_for_upgrade array
+  ## remove all  kernel  and  firmware  rpms from $pkgs_for_upgrade array
   for HH in "${!pkgs_for_upgrade[@]}"
   do
     if [[ ${pkgs_for_upgrade[HH]} =~ kernel|firmware ]]
@@ -1245,6 +1692,7 @@ do
       break
     fi
   done
+  unset II
 
   ## Run `dnf needs-restarting`, collecting PID/commandline pairs
   a_pids=()
@@ -1259,7 +1707,7 @@ do
 
 done
 
-  pause_to_check "$nL" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
+  #pause_to_check "$nL" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
 
 :;: 'Find out whether an RPM is installed, one by one'
 for UU in "${!addl_pkgs[@]}"
@@ -1272,7 +1720,7 @@ do
 done
 unset UU
 
-  pause_to_check "$nL" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
+  #pause_to_check "$nL" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
 
 ## Note, this section should upgrade rpms one by one
 
@@ -1282,7 +1730,7 @@ then
   sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || er_x "${nL}"
 fi
 
-  pause_to_check "$nL" $'From the \x24addl_pkgs array, install the remainder' # <>
+  #pause_to_check "$nL" $'From the \x24addl_pkgs array, install the remainder' # <>
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
@@ -1306,7 +1754,7 @@ then
       do
         ps aux | awk "\$2 ~ /${WW}/ { print }"
 
-        pause_to_check "$nL" 'Execute a lengthy \x60kill --timeout...\x60 command?'
+        #pause_to_check "$nL" 'Execute a lengthy \x60kill --timeout...\x60 command?'
 
         sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
           --timeout 1000 HUP \
@@ -1314,11 +1762,13 @@ then
           --timeout 1000 TERM \
           --timeout 1000 KILL -- "$WW"
 
+        #sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose --timeout 1000 HUP --timeout 1000 USR1 --timeout 1000 TERM --timeout 1000 KILL -- "$WW"
+
         sleep 3
 
         ps aux | awk "\$2 ~ /${WW}/ { print }"
 
-        pause_to_check "$nL" 'Now do you need to manually restart anything?'
+        #pause_to_check "$nL" 'Now do you need to manually restart anything?'
 
       done
       unset WW
@@ -1332,25 +1782,28 @@ unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
 unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
   #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
-  #EC=101 LL="$nL" exit # <>
+  #EC=101 LN="$nL" exit # <>
   #set -x # <>
 
-  pause_to_check "$nL" 'Begin section on restarting processes?' # <>
+  #pause_to_check "$nL" 'Begin section on restarting processes?' # <>
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 a_pids=()
 get_pids_for_restarting
 
-  #EC=101 LL="$nL" exit # <>
+  #EC=101 LN="$nL" exit # <>
 
 hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
+
+## TODO: change temp-vars (II, XX, etc) to fully named vars
 
 if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
 then
   while true
   do
 
-    ## Note,  [[ ... = , this second test,  [[ ${a_pids[*]} = 1 ]]  is correct; ie, do not use ((...))
+    ## Note,  [[ ... = , this second test,  [[ ${a_pids[*]} = 1 ]]  is correct. This means, do not use 
+    #+  ((...)) , and '=' is intended to that '1' on RHS is matched as in Pattern Matching, ie, as "PID 1."
     :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
     if [[ -n ${a_pids[*]: -1:1} ]] && ! [[ ${a_pids[*]} = 1 ]]
     then
@@ -1373,13 +1826,13 @@ then
         (( ZZ == 1 )) && continue 001
         sleep 1
 
-          pause_to_check "$nL" '' # <>
+          #pause_to_check "$nL" '' # <>
 
         for AA in HUP USR1 TERM KILL
         do
 
             : "To kill PID $ZZ with signal $AA" # <>
-            pause_to_check "$nL" # <>
+            #pause_to_check "$nL" # <>
 
           #sleep 1
           sync --file-system
@@ -1427,7 +1880,7 @@ then
   unset II XX a_pids is_zombie
 fi
 
-  #EC=101 LL="$nL" exit # <>
+  #EC=101 LN="$nL" exit # <>
   #set -x # <>
 
 :;: 'Restart NetworkManager if necessary'
@@ -1445,6 +1898,20 @@ unset BB
 # <Logs> Write to TTY and exit
 #"$(type -P kill)" --signal USR2 -- "$$" # <Logs>
 
+:;: 'Remind user of commands for the interactive shell'
+
+popd > /dev/null || exit "${nL}"
+
+if ! [[ ${PWD} = ${dev_d1}/${scr_repo_nm} ]]
+then
+  printf '\n  Now run this command: \n'
+  printf '\n\t cd "%s/%s" ; git status \n\n' "${dev_d1}" "${scr_repo_nm}"
+fi
+
+
+
+:;: 'Clean up & exit'
+command rm --force --recursive "${verb__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
-EC='00' LL="$nL" exit
+EC='00' LN="$nL" exit
 
