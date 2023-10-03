@@ -673,7 +673,7 @@ function setup_git(){ :
 
     #EC=101 LN="$LINENO" exit # <>
 
-  :;: 'Git -- setup configuration - Loop A'
+  :;: 'Git -- Create files and set DAC`s as necessary - Loop A'
   local AA
   for AA in "${git_files_a[@]}"
   do
