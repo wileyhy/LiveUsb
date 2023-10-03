@@ -631,7 +631,8 @@ function setup_git(){ :
   :;: 'Git -- parameters, dependency level 2'
   if [[ -f ${git_conf_global_f} ]]
   then
-    git_conf_global_f=$( git config --global --list )
+    local git_cnf_glob_list
+    git_cnf_glob_list=$( git config --global --list )
   fi
 
   local -A git_keys
@@ -687,10 +688,13 @@ function setup_git(){ :
   builtin "${prev_umask[@]}"
 
   :;: 'Git -- remove a configuration key/value pair if present'
-  if grep gpg.format "${qui__[@]}" "${git_conf_global_f[@]}"
+  if grep gpg.format "${qui__[@]}" <<< "${git_cnf_glob_list[@]}"
   then
     git config --global --unset gpg.format 
   fi
+
+    declare -p git_conf_global_f git_cnf_glob_list
+    EC=101 LN="$LINENO" exit # <>
 
   :;: 'Git -- setup configuration - Loop B'
   local BB
