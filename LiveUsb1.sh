@@ -1901,7 +1901,7 @@ then
           if ps --no-headers --quick-pid "${ZZ}"
           then
 
-            :;: '...then \kill\ it with the according per-loop SIGNAL...'
+            :;: $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
             ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
             #+ than whether the  kill  operation succeeded, per  info kill .
             sudo -- "$(type -P kill)" --signal "${AA}" -- "${ZZ}"
