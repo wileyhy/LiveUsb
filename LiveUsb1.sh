@@ -675,8 +675,8 @@ function setup_git(){ :
 
     #EC=101 LN="$LINENO" exit # <>
 
+  :;: 'Git -- setup configuration - Loop A'
   local AA
-  
   for AA in "${git_files_a[@]}"
   do
     sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
@@ -692,7 +692,7 @@ function setup_git(){ :
     git config --global --unset gpg.format 
   fi
 
-  :;: 'Git -- setup configuration - Loop A'
+  :;: 'Git -- setup configuration - Loop B'
   local BB
   for BB in "${!git_keys[@]}"
   do
