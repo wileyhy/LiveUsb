@@ -623,10 +623,8 @@ function setup_git(){ :
   
   : '  Paramters with globs'
   ## Note, use of globs. The RE pattern must match all of the patterns in the array assignments
-  #local git_files_a git_files_b git_regexp 
   local git_files_a git_regexp 
-  git_files_a=( /etc/git* /etc/.git* ~/.git* )  ## Q, shouldn't "~/.git*" be included in this list? 
-  #git_files_b=( ~/.git*_system )
+  git_files_a=( /etc/git* /etc/.git* ~/.git* )
   git_regexp='git*'
 
   :;: 'Git -- parameters, dependency level 2'
@@ -664,16 +662,12 @@ function setup_git(){ :
 
   for ZZ in "${!git_files_a[@]}"
   do
-      #declare -p git_files_a ZZ # <>
-
     if [[ ${git_files_a[ZZ]} =~ "${git_regexp}" ]]
     then
       unset 'git_files_a[ZZ]'
     fi
   done
   unset ZZ git_regexp
-
-    #EC=101 LN="$LINENO" exit # <>
 
   :;: 'Git -- Create files and set DAC`s as necessary - Loop A'
   local AA
@@ -693,9 +687,6 @@ function setup_git(){ :
   then
     git config --global --unset gpg.format 
   fi
-
-    #declare -p git_conf_global_f git_cnf_glob_list
-    #EC=101 LN="$LINENO" exit # <>
 
   :;: 'Git -- setup configuration - Loop B'
   local BB
@@ -733,8 +724,6 @@ function setup_git(){ :
     sudo -- chmod 0644 "${verb__[@]}" "${git_mesg}" || exit "${nL}"
   fi
 
-    #set -x # <>
-
   :;: 'Git -- gitignore (global)'
   if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui__[@]}" "${git_ignr}"
   then
@@ -752,35 +741,17 @@ function setup_git(){ :
     sudo -- chmod 0644 "${verb__[@]}" "${git_ignr}" || exit "${nL}"
   fi
 
-    #exit $LINENO # <>
-
   :;: 'Git -- Set correct DAC`s (ownership and permissions)' 
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
-    #sudo -- rsync --checksum --archive "${verb__[@]}" "${HH}" ~
-
-    #sudo -- chown "${UID}:${UID}" "${verb__[@]}" ~/"${HH##*/}"
     sudo -- chown "${RUID}:${RGID}" "${verb__[@]}" "${HH}"
-
-    #chmod 0400 -- ~/"${HH##*/}"
     chmod 0400 "${verb__[@]}" "${HH}"
   done
   unset HH
 
-  #:;: 'Git -- Rename files'
-  #local II
-  #for II in "${git_files_b[@]}"
-  #do
-    #if [[ -e $II ]]
-    #then
-      #sudo -- mv --force "${verb__[@]}" "${II}" "${II%_system}"
-    #fi
-  #done
-  #unset II
-
   ## Clean up after section "Git"
-  unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys #git_files_b
+  unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys
 
   true "${fn_bndry} setup_git()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
