@@ -632,7 +632,7 @@ function setup_git(){ :
   if [[ -f ${git_conf_global_f} ]]
   then
     local git_cnf_glob_list
-    readarray -d git_cnf_glob_list < <( git config --global --list )
+    mapfile -t git_cnf_glob_list < <( git config --global --list )
   fi
 
   local -A git_keys
@@ -1774,7 +1774,7 @@ do
   ## Bug: extra grep - sb wi same awk cmd
 
   ## Get full list of rpms to upgrade, in an array; exit on non-zero
-  mapfile -d '' -t pkgs_for_upgrade < <(
+  readarray -d '' -t pkgs_for_upgrade < <(
     sudo -- dnf --assumeno --security upgrade 2>/dev/null |
       awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' |
       grep -vEe ^'replacing'$
