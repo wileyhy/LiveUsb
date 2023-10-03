@@ -672,12 +672,14 @@ function setup_git(){ :
     #EC=101 LN="$LINENO" exit # <>
 
   local AA
+  
   for AA in "${git_files_a[@]}"
   do
     sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
     sudo -- chmod 0644 "${verb__[@]}" "${AA}"
   done
   unset AA
+  
   builtin "${prev_umask[@]}"
 
   :;: 'Git -- remove a configuration key/value pair if present'
