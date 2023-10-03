@@ -688,13 +688,13 @@ function setup_git(){ :
   builtin "${prev_umask[@]}"
 
   :;: 'Git -- remove a configuration key/value pair if present'
-  if grep gpg.format "${qui__[@]}" <<< "${git_cnf_glob_list[@]}"
+  if printf '%s\n' "${git_cnf_glob_list[@]}" | grep gpg.format "${qui__[@]}"
   then
     git config --global --unset gpg.format 
   fi
 
-    declare -p git_conf_global_f git_cnf_glob_list
-    EC=101 LN="$LINENO" exit # <>
+    #declare -p git_conf_global_f git_cnf_glob_list
+    #EC=101 LN="$LINENO" exit # <>
 
   :;: 'Git -- setup configuration - Loop B'
   local BB
