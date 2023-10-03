@@ -621,6 +621,7 @@ function setup_git(){ :
   git_ignr=/etc/.gitignore_system               ## Q, are these real git-default files, or just something I made up?
   git_mesg=/etc/.gitmessage_system              ## Q, "" "" ""
   
+  : '  Paramters with globs'
   ## Note, use of globs. The RE pattern must match all of the patterns in the array assignments
   local git_files_a git_files_b git_regexp 
   git_files_a=( /etc/git* /etc/.git* ~/.git* )  ## Q, shouldn't "~/.git*" be included in this list? 
