@@ -658,11 +658,8 @@ function setup_git(){ :
   do
       #declare -p git_files_a ZZ # <>
   
-    if [[ -f ${git_files_a[ZZ]} ]] || [[ -d ${git_files_a[ZZ]} ]]
+    if ! [[ -f ${git_files_a[ZZ]} ]] && ! [[ -d ${git_files_a[ZZ]} ]]
     then
-        :
-      
-    else
       unset 'git_files_a[ZZ]'
     fi
   done
