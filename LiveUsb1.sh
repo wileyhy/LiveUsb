@@ -652,7 +652,7 @@ function setup_git(){ :
   read -r -a prev_umask < <( umask -p )
   umask 133
 
-  local regexp="(/etc|~)/[.]*git"           ## Note, I doubt the accuracy of this RE
+  local regexp="^(/etc|~)/[.]*git"           ## Note, I doubt the accuracy of this RE
   local ZZ
 
   for ZZ in "${!git_files_a[@]}"
