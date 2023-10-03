@@ -764,7 +764,7 @@ function setup_git(){ :
     sudo -- chown "${RUID}:${RGID}" "${verb__[@]}" "${HH}"
 
     #chmod 0400 -- ~/"${HH##*/}"
-    chmod 0400 -- "${HH}"
+    chmod 0400 "${verb__[@]}" "${HH}"
   done
   unset HH
 
