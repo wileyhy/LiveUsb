@@ -628,6 +628,7 @@ function setup_git(){ :
   then
     git_conf_global_f=$( git config --global --list )
   fi
+
   local -A git_keys
   git_keys=(
     ['color.diff']='always'
