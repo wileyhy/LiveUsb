@@ -1309,18 +1309,6 @@ unset KK gh_config_list_out github_configs
   hash -r
 
 :;: 'GH -- Login to github'
-## Note, executing this `gh auth status` command just once would be ideal
-
-## Note, when the user is logged out of `gh`, then `gh auth status` returns an exit code of 1, which 
-#+  triggers the ERR trap
-#get_gh_auth_stat=$( gh auth status )
-
-## Note, this command is somehow different from the immediately previous `gh auth status`
-#+    When the user is logged out of `gh`, then `gh auth status` returns an exit code of 1, which, when the
-#+  call to the ERR trap is commented out, triggers pipefail. However, it appears that when the ERR trap is
-#+  active, pipefail is not triggered.  ...?
-#count_gh_auth_checkmarks=$( gh auth status |& grep --only $'\xe2\x9c\x93' | wc -l )
-
 ## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
 printf -v count_gh_auth_checkmarks '%s' "$( gh auth status |& grep --count $'\xe2\x9c\x93' )"
 
