@@ -324,9 +324,9 @@ function reqd_user_files(){ :
 
   :;: 'For each array of conf files and/or directories'
   local -n QQ
-  ## It isn't necessary to declare QQ as a nameref, since unsetting QQ (see below) removes the nameref
-  #+  attribute, but I intend to use QQ as a nameref, so declaring QQ without a nameref attribute would be
-  #+  confusing
+  ## It isn't strictly necessary to declare QQ as a nameref here, since unsetting QQ (see below) removes the 
+  #+  nameref attribute, but I intend to use QQ as a nameref, so declaring QQ without a nameref attribute 
+  #+  would be confusing
 
   local AA
   for AA in "${arrays_of_conf_files[@]}"
