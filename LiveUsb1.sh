@@ -618,8 +618,8 @@ function setup_git(){ :
   local git_conf_global_f git_config_sys_conf_file git_ignr git_mesg
   git_conf_global_f=~/.gitconfig
   git_config_sys_conf_file=/etc/gitconfig
-  git_ignr=/etc/.gitignore_system               ## Q, are these real git-default files, or just something I made up?
-  git_mesg=/etc/.gitmessage_system              ## Q, "" "" ""
+  git_ignr=~/.gitignore
+  git_mesg=~/.gitmessage
   
   : '  Paramters with globs'
   ## Note, use of globs. The RE pattern must match all of the patterns in the array assignments
@@ -757,9 +757,13 @@ function setup_git(){ :
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
-    sudo -- rsync --checksum --archive "${verb__[@]}" "${HH}" ~
-    sudo -- chown "${UID}:${UID}" "${verb__[@]}" ~/"${HH##*/}"
-    chmod 0400 -- ~/"${HH##*/}"
+    #sudo -- rsync --checksum --archive "${verb__[@]}" "${HH}" ~
+
+    #sudo -- chown "${UID}:${UID}" "${verb__[@]}" ~/"${HH##*/}"
+    sudo -- chown "${RUID}:${RGID}" "${verb__[@]}" "${HH}"
+
+    #chmod 0400 -- ~/"${HH##*/}"
+    chmod 0400 -- "${HH}"
   done
   unset HH
 
