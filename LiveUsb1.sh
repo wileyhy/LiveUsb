@@ -672,7 +672,7 @@ function setup_git(){ :
   done
   unset ZZ git_regexp
 
-    EC=101 LN="$LINENO" exit # <>
+    #EC=101 LN="$LINENO" exit # <>
 
   local AA
   
