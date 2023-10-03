@@ -704,7 +704,7 @@ function setup_git(){ :
     
       : "BB:$BB" # <>
     
-    if ! grep -e "${BB} = ${git_keys[$BB]}" "${qui__[@]}" "${git_conf_global_f}"
+    if ! grep -e "${BB#*.} = ${git_keys[$BB]}" "${qui__[@]}" "${git_conf_global_f}"
     then
       git config --global "${BB}" "${git_keys[$BB]}"
     fi
