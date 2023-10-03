@@ -687,7 +687,7 @@ function setup_git(){ :
   builtin "${prev_umask[@]}"
 
   :;: 'Git -- remove a configuration key/value pair if present'
-  if grep gpg.format "${qui__[@]}" <<< "${git_conf_global_f[@]}"
+  if grep gpg.format "${qui__[@]}" "${git_conf_global_f[@]}"
   then
     git config --global --unset gpg.format 
   fi
@@ -700,7 +700,7 @@ function setup_git(){ :
     
       : "BB:$BB" # <>
     
-    if ! grep "${BB}=${git_keys[$BB]}" "${qui__[@]}" "${git_conf_global_f}"
+    if ! grep -e "${BB} = ${git_keys[$BB]}" "${qui__[@]}" "${git_conf_global_f}"
     then
       git config --global "${BB}" "${git_keys[$BB]}"
     fi
