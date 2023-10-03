@@ -1284,6 +1284,7 @@ else
   printf '\n\tgpg-agent daemon is NOT running\n\n'
 fi
 
+## ???
 #gpg-connect-agent --verbose /bye
 
 GPG_TTY=$( tty )
