@@ -1280,7 +1280,7 @@ min_necc_packages
 :;: 'Git'
 setup_git
 
-    EC=101 LN="$LINENO" exit # <>
+    #EC=101 LN="$LINENO" exit # <>
 
 :;: 'Make and change into directories'
 setup_dirs
