@@ -2000,8 +2000,6 @@ then
   printf '\n\t cd "%s/%s" ; git status \n\n' "${dev_d1}" "${scr_repo_nm}"
 fi
 
-
-
 :;: 'Clean up & exit'
 command rm --force --recursive "${verb__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
