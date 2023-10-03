@@ -1398,7 +1398,7 @@ fi
 :;: 'Set up PROMPT_COMMAND'
 : 'Variables dependency level 1'
 pc_regx='not found$'
-propmt_colors_reset=$(tput sgr0)
+propmt_colors_reset=$( tput sgr0 )
 
 : 'Variables dependency level 2'
 prompt_cmd_0='printf "%b" "${propmt_colors_reset}"'
