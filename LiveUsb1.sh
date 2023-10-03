@@ -623,9 +623,10 @@ function setup_git(){ :
   
   : '  Paramters with globs'
   ## Note, use of globs. The RE pattern must match all of the patterns in the array assignments
-  local git_files_a git_files_b git_regexp 
+  #local git_files_a git_files_b git_regexp 
+  local git_files_a git_regexp 
   git_files_a=( /etc/git* /etc/.git* ~/.git* )  ## Q, shouldn't "~/.git*" be included in this list? 
-  git_files_b=( ~/.git*_system )
+  #git_files_b=( ~/.git*_system )
   git_regexp='git*'
 
   :;: 'Git -- parameters, dependency level 2'
@@ -712,7 +713,7 @@ function setup_git(){ :
   done
   unset BB
 
-  :;: 'Git -- gitmessage (system)'
+  :;: 'Git -- gitmessage (global)'
   if ! [[ -f ${git_mesg} ]]
   then
     :;: '  Heredoc: gitmessage'
@@ -734,7 +735,7 @@ function setup_git(){ :
 
     #set -x # <>
 
-  :;: 'Git -- gitignore (system)'
+  :;: 'Git -- gitignore (global)'
   if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui__[@]}" "${git_ignr}"
   then
     :;: '  Heredoc: gitignore'
@@ -753,7 +754,7 @@ function setup_git(){ :
 
     #exit $LINENO # <>
 
-  :;: 'Git -- Copy root-user files to USER'
+  :;: 'Git -- Set correct DAC`s (ownership and permissions)' 
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
@@ -767,19 +768,19 @@ function setup_git(){ :
   done
   unset HH
 
-  :;: 'Git -- Rename files'
-  local II
-  for II in "${git_files_b[@]}"
-  do
-    if [[ -e $II ]]
-    then
-      sudo -- mv --force "${verb__[@]}" "${II}" "${II%_system}"
-    fi
-  done
-  unset II
+  #:;: 'Git -- Rename files'
+  #local II
+  #for II in "${git_files_b[@]}"
+  #do
+    #if [[ -e $II ]]
+    #then
+      #sudo -- mv --force "${verb__[@]}" "${II}" "${II%_system}"
+    #fi
+  #done
+  #unset II
 
   ## Clean up after section "Git"
-  unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys git_files_b
+  unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys #git_files_b
 
   true "${fn_bndry} setup_git()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
