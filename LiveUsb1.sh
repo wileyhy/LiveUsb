@@ -652,23 +652,21 @@ function setup_git(){ :
   read -r -a prev_umask < <( umask -p )
   umask 133
 
-  #local regexp="^(/etc|~)/[.]*git"           ## Note, I doubt the accuracy of this RE
   local ZZ
 
   for ZZ in "${!git_files_a[@]}"
   do
       #declare -p git_files_a ZZ # <>
   
-    #if [[ ${git_files_a[ZZ]} =~ ${regexp} ]]
-    if ! [[ -f ${git_files_a[ZZ]} ]] || ! [[ -d ${git_files_a[ZZ]} ]]
+    if [[ -f ${git_files_a[ZZ]} ]] || [[ -d ${git_files_a[ZZ]} ]]
     then
+        :
       
-        #declare -p BASH_REMATCH # <>
-
+    else
       unset 'git_files_a[ZZ]'
     fi
   done
-  unset ZZ #regexp
+  unset ZZ
 
     EC=101 LN="$LINENO" exit # <>
 
