@@ -20,7 +20,6 @@
 
 # <> Debugging
 set -x # <>
-
 set -a # <>
 set -C # <>
 set -u # <>
@@ -46,9 +45,6 @@ color_reset=$( tput sgr0 )
 shopt -s expand_aliases
 alias .y:=': $color_yellow ; :'
 alias .^:=': $color_reset ; :'
-
-  #.:;: $'TESTING\x60s -- \x56\x61\x72\x69\x61\x62\x6c\x65\x73\x20\x6c\x69\x6b\x65\x6c\x79\x20\x74\x6f\x20\x62\x65\x20\x6d\x61\x6e\x75\x61\x6c\x6c\x79\x20\x63\x68\x61\x6e\x67\x65\x64\x20\x77\x69\x74\x68\x20\x73\x6f\x6d\x65\x20\x72\x65\x67\x75\x6c\x61\x72\x69\x74\x79';.^: # <>
-  #exit 101 # <>
 
 :;: 'Variables likely to be manually changed with some regularity, or which absolutely must be defined early on'
 # shellcheck disable=SC2034
@@ -310,7 +306,7 @@ function reqd_user_files(){ :
   #+  zero gets unset for whatever reason, but if there are any values in the array at all, then index
   #+  '-1' is guaranteed to exist. ...unless the array is completely empty...
   #+	but I don't want to UNSET ie RESET the array on each loop. If it's actually empty, I want to fill
-  #+  it, but i
+  #+  it, but I, um....
   #+ In this script, index zero should exist, barring any future changes. So,
   #+  it's a bit of future-proofing.
   local -a lsblk_out
@@ -345,7 +341,7 @@ function reqd_user_files(){ :
     unset -n QQ
     local -n QQ
     local -n QQ="${AA}"   ## good code
-    #QQ="${AA}"           ## baad code
+    #QQ="${AA}"           ## baaad code
 
     :;: 'For each conf file or dir'
     local BB
@@ -610,10 +606,6 @@ function setup_git(){ :
   ## Bug? in vim, when quoting 'EOF', $tmp_dir changes color, but bash still expands the redirection
   #+ destination file.
 
-  ## Buggy.  I think there's some bugginess going on with these system files. ie, I don't think git actually 
-  #+  uses files in etc...?
-  #+    "$XDG_CONFIG_HOME/git/ignore, $GIT_DIR/info/exclude, .gitignore" - `man gitignore`
-
   :;: 'Git -- parameters, dependency level 1'
   local git_conf_global_f git_config_sys_conf_file git_ignr git_mesg
   git_conf_global_f=~/.gitconfig
@@ -718,10 +710,9 @@ function setup_git(){ :
 
 		EOF
 
-    ## Note: this use of  sudo  is for giving write permissions to  tee
     # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
-    sudo -- tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || exit "${nL}"
-    sudo -- chmod 0644 "${verb__[@]}" "${git_mesg}" || exit "${nL}"
+    tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || exit "${nL}"
+    chmod 0644 "${verb__[@]}" "${git_mesg}" || exit "${nL}"
   fi
 
   :;: 'Git -- gitignore (global)'
@@ -735,10 +726,9 @@ function setup_git(){ :
 
 		EOF
 
-    ## Note: this use of  sudo  is for giving write permissions to  tee
     # shellcheck disable=SC2024
-    sudo -- tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || exit "${nL}"
-    sudo -- chmod 0644 "${verb__[@]}" "${git_ignr}" || exit "${nL}"
+    tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || exit "${nL}"
+    chmod 0644 "${verb__[@]}" "${git_ignr}" || exit "${nL}"
   fi
 
   :;: 'Git -- Set correct DAC`s (ownership and permissions)' 
@@ -892,8 +882,8 @@ function setup_ssh(){ :
     #+          --timeout 1000 TERM \
     #+          --timeout 1000 KILL -- "$WW"
     #+
-    #+    And while we're on the topic, can `kill --help` please show the help file for /bin/kill, since
-    #+  using that syntax most likely indicates that intention?
+    #+    Otherwise, it would be useful, IMO, if `kill --help` showed the help file for /bin/kill, since
+    #+  using that syntax most likely indicates that intention  :-\
 
     if [[ ${#ssh_agent_pids[@]} -gt 0 ]]
     then
@@ -916,15 +906,13 @@ function setup_ssh(){ :
     fi
 
     ## Note:  ssh-agent -s  is "generate Bourne shell commands on stdout."
-
     ssh_agent_o=$( ssh-agent -s )
     eval "${ssh_agent_o}"
 
-    ## Note:  ssh-add  and  ssh  don't have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
-    #+ pseudo-terminal allocation.
-
     ## Bug? hardcoded filename
 
+    ## Note:  ssh-add  and  ssh  don't have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
+    #+  pseudo-terminal allocation.
     ssh-add ~/.ssh/id_ed25519
     ssh-add -L
     ssh -T git@github.com
@@ -1116,11 +1104,6 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
   true "${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
-  #if [[ -e ${tmp_dir} ]]
-  #then
-    #command rm --one-file-system --preserve-root=all --force --recursive -- "${tmp_dir}"
-  #fi
-
   trap - EXIT
 
   if [[ ${exit_trap_ec} -eq '00' ]]
@@ -1222,8 +1205,6 @@ function write_ssh_conf() { :
 
   #EC=101 LN="$LINENO" exit # <>
 
-
-
 :;: 'Define trap on ERR'
 trap trap_err ERR
 
@@ -1236,8 +1217,6 @@ test_os
 :;: 'Variables'
 setup_vars
 
-
-
 :;: '<Logs>'
 #set -x
 #logf="${tmp_dir}/log.${scr_nm}.${script_start_time}.txt"
@@ -1248,8 +1227,6 @@ setup_vars
 # EXIT -- for exiting
 # HUP USR1 TERM KILL -- for restarting processes
 # INT QUIT USR2 -- for stopping logging
-
-
 
 :;: 'Regular users with sudo, only'
 must_be_root
@@ -1314,8 +1291,6 @@ export GPG_TTY
 
   #set -x # <>
 
-
-
 :;: 'GH -- github CLI configuration'
 declare -A github_configs
 github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
@@ -1372,8 +1347,6 @@ unset QQ
 
   set -x
 
-
-
 :;: 'Clone repo'
 [[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
 
@@ -1381,8 +1354,6 @@ if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
 then
   git clone --verbose --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
 fi
-
-
 
 :;: 'Bash'
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
@@ -1814,7 +1785,7 @@ unset UU
 
   #pause_to_check "$nL" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
 
-## Note, this section should upgrade rpms one by one
+## Bug, this section should upgrade rpms one by one
 
 :;: 'Upgrade any installed RPMs from the main list, en masse'
 if [[ -n ${pkgs_installed[*]: -1:1} ]]
@@ -1854,8 +1825,6 @@ then
           --timeout 1000 TERM \
           --timeout 1000 KILL -- "$WW"
 
-        #sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose --timeout 1000 HUP --timeout 1000 USR1 --timeout 1000 TERM --timeout 1000 KILL -- "$WW"
-
         sleep 3
 
         ps aux | awk "\$2 ~ /${WW}/ { print }"
@@ -1873,10 +1842,7 @@ unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,l
 unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
 unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
-  #df --sync --output=fstype,avail,pcent,target -- . | grep --invert-match ^Type # <>
   #EC=101 LN="$nL" exit # <>
-  #set -x # <>
-
   #pause_to_check "$nL" 'Begin section on restarting processes?' # <>
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
@@ -1973,7 +1939,6 @@ then
 fi
 
   #EC=101 LN="$nL" exit # <>
-  #set -x # <>
 
 :;: 'Restart NetworkManager if necessary'
 
