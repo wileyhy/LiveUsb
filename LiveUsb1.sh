@@ -665,8 +665,6 @@ function setup_git(){ :
       #declare -p git_files_a ZZ # <>
 
     if [[ ${git_files_a[ZZ]} =~ "${git_regexp}" ]]
-  
-    #if ! [[ -f ${git_files_a[ZZ]} ]] && ! [[ -d ${git_files_a[ZZ]} ]]
     then
       unset 'git_files_a[ZZ]'
     fi
