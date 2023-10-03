@@ -657,7 +657,7 @@ function setup_git(){ :
 
   for ZZ in "${!git_files_a[@]}"
   do
-      #declare -p git_files_a ZZ
+      #declare -p git_files_a ZZ # <>
   
     if [[ ${git_files_a[ZZ]} =~ ${regexp} ]]
     then
