@@ -615,13 +615,17 @@ function setup_git(){ :
   #+    "$XDG_CONFIG_HOME/git/ignore, $GIT_DIR/info/exclude, .gitignore" - `man gitignore`
 
   :;: 'Git -- parameters, dependency level 1'
-  local git_conf_global_f git_config_sys_conf_file git_files_a git_files_b git_ignr git_mesg
+  local git_conf_global_f git_config_sys_conf_file git_ignr git_mesg
   git_conf_global_f=~/.gitconfig
   git_config_sys_conf_file=/etc/gitconfig
-  git_files_a=( /etc/git* /etc/.git* )      ## Q, shouldn't "~/.git*" be included in this list? 
+  git_ignr=/etc/.gitignore_system               ## Q, are these real git-default files, or just something I made up?
+  git_mesg=/etc/.gitmessage_system              ## Q, "" "" ""
+  
+  ## Note, use of globs. The RE pattern must match all of the patterns in the array assignments
+  local git_files_a git_files_b git_regexp 
+  git_files_a=( /etc/git* /etc/.git* ~/.git* )  ## Q, shouldn't "~/.git*" be included in this list? 
   git_files_b=( ~/.git*_system )
-  git_ignr=/etc/.gitignore_system           ## Q, are these real git-default files, or just something I made up?
-  git_mesg=/etc/.gitmessage_system          ## Q, "" "" ""
+  git_regexp='git*'
 
   :;: 'Git -- parameters, dependency level 2'
   if [[ -f ${git_conf_global_f} ]]
@@ -653,8 +657,6 @@ function setup_git(){ :
   umask 133
 
   : '  Remove any unmatched glob patterns'
-  local git_regexp
-  git_regexp='/git*'
   local ZZ
 
   for ZZ in "${!git_files_a[@]}"
