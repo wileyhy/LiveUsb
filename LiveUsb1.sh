@@ -697,9 +697,9 @@ function setup_git(){ :
   for BB in "${!git_keys[@]}"
   do
     :;: '  Loop B - open'
-  
-    : "BB:$BB"
-
+    
+      : "BB:$BB" # <>
+    
     if ! grep "${BB}=${git_keys[$BB]}" "${qui__[@]}" <<< "${git_conf_global_f[@]}"
     then
       git config --global "${BB}" "${git_keys[$BB]}"
