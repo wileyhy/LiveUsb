@@ -632,7 +632,7 @@ function setup_git(){ :
   if [[ -f ${git_conf_global_f} ]]
   then
     local git_cnf_glob_list
-    mapfile -t git_cnf_glob_list < <( git config --global --list )
+    readarray -t git_cnf_glob_list < <( git config --global --list )
   fi
 
   local -A git_keys
