@@ -679,8 +679,10 @@ function setup_git(){ :
   local AA
   for AA in "${git_files_a[@]}"
   do
+    :;: '  Loop A - open'
     sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
     sudo -- chmod 0644 "${verb__[@]}" "${AA}"
+    : "  Loop A - shut" ;:
   done
   unset AA
   
@@ -696,7 +698,7 @@ function setup_git(){ :
   local BB
   for BB in "${!git_keys[@]}"
   do
-    :;: '  Loop A - open'
+    :;: '  Loop B - open'
   
     : "BB:$BB"
 
@@ -704,7 +706,7 @@ function setup_git(){ :
     then
       git config --global "${BB}" "${git_keys[$BB]}"
     fi
-    : "  Loop A - shut" ;:
+    : "  Loop B - shut" ;:
   done
   unset BB
 
