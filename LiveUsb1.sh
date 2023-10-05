@@ -159,8 +159,23 @@ function enable_git_debug_settings(){ :
 
 :;: 'Define er_x()'
 function er_x(){ local - hyphn="$-" exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  set -
 
-  printf '%s, Error, %s\n' "$scr_nm" "$*" >&2
+  ## Some positional parameters must exist
+  [[ $# -lt 1 ]] && return 1
+
+  ## The first positional parameter must be a digit, and should be the LINENO from where er_x() is called
+  if ! [[ $1 = [0-9]* ]]
+  then
+    printf '\n%s, %s, Error, first positional parameter must be a line number\n\n' "${scr_nm}" "${FUNCNAME[0]}"
+    return 2
+  fi
+
+  local fn_lineno
+  fn_lineno="$1"
+  shift
+
+  printf '%s, Error, line %d, %s\n' "${scr_nm}" "${fn_lineno}" "$*" >&2
 
   true "${fn_bndry} er_x() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
@@ -1355,7 +1370,7 @@ then
   then
     firefox --browser 2>/dev/null 1>&2 &
     sleep 5
-    pause_to_check "$nL" 'Waiting till browser is open before running  gh auth  command'
+    pause_to_check "${nL}" 'Waiting till browser is open before running  gh auth  command'
     gh_auth_login_command
   fi
 fi
@@ -1795,7 +1810,7 @@ do
 
 done
 
-  #pause_to_check "$nL" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
+  #pause_to_check "${nL}" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
 
 :;: 'Find out whether an RPM is installed, one by one'
 for UU in "${!addl_pkgs[@]}"
@@ -1808,7 +1823,7 @@ do
 done
 unset UU
 
-  #pause_to_check "$nL" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
+  #pause_to_check "${nL}" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
 
 ## Bug, this section should upgrade rpms one by one
 
@@ -1818,7 +1833,7 @@ then
   sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || er_x "${nL}"
 fi
 
-  #pause_to_check "$nL" $'From the \x24addl_pkgs array, install the remainder' # <>
+  #pause_to_check "${nL}" $'From the \x24addl_pkgs array, install the remainder' # <>
 
 :;: 'Install any as yet uninstalled RPMs from the main list as necessary'
 not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
@@ -1842,7 +1857,7 @@ then
       do
         ps aux | awk "\$2 ~ /${WW}/ { print }"
 
-        #pause_to_check "$nL" 'Execute a lengthy \x60kill --timeout...\x60 command?'
+        #pause_to_check "${nL}" 'Execute a lengthy \x60kill --timeout...\x60 command?'
 
         sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
           --timeout 1000 HUP \
@@ -1854,7 +1869,7 @@ then
 
         ps aux | awk "\$2 ~ /${WW}/ { print }"
 
-        #pause_to_check "$nL" 'Now do you need to manually restart anything?'
+        #pause_to_check "${nL}" 'Now do you need to manually restart anything?'
 
       done
       unset WW
@@ -1868,7 +1883,7 @@ unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
 unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
   #EC=101 LN="${nL}" exit # <>
-  #pause_to_check "$nL" 'Begin section on restarting processes?' # <>
+  #pause_to_check "${nL}" 'Begin section on restarting processes?' # <>
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 #a_pids=()
@@ -1909,13 +1924,13 @@ then
         (( ZZ == 1 )) && continue 001
         sleep 1
 
-          #pause_to_check "$nL" '' # <>
+          #pause_to_check "${nL}" '' # <>
 
         for AA in HUP USR1 TERM KILL
         do
 
             : "To kill PID $ZZ with signal $AA" # <>
-            #pause_to_check "$nL" # <>
+            #pause_to_check "${nL}" # <>
 
           #sleep 1
           sync --file-system
