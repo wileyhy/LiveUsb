@@ -179,19 +179,19 @@ function get_pids_for_restarting(){ :
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream. Yes, some of the array names are in fact spelled uncorrectly. 
   readarray -t dnf_o < <( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
-  [[ "${dnf_o[@]}" -eq 0 ]] && return 1
+  [[ "${#dnf_o[@]}" -eq 0 ]] && return 1
   
   readarray -t pipline0 < <( grep --invert-match --fixed-strings --regexp='/firefox/' <<< "${dnf_o[@]}" )
-  [[ "${pipline0[@]}" -eq 0 ]] && return 1
+  [[ "${#pipline0[@]}" -eq 0 ]] && return 1
   
   readarray -t pipline1 < <( awk '{ print $1 }' <<< "${pipline0[@]}" )
-  [[ "${pipline1[@]}" -eq 0 ]] && return 1
+  [[ "${#pipline1[@]}" -eq 0 ]] && return 1
   
   readarray -t pipline2 < <( grep --only-matching --extended-regexp ^'[0-9]*'$ <<< "${pipline1[@]}" )
-  [[ "${pipline2[@]}" -eq 0 ]] && return 1
+  [[ "${#pipline2[@]}" -eq 0 ]] && return 1
   
   readarray -d '' -t a_pids < <( tr '\n' '\0' <<< "${pipline2[@]}" )
-  [[ "${a_pids[@]}" -eq 0 ]] && return 1
+  [[ "${#a_pids[@]}" -eq 0 ]] && return 1
 
   true "${fn_bndry} get_pids_for_restarting()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
