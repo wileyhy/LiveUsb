@@ -1186,6 +1186,8 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
 }
 
 
+
+:;: 'Define trap_return()'
 function trap_return(){ :
   local -
   #set -
