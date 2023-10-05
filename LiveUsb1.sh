@@ -745,6 +745,47 @@ function setup_git(){ :
   true "${fn_bndry} setup_git()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+
+
+:;: 'setup_gpg()'
+function setup_gpg(){ :
+  local - hyphn="$-" _="${fn_bndry} setup_gpg() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
+
+  sudo -- \
+    find "${gpg_d}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
+      chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' || 
+        exit "${nL}"
+  find "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
+  find "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
+
+  : 'GPG -- If a gpg-agent daemon is running, or not, then, either way say so'
+  if grep --extended-regexp '[g]pg-a.*daemon' "${qui__[@]}" <<< "${ps_o}"
+  then
+    printf '\n\tgpg-agent daemon IS RUNNING\n\n'
+
+    ## Why was this command in here???  
+    #gpgconf --verbose --kill gpg-agent 
+
+  else
+    printf '\n\tgpg-agent daemon is NOT running\n\n'
+  fi
+
+  ## Why was this command in here???  
+  #gpg-connect-agent --verbose /bye
+
+  GPG_TTY=$( tty )
+  export GPG_TTY
+
+  true "${fn_bndry} setup_gpg()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+
+
+
+
+
+
 :;: 'Define setup_network()'
 function setup_network(){ :
   local - hyphn="$-" _="${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -1200,7 +1241,7 @@ function write_ssh_conf() { :
   true "${fn_bndry} write_ssh_conf()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-##  FUNCTION DEFINITIONS COMPLETE ##
+#######  FUNCTION DEFINITIONS COMPLETE #######
 
   #EC=101 LN="$LINENO" exit # <>
 
@@ -1265,31 +1306,10 @@ setup_dirs
 setup_ssh
 
 :;: 'GPG'
+setup_gpg
 
-sudo -- \
-  find "${gpg_d}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
-    chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' || 
-      exit "${nL}"
-find "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
-find "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
 
-: 'GPG -- If a gpg-agent daemon is running, or not, then, either way say so' ## Why???
-if grep --extended-regexp '[g]pg-a.*daemon' "${qui__[@]}" <<< "${ps_o}"
-then
-  printf '\n\tgpg-agent daemon IS RUNNING\n\n'
-  
-  #gpgconf --verbose --kill gpg-agent
-else
-  printf '\n\tgpg-agent daemon is NOT running\n\n'
-fi
 
-## ???
-#gpg-connect-agent --verbose /bye
-
-GPG_TTY=$( tty )
-export GPG_TTY
-
-  #set -x # <>
 
 :;: 'GH -- github CLI configuration'
 declare -A github_configs
