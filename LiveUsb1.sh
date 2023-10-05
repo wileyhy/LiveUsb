@@ -175,7 +175,12 @@ function get_pids_for_restarting(){ :
   local pipline0 pipline1 pipline2
   local -g a_pids
   local -g a_pids=()
-  
+
+  trap '
+    trap - RETURN
+    true "${fn_bndry} get_pids_for_restarting()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+    ' RETURN
+
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream. Yes, some of the array names are in fact spelled uncorrectly. 
   
@@ -198,7 +203,6 @@ function get_pids_for_restarting(){ :
   readarray -d '' -t a_pids < <( tr '\n' '\0' <<< "${pipline2[@]}" )
   [[ "${#a_pids[@]}" -eq 0 ]] && return
 
-  true "${fn_bndry} get_pids_for_restarting()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define gh_auth_login_command()'
