@@ -1142,7 +1142,7 @@ function test_os(){ :
   ## Note, test of $kern_rel is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
   if ! [[ ${kern_rel} =~ \.fc[0-9]{2}\. ]]
   then
-    error_and_exit "${LINENO}, OS is not Fedora"
+    die 'OS is not Fedora'
   fi
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
