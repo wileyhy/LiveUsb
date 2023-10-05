@@ -194,13 +194,6 @@ function get_pids_for_restarting(){ :
   local -g a_pids
   local -g a_pids=()
 
-  ## TODO: all xtrace END comments can be reduced to a single RETURN trap
-
-  trap '
-    trap - RETURN
-    true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
-    ' RETURN
-
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream. Yes, some of the array names are in fact spelled uncorrectly. 
   
@@ -1191,6 +1184,16 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
 
   builtin exit "${exit_trap_ec}"
 }
+
+
+function trap_return(){ :
+  local -
+  #set -
+  true "${fn_bndry} ${FUNCNAME[1]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+
+
 
 :;: 'Define write_bashrc_strings()'
 function write_bashrc_strings(){ :
