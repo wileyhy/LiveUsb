@@ -1633,7 +1633,7 @@ then
                   unset 'fsos5[$AA]'
                   break 00001
                 else
-                  error_and_exit "${nL}, unknown error"
+                  die 'Unknown error'
                 fi
               ;;\
           n|f)  printf '  Keeping this file. \n'
