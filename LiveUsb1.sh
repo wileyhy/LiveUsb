@@ -206,7 +206,7 @@ function get_pids_for_restarting(){ :
   #+  at time, or it could be a loop, but the array names and command strings would have to be in an
   #+  associative array, and that seems like adding complexity.
 
-  readarray -t dnf_o < <( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
+  readarray -t dnf_o < <( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || die )
   [[ "${#dnf_o[@]}" -eq 0 ]] && return
   
   readarray -t pipline0 < <( grep --invert-match --fixed-strings --regexp='/firefox/' <<< "${dnf_o[@]}" )
@@ -283,7 +283,7 @@ function must_be_root(){ :
   then
     er_x Must be a regular user and use sudo
   else
-    sudo --validate || er_x "${nL}"
+    sudo --validate || die
   fi
 
   true "${fn_bndry} must_be_root()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -350,7 +350,7 @@ function reqd_user_files(){ :
   #+ In this script, index zero should exist, barring any future changes. So, it's a bit of future-proofing.
   local -a lsblk_out
   readarray -d '' -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints | awk '{ print $1,$2,$3 }' )
-  [[ -n ${lsblk_out[@]} ]] || er_x "${nL}"
+  [[ -n ${lsblk_out[@]} ]] || die
 
   : $'Vars: Get device name where label \x24pttn_label can be found'
   local pttn_path
@@ -404,7 +404,7 @@ function reqd_user_files(){ :
           : 'If the USB device is NA, then exit'
           if [[ -z $pttn_path ]]
           then
-            er_x "${nL}" "USB device not available, ${pttn_label}"
+            die "USB device not available, ${pttn_label}"
           fi
 
           : 'If the partition is not mounted which holds the data directory, then mount it'
@@ -414,11 +414,11 @@ function reqd_user_files(){ :
             : 'Mountpoint must exist'
             if ! [[ -d "${mount_pt}" ]]
             then
-              sudo -- mkdir --parents -- "${mount_pt}" || er_x "${nL}"
+              sudo -- mkdir --parents -- "${mount_pt}" || die
             fi
 
             : $'Perform mount operation and re-sample \x60lsblk\x60'
-            sudo -- mount -- "${pttn_path}" "${mount_pt}" || er_x "${nL}"
+            sudo -- mount -- "${pttn_path}" "${mount_pt}" || die
 
             readarray -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints )
           fi
@@ -426,7 +426,7 @@ function reqd_user_files(){ :
           :;: 'If the source conf file/dir still does not exist, then throw an error'
           if ! sudo [ -e "${source_file}" ]
           then
-            er_x "${nL}" "${QQ[BB]}" "${source_file}"
+            die "${QQ[BB]}" "${source_file}"
           fi
         fi
 
@@ -583,7 +583,7 @@ function rsync_install_if_missing(){ :
   then
     if ! [[ -d "${fn_target_dir}" ]]
     then
-      er_x "${nL}" "${fn_target_dir}"
+      die "${fn_target_dir}"
     fi
   else
     read -r -a fn_umask < <( umask -p )
@@ -595,7 +595,7 @@ function rsync_install_if_missing(){ :
 
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
-    sudo -- rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || er_x "${nL}" "${fn_target_dir}"
+    sudo -- rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || die "${fn_target_dir}"
   fi
   unset fn_source_var fn_target_dir
 
@@ -848,14 +848,14 @@ function setup_network(){ :
     : 'Connect the interface'
     case "${#ifaces[@]}" in
       0 )
-        er_x "${nL}" "No network device available"
+        die "No network device available"
         ;;\
       1 )
         nmcli c up "${ifaces[*]}"
         sleep 5
         ;;\
       * )
-        er_x "${nL}" "Multiple network devices available"
+        die "Multiple network devices available"
         ;;\
     esac
 
@@ -890,11 +890,11 @@ function setup_ssh(){ :
     sudo -- \
       find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
         chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' || 
-          er_x "${nL}"
+          die
     find "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
     find "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
   else
-    er_x "${nL}"
+    die
   fi
   unset ssh_usr_conf_dir
 
@@ -997,8 +997,8 @@ function setup_ssh(){ :
 function setup_tempd(){ :
   local - hyphn="$-" _="${fn_bndry} setup_tempd() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
-  tmp_dir=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || er_x "${nL}" )
-  [[ -d ${tmp_dir} ]] || er_x "${nL}"
+  tmp_dir=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || die )
+  [[ -d ${tmp_dir} ]] || die
   readonly tmp_dir
 
   true "${fn_bndry} setup_tempd()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -1010,7 +1010,7 @@ function setup_time(){ :
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
-  sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "${nL}"
+  sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || die
   sudo -- chronyc makestep > /dev/null
 
   true "${fn_bndry} setup_time()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -1084,7 +1084,7 @@ function setup_vim(){ :
     *)
         printf '\n  Multiple .vimrc files found, please edit the filesystem.\n' >&2
         printf '\t%s\n' "${arr_vrc[@]}" >&2
-        er_x "${nL}"
+        die
       ;;\
   esac
 
@@ -1106,10 +1106,10 @@ function setup_vim(){ :
     umask 177
 
     : 'Write the root file'
-    sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || er_x "${nL}"
+    sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || die
 
     : $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
-    sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || er_x "${nL}"
+    sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || die
     sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
     chmod 0400 -- "/home/${USER}/.vimrc"
 
@@ -1196,8 +1196,8 @@ function write_bashrc_strings(){ :
   set -x
 
   :;: 'Certain parameters must be defined and have non-zero values'
-  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "${nL}"
-  (( $# == 0 ))                             && er_x "${nL}"
+  (( ${#files_for_use_with_bash[@]} == 0 )) && die
+  (( $# == 0 ))                             && die
 
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
@@ -1225,7 +1225,7 @@ function write_bashrc_strings(){ :
 
           : 'Then write the function definition into the file'
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" |
-            sudo -- tee --append -- "${file_x}" > /dev/null || er_x "${nL}"
+            sudo -- tee --append -- "${file_x}" > /dev/null || die
         else
           : 'Definition exists, skipping'
         fi
@@ -1388,7 +1388,7 @@ unset QQ
   set -x
 
 :;: 'Clone repo'
-[[ ${PWD} = "${dev_d1}" ]] || er_x "${nL}"
+[[ ${PWD} = "${dev_d1}" ]] || die
 
 if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
 then
@@ -1406,7 +1406,7 @@ do
   : 'File must exist'
   if ! sudo -- [ -f "${WW}" ]
   then
-    er_x "${nL}" "${WW}"
+    die "${WW}"
   fi
 
   : '...of the array files_for_use_with_bash'
@@ -1418,7 +1418,7 @@ do
   fi
 
   : '...per-script-execution file backup'
-  sudo -- cp --archive -- "${WW}" "${WW}~" || er_x "${nL}" "${WW}"
+  sudo -- cp --archive -- "${WW}" "${WW}~" || die "${WW}"
 done
 unset WW
 
@@ -1498,7 +1498,7 @@ unset UU
 :;: '  Test for any missing parameters'
 if (( ${#missing_vars_and_fns[@]} > 0 ))
 then
-  er_x "${nL}", "${missing_vars_and_fns[@]}"
+  die, "${missing_vars_and_fns[@]}"
 fi
 
 :;: 'Define bashrc_strings_*'
@@ -1830,7 +1830,7 @@ unset UU
 :;: 'Upgrade any installed RPMs from the main list, en masse'
 if [[ -n ${pkgs_installed[*]: -1:1} ]]
 then
-  sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || er_x "${nL}"
+  sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || die
 fi
 
   #pause_to_check "${nL}" $'From the \x24addl_pkgs array, install the remainder' # <>
@@ -1845,7 +1845,7 @@ then
 
   for VV in "${not_yet_installed_pkgs[@]}"
   do
-    sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" || er_x "${nL}"
+    sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" || die
 
     #a_pids=()
     get_pids_for_restarting
@@ -1987,7 +1987,7 @@ for BB in "${dns_srv_A}" "${dns_srv_1}"
 do
   if ! ping -4qc1 -- "${BB}" > /dev/null 2>&1
   then
-    sudo -- nice --adjustment=-20 -- systemctl restart -- NetworkManager.service || er_x "${nL}"
+    sudo -- nice --adjustment=-20 -- systemctl restart -- NetworkManager.service || die
   fi
 done
 unset BB
