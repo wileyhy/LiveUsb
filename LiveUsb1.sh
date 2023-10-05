@@ -85,7 +85,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  '__vte_osc7()'
   #+  '__vte_prompt_command()'
   #+  'enable_git_debug_settings()'
-  #+  'er_x()'
+  #+  'error_and_exit()'
   #+  'get_pids_for_restarting()'
   #+  'gh_auth_login_command()'
   #+  'min_necc_packages()'
@@ -138,8 +138,8 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
     #__vte_osc7
 #}
 
-:;: $'Define \x60die\x60 alias to function er_x()'
-alias die='er_x "${nL}"'
+:;: $'Define \x60die\x60 alias to function error_and_exit()'
+alias die='error_and_exit "${nL}"'
 
 :;: 'Define enable_git_debug_settings()'
 function enable_git_debug_settings(){ :
@@ -160,14 +160,14 @@ function enable_git_debug_settings(){ :
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-:;: 'Define er_x()'
-function er_x(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+:;: 'Define error_and_exit()'
+function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] && return 1
 
-  ## The first positional parameter must be a digit, and should be the LINENO from where er_x() is called
+  ## The first positional parameter must be a digit, and should be the LINENO from where error_and_exit() is called
   if ! [[ $1 = [0-9]* ]]
   then
     printf '\n%s, %s, Error, first positional parameter must be a line number\n\n' "${scr_nm}" "${FUNCNAME[0]}"
@@ -277,7 +277,7 @@ function must_be_root(){ :
 
   if (( UID == 0 ))
   then
-    er_x Must be a regular user and use sudo
+    error_and_exit Must be a regular user and use sudo
   else
     sudo --validate || die
   fi
@@ -1142,7 +1142,7 @@ function test_os(){ :
   ## Note, test of $kern_rel is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
   if ! [[ ${kern_rel} =~ \.fc[0-9]{2}\. ]]
   then
-    er_x "${LINENO}, OS is not Fedora"
+    error_and_exit "${LINENO}, OS is not Fedora"
   fi
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -1633,7 +1633,7 @@ then
                   unset 'fsos5[$AA]'
                   break 00001
                 else
-                  er_x "${nL}, unknown error"
+                  error_and_exit "${nL}, unknown error"
                 fi
               ;;\
           n|f)  printf '  Keeping this file. \n'
@@ -1752,7 +1752,7 @@ then
       then
         unset 'removable_pkgs[QQ]'
       else
-        er_x Line "${nL}", "${removable_pkgs[QQ]}"
+        error_and_exit Line "${nL}", "${removable_pkgs[QQ]}"
       fi
     done
     unset QQ
