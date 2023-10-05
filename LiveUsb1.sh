@@ -158,8 +158,8 @@ function enable_git_debug_settings(){ :
 }
 
 :;: 'Define er_x()'
-function er_x(){ local - hyphn="$-" exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  set -
+function er_x(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] && return 1
@@ -171,15 +171,15 @@ function er_x(){ local - hyphn="$-" exit_code="$?" _="${fn_bndry} er_x() BEGINS 
     return 2
   fi
 
-  local fn_lineno
-  fn_lineno="$1"
+  local loc_lineno
+  loc_lineno="$1"
   shift
 
-  printf '%s, Error, line %d, %s\n' "${scr_nm}" "${fn_lineno}" "$*" >&2
+  printf '%s, Error, line %d, %s\n' "${scr_nm}" "${loc_lineno}" "$*" >&2
 
   true "${fn_bndry} er_x() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
-  exit "${exit_code}"
+  builtin exit "${loc_exit_code}"
 }
 
 :;: 'Define get_pids_for_restarting()'

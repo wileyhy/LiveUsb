@@ -4,29 +4,51 @@
 
 unset -f rm __vte_osc7 __vte_prompt_command
 declare -n nL=LINENO
+fn_bndry=' ~~~ ~~~ ~~~ '
+fn_lvl=0
+scr_nm='LiveUsb1.sh'
 set -v
 
-function er_x()
-{
-  local - fn_exit_code=$?
-  : "$@"
-  builtin exit "${fn_exit_code}"
+:;: 'Define er_x()'
+function er_x(){ local - hyphn="$-" exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
+
+  ## Some positional parameters must exist
+  [[ $# -lt 1 ]] && return 1
+
+  ## The first positional parameter must be a digit, and should be the LINENO from where er_x() is called
+  if ! [[ $1 = [0-9]* ]]
+  then 
+    printf '\n%s, %s, Error, first positional parameter must be a line number\n\n' "${scr_nm}" "${FUNCNAME[0]}"
+    return 2
+  fi
+
+  local fn_lineno
+  fn_lineno="$1"
+  shift
+
+  printf '%s, Error, line %d, %s\n' "${scr_nm}" "${fn_lineno}" "$*" >&2
+
+  builtin exit "${exit_code}"
+
+  true "${fn_bndry} er_x() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+
 shopt -s expand_aliases
-alias alias_erx='er_x "line ${nL}"'
+alias alias_erx='er_x "${nL}"'
 
 function foo()
 {
   local -
   : 'Printed strings, ie, no aliases'
-  (( $#                             == 1 )) && er_x "line ${nL}"
+  (( $#                             == 1 )) && er_x "${nL}" a b c d e f 
   : 'Using alias'
-  (( $#                             == 2 )) && alias_erx
+  (( $#                             == 2 )) && alias_erx g h i j k l m 
   echo count $#
 }
 
-#foo alias_n
+foo alias_n
 
 foo alias_y alias_y
 
