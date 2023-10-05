@@ -1752,7 +1752,7 @@ then
       then
         unset 'removable_pkgs[QQ]'
       else
-        error_and_exit Line "${nL}", "${removable_pkgs[QQ]}"
+        die "${removable_pkgs[QQ]}"
       fi
     done
     unset QQ
