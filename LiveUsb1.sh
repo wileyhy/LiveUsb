@@ -277,7 +277,7 @@ function must_be_root(){ :
 
   if (( UID == 0 ))
   then
-    error_and_exit Must be a regular user and use sudo
+    die 'Must be a regular user and use sudo'
   else
     sudo --validate || die
   fi
