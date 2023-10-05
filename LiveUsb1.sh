@@ -171,12 +171,13 @@ function get_pids_for_restarting(){ :
   local - hyphn="$-" _="${fn_bndry} get_pids_for_restarting() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
 
   local dnf_o 
-  dnf_o=$( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
+  readarray -t dnf_o < <( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
 
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream
-  local pipeline1 pipeline2
-  pipline1=$( awk '{ print $1 }' <<< "${dnf_o}" )
+  local pipline0 pipline1 pipline2
+  pipline0=$(  )
+  pipline1=$( awk '{ print $1 }' <<< "${pipline0}" )
   pipline2=$( grep --only-matching --extended-regexp ^'[0-9]*'$ <<< "${pipline1}" )
 
   ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global
