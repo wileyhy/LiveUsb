@@ -107,6 +107,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  'test_os()'
   #+  'trap_err()'
   #+  'trap_exit()'
+  #+  'trap_return()'
   #+  'write_bashrc_strings()'
   #+)
 
