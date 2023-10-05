@@ -176,6 +176,8 @@ function get_pids_for_restarting(){ :
   local -g a_pids
   local -g a_pids=()
 
+  ## TODO: all xtrace END comments can be reduced to a single RETURN trap
+
   trap '
     trap - RETURN
     true "${fn_bndry} get_pids_for_restarting()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
