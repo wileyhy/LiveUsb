@@ -99,7 +99,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  'setup_gpg()'
   #+  'setup_network()'
   #+  'setup_ssh()'
-  #+  'setup_tempd()'setup_tempd()''
+  #+  'setup_tempd()'
   #+  'setup_time()'
   #+  'setup_vars()'
   #+  'setup_vim()'
