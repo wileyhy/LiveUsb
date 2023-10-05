@@ -275,7 +275,7 @@ function must_be_root(){ :
 }
 
 :;: 'Define pause_to_check()'
-## Usage,   pause_to_check $nL
+## Usage,   pause_to_check "${nL}"
 function pause_to_check() { local -I EC=101 LN="$1"
   set -x ## sb global ?
   local - hyphn="$-" reply _="${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -1867,14 +1867,14 @@ unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,l
 unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
 unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
-  #EC=101 LN="$nL" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   #pause_to_check "$nL" 'Begin section on restarting processes?' # <>
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
 #a_pids=()
 get_pids_for_restarting
 
-  #EC=101 LN="$nL" exit # <>
+  #EC=101 LN="${nL}" exit # <>
 
 hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
@@ -1963,7 +1963,7 @@ then
   unset II XX a_pids is_zombie
 fi
 
-  #EC=101 LN="$nL" exit # <>
+  #EC=101 LN="${nL}" exit # <>
 
 :;: 'Restart NetworkManager if necessary'
 
@@ -1993,5 +1993,5 @@ fi
 :;: 'Clean up & exit'
 command rm --force --recursive "${verb__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
-EC='00' LN="$nL" exit
+EC='00' LN="${nL}" exit
 
