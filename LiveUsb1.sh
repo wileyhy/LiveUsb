@@ -389,7 +389,7 @@ function reqd_user_files(){ :
           : 'If the USB device is NA, then exit'
           if [[ -z $pttn_path ]]
           then
-            er_x "${nL} USB device not available, ${pttn_label}"
+            er_x "${nL}" "USB device not available, ${pttn_label}"
           fi
 
           : 'If the partition is not mounted which holds the data directory, then mount it'
@@ -411,7 +411,7 @@ function reqd_user_files(){ :
           :;: 'If the source conf file/dir still does not exist, then throw an error'
           if ! sudo [ -e "${source_file}" ]
           then
-            er_x "$nL" "${QQ[BB]}" "${source_file}"
+            er_x "${nL}" "${QQ[BB]}" "${source_file}"
           fi
         fi
 
@@ -568,7 +568,7 @@ function rsync_install_if_missing(){ :
   then
     if ! [[ -d "${fn_target_dir}" ]]
     then
-      er_x "$nL" "${fn_target_dir}"
+      er_x "${nL}" "${fn_target_dir}"
     fi
   else
     read -r -a fn_umask < <( umask -p )
