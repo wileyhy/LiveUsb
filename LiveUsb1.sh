@@ -1715,10 +1715,10 @@ do
       grep -vEe ^'replacing'$
     )
 
-  ## remove all  kernel  and  firmware  rpms from $pkgs_for_upgrade array
+  ## remove all  kernel  and  firmware  rpms from $pkgs_for_upgrade array.  ...also, stop crashing Firefox!
   for HH in "${!pkgs_for_upgrade[@]}"
   do
-    if [[ ${pkgs_for_upgrade[HH]} =~ kernel|firmware ]]
+    if [[ ${pkgs_for_upgrade[HH]} =~ kernel|firmware|firefox ]]
     then
       unset_reason+=( [HH]="${BASH_REMATCH[*]}" )
       unset 'pkgs_for_upgrade[HH]'
