@@ -45,7 +45,6 @@ color_reset=$( tput sgr0 )
 shopt -s expand_aliases
 alias .y:=': $color_yellow ; :'
 alias .^:=': $color_reset ; :'
-alias die='e\r_x "${nL}"'
 
 :;: 'Variables likely to be manually changed with some regularity, or which absolutely must be defined early on'
 # shellcheck disable=SC2034
@@ -81,7 +80,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 
 ##  FUNCTION DEFINITIONS, BEGIN ##
 
-:;: 'Functions TOC...'
+:;: 'Functions and Aliases TOC...'
   ## functions_this_script=(
   #+  '__vte_osc7()'
   #+  '__vte_prompt_command()'
@@ -137,6 +136,9 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
     #printf '%s@%s:%s\n' "${USER}" "${HOSTNAME%%.*}" "${fn_pwd}";
     #__vte_osc7
 #}
+
+:;: $'Define \x60die\x60 alias to function er_x()'
+alias die='e\r_x "${nL}"'
 
 :;: 'Define enable_git_debug_settings()'
 function enable_git_debug_settings(){ :
