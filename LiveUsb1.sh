@@ -45,7 +45,7 @@ color_reset=$( tput sgr0 )
 shopt -s expand_aliases
 alias .y:=': $color_yellow ; :'
 alias .^:=': $color_reset ; :'
-alias die='er_x "${nL}"'
+alias die='e\r_x "${nL}"'
 
 :;: 'Variables likely to be manually changed with some regularity, or which absolutely must be defined early on'
 # shellcheck disable=SC2034
