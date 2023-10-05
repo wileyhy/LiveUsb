@@ -1285,6 +1285,9 @@ function write_ssh_conf() { :
 
   #EC=101 LN="$LINENO" exit # <>
 
+:;: 'Define trap on RETURN'
+trap trap_return RETURN
+
 :;: 'Define trap on ERR'
 trap trap_err ERR
 
