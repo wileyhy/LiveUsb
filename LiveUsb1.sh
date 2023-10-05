@@ -182,7 +182,8 @@ function get_pids_for_restarting(){ :
   ## Note,  local -Ig  picks up attributes and values from global scope and also outputs same to global
   #+  scope.
   # shellcheck disable=SC2034
-  local -Ig a_pids
+  local -g a_pids
+  local -g a_pids=()
   readarray -d '' -t a_pids < <( tr '\n' '\0' <<< "${pipline2}" )
 
   true "${fn_bndry} get_pids_for_restarting()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -215,8 +216,11 @@ function min_necc_packages(){ :
   local - hyphn="$-" _="${fn_bndry} min_necc_packages() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
-  local XX 
-  local -a a_pids
+  local XX
+
+  ## Bug? how many $a_pids arrays are there, and are they ever misused?
+
+  #local -a a_pids
 
   for XX in git gh ShellCheck
   do
@@ -225,8 +229,8 @@ function min_necc_packages(){ :
       sudo dnf --assumeyes install "$XX"
 
       ## TODO: comment out this use of $a_pids, re declaring and unsetting
-      unset -v a_pids
-      local -a a_pids=()
+      #unset -v a_pids
+      #local -a a_pids=()
       get_pids_for_restarting
 
     fi
@@ -1760,7 +1764,7 @@ do
   unset II
 
   ## Run `dnf needs-restarting`, collecting PID/commandline pairs
-  a_pids=()
+  #a_pids=()
   get_pids_for_restarting
 
     declare -p a_pids
@@ -1809,7 +1813,7 @@ then
   do
     sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" || er_x "${nL}"
 
-    a_pids=()
+    #a_pids=()
     get_pids_for_restarting
 
     if [[ -n ${a_pids[*]:0:1} ]]
@@ -1848,7 +1852,7 @@ unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
   #pause_to_check "$nL" 'Begin section on restarting processes?' # <>
 
 :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
-a_pids=()
+#a_pids=()
 get_pids_for_restarting
 
   #EC=101 LN="$nL" exit # <>
