@@ -45,7 +45,7 @@ color_reset=$( tput sgr0 )
 shopt -s expand_aliases
 alias .y:=': $color_yellow ; :'
 alias .^:=': $color_reset ; :'
-alias die='er_x "line ${nL}"'
+alias die='er_x "${nL}"'
 
 :;: 'Variables likely to be manually changed with some regularity, or which absolutely must be defined early on'
 # shellcheck disable=SC2034
@@ -848,14 +848,14 @@ function setup_network(){ :
     : 'Connect the interface'
     case "${#ifaces[@]}" in
       0 )
-        er_x "line,${nL}, No network device available"
+        er_x "${nL}" "No network device available"
         ;;\
       1 )
         nmcli c up "${ifaces[*]}"
         sleep 5
         ;;\
       * )
-        er_x "line ${nL}, Multiple network devices available"
+        er_x "${nL}" "Multiple network devices available"
         ;;\
     esac
 
@@ -1010,7 +1010,7 @@ function setup_time(){ :
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
-  sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "line ${nL}"
+  sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || er_x "${nL}"
   sudo -- chronyc makestep > /dev/null
 
   true "${fn_bndry} setup_time()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -1196,8 +1196,8 @@ function write_bashrc_strings(){ :
   set -x
 
   :;: 'Certain parameters must be defined and have non-zero values'
-  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "line ${nL}"
-  (( $# == 0 ))                             && er_x "line ${nL}"
+  (( ${#files_for_use_with_bash[@]} == 0 )) && er_x "${nL}"
+  (( $# == 0 ))                             && er_x "${nL}"
 
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
@@ -1406,7 +1406,7 @@ do
   : 'File must exist'
   if ! sudo -- [ -f "${WW}" ]
   then
-    er_x "line ${nL}, ${WW}"
+    er_x "${nL}" "${WW}"
   fi
 
   : '...of the array files_for_use_with_bash'
@@ -1418,7 +1418,7 @@ do
   fi
 
   : '...per-script-execution file backup'
-  sudo -- cp --archive -- "${WW}" "${WW}~" || er_x "line ${nL}, ${WW}"
+  sudo -- cp --archive -- "${WW}" "${WW}~" || er_x "${nL}" "${WW}"
 done
 unset WW
 
