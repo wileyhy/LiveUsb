@@ -139,7 +139,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 #}
 
 :;: $'Define \x60die\x60 alias to function er_x()'
-alias die='e\r_x "${nL}"'
+alias die='er_x "${nL}"'
 
 :;: 'Define enable_git_debug_settings()'
 function enable_git_debug_settings(){ :
