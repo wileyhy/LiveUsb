@@ -142,7 +142,7 @@ alias die='e\r_x "${nL}"'
 
 :;: 'Define enable_git_debug_settings()'
 function enable_git_debug_settings(){ :
-  local - hyphn="$-" _="${fn_bndry} enable_git_debug_settings() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   :;: 'Variables -- Global git debug settings'
   GIT_TRACE=true
@@ -156,11 +156,11 @@ function enable_git_debug_settings(){ :
   GIT_TRACE_SHALLOW=true
   [[ -f /home/liveuser/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat
 
-  true "${fn_bndry} enable_git_debug_settings()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define er_x()'
-function er_x(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} er_x() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function er_x(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   ## Some positional parameters must exist
@@ -179,14 +179,14 @@ function er_x(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} er_x()
 
   printf '%s, Error, line %d, %s\n' "${scr_nm}" "${loc_lineno}" "$*" >&2
 
-  true "${fn_bndry} er_x() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
   builtin exit "${loc_exit_code}"
 }
 
 :;: 'Define get_pids_for_restarting()'
 function get_pids_for_restarting(){ :
-  local - hyphn="$-" _="${fn_bndry} get_pids_for_restarting() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
 
   # shellcheck disable=SC2034
   local dnf_o 
@@ -198,7 +198,7 @@ function get_pids_for_restarting(){ :
 
   trap '
     trap - RETURN
-    true "${fn_bndry} get_pids_for_restarting()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+    true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
     ' RETURN
 
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
@@ -227,7 +227,7 @@ function get_pids_for_restarting(){ :
 
 :;: 'Define gh_auth_login_command()'
 function gh_auth_login_command(){ :
-  local - hyphn="$-" _="${fn_bndry} gh_auth_login_command() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   # set -
 
   if gh auth status
@@ -244,12 +244,12 @@ function gh_auth_login_command(){ :
   git config --global credential.helper "cache --timeout=3600"
   gh auth setup-git --hostname 'github.com'
 
-  true "${fn_bndry} gh_auth_login_command()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define min_necc_packages()'
 function min_necc_packages(){ :
-  local - hyphn="$-" _="${fn_bndry} min_necc_packages() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   local XX
@@ -273,12 +273,12 @@ function min_necc_packages(){ :
   done
   unset XX
 
-  true "${fn_bndry} min_necc_packages()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define must_be_root()'
 function must_be_root(){ :
-  local - hyphn="$-" _="${fn_bndry} must_be_root() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   if (( UID == 0 ))
@@ -288,19 +288,19 @@ function must_be_root(){ :
     sudo --validate || die
   fi
 
-  true "${fn_bndry} must_be_root()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define pause_to_check()'
 ## Usage,   pause_to_check "${nL}"
 function pause_to_check() { local -I EC=101 LN="$1"
   set -x ## sb global ?
-  local - hyphn="$-" reply _="${fn_bndry} pause_to_check() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set - ## sb local ?
   shift
   local -a KK=( "$@" )
 
-  [[ -n ${KK[*]:0:1} ]] && printf '\n%s, pause_to_check(), %s\n' "${scr_nm}" "${KK[@]}" >&2
+  [[ -n ${KK[*]:0:1} ]] && printf '\n%s, ${FUNCNAME[0]}(), %s\n' "${scr_nm}" "${KK[@]}" >&2
   printf '\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n' >&2
   
   if ! read -N1 -p $'\nReady?\n' -rst 600 reply >&2
@@ -324,12 +324,12 @@ function pause_to_check() { local -I EC=101 LN="$1"
 
   local bndry_cmd
   if [[ $hyphn =~ x ]]; then bndry_cmd='echo'; else bndry_cmd='true'; fi
-  "${bndry_cmd}"  "${fn_bndry} pause_to_check()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  "${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'reqd_user_files()'
 function reqd_user_files(){ :
-  local - hyphn="$-" _="${fn_bndry} reqd_user_files() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
@@ -462,7 +462,7 @@ function reqd_user_files(){ :
       
     #EC=101 LN="$LINENO" exit # <>
 
-  true "${fn_bndry} reqd_user_files()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define rm() -- for bashrc only'
@@ -573,7 +573,7 @@ function rm(){ :
 
 :;: 'Define rsync_install_if_missing()'
 function rsync_install_if_missing(){ :
-  local - hyphn="$-" _="${fn_bndry} rsync_install_if_missing() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
 
   local fn_target_dir fn_umask fn_source_var
@@ -601,12 +601,12 @@ function rsync_install_if_missing(){ :
   fi
   unset fn_source_var fn_target_dir
 
-  true "${fn_bndry} rsync_install_if_missing()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_dirs()'
 function setup_dirs(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_dirs() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
   ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  / 
@@ -632,12 +632,12 @@ function setup_dirs(){ :
   :;: 'Change dirs'
   pushd "${dev_d1}" > /dev/null || exit "${nL}"
 
-  true "${fn_bndry} setup_dirs()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'setup_git()'
 function setup_git(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_git() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   ## Note: git ui colors: normal black red green yellow blue magenta cyan white
@@ -784,12 +784,12 @@ function setup_git(){ :
   ## Clean up after section "Git"
   unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys
 
-  true "${fn_bndry} setup_git()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'setup_gpg()'
 function setup_gpg(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_gpg() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   sudo -- \
@@ -817,12 +817,12 @@ function setup_gpg(){ :
   GPG_TTY=$( tty )
   export GPG_TTY
 
-  true "${fn_bndry} setup_gpg()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_network()'
 function setup_network(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_network() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
   dns_srv_1=8.8.8.8
@@ -873,12 +873,12 @@ function setup_network(){ :
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
 
-  true "${fn_bndry} setup_network()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_ssh()'
 function setup_ssh(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_ssh() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   # set -
 
   ## Note, Unused var?
@@ -992,35 +992,35 @@ function setup_ssh(){ :
     ssh -T git@github.com
   fi
 
-  true "${fn_bndry} setup_ssh()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'setup_tempd()'
 function setup_tempd(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_tempd() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   tmp_dir=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || die )
   [[ -d ${tmp_dir} ]] || die
   readonly tmp_dir
 
-  true "${fn_bndry} setup_tempd()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_time()'
 function setup_time(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_time() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
   sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || die
   sudo -- chronyc makestep > /dev/null
 
-  true "${fn_bndry} setup_time()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_vars()'
 function setup_vars(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_vars() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   :;: 'Vars, dirs, etc'
   ## Bug, only way to export namerefs?  `declare -nx nL=...`
@@ -1045,12 +1045,12 @@ function setup_vars(){ :
   # shellcheck disable=SC2034
   local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
-  true "${fn_bndry} setup_vars()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_vim()'
 function setup_vim(){ :
-  local - hyphn="$-" _="${fn_bndry} setup_vim() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
   : 'Heredoc of vim-conf-text'
   cat <<- \EOF | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
@@ -1123,24 +1123,24 @@ function setup_vim(){ :
   command -- rm --one-file-system --preserve-root=all --force -- "${tmp_dir}/vim-conf-text"
   unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 
-  true "${fn_bndry} setup_vim()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define test_dns()'
 function test_dns(){ :
-  local - hyphn="$-" _="${fn_bndry} test_dns() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   ping_exit_code=$?
 
-  true "${fn_bndry} test_dns()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
   return "${ping_exit_code}"
 }
 
 :;: 'Define test_os()'
 function test_os(){ :
-  local - hyphn="$-" _="${fn_bndry} test_os() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
 
   local kern_rel
   kern_rel=$( uname --kernel-release )
@@ -1151,20 +1151,20 @@ function test_os(){ :
     er_x "${LINENO}, OS is not Fedora"
   fi
 
-  true "${fn_bndry} test_os()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define trap_err()'
 function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_"
   #set -
-  true "${fn_bndry} trap_err() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
   declare -p LC_ALL LINENO PATH PIPESTATUS PPID PWD SHELL SHELLOPTS SHLVL UID
   declare -p err_trap_hyphn err_trap_ec err_trap_undersc 
 
-  true "${fn_bndry} trap_err()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2
@@ -1175,7 +1175,7 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
 # shellcheck disable=SC2317
 function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$LINENO}"
   #declare -p PIPESTATUS
-  true "${fn_bndry} trap_exit() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   trap - EXIT
@@ -1187,14 +1187,14 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
     : 'End of EXIT trap'
   fi
 
-  true "${fn_bndry} trap_exit()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
   builtin exit "${exit_trap_ec}"
 }
 
 :;: 'Define write_bashrc_strings()'
 function write_bashrc_strings(){ :
-  local - hyphn="$-" _="${fn_bndry} write_bashrc_strings() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   set -x
 
   :;: 'Certain parameters must be defined and have non-zero values'
@@ -1259,11 +1259,11 @@ function write_bashrc_strings(){ :
   done
   unset JJ
 
-  true "${fn_bndry} write_bashrc_strings()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 function write_ssh_conf() { :
-  local - hyphn="$-" _="${fn_bndry} write_ssh_conf() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   set -x
 
   cat <<- \EOF > "${ssh_user_conf_file}"
@@ -1272,7 +1272,7 @@ function write_ssh_conf() { :
 
 	EOF
   
-  true "${fn_bndry} write_ssh_conf()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 #######  FUNCTION DEFINITIONS COMPLETE #######
