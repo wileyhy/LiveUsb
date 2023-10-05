@@ -157,7 +157,7 @@ function enable_git_debug_settings(){ :
   GIT_TRACE_SHALLOW=true
   [[ -f /home/liveuser/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define er_x()'
@@ -180,7 +180,7 @@ function er_x(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} ${FUNC
 
   printf '%s, Error, line %d, %s\n' "${scr_nm}" "${loc_lineno}" "$*" >&2
 
-  true "${fn_bndry} ${FUNCNAME[0]}() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
   builtin exit "${loc_exit_code}"
 }
@@ -238,7 +238,7 @@ function gh_auth_login_command(){ :
   git config --global credential.helper "cache --timeout=3600"
   gh auth setup-git --hostname 'github.com'
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define min_necc_packages()'
@@ -267,7 +267,7 @@ function min_necc_packages(){ :
   done
   unset XX
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define must_be_root()'
@@ -282,7 +282,7 @@ function must_be_root(){ :
     sudo --validate || die
   fi
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define pause_to_check()'
@@ -318,7 +318,7 @@ function pause_to_check() { local -I EC=101 LN="$1"
 
   local bndry_cmd
   if [[ $hyphn =~ x ]]; then bndry_cmd='echo'; else bndry_cmd='true'; fi
-  "${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #"${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'reqd_user_files()'
@@ -456,7 +456,7 @@ function reqd_user_files(){ :
       
     #EC=101 LN="$LINENO" exit # <>
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define rm() -- for bashrc only'
@@ -595,7 +595,7 @@ function rsync_install_if_missing(){ :
   fi
   unset fn_source_var fn_target_dir
 
-  true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_dirs()'
@@ -626,7 +626,7 @@ function setup_dirs(){ :
   :;: 'Change dirs'
   pushd "${dev_d1}" > /dev/null || exit "${nL}"
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'setup_git()'
@@ -778,7 +778,7 @@ function setup_git(){ :
   ## Clean up after section "Git"
   unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'setup_gpg()'
@@ -811,7 +811,7 @@ function setup_gpg(){ :
   GPG_TTY=$( tty )
   export GPG_TTY
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_network()'
@@ -867,7 +867,7 @@ function setup_network(){ :
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_ssh()'
@@ -986,7 +986,7 @@ function setup_ssh(){ :
     ssh -T git@github.com
   fi
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'setup_tempd()'
@@ -997,7 +997,7 @@ function setup_tempd(){ :
   [[ -d ${tmp_dir} ]] || die
   readonly tmp_dir
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_time()'
@@ -1009,7 +1009,7 @@ function setup_time(){ :
   sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || die
   sudo -- chronyc makestep > /dev/null
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_vars()'
@@ -1039,7 +1039,7 @@ function setup_vars(){ :
   # shellcheck disable=SC2034
   local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_vim()'
@@ -1117,7 +1117,7 @@ function setup_vim(){ :
   command -- rm --one-file-system --preserve-root=all --force -- "${tmp_dir}/vim-conf-text"
   unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define test_dns()'
@@ -1128,7 +1128,7 @@ function test_dns(){ :
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   ping_exit_code=$?
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
   return "${ping_exit_code}"
 }
 
@@ -1145,7 +1145,7 @@ function test_os(){ :
     er_x "${LINENO}, OS is not Fedora"
   fi
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define trap_err()'
@@ -1158,7 +1158,7 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
   declare -p LC_ALL LINENO PATH PIPESTATUS PPID PWD SHELL SHELLOPTS SHLVL UID
   declare -p err_trap_hyphn err_trap_ec err_trap_undersc 
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2
@@ -1181,7 +1181,7 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
     : 'End of EXIT trap'
   fi
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
   builtin exit "${exit_trap_ec}"
 }
@@ -1265,7 +1265,7 @@ function write_bashrc_strings(){ :
   done
   unset JJ
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 function write_ssh_conf() { :
@@ -1278,7 +1278,7 @@ function write_ssh_conf() { :
 
 	EOF
   
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 #######  FUNCTION DEFINITIONS COMPLETE #######
