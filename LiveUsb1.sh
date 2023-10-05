@@ -178,6 +178,11 @@ function get_pids_for_restarting(){ :
   
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream. Yes, some of the array names are in fact spelled uncorrectly. 
+  
+  ## Note, this set of arrays could be a function, but `return` can only return from one function level at
+  #+  at time, or it could be a loop, but the array names and command strings would have to be in an
+  #+  associative array, and that seems like adding complexity.
+
   readarray -t dnf_o < <( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || er_x "${nL}" )
   [[ "${#dnf_o[@]}" -eq 0 ]] && return
   
