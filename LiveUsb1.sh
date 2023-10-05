@@ -96,6 +96,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  'rsync_install_if_missing()'
   #+  'setup_dirs()'
   #+  'setup_git()'
+  #+  'setup_gpg()'
   #+  'setup_network()'
   #+  'setup_ssh()'
   #+  'setup_tempd()'setup_tempd()''
@@ -745,8 +746,6 @@ function setup_git(){ :
   true "${fn_bndry} setup_git()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-
-
 :;: 'setup_gpg()'
 function setup_gpg(){ :
   local - hyphn="$-" _="${fn_bndry} setup_gpg() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -779,12 +778,6 @@ function setup_gpg(){ :
 
   true "${fn_bndry} setup_gpg()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
-
-
-
-
-
-
 
 :;: 'Define setup_network()'
 function setup_network(){ :
