@@ -1273,7 +1273,7 @@ function write_ssh_conf() { :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   set -x
 
-  cat <<- \EOF > "${ssh_user_conf_file}"
+  cat <<- 'EOF' > "${ssh_user_conf_file}"
 	Host github.com
 	ForwardAgent yes
 
