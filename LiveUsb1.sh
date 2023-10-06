@@ -756,9 +756,9 @@ function setup_git(){ :
   then
     :;: '  Heredoc: gitignore'
     cat <<- 'EOF' > "${tmp_dir}/ign"
-	  *~
-	  .*.swp
-	  .DS_Store
+	*~
+	.*.swp
+	.DS_Store
 
 		EOF
 
