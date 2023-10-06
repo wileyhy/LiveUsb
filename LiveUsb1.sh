@@ -84,6 +84,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   ## functions_this_script=(
   #+  '__vte_osc7()'
   #+  '__vte_prompt_command()'
+  #+  `die`
   #+  'enable_git_debug_settings()'
   #+  'error_and_exit()'
   #+  'get_pids_for_restarting()'
