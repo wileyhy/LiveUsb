@@ -1,0 +1,120 @@
+#!/bin/bash
+
+rm ()
+{
+    :
+    : 'Localize SHELLOPTS'
+    local -
+    hash -r
+    :
+    : 'Input must exist'
+    [[ ${#@} -eq 0 ]] && return "$LINENO"
+    :
+    : 'For each positional parameter'
+    local HH end_of_options opts_rm args_rm
+    for HH in "$@"
+    do
+        : 'If "End of Options" has (not) been reached'
+        if ! [[ ${end_of_options:=} =~ has_been_reached ]]
+        then
+            case "${HH}" in
+                --version)
+                    "$( type -P rm )" --version
+                ;;\
+                --help)
+                  "$( type -P rm )" --help
+                ;;\
+                --)
+                    end_of_options='has_been_reached_hyphen'
+                    opts_rm+=("${HH}")
+                    declare -p opts_rm
+                    shift
+                    break
+                ;;\
+                -f | --force | -i | --interactive | --interactive=always | -I | --interactive=once | --interactive=never | --one-file-system | --no-preserve-root | --preserve-root | --preserve-root=all | -r | -R | --recursive | -d | --dir | -v | --verbose)
+                    opts_rm+=("${HH}")
+                    declare -p opts_rm
+                ;;\
+                *)
+                    : 'No (more) options found; options have concluded'
+                    end_of_options='has_been_reached_asterisk'
+                    : 'If there is no next pos-parm'
+                    if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
+                    then
+                        : '...then force end of options on the CLI'
+                        opts_rm+=(--)
+                        declare -p opts_rm
+                    else
+                        : '...or if the next pos-parm isn`t a valid FSO (File System Object)'
+                        if ! [[ -e $2 ]] || ! [[ -d $2 ]]
+                        then
+                            : '...then force end of options on the CLI'
+                            opts_rm+=(--)
+                            declare -p opts_rm
+                        fi
+                    fi
+                    break
+                ;;\
+            esac
+        fi
+        : 'Restart loop'
+        shift
+    done
+    unset HH
+    : 'End of loop'
+    :
+    : 'So options are over and only operands are processed'
+    if [[ ${#@} -gt 0 ]]
+    then
+        local KK
+        for KK
+            do
+            if [[ -e ${KK} ]]
+            then
+                local JJ
+                JJ=$(realpath -e "${KK}")
+                args_rm+=("${JJ}")
+                declare -p args_rm
+                unset JJ
+                shift
+            else
+                : 'fn_rm: cannot access:' "${KK}"
+                : $'No such file or directory'
+                : 'GNU \x60rm\x60 silently ignores such inputs'
+                shift
+            fi
+        done
+        unset KK
+    fi
+    :    
+    : 'Sanity check for options and operands'
+    [[ -z ${opts_rm:=} ]] && opts_rm=(--)
+    :
+    : '"Recycle bin" must exist'
+    local recycle_bin
+    recycle_bin=~/.recycle.bin
+    if ! [[ -d ${recycle_bin} ]]
+    then
+        command -- mkdir --mode 0700 --verbose -- "${recycle_bin}" || return "$LINENO"
+    fi
+    :
+      declare -p opts_rm args_rm
+    :
+    : 'If operands exist, then  mv  the file into the recycle bucket, appending the time'
+    if [[ -n ${args_rm[*]: -1:1} ]]
+    then
+        for QQ in "${args_rm[@]}"
+        do
+            local time_sfx target_f
+            time_sfx=$(date '+%a-%d-%b-%R:%S')
+            target_f="${recycle_bin}/${time_sfx}.${QQ##*/}"
+            command -- mv --verbose -- "${QQ}" "${target_f}" || return "$LINENO"
+        done
+        unset QQ
+    fi
+}
+declare -fx rm
+
+set -x
+rm "$@"
+
