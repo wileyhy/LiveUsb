@@ -737,12 +737,12 @@ function setup_git(){ :
   then
     :;: '  Heredoc: gitmessage'
     cat <<- 'EOF' > "${tmp_dir}/msg"
-	  Subject line (try to keep under 50 characters)
+		Subject line (try to keep under 50 characters)
 
-	  Multi-line description of commit,
-	  feel free to be detailed.
+		Multi-line description of commit,
+		feel free to be detailed.
 
-	  [Ticket: X]
+		[Ticket: X]
 
 		EOF
 
@@ -756,9 +756,9 @@ function setup_git(){ :
   then
     :;: '  Heredoc: gitignore'
     cat <<- 'EOF' > "${tmp_dir}/ign"
-	*~
-	.*.swp
-	.DS_Store
+		*~
+		.*.swp
+		.DS_Store
 
 		EOF
 
