@@ -1048,7 +1048,7 @@ function setup_vim(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
   : 'Heredoc of vim-conf-text'
-  cat <<- \EOF | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
+  cat <<- 'EOF' | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
 		" ~/.vimrc
 
 		" per Google
