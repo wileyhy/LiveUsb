@@ -736,7 +736,7 @@ function setup_git(){ :
   if ! [[ -f ${git_mesg} ]]
   then
     :;: '  Heredoc: gitmessage'
-    cat <<- \EOF > "${tmp_dir}/msg"
+    cat <<- 'EOF' > "${tmp_dir}/msg"
 	  Subject line (try to keep under 50 characters)
 
 	  Multi-line description of commit,
@@ -755,7 +755,7 @@ function setup_git(){ :
   if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui__[@]}" "${git_ignr}"
   then
     :;: '  Heredoc: gitignore'
-    cat <<- \EOF > "${tmp_dir}/ign"
+    cat <<- 'EOF' > "${tmp_dir}/ign"
 	  *~
 	  .*.swp
 	  .DS_Store
