@@ -548,42 +548,42 @@ function rm(){ :
     then
       case "${HH}" in
         --version)
-          "$( type -P rm )" --version
-          ;;\
+            "$( type -P rm )" --version
+            ;;\
         --help)
-          "$( type -P rm )" --help
-          ;;\
+            "$( type -P rm )" --help
+            ;;\
         --)
-          end_of_options='has_been_reached__hyphen'
-          opts_rm+=("${HH}")
-          #declare -p opts_rm
-          shift
-          break
-          ;;\
-        -f | --force | -i | --interactive | --interactive=always | -I | --interactive=once | --interactive=never | --one-file-system | --no-preserve-root | --preserve-root | --preserve-root=all | -r | -R | --recursive | -d | --dir | -v | --verbose)
-          opts_rm+=("${HH}")
-          #declare -p opts_rm
-          ;;\
-        *)
-          : 'Options have concluded'
-          end_of_options='has_been_reached__asterisk'
-          : 'If there is no next pos-parm'
-          if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
-          then
-            : '...then force end of options on the CLI'
-            opts_rm+=(--)
+            end_of_options='has_been_reached__hyphen'
+            opts_rm+=("${HH}")
             #declare -p opts_rm
-          else
-            : '...or if the next pos-parm isn`t a valid FSO (File System Object)'
-            if ! [[ -e $2 ]] || ! [[ -d $2 ]]
+            shift
+            break
+            ;;\
+        -f | --force | -i | --interactive | --interactive=always | -I | --interactive=once | --interactive=never | --one-file-system | --no-preserve-root | --preserve-root | --preserve-root=all | -r | -R | --recursive | -d | --dir | -v | --verbose)
+            opts_rm+=("${HH}")
+            #declare -p opts_rm
+            ;;\
+        *)
+            : 'Options have concluded'
+            end_of_options='has_been_reached__asterisk'
+            : 'If there is no next pos-parm'
+            if [[ -z ${2:-} ]] || ! [[ $2 = -- ]]
             then
               : '...then force end of options on the CLI'
               opts_rm+=(--)
               #declare -p opts_rm
+            else
+              : '...or if the next pos-parm isn`t a valid FSO (File System Object)'
+              if ! [[ -e $2 ]] || ! [[ -d $2 ]]
+              then
+                : '...then force end of options on the CLI'
+                opts_rm+=(--)
+                #declare -p opts_rm
+              fi
             fi
-          fi
-          break
-          ;;\
+            break
+            ;;\
       esac
     fi
     : 'Restart loop with next positional parameter'
