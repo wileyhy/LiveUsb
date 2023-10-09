@@ -753,6 +753,58 @@ function setup_dirs(){ :
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+
+
+function setup_gh_cli(){ :
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -x
+  declare -A github_configs
+  github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
+  gh_config_list_out=$( gh config list | tr '\n' ' ' )
+
+  for KK in "${!github_configs[@]}"
+  do
+    if ! [[ ${gh_config_list_out} = "${KK}=${github_configs[$KK]}" ]]
+    then
+      gh config set "${KK}" "${github_configs[$KK]}"
+    fi
+  done
+  unset KK gh_config_list_out github_configs
+
+    wait -f # <>
+    hash -r
+
+  :;: 'GH -- Login to github'
+  ## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
+  printf -v count_gh_auth_checkmarks '%s' "$( gh auth status |& grep --count $'\xe2\x9c\x93' )"
+
+  if ! gh auth status 2>/dev/null 1>&2 || [[ ${count_gh_auth_checkmarks} -ne 4 ]]
+  then
+    if ! pgrep 'firefox'
+    then
+      firefox --browser 2>/dev/null 1>&2 &
+      sleep 5
+      pause_to_check "${nL}" 'Waiting till browser is open before running  gh auth  command'
+      gh_auth_login_command
+    fi
+  fi
+
+  :;: 'GH -- Get SSH & GPG keys'
+  for QQ in ssh-key gpg-key
+  do
+    if ! gh "${QQ}" list > /dev/null
+    then
+      gh_auth_login_command
+    fi
+  done
+  unset QQ
+  
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
+
+
+
 :;: 'setup_git()'
 function setup_git(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -1477,49 +1529,6 @@ setup_gpg
 
 :;: 'GH -- github CLI configuration'
 setup_gh_cli
-
-function setup_gh_cli(){ :
-  declare -A github_configs
-  github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
-  gh_config_list_out=$( gh config list | tr '\n' ' ' )
-
-  for KK in "${!github_configs[@]}"
-  do
-    if ! [[ ${gh_config_list_out} = "${KK}=${github_configs[$KK]}" ]]
-    then
-      gh config set "${KK}" "${github_configs[$KK]}"
-    fi
-  done
-  unset KK gh_config_list_out github_configs
-
-    wait -f # <>
-    hash -r
-
-  :;: 'GH -- Login to github'
-  ## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
-  printf -v count_gh_auth_checkmarks '%s' "$( gh auth status |& grep --count $'\xe2\x9c\x93' )"
-
-  if ! gh auth status 2>/dev/null 1>&2 || [[ ${count_gh_auth_checkmarks} -ne 4 ]]
-  then
-    if ! pgrep 'firefox'
-    then
-      firefox --browser 2>/dev/null 1>&2 &
-      sleep 5
-      pause_to_check "${nL}" 'Waiting till browser is open before running  gh auth  command'
-      gh_auth_login_command
-    fi
-  fi
-
-  :;: 'GH -- Get SSH & GPG keys'
-  for QQ in ssh-key gpg-key
-  do
-    if ! gh "${QQ}" list > /dev/null
-    then
-      gh_auth_login_command
-    fi
-  done
-  unset QQ
-}
 
 
 
