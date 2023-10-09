@@ -150,7 +150,7 @@ function clone_repo(){ :
     git clone --verbose --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || die
   fi
   
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: $'Define \x60die\x60 alias to function error_and_exit()'
@@ -381,7 +381,7 @@ function increase_disk_space(){ :
   ## Clean up from section "Disk space"
   unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
   
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define min_necc_packages()'
@@ -461,6 +461,7 @@ function pause_to_check() { local - -I EC=101 LN="$1" hyphn="$-" reply _="${fn_b
 
   local bndry_cmd
   if [[ $hyphn =~ x ]]; then bndry_cmd='echo'; else bndry_cmd='true'; fi
+  
   #"${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
@@ -854,7 +855,7 @@ function rsync_install_if_missing(){ :
   fi
   unset fn_source_var fn_target_dir
 
-  true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_bashrc()'
@@ -993,7 +994,7 @@ function setup_bashrc(){ :
   unset files_for_use_with_bash bashrc_strings_F bashrc_strings_V
   unset -f write_bashrc_strings
   
-  true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_dnf()'
@@ -1310,7 +1311,7 @@ function setup_dnf(){ :
     done
     unset II XX a_pids is_zombie
   fi
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_dirs()'
@@ -1341,7 +1342,7 @@ function setup_dirs(){ :
   :;: 'Change dirs'
   pushd "${dev_d1}" > /dev/null || exit "${nL}"
 
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_gh_cli()'
@@ -1390,7 +1391,7 @@ function setup_gh_cli(){ :
   done
   unset QQ
   
-  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_git()'
