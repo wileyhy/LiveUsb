@@ -485,19 +485,34 @@ function reqd_user_files(){ :
   #+  '-1' is guaranteed to exist. ...unless the array is completely empty...
   #+	but I don't want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it's a bit of future-proofing.
-  local -a lsblk_out
-  readarray -d '' -t lsblk_out < <( lsblk --noheadings --output partuuid,path,mountpoints,label | awk '{ printf "%s %s %s\0", $1, $2, $3, $4 }' )
-  [[ -n ${lsblk_out[@]} ]] || die
+  local lsblk_out
+  lsblk_out=$( lsblk --noheadings --output partuuid,path | grep "${pttn_uuid}" )
+  [[ -n ${lsblk_out} ]] || die
 
-  : 'Vars: get mountpoint'
-  local pttn_label mount_pt data_dir
-  pttn_label=$( printf '%s\n' "${lsblk_out[@]}" | awk -v lbl="${pttn_uuid}" '$1 ~ lbl { print $2 }' )
-  mount_pt="/run/media/root/${pttn_label}"
-  data_dir="${mount_pt}/skel-LiveUsb"
-
-  : $'Vars: Get device name where label \x24pttn_label can be found'
+  : $'Vars: Get device name where label \x24pttn_label\x24 can be found'
   local pttn_path
-  pttn_path=$( printf '%s\n' "${lsblk_out[@]}" | awk -v lbl="${pttn_uuid}" '$1 ~ lbl { print $2 }' )
+  pttn_path=$( printf '%s\n' "${lsblk_out}" | awk '{ print $2 }' )
+  
+  : 'Vars: get label and mountpoints'
+  local -a mount_pt
+  readarray -t mount_pt=$( lsblk --noheadings --output mountpoints "${pttn_path}" )
+  case "${#mount_pt[@]}" in
+    0 )
+      local pttn_label data_dir
+      pttn_label=$( lsblk --noheadings --output label "${pttn_path}" )
+      pttn_label="${pttn_label:=live_usb_label}"
+      mount_pt="/run/media/root/${pttn_label}"
+      data_dir="${mount_pt}/skel-LiveUsb"
+      ;;\
+    1 )
+      data_dir="${mount_pt}/skel-LiveUsb"
+      ;;\
+    * )
+      die
+      ;;\
+  esac
+  
+
 
   : 'Capture previous umask and set a new one'
   local prev_umask
