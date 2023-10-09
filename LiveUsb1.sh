@@ -1362,17 +1362,12 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
   builtin exit "${exit_trap_ec}"
 }
 
-
-
 :;: 'Define trap_return()'
 function trap_return(){ :
   local -
   #set -
   true "${fn_bndry} ${FUNCNAME[1]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
-
-
-
 
 :;: 'Define write_bashrc_strings()'
 function write_bashrc_strings(){ :
@@ -1529,11 +1524,6 @@ setup_gpg
 
 :;: 'GH -- github CLI configuration'
 setup_gh_cli
-
-
-
-
-
 
   set -x
 
