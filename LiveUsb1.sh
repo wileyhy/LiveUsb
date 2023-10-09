@@ -993,6 +993,322 @@ function setup_bashrc(){ :
   true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+function setup_dnf(){ :
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -x
+
+## Bug, there should be a n\eeds-restarting loop between each install/upgrade
+## Bug, the --security upgrade should be done rpm by rpm
+
+  : 'Beginning section on DNF' # <>
+
+## Note, CUPS cannot be safely removed; too many dependencies
+## Note, For some unknown reason, even when  dnf  doesn't change any programs,  dnf
+#+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of
+#+  my tabs.  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf
+#+  needs-restarting  in the event that any files on disk may actually have been changed.
+## Note, these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of
+#+  whichever expansion does that, leaving just the regular strings as the elements of the array
+## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will
+#+  apply to the entire block
+
+hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
+
+## Removals for disk space
+pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
+
+## Removals for security
+#pkg_nms_for_removal+=( blueman bluez )
+
+# shellcheck disable=SC2206
+{
+    addl_pkgs=(  ${for_admin:=}        ncdu pwgen )
+    addl_pkgs+=( ${for_bash:=}         bash bash-completion )
+  # addl_pkgs+=( ${for_bashdb:=}       bash-devel make autoconf )
+    addl_pkgs+=( ${for_critical_A:=}   sudo nss openssh chrony dnf gpgme xfce4-terminal )
+    addl_pkgs+=( ${for_critical_B:=}   NetworkManager NetworkManager-{adsl,bluetooth,libnm,ppp} )
+    addl_pkgs+=( ${for_critical_C:=}   NetworkManager-{team,wifi,wwan} )
+  # addl_pkgs+=( ${for_careful:=}      systemd auditd sssd )
+  # addl_pkgs+=( ${for_db_ish:=}       libreoffice-calc )
+  # addl_pkgs+=( ${for_bug_rpts:=}     inxi zsh dash mksh lynx )
+  # addl_pkgs+=( ${for_char_sets:=}    enca moreutils uchardet )
+    addl_pkgs+=( ${for_duh:=}          info plocate pdfgrep wdiff )
+    addl_pkgs+=( ${for_firefox:=}      mozilla-noscript mozilla-privacy-badger mozilla-https-everywhere )
+  # addl_pkgs+=( ${for_fun:=}          supertuxkart )
+  # addl_pkgs+=( ${for_gcov:=}         gcc )
+    addl_pkgs+=( ${for_git:=}          git gh )
+  # addl_pkgs+=( ${for_internet:=}     chromium )
+  # addl_pkgs+=( ${for_later_other:=}  memstomp gdb valgrind memstrack kernelshark )
+  # addl_pkgs+=( ${for_later_trace:=}  bpftrace python3-ptrace fatrace apitrace x11trace )
+    addl_pkgs+=( ${for_linting:=}      ShellCheck strace )
+  # addl_pkgs+=( ${for_mo_linting:=}   kcov shfmt patch ltrace )
+  # addl_pkgs+=( ${for_lockfile:=}     procmail )
+  # addl_pkgs+=( ${for_os_dnlds:=}     debian-keyring )
+    addl_pkgs+=( ${for_strings:=}      binutils )
+  # addl_pkgs+=( ${for_term_tests:=}   gnome-terminal )
+  # addl_pkgs+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
+    addl_pkgs+=( ${for_security:=}     orca protonvpn-cli xsecurelock )
+}
+
+:;: 'Start with removing any unnecessary RPMs'
+
+if [[ -n ${pkg_nms_for_removal:0:8} ]]
+then
+  ## Note, this  printf  command uses nulls so that  -e  and  %s...  will be read as separate indices
+  #+  by  readarray
+  readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${pkg_nms_for_removal[@]}" )
+  readarray -t removable_pkgs < <(
+    rpm --all --query | grep --ignore-case --extended-regexp "${grep_args[@]}" )
+
+  :;: 'Keep a list, just in case an rpm removal accidentally erases something vital'
+  if [[ -n ${removable_pkgs[*]:0:8} ]]
+  then
+    for QQ in "${!removable_pkgs[@]}"
+    do
+      ## Note,  dnf , do not use [-y|--yes] with this particular command
+      if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_pkgs[QQ]}"
+      then
+        unset 'removable_pkgs[QQ]'
+      else
+        die "${removable_pkgs[QQ]}"
+      fi
+    done
+    unset QQ
+  fi
+fi
+
+:;: 'Then do a blanket security upgrade'
+
+## Note, the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to
+#+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest
+#+  one by one
+
+## Run this loop until `dnf --security upgrade` returns 0, or 0 upgradable, rpms
+while true
+do
+
+  ## Bug: extra grep - sb wi same awk cmd
+
+  ## Get full list of rpms to upgrade, in an array; exit on non-zero
+  readarray -d '' -t pkgs_for_upgrade < <(
+    sudo -- dnf --assumeno --security upgrade 2>/dev/null |
+      awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' |
+      grep -vEe ^'replacing'$
+    )
+
+  ## remove all  kernel  and  firmware  rpms from $pkgs_for_upgrade array
+  for HH in "${!pkgs_for_upgrade[@]}"
+  do
+    if [[ ${pkgs_for_upgrade[HH]} =~ kernel|firmware ]]
+    then
+      unset_reason+=( [HH]="${BASH_REMATCH[*]}" )
+      unset 'pkgs_for_upgrade[HH]'
+    fi
+  done
+  unset HH
+
+  ## If count of upgradeable rpms is 0, then break loop
+  if [[ "${#pkgs_for_upgrade[@]}" -eq 0 ]]
+  then
+    break
+  fi
+
+  ## Upgrade the RPM's one at a time
+  for II in "${!pkgs_for_upgrade[@]}"
+  do
+    if sudo -- dnf --assumeyes --security upgrade -- "${pkgs_for_upgrade[II]}"
+    then
+      unset 'pkgs_for_upgrade[II]'
+    else
+      printf 'ERROR %d\n' "${II}"
+      break
+    fi
+  done
+  unset II
+
+  ## Run `dnf needs-restarting`, collecting PID/commandline pairs
+  #a_pids=()
+  get_pids_for_restarting
+
+    declare -p a_pids
+    #exit 101
+
+  ## Send signals to "needs-restarting" PID's, one at a time, with pauses and descriptions between each
+  #+  one, so I can see which signal/process combinations cause any problems. This would be a great job
+  #+  for logging.
+
+done
+
+  #pause_to_check "${nL}" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
+
+:;: 'Find out whether an RPM is installed, one by one'
+for UU in "${!addl_pkgs[@]}"
+do
+  if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${addl_pkgs[UU]}"
+  then
+    pkgs_installed+=( "${addl_pkgs[UU]}" )
+    unset 'addl_pkgs[UU]'
+  fi
+done
+unset UU
+
+  #pause_to_check "${nL}" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
+
+## Bug, this section should upgrade rpms one by one
+
+:;: 'Upgrade any installed RPMs from the main list, en masse'
+if [[ -n ${pkgs_installed[*]: -1:1} ]]
+then
+  sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || die
+fi
+
+  #pause_to_check "${nL}" $'From the \x24addl_pkgs array, install the remainder' # <>
+
+:;: 'Install any as yet uninstalled RPMs from the main list as necessary'
+not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
+
+if [[ -n ${not_yet_installed_pkgs[*]: -1:1} ]]
+then
+  ## Note, if you install multiple rpms at the same time, and one of them causes some error, then you have
+  #+  no immediate way of knowing which one caused the error
+
+  for VV in "${not_yet_installed_pkgs[@]}"
+  do
+    sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" || die
+
+    #a_pids=()
+    get_pids_for_restarting
+
+    if [[ -n ${a_pids[*]:0:1} ]]
+    then
+
+      for WW in "${a_pids[@]}"
+      do
+        ps aux | awk "\$2 ~ /${WW}/ { print }"
+
+        #pause_to_check "${nL}" 'Execute a lengthy \x60kill --timeout...\x60 command?'
+
+        sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
+          --timeout 1000 HUP \
+          --timeout 1000 USR1 \
+          --timeout 1000 TERM \
+          --timeout 1000 KILL -- "$WW"
+
+        sleep 3
+
+        ps aux | awk "\$2 ~ /${WW}/ { print }"
+
+        #pause_to_check "${nL}" 'Now do you need to manually restart anything?'
+
+      done
+      unset WW
+    fi
+  done
+  unset VV
+fi
+unset pkg_nms_for_removal addl_pkgs
+unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
+unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
+unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
+
+  #EC=101 LN="${nL}" exit # <>
+  #pause_to_check "${nL}" 'Begin section on restarting processes?' # <>
+
+:;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
+#a_pids=()
+get_pids_for_restarting
+
+  #EC=101 LN="${nL}" exit # <>
+
+hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
+
+## TODO: change temp-vars (II, XX, etc) to fully named vars
+
+if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
+then
+  while true
+  do
+
+    ## Note,  [[ ... = , this second test,  [[ ${a_pids[*]} = 1 ]]  is correct. This means, do not use 
+    #+  ((...)) , and '=' is intended to that '1' on RHS is matched as in Pattern Matching, ie, as "PID 1."
+    :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
+    if [[ -n ${a_pids[*]: -1:1} ]] && ! [[ ${a_pids[*]} = 1 ]]
+    then
+      II=0
+      XX="${#a_pids[@]}"
+
+      :;: 'Print some info and wait for it to be read'
+      ## Note, '\x27' is a single quote
+      printf '\n  %b for restarting, count, %d \n\n' 'PID\x27s' "${XX}"
+
+        sleep 1 # <>
+
+      :;: 'for each signal and for each PID...'
+      for YY in "${!a_pids[@]}"
+      do
+        ## Note, readability
+        :;: $'\x60kill\x60 '"loop $(( ++II )) of ${XX}" ;:
+
+        ZZ="${a_pids[YY]}"
+        (( ZZ == 1 )) && continue 001
+        sleep 1
+
+          #pause_to_check "${nL}" '' # <>
+
+        for AA in HUP USR1 TERM KILL
+        do
+
+            : "To kill PID $ZZ with signal $AA" # <>
+            #pause_to_check "${nL}" # <>
+
+          #sleep 1
+          sync --file-system
+
+            wait -f # <>
+
+          :;: '...if the PID is still running...'
+          if ps --no-headers --quick-pid "${ZZ}"
+          then
+
+            :;: $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
+            ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
+            #+ than whether the  kill  operation succeeded, per  info kill .
+            sudo -- "$(type -P kill)" --signal "${AA}" -- "${ZZ}"
+
+            :;: '...and if the PID in question no longer exists then unset the current array index number'
+            if ps --no-headers --quick-pid "${ZZ}"
+            then
+              is_zombie=$( ps aux | awk "\$2 ~ /${ZZ}/ { print \$8 }" )
+
+              if [[ ${is_zombie} = 'Z' ]]
+              then
+                : 'Process is a zombie; unsetting'
+                unset 'a_pids[YY]'
+                break 00001
+              else
+                continue 00001
+              fi
+            else
+              unset 'a_pids[YY]'
+              break 0001
+            fi
+          else
+            unset 'a_pids[YY]'
+            break 001
+          fi
+        done
+        unset AA
+      done
+      unset YY ZZ
+    else
+      break 1
+    fi
+  done
+  unset II XX a_pids is_zombie
+fi
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
 :;: 'Define setup_dirs()'
 function setup_dirs(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -1823,328 +2139,7 @@ increase_disk_space
 :;: 'Dnf'
 setup_dnf
 
-
-function setup_dnf(){ :
-
-## Bug, there should be a n\eeds-restarting loop between each install/upgrade
-## Bug, the --security upgrade should be done rpm by rpm
-
-  : 'Beginning section on DNF' # <>
-
-## Note, CUPS cannot be safely removed; too many dependencies
-## Note, For some unknown reason, even when  dnf  doesn't change any programs,  dnf
-#+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of
-#+  my tabs.  (Bug?)  So, I'm adding in a few  rpm -qa | wc -l s to only run  dnf
-#+  needs-restarting  in the event that any files on disk may actually have been changed.
-## Note, these PE's (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of
-#+  whichever expansion does that, leaving just the regular strings as the elements of the array
-## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will
-#+  apply to the entire block
-
-hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
-
-## Removals for disk space
-pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
-
-## Removals for security
-#pkg_nms_for_removal+=( blueman bluez )
-
-# shellcheck disable=SC2206
-{
-    addl_pkgs=(  ${for_admin:=}        ncdu pwgen )
-    addl_pkgs+=( ${for_bash:=}         bash bash-completion )
-  # addl_pkgs+=( ${for_bashdb:=}       bash-devel make autoconf )
-    addl_pkgs+=( ${for_critical_A:=}   sudo nss openssh chrony dnf gpgme xfce4-terminal )
-    addl_pkgs+=( ${for_critical_B:=}   NetworkManager NetworkManager-{adsl,bluetooth,libnm,ppp} )
-    addl_pkgs+=( ${for_critical_C:=}   NetworkManager-{team,wifi,wwan} )
-  # addl_pkgs+=( ${for_careful:=}      systemd auditd sssd )
-  # addl_pkgs+=( ${for_db_ish:=}       libreoffice-calc )
-  # addl_pkgs+=( ${for_bug_rpts:=}     inxi zsh dash mksh lynx )
-  # addl_pkgs+=( ${for_char_sets:=}    enca moreutils uchardet )
-    addl_pkgs+=( ${for_duh:=}          info plocate pdfgrep wdiff )
-    addl_pkgs+=( ${for_firefox:=}      mozilla-noscript mozilla-privacy-badger mozilla-https-everywhere )
-  # addl_pkgs+=( ${for_fun:=}          supertuxkart )
-  # addl_pkgs+=( ${for_gcov:=}         gcc )
-    addl_pkgs+=( ${for_git:=}          git gh )
-  # addl_pkgs+=( ${for_internet:=}     chromium )
-  # addl_pkgs+=( ${for_later_other:=}  memstomp gdb valgrind memstrack kernelshark )
-  # addl_pkgs+=( ${for_later_trace:=}  bpftrace python3-ptrace fatrace apitrace x11trace )
-    addl_pkgs+=( ${for_linting:=}      ShellCheck strace )
-  # addl_pkgs+=( ${for_mo_linting:=}   kcov shfmt patch ltrace )
-  # addl_pkgs+=( ${for_lockfile:=}     procmail )
-  # addl_pkgs+=( ${for_os_dnlds:=}     debian-keyring )
-    addl_pkgs+=( ${for_strings:=}      binutils )
-  # addl_pkgs+=( ${for_term_tests:=}   gnome-terminal )
-  # addl_pkgs+=( ${for_unicode:=}      xterm rxvt-unicode perl-Text-Bidi-urxvt )
-    addl_pkgs+=( ${for_security:=}     orca protonvpn-cli xsecurelock )
-}
-
-:;: 'Start with removing any unnecessary RPMs'
-
-if [[ -n ${pkg_nms_for_removal:0:8} ]]
-then
-  ## Note, this  printf  command uses nulls so that  -e  and  %s...  will be read as separate indices
-  #+  by  readarray
-  readarray -d '' -t grep_args < <( printf -- '-e\0%s.*\0' "${pkg_nms_for_removal[@]}" )
-  readarray -t removable_pkgs < <(
-    rpm --all --query | grep --ignore-case --extended-regexp "${grep_args[@]}" )
-
-  :;: 'Keep a list, just in case an rpm removal accidentally erases something vital'
-  if [[ -n ${removable_pkgs[*]:0:8} ]]
-  then
-    for QQ in "${!removable_pkgs[@]}"
-    do
-      ## Note,  dnf , do not use [-y|--yes] with this particular command
-      if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_pkgs[QQ]}"
-      then
-        unset 'removable_pkgs[QQ]'
-      else
-        die "${removable_pkgs[QQ]}"
-      fi
-    done
-    unset QQ
-  fi
-fi
-
-:;: 'Then do a blanket security upgrade'
-
-## Note, the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to
-#+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest
-#+  one by one
-
-## Run this loop until `dnf --security upgrade` returns 0, or 0 upgradable, rpms
-while true
-do
-
-  ## Bug: extra grep - sb wi same awk cmd
-
-  ## Get full list of rpms to upgrade, in an array; exit on non-zero
-  readarray -d '' -t pkgs_for_upgrade < <(
-    sudo -- dnf --assumeno --security upgrade 2>/dev/null |
-      awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' |
-      grep -vEe ^'replacing'$
-    )
-
-  ## remove all  kernel  and  firmware  rpms from $pkgs_for_upgrade array
-  for HH in "${!pkgs_for_upgrade[@]}"
-  do
-    if [[ ${pkgs_for_upgrade[HH]} =~ kernel|firmware ]]
-    then
-      unset_reason+=( [HH]="${BASH_REMATCH[*]}" )
-      unset 'pkgs_for_upgrade[HH]'
-    fi
-  done
-  unset HH
-
-  ## If count of upgradeable rpms is 0, then break loop
-  if [[ "${#pkgs_for_upgrade[@]}" -eq 0 ]]
-  then
-    break
-  fi
-
-  ## Upgrade the RPM's one at a time
-  for II in "${!pkgs_for_upgrade[@]}"
-  do
-    if sudo -- dnf --assumeyes --security upgrade -- "${pkgs_for_upgrade[II]}"
-    then
-      unset 'pkgs_for_upgrade[II]'
-    else
-      printf 'ERROR %d\n' "${II}"
-      break
-    fi
-  done
-  unset II
-
-  ## Run `dnf needs-restarting`, collecting PID/commandline pairs
-  #a_pids=()
-  get_pids_for_restarting
-
-    declare -p a_pids
-    #exit 101
-
-  ## Send signals to "needs-restarting" PID's, one at a time, with pauses and descriptions between each
-  #+  one, so I can see which signal/process combinations cause any problems. This would be a great job
-  #+  for logging.
-
-done
-
-  #pause_to_check "${nL}" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
-
-:;: 'Find out whether an RPM is installed, one by one'
-for UU in "${!addl_pkgs[@]}"
-do
-  if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${addl_pkgs[UU]}"
-  then
-    pkgs_installed+=( "${addl_pkgs[UU]}" )
-    unset 'addl_pkgs[UU]'
-  fi
-done
-unset UU
-
-  #pause_to_check "${nL}" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
-
-## Bug, this section should upgrade rpms one by one
-
-:;: 'Upgrade any installed RPMs from the main list, en masse'
-if [[ -n ${pkgs_installed[*]: -1:1} ]]
-then
-  sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || die
-fi
-
-  #pause_to_check "${nL}" $'From the \x24addl_pkgs array, install the remainder' # <>
-
-:;: 'Install any as yet uninstalled RPMs from the main list as necessary'
-not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
-
-if [[ -n ${not_yet_installed_pkgs[*]: -1:1} ]]
-then
-  ## Note, if you install multiple rpms at the same time, and one of them causes some error, then you have
-  #+  no immediate way of knowing which one caused the error
-
-  for VV in "${not_yet_installed_pkgs[@]}"
-  do
-    sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" || die
-
-    #a_pids=()
-    get_pids_for_restarting
-
-    if [[ -n ${a_pids[*]:0:1} ]]
-    then
-
-      for WW in "${a_pids[@]}"
-      do
-        ps aux | awk "\$2 ~ /${WW}/ { print }"
-
-        #pause_to_check "${nL}" 'Execute a lengthy \x60kill --timeout...\x60 command?'
-
-        sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
-          --timeout 1000 HUP \
-          --timeout 1000 USR1 \
-          --timeout 1000 TERM \
-          --timeout 1000 KILL -- "$WW"
-
-        sleep 3
-
-        ps aux | awk "\$2 ~ /${WW}/ { print }"
-
-        #pause_to_check "${nL}" 'Now do you need to manually restart anything?'
-
-      done
-      unset WW
-    fi
-  done
-  unset VV
-fi
-unset pkg_nms_for_removal addl_pkgs
-unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
-unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
-unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
-
   #EC=101 LN="${nL}" exit # <>
-  #pause_to_check "${nL}" 'Begin section on restarting processes?' # <>
-
-:;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
-#a_pids=()
-get_pids_for_restarting
-
-  #EC=101 LN="${nL}" exit # <>
-
-hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
-
-## TODO: change temp-vars (II, XX, etc) to fully named vars
-
-if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
-then
-  while true
-  do
-
-    ## Note,  [[ ... = , this second test,  [[ ${a_pids[*]} = 1 ]]  is correct. This means, do not use 
-    #+  ((...)) , and '=' is intended to that '1' on RHS is matched as in Pattern Matching, ie, as "PID 1."
-    :;: 'if any PID\s were found... ...and if there are any PID\s other than PID 1...'
-    if [[ -n ${a_pids[*]: -1:1} ]] && ! [[ ${a_pids[*]} = 1 ]]
-    then
-      II=0
-      XX="${#a_pids[@]}"
-
-      :;: 'Print some info and wait for it to be read'
-      ## Note, '\x27' is a single quote
-      printf '\n  %b for restarting, count, %d \n\n' 'PID\x27s' "${XX}"
-
-        sleep 1 # <>
-
-      :;: 'for each signal and for each PID...'
-      for YY in "${!a_pids[@]}"
-      do
-        ## Note, readability
-        :;: $'\x60kill\x60 '"loop $(( ++II )) of ${XX}" ;:
-
-        ZZ="${a_pids[YY]}"
-        (( ZZ == 1 )) && continue 001
-        sleep 1
-
-          #pause_to_check "${nL}" '' # <>
-
-        for AA in HUP USR1 TERM KILL
-        do
-
-            : "To kill PID $ZZ with signal $AA" # <>
-            #pause_to_check "${nL}" # <>
-
-          #sleep 1
-          sync --file-system
-
-            wait -f # <>
-
-          :;: '...if the PID is still running...'
-          if ps --no-headers --quick-pid "${ZZ}"
-          then
-
-            :;: $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
-            ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
-            #+ than whether the  kill  operation succeeded, per  info kill .
-            sudo -- "$(type -P kill)" --signal "${AA}" -- "${ZZ}"
-
-            :;: '...and if the PID in question no longer exists then unset the current array index number'
-            if ps --no-headers --quick-pid "${ZZ}"
-            then
-              is_zombie=$( ps aux | awk "\$2 ~ /${ZZ}/ { print \$8 }" )
-
-              if [[ ${is_zombie} = 'Z' ]]
-              then
-                : 'Process is a zombie; unsetting'
-                unset 'a_pids[YY]'
-                break 00001
-              else
-                continue 00001
-              fi
-            else
-              unset 'a_pids[YY]'
-              break 0001
-            fi
-          else
-            unset 'a_pids[YY]'
-            break 001
-          fi
-        done
-        unset AA
-      done
-      unset YY ZZ
-    else
-      break 1
-    fi
-  done
-  unset II XX a_pids is_zombie
-fi
-}
-
-  #EC=101 LN="${nL}" exit # <>
-
-
-
-
-
-
-
 
 :;: 'Restart NetworkManager if necessary'
 
