@@ -502,17 +502,17 @@ function reqd_user_files(){ :
       pttn_label=$( lsblk --noheadings --output label "${pttn_path}" )
       pttn_label="${pttn_label:=live_usb_tmplabel}"
       mount_pt="/run/media/root/${pttn_label}"
-      unset pttn_label
       data_dir="${mount_pt}/skel-LiveUsb"
       ;;\
     1 )
+      mount_pt="${array_mt_pts[*]}"
       data_dir="${mount_pt}/skel-LiveUsb"
       ;;\
     * )
       die 'The target partition is mounted in multiple places'
       ;;\
   esac
-  unset array_mt_pts
+  unset pttn_label array_mt_pts
 
   : 'Capture previous umask and set a new one'
   local prev_umask
