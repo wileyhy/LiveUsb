@@ -2070,7 +2070,7 @@ test_os
 setup_vars
 
   #EC=101 LN="$LINENO" exit # <>
-  set -x
+  #set -x
 
 :;: '<Logs>'
 #set -x
@@ -2086,7 +2086,7 @@ setup_vars
 :;: 'Regular users with sudo, only'
 must_be_root
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Certain files must have been installed from off-disk'
