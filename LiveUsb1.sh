@@ -1804,6 +1804,8 @@ setup_bashrc
 :;: 'Increase disk space'
 increase_disk_space
 
+  #EC=101 LN="${nL}" exit
+
 #:;: '<Logs>'
 #set -x # <Logs>
 #printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
@@ -1819,6 +1821,10 @@ increase_disk_space
 #exec 2> >( GREP_COLORS='mt=01;33' grep --color=always -Ee '.*' | tee --append "${logf}" ) ## Buggy
 
 :;: 'Dnf'
+setup_dnf
+
+
+function setup_dnf(){ :
 
 ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
 ## Bug, the --security upgrade should be done rpm by rpm
@@ -2129,8 +2135,16 @@ then
   done
   unset II XX a_pids is_zombie
 fi
+}
 
   #EC=101 LN="${nL}" exit # <>
+
+
+
+
+
+
+
 
 :;: 'Restart NetworkManager if necessary'
 
