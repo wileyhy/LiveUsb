@@ -495,7 +495,7 @@ function reqd_user_files(){ :
   local -a mount_pts
   local data_dir
   
-  readarray -t mount_pts=$( lsblk --noheadings --output mountpoints "${pttn_path}" )
+  readarray -t mount_pts < <( lsblk --noheadings --output mountpoints "${pttn_path}" )
   case "${#mount_pts[@]}" in
     0 )
       local pttn_label
