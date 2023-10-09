@@ -141,6 +141,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 
 function clone_repo(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
   
   [[ ${PWD} = "${dev_d1}" ]] || die
 
@@ -158,6 +159,7 @@ alias die='error_and_exit "${nL}"'
 :;: 'Define enable_git_debug_settings()'
 function enable_git_debug_settings(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
 
   :;: 'Variables -- Global git debug settings'
   GIT_TRACE=true
@@ -202,6 +204,7 @@ function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bnd
 :;: 'Define get_pids_for_restarting()'
 function get_pids_for_restarting(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+  #set -
 
   # shellcheck disable=SC2034
   local dnf_o 
@@ -429,6 +432,7 @@ function must_be_root(){ :
 ## Usage,   pause_to_check "${nL}"
 function pause_to_check() { local -I EC=101 LN="$1"
   set -x ## sb global ?
+  
   local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set - ## sb local ?
   shift
@@ -1345,6 +1349,7 @@ function setup_dirs(){ :
 function setup_gh_cli(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
+  
   declare -A github_configs
   github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
   gh_config_list_out=$( gh config list | tr '\n' ' ' )
@@ -1752,6 +1757,7 @@ function setup_ssh(){ :
 :;: 'setup_tempd()'
 function setup_tempd(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
 
   tmp_dir=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || die )
   [[ -d ${tmp_dir} ]] || die
@@ -1763,6 +1769,7 @@ function setup_tempd(){ :
 :;: 'Define setup_time()'
 function setup_time(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
@@ -1775,6 +1782,7 @@ function setup_time(){ :
 :;: 'Define setup_vars()'
 function setup_vars(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
 
   :;: 'Vars, dirs, etc'
   ## Bug, only way to export namerefs?  `declare -nx nL=...`
@@ -1805,6 +1813,7 @@ function setup_vars(){ :
 :;: 'Define setup_vim()'
 function setup_vim(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
   
   : 'Heredoc of vim-conf-text'
   cat <<- 'EOF' | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
@@ -1895,6 +1904,7 @@ function test_dns(){ :
 :;: 'Define test_os()'
 function test_os(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -
 
   local kern_rel
   kern_rel=$( uname --kernel-release )
@@ -1909,9 +1919,8 @@ function test_os(){ :
 }
 
 :;: 'Define trap_err()'
-function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_"
+function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
-  true "${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
@@ -1927,8 +1936,7 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
 :;: 'Define trap_exit()'
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$LINENO}"
-  true "${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$LINENO}" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
   trap - EXIT
@@ -2024,7 +2032,7 @@ function write_bashrc_strings(){ :
 
 function write_ssh_conf() { :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
-  set -x
+  #set -x
 
   cat <<- 'EOF' > "${ssh_user_conf_file}"
 	Host github.com
