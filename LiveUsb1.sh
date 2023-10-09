@@ -494,7 +494,7 @@ function reqd_user_files(){ :
 
   : $'Vars: Get device name where label \x24pttn_label can be found'
   local pttn_path
-  pttn_path=$( printf '%s\n' "${lsblk_out[@]}" | awk -v lbl="${pttn_label}" '$1 ~ lbl { print $2 }' )
+  pttn_path=$( printf '%s\n' "${lsblk_out[@]}" | awk -v lbl="${pttn_uuid}" '$1 ~ lbl { print $2 }' )
 
   : 'Capture previous umask and set a new one'
   local prev_umask
