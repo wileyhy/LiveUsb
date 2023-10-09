@@ -1956,7 +1956,7 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
 function trap_return(){ :
   local -
   set -x
-  true "${fn_bndry} ${fn_bndry} ${fn_bndry} ${FUNCNAME[1]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${fn_bndry} ${fn_bndry} ${fn_bndry} ${fn_bndry} ${FUNCNAME[1]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define write_bashrc_strings()'
