@@ -728,6 +728,145 @@ function rsync_install_if_missing(){ :
   true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+:;: 'Define setup_bashrc()'
+function setup_bashrc(){ :
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  #set -x
+
+  :;: '  bashrc -- Do some backups'
+  files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
+
+  for WW in "${files_for_use_with_bash[@]}"
+  do
+    : '  bashrc -- File must exist'
+    if ! sudo -- [ -f "${WW}" ]
+    then
+      die "${WW}"
+    fi
+
+    : '  bashrc -- ...of the array files_for_use_with_bash'
+    if ! sudo -- [ -e "${WW}.orig" ]
+    then
+      sudo -- rsync --checksum --archive -- "${WW}" "${WW}.orig"
+      sudo -- chmod 400 -- "${WW}.orig"
+      sudo -- chattr +i -- "${WW}.orig"
+    fi
+
+    : '  bashrc -- ...per-script-execution file backup'
+    sudo -- cp --archive -- "${WW}" "${WW}~" || die "${WW}"
+  done
+  unset WW
+
+  :;: '  bashrc -- Env parameters for bashrc'
+
+  :;: '  bashrc -- Color code assigned to PS0, ducking xtrace'
+  ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
+  if [[ -o xtrace ]]
+  then
+    set -
+    PS0=$( tput setaf 43 )
+    set -x
+  else
+    PS0=$( tput setaf 43 )
+  fi
+
+  :;: '  bashrc -- Set up PROMPT_COMMAND'
+  : '  bashrc -- Variables dependency level 1'
+  pc_regx='not found$'
+  propmt_colors_reset=$( tput sgr0 )
+
+  : '  bashrc -- Variables dependency level 2'
+  prompt_cmd_0='printf "%b" "${propmt_colors_reset}"'
+
+  : '  bashrc -- Variables dependency level 3'
+  ## Note, PROMPT_COMMAND could have been inherited as a string variable
+  unset PROMPT_COMMAND
+  declare -a PROMPT_COMMAND
+  PROMPT_COMMAND=( [0]="${prompt_cmd_0}" )
+
+  if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${pc_regx} ]]
+  then
+    PROMPT_COMMAND+=( __vte_prompt_command )
+  fi
+
+  :;: '  bashrc -- Other parameters'
+  PS1="[\\u@\\h]\\\$ "
+  BROWSER=$( command -v firefox )
+  EDITOR=$( command -v vim )
+
+  :;: '  bashrc -- Append user variables and functions into .bashrc.'
+  ## Note, these arrays include some command substitutions which depend on some function definitions, which in
+  #+  turn must be defined prior to defining these arrays
+
+  :;: '  bashrc -- Define lists of parameters to be appended into bashrc'
+  ## Note, there are multiple lists for variables due to layers of dependencies. Later in the process, 
+  #+  each of these groups is relayed using associative arrays, which do not reliably maintain their internal
+  #+  ordering, so, some consistent ordering must be imposed here.
+  vars_for_bashrc_1=( 'BROWSER' 'EDITOR' 'PS0' 'propmt_colors_reset' )
+  vars_for_bashrc_2=( 'prompt_cmd_0' )
+  vars_for_bashrc_3=( 'PROMPT_COMMAND' )
+  fcns_for_bashrc_1=( 'rm' ) #'__vte_osc7' '__vte_prompt_command' 
+
+  :;: '  bashrc -- Variables'
+  missing_vars_and_fns=()
+
+  for QQ in "${vars_for_bashrc_1[@]}" "${vars_for_bashrc_2[@]}" "${vars_for_bashrc_3[@]}"
+  do
+    if [[ $( declare -p "${QQ}" 2>&1 ) =~ ${pc_regx} ]]
+    then
+      missing_vars_and_fns+=( "${QQ}" )
+    fi
+  done
+  unset QQ
+
+  :;: '  bashrc -- Functions'
+  for UU in "${fcns_for_bashrc_1[@]}"
+  do
+    if [[ $( declare -pF "${UU}" 2>&1 ) =~ ${pc_regx} ]]
+    then
+      missing_vars_and_fns+=( "${UU}" )
+    fi
+  done
+  unset UU
+
+  :;: '  bashrc -- Test for any missing parameters'
+  if (( ${#missing_vars_and_fns[@]} > 0 ))
+  then
+    die, "${missing_vars_and_fns[@]}"
+  fi
+
+  :;: '  bashrc -- Define bashrc_strings_*'
+  ## Note, you want for these array elements to represent just one parameter or function each
+  unset       bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
+  declare -A  bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
+
+  : '  bashrc -- Variables'
+  for XX in "${vars_for_bashrc_2[@]}"; do bashrc_strings_V1+=( ["define parameter ${XX}"]=$( declare -p "${XX}" ) ); done
+  for YY in "${vars_for_bashrc_2[@]}"; do bashrc_strings_V2+=( ["define parameter ${YY}"]=$( declare -p "${YY}" ) ); done
+  for ZZ in "${vars_for_bashrc_3[@]}"; do bashrc_strings_V3+=( ["define parameter ${ZZ}"]=$( declare -p "${ZZ}" ) ); done
+  unset XX YY ZZ
+
+  : '  bashrc -- Functions (a.k.a. "subroutines")'
+  for AA in "${fcns_for_bashrc_1[@]}"
+  do
+    bashrc_strings_F1+=( ["define subroutines ${AA}"]="function $( declare -pf "${AA}" )" )
+  done
+  unset AA
+
+  :;: '  bashrc -- Write functions and variable definitions into bashrc files'
+  write_bashrc_strings bashrc_strings_F1 
+  write_bashrc_strings bashrc_strings_V1
+  write_bashrc_strings bashrc_strings_V2
+  write_bashrc_strings bashrc_strings_V3
+
+  :;: '  bashrc -- Clean up'
+  unset pc_regx prompt_cmd_0
+  unset files_for_use_with_bash bashrc_strings_F bashrc_strings_V
+  unset -f write_bashrc_strings
+  
+  true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
 :;: 'Define setup_dirs()'
 function setup_dirs(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -1533,143 +1672,6 @@ clone_repo
 
 :;: 'Bash'
 setup_bashrc
-
-
-
-function setup_bashrc(){ :
-  ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
-
-  :;: '  bashrc -- Do some backups'
-  files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
-
-  for WW in "${files_for_use_with_bash[@]}"
-  do
-    : '  bashrc -- File must exist'
-    if ! sudo -- [ -f "${WW}" ]
-    then
-      die "${WW}"
-    fi
-
-    : '  bashrc -- ...of the array files_for_use_with_bash'
-    if ! sudo -- [ -e "${WW}.orig" ]
-    then
-      sudo -- rsync --checksum --archive -- "${WW}" "${WW}.orig"
-      sudo -- chmod 400 -- "${WW}.orig"
-      sudo -- chattr +i -- "${WW}.orig"
-    fi
-
-    : '  bashrc -- ...per-script-execution file backup'
-    sudo -- cp --archive -- "${WW}" "${WW}~" || die "${WW}"
-  done
-  unset WW
-
-  :;: '  bashrc -- Env parameters for bashrc'
-
-  :;: '  bashrc -- Color code assigned to PS0, ducking xtrace'
-  ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
-  if [[ -o xtrace ]]
-  then
-    set -
-    PS0=$( tput setaf 43 )
-    set -x
-  else
-    PS0=$( tput setaf 43 )
-  fi
-
-  :;: '  bashrc -- Set up PROMPT_COMMAND'
-  : '  bashrc -- Variables dependency level 1'
-  pc_regx='not found$'
-  propmt_colors_reset=$( tput sgr0 )
-
-  : '  bashrc -- Variables dependency level 2'
-  prompt_cmd_0='printf "%b" "${propmt_colors_reset}"'
-
-  : '  bashrc -- Variables dependency level 3'
-  ## Note, PROMPT_COMMAND could have been inherited as a string variable
-  unset PROMPT_COMMAND
-  declare -a PROMPT_COMMAND
-  PROMPT_COMMAND=( [0]="${prompt_cmd_0}" )
-
-  if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${pc_regx} ]]
-  then
-    PROMPT_COMMAND+=( __vte_prompt_command )
-  fi
-
-  :;: '  bashrc -- Other parameters'
-  PS1="[\\u@\\h]\\\$ "
-  BROWSER=$( command -v firefox )
-  EDITOR=$( command -v vim )
-
-  :;: '  bashrc -- Append user variables and functions into .bashrc.'
-  ## Note, these arrays include some command substitutions which depend on some function definitions, which in
-  #+  turn must be defined prior to defining these arrays
-
-  :;: '  bashrc -- Define lists of parameters to be appended into bashrc'
-  ## Note, there are multiple lists for variables due to layers of dependencies. Later in the process, 
-  #+  each of these groups is relayed using associative arrays, which do not reliably maintain their internal
-  #+  ordering, so, some consistent ordering must be imposed here.
-  vars_for_bashrc_1=( 'BROWSER' 'EDITOR' 'PS0' 'propmt_colors_reset' )
-  vars_for_bashrc_2=( 'prompt_cmd_0' )
-  vars_for_bashrc_3=( 'PROMPT_COMMAND' )
-  fcns_for_bashrc_1=( 'rm' ) #'__vte_osc7' '__vte_prompt_command' 
-
-  :;: '  bashrc -- Variables'
-  missing_vars_and_fns=()
-
-  for QQ in "${vars_for_bashrc_1[@]}" "${vars_for_bashrc_2[@]}" "${vars_for_bashrc_3[@]}"
-  do
-    if [[ $( declare -p "${QQ}" 2>&1 ) =~ ${pc_regx} ]]
-    then
-      missing_vars_and_fns+=( "${QQ}" )
-    fi
-  done
-  unset QQ
-
-  :;: '  bashrc -- Functions'
-  for UU in "${fcns_for_bashrc_1[@]}"
-  do
-    if [[ $( declare -pF "${UU}" 2>&1 ) =~ ${pc_regx} ]]
-    then
-      missing_vars_and_fns+=( "${UU}" )
-    fi
-  done
-  unset UU
-
-  :;: '  bashrc -- Test for any missing parameters'
-  if (( ${#missing_vars_and_fns[@]} > 0 ))
-  then
-    die, "${missing_vars_and_fns[@]}"
-  fi
-
-  :;: '  bashrc -- Define bashrc_strings_*'
-  ## Note, you want for these array elements to represent just one parameter or function each
-  unset       bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
-  declare -A  bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
-
-  : '  bashrc -- Variables'
-  for XX in "${vars_for_bashrc_2[@]}"; do bashrc_strings_V1+=( ["define parameter ${XX}"]=$( declare -p "${XX}" ) ); done
-  for YY in "${vars_for_bashrc_2[@]}"; do bashrc_strings_V2+=( ["define parameter ${YY}"]=$( declare -p "${YY}" ) ); done
-  for ZZ in "${vars_for_bashrc_3[@]}"; do bashrc_strings_V3+=( ["define parameter ${ZZ}"]=$( declare -p "${ZZ}" ) ); done
-  unset XX YY ZZ
-
-  : '  bashrc -- Functions (a.k.a. "subroutines")'
-  for AA in "${fcns_for_bashrc_1[@]}"
-  do
-    bashrc_strings_F1+=( ["define subroutines ${AA}"]="function $( declare -pf "${AA}" )" )
-  done
-  unset AA
-
-  :;: '  bashrc -- Write functions and variable definitions into bashrc files'
-  write_bashrc_strings bashrc_strings_F1 
-  write_bashrc_strings bashrc_strings_V1
-  write_bashrc_strings bashrc_strings_V2
-  write_bashrc_strings bashrc_strings_V3
-
-  :;: '  bashrc -- Clean up'
-  unset pc_regx prompt_cmd_0
-  unset files_for_use_with_bash bashrc_strings_F bashrc_strings_V
-  unset -f write_bashrc_strings
-}
 
   #EC=101 LN="${nL}" exit
 
