@@ -1940,12 +1940,12 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
 
   trap - EXIT
 
-  if [[ ${exit_trap_ec} -eq '00' ]]
-  then
-    : "End of script, line ${lineno}"
-  else
-    : 'End of EXIT trap'
-  fi
+  #if [[ ${exit_trap_ec} -eq '00' ]]
+  #then
+    #: "End of script, line ${lineno}"
+  #else
+    #: 'End of EXIT trap'
+  #fi
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
