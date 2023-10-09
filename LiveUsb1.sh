@@ -19,7 +19,7 @@
 ## TODO: add colors to xtrace comments
 
 # <> Debugging
-set -x # <>
+#set -x # <>
 set -a # <>
 set -C # <>
 set -u # <>
@@ -2044,7 +2044,7 @@ function write_ssh_conf() { :
 
 #######  FUNCTION DEFINITIONS COMPLETE #######
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: 'Define trap on RETURN'
 trap trap_return RETURN
