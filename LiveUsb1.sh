@@ -508,7 +508,7 @@ function reqd_user_files(){ :
       data_dir="${mount_pts}/skel-LiveUsb"
       ;;\
     * )
-      die 'Error: The target partition is mounted in multiple places'
+      die 'The target partition is mounted in multiple places'
       ;;\
   esac
 
