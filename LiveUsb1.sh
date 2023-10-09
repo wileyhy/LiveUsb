@@ -489,7 +489,7 @@ function reqd_user_files(){ :
   lsblk_out=$( lsblk --noheadings --output partuuid,path | grep "${pttn_uuid}" )
   [[ -n ${lsblk_out} ]] || die
 
-  : $'Vars: Get device name where label \x24pttn_label\x24 can be found'
+  : $'Vars: Get device name identified by \x24pttn_uuid\x24'
   local pttn_path
   pttn_path=$( printf '%s\n' "${lsblk_out}" | awk '{ print $2 }' )
   
