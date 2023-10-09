@@ -556,13 +556,11 @@ function rm(){ :
         --)
             end_of_options='has_been_reached__hyphen'
             opts_rm+=("${HH}")
-            #declare -p opts_rm
             shift
             break
             ;;\
         -f | --force | -i | --interactive | --interactive=always | -I | --interactive=once | --interactive=never | --one-file-system | --no-preserve-root | --preserve-root | --preserve-root=all | -r | -R | --recursive | -d | --dir | -v | --verbose)
             opts_rm+=("${HH}")
-            #declare -p opts_rm
             ;;\
         *)
             : 'Options have concluded'
@@ -572,14 +570,12 @@ function rm(){ :
             then
               : '...then force end of options on the CLI'
               opts_rm+=(--)
-              #declare -p opts_rm
             else
               : '...or if the next pos-parm isn`t a valid FSO (File System Object)'
               if ! [[ -e $2 ]] || ! [[ -d $2 ]]
               then
                 : '...then force end of options on the CLI'
                 opts_rm+=(--)
-                #declare -p opts_rm
               fi
             fi
             break
@@ -604,7 +600,6 @@ function rm(){ :
         local JJ
         JJ=$(realpath -e "${KK}")
         args_rm+=("${JJ}")
-        #declare -p args_rm
         unset JJ
         shift
       else
@@ -652,8 +647,6 @@ function rm(){ :
   then
     command -- mkdir --mode 0700 --verbose -- "${recycle_bin}" || return "$LINENO"
   fi
-  :
-  #declare -p opts_rm args_rm
   :
   : 'If operands exist...'
   if [[ -n ${args_rm[*]: -1:1} ]]
@@ -1340,7 +1333,6 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
 function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$LINENO}"
-  #declare -p PIPESTATUS
   true "${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
 
