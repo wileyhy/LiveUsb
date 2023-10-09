@@ -2159,7 +2159,7 @@ unset BB
 
 :;: 'Remind user of commands for the interactive shell'
 
-popd > /dev/null || exit "${nL}"
+popd > /dev/null || die
 
 if ! [[ ${PWD} = ${dev_d1}/${scr_repo_nm} ]]
 then
