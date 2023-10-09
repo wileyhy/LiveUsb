@@ -492,25 +492,27 @@ function reqd_user_files(){ :
   : 'Vars: get list of mounts'
 
   : 'Vars: get label and mountpoints'
-  local -a mount_pts
-  local data_dir
+  local -a array_mt_pts
+  local mount_pt data_dir
   
-  readarray -t mount_pts < <( lsblk --noheadings --output mountpoints "${pttn_path}" )
-  case "${#mount_pts[@]}" in
+  readarray -t array_mt_pts < <( lsblk --noheadings --output mountpoints "${pttn_path}" )
+  case "${#array_mt_pts[@]}" in
     0 )
       local pttn_label
       pttn_label=$( lsblk --noheadings --output label "${pttn_path}" )
       pttn_label="${pttn_label:=live_usb_tmplabel}"
-      mount_pts="/run/media/root/${pttn_label}"
-      data_dir="${mount_pts}/skel-LiveUsb"
+      mount_pt="/run/media/root/${pttn_label}"
+      unset pttn_label
+      data_dir="${mount_pt}/skel-LiveUsb"
       ;;\
     1 )
-      data_dir="${mount_pts}/skel-LiveUsb"
+      data_dir="${mount_pt}/skel-LiveUsb"
       ;;\
     * )
       die 'The target partition is mounted in multiple places'
       ;;\
   esac
+  unset array_mt_pts
 
   : 'Capture previous umask and set a new one'
   local prev_umask
@@ -564,17 +566,17 @@ function reqd_user_files(){ :
           fi
 
           : 'If the partition is not mounted which holds the data directory, then mount it'
-          if ! grep --quiet "$mount_pts" <<< "${lsblk_out[@]}" # <>
+          if ! grep --quiet "${mount_pt}" <<< "${lsblk_out[@]}" # <>
           then
 
             : 'Mountpoint must exist'
-            if ! [[ -d "${mount_pts}" ]]
+            if ! [[ -d "${mount_pt}" ]]
             then
-              sudo -- mkdir --parents -- "${mount_pts}" || die
+              sudo -- mkdir --parents -- "${mount_pt}" || die
             fi
 
             : $'Perform mount operation and re-sample \x60lsblk\x60'
-            sudo -- mount -- "${pttn_path}" "${mount_pts}" || die
+            sudo -- mount -- "${pttn_path}" "${mount_pt}" || die
 
             readarray -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints )
           fi
