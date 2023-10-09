@@ -2042,17 +2042,27 @@ function write_ssh_conf() { :
 :;: 'Define trap on RETURN'
 trap trap_return RETURN
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'Define trap on ERR'
 trap trap_err ERR
+
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: 'Define trap on EXIT'
 trap trap_exit EXIT
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'Test OS'
 test_os
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'Variables'
 setup_vars
+
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: '<Logs>'
 #set -x
@@ -2068,23 +2078,37 @@ setup_vars
 :;: 'Regular users with sudo, only'
 must_be_root
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'Certain files must have been installed from off-disk'
 reqd_user_files
+
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: 'Network'
 setup_network
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'Time'
 setup_time
+
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: 'Temporary directory'
 setup_tempd
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'Vim'
 setup_vim
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'Minimum necessary rpms'
 min_necc_packages
+
+  #EC=101 LN="$LINENO" exit # <>
 
 #:;: 'Git debug settings'
 #enable_git_debug_settings
@@ -2092,21 +2116,27 @@ min_necc_packages
 :;: 'Git'
 setup_git
 
-    #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: 'Make and change into directories'
 setup_dirs
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'SSH'
 setup_ssh
+
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: 'GPG'
 setup_gpg
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'GH -- github CLI configuration'
 setup_gh_cli
 
-  set -x
+  #EC=101 LN="$LINENO" exit # <>
 
 :;: 'Clone repo'
 clone_repo
