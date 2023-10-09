@@ -515,6 +515,18 @@ function reqd_user_files(){ :
   esac
   unset pttn_label array_mt_pts
 
+  : 'Mountpoint must be readable via ACL'
+
+
+  : 'FS mounting must be restricted to root and/or liveuser'
+
+
+  : $'FS mounting must automatically \x60umount\x60 after 15 minutes, and automatically \x60mount\x60 on access by authorized user'
+
+
+  : 'Data directory must be readable via ACL'
+
+
   : 'Data directory must already exist'
   if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
   then
