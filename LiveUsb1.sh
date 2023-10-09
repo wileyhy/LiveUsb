@@ -485,9 +485,9 @@ function reqd_user_files(){ :
   #+  '-1' is guaranteed to exist. ...unless the array is completely empty...
   #+	but I don't want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it's a bit of future-proofing.
-  local pttn_path
-  pttn_path=$( lsblk --noheadings --output partuuid,path | awk -v ptn="${pttn_uuid}" '$1 ~ ptn { print $2 }' )
-  [[ -n ${pttn_path} ]] || die $'Necessary USB drive isn\x60t plugged in.'
+  local pttn_device_path
+  pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk -v ptn="${pttn_uuid}" '$1 ~ ptn { print $2 }' )
+  [[ -n ${pttn_device_path} ]] || die $'Necessary USB drive isn\x60t plugged in.'
 
   : 'Vars: get list of mounts'
 
@@ -495,11 +495,11 @@ function reqd_user_files(){ :
   local -a array_mt_pts
   local mount_pt data_dir
 
-  readarray -t array_mt_pts < <( lsblk --noheadings --output mountpoints "${pttn_path}" )
+  readarray -t array_mt_pts < <( lsblk --noheadings --output mountpoints "${pttn_device_path}" )
   case "${#array_mt_pts[@]}" in
     0 )
       local pttn_label
-      pttn_label=$( lsblk --noheadings --output label "${pttn_path}" )
+      pttn_label=$( lsblk --noheadings --output label "${pttn_device_path}" )
       pttn_label="${pttn_label:=live_usb_tmplabel}"
       mount_pt="/run/media/root/${pttn_label}"
       data_dir="${mount_pt}/skel-LiveUsb"
@@ -561,7 +561,7 @@ function reqd_user_files(){ :
 
           ## Duplicated code
           #: 'If the USB device is NA, then exit'
-          #if [[ -z $pttn_path ]]
+          #if [[ -z $pttn_device_path ]]
           #then
             #die "USB device not available, ${pttn_label}"
           #fi
@@ -577,7 +577,7 @@ function reqd_user_files(){ :
             fi
 
             : $'Perform mount operation and re-sample \x60lsblk\x60'
-            sudo -- mount -- "${pttn_path}" "${mount_pt}" || die
+            sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || die
 
             readarray -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints )
           fi
