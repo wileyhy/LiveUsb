@@ -559,11 +559,12 @@ function reqd_user_files(){ :
         if ! [[ -e "${source_file}" ]]
         then
 
-          : 'If the USB device is NA, then exit'
-          if [[ -z $pttn_path ]]
-          then
-            die "USB device not available, ${pttn_label}"
-          fi
+          ## Duplicated code
+          #: 'If the USB device is NA, then exit'
+          #if [[ -z $pttn_path ]]
+          #then
+            #die "USB device not available, ${pttn_label}"
+          #fi
 
           : 'If the partition is not mounted which holds the data directory, then mount it'
           if ! grep --quiet "${mount_pt}" <<< "${lsblk_out[@]}" # <>
