@@ -1628,8 +1628,6 @@ must_be_root
 :;: 'Certain files must have been installed from off-disk'
 reqd_user_files
 
-  #EC=101 LN="$LINENO" exit # <>
-
 :;: 'Network'
 setup_network
 
@@ -1670,130 +1668,140 @@ setup_gh_cli
 :;: 'Clone repo'
 clone_repo
 
+  #EC=101 LN="$LINENO" exit # <>
+
 :;: 'Bash'
 setup_bashrc
 
   #EC=101 LN="${nL}" exit
 
-:;: 'Disk space, increase available by removing non-local locales'
+:;: 'Increase disk space'
+increase_disk_space
 
-## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
-## Note, for $dirs1 , find  syntax based on Mascheck's
-## Note, for $dirs2 , use of bit bucket because GVFS ‘/run/user/1000/doc’ cannot be read, even by root
-## Note, for $fsos3 , '--and' is not POSIX compliant
-## Note, for $fsos4 , sorts by unique inode and delimits by nulls
 
-## Bug, Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on
-#+  Fedora-like systems
 
-declare -A fsos5
-readarray -d '' -t dirs1 < <( find / ! -path / -prune -type d -print0 )
+function increase_disk_space(){ :
 
-readarray -d '' -t dirs2 < <(
-  find "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
+  ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
+  ## Note, for $dirs1 , find  syntax based on Mascheck's
+  ## Note, for $dirs2 , use of bit bucket because GVFS ‘/run/user/1000/doc’ cannot be read, even by root
+  ## Note, for $fsos3 , '--and' is not POSIX compliant
+  ## Note, for $fsos4 , sorts by unique inode and delimits by nulls
 
-readarray -d '' -t fsos3 < <(
-  find "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
+  ## Bug, Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on
+  #+  Fedora-like systems
 
-if (( ${#fsos3[@]} > 0 ))
-then
-  ## Note, for loop is run in a process substitution subshell, so unsetting BB is unnecessary
-  readarray -d '' -t fsos4 < <( {
-    for BB in "${fsos3[@]}"
-    do
-      printf '%s\0' "$( stat --printf='%i %n\n' -- "${BB}" )"
-    done ; } |
-      sort --unique |
-      tr --delete '\n';
-    )
+  declare -A fsos5
+  readarray -d '' -t dirs1 < <( find / ! -path / -prune -type d -print0 )
 
-  ## Question, does this assoc array fsos5 need to be declared as such? (I don't think so, but...)
+  readarray -d '' -t dirs2 < <(
+    find "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
 
-  set -- "${fsos4[@]}"
+  readarray -d '' -t fsos3 < <(
+    find "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
 
-  while true
-  do
-    [[ -z ${1:-} ]] && break 1 # <> set-u
+  if (( ${#fsos3[@]} > 0 ))
+  then
+    ## Note, for loop is run in a process substitution subshell, so unsetting BB is unnecessary
+    readarray -d '' -t fsos4 < <( {
+      for BB in "${fsos3[@]}"
+      do
+        printf '%s\0' "$( stat --printf='%i %n\n' -- "${BB}" )"
+      done ; } |
+        sort --unique |
+        tr --delete '\n';
+      )
 
-    # shellcheck disable=SC2190
-    fsos5+=( "${1%% *}" "${1#* }")
-    shift 1
+    ## Question, does this assoc array fsos5 need to be declared as such? (I don't think so, but...)
 
-    (( $# == 0 )) && break 1
-  done
-fi
-
-: 'If any larger local data files were found, then remove them interactively'
-if [[ -n ${!fsos5[*]} ]]
-then
-  : 'Inform user of any found FSOs'
-  printf '%s, Delete these files? \n' "${scr_nm}"
-  declare -p fsos5
-  sleep 3
-
-  for AA in "${!fsos5[@]}"
-  do
-    HH=0
-    II=0
-    JJ="${fsos5[$AA]#.}"
-    printf '%s,   File %d, \n' "${scr_nm}" "$(( ++II ))"
+    set -- "${fsos4[@]}"
 
     while true
     do
-      if [[ -e ${JJ} ]]
-      then
-        declare ls_out        
-        readarray -t ls_out < <( ls -l --all --human-readable --classify --inode --directory --zero "${JJ}" )
-        ## Note, '\x60' is a "backtick"
-        printf '%s, output of %bls%b, %s \n' "${scr_nm}" '\x60' '\x60' "$( realpath -e "${JJ}" )"
-        printf '%s\n' "${ls_out[@]}"
-        unset ls_out
+      [[ -z ${1:-} ]] && break 1 # <> set-u
 
-        read -r -p ' > [yN] ' -t 600 yes_or_no
-        yes_or_no="${yes_or_no,,?}"
-        yes_or_no="${yes_or_no:=n}"
+      # shellcheck disable=SC2190
+      fsos5+=( "${1%% *}" "${1#* }")
+      shift 1
 
-        case "${yes_or_no}" in
-          0|1)  printf '  Zero and one are ambiguous, please use letters. \n'
-                continue 0001
-              ;;\
-          y|t)  printf '  %s %b %s %s \n' 'Script,' ' \x60rm -i\x60 ' 'requires a typed [yN] response,' \
-                  'it defaults to do-not-delete if a user just presses [enter].'
-
-                if sudo -- command rm --one-file-system --preserve-root=all --interactive -- "${JJ}"
-                then
-                  unset 'fsos5[$AA]'
-                  break 00001
-                else
-                  die 'Unknown error'
-                fi
-              ;;\
-          n|f)  printf '  Keeping this file. \n'
-                unset 'fsos5[$AA]'
-                break 00001
-              ;;\
-          *)    HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit's off
-
-                if (( HH < 3 ))
-                then
-                  printf '  Invalid response (%d), please try again. \n' "${HH}"
-
-                else
-                  printf '  Keeping this file. \n'
-                  unset 'fsos5[$AA]'
-                  break 00001
-                fi
-              ;;\
-        esac
-      else
-        break 0001
-      fi
+      (( $# == 0 )) && break 1
     done
-  done
-fi
+  fi
 
-## Clean up from section "Disk space"
-unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
+  : 'If any larger local data files were found, then remove them interactively'
+  if [[ -n ${!fsos5[*]} ]]
+  then
+    : 'Inform user of any found FSOs'
+    printf '%s, Delete these files? \n' "${scr_nm}"
+    declare -p fsos5
+    sleep 3
+
+    for AA in "${!fsos5[@]}"
+    do
+      HH=0
+      II=0
+      JJ="${fsos5[$AA]#.}"
+      printf '%s,   File %d, \n' "${scr_nm}" "$(( ++II ))"
+
+      while true
+      do
+        if [[ -e ${JJ} ]]
+        then
+          declare ls_out        
+          readarray -t ls_out < <( ls -l --all --human-readable --classify --inode --directory --zero "${JJ}" )
+          ## Note, '\x60' is a "backtick"
+          printf '%s, output of %bls%b, %s \n' "${scr_nm}" '\x60' '\x60' "$( realpath -e "${JJ}" )"
+          printf '%s\n' "${ls_out[@]}"
+          unset ls_out
+
+          read -r -p ' > [yN] ' -t 600 yes_or_no
+          yes_or_no="${yes_or_no,,?}"
+          yes_or_no="${yes_or_no:=n}"
+
+          case "${yes_or_no}" in
+            0|1)  printf '  Zero and one are ambiguous, please use letters. \n'
+                  continue 0001
+                ;;\
+            y|t)  printf '  %s %b %s %s \n' 'Script,' ' \x60rm -i\x60 ' 'requires a typed [yN] response,' \
+                    'it defaults to do-not-delete if a user just presses [enter].'
+
+                  if sudo -- command rm --one-file-system --preserve-root=all --interactive -- "${JJ}"
+                  then
+                    unset 'fsos5[$AA]'
+                    break 00001
+                  else
+                    die 'Unknown error'
+                  fi
+                ;;\
+            n|f)  printf '  Keeping this file. \n'
+                  unset 'fsos5[$AA]'
+                  break 00001
+                ;;\
+            *)    HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit's off
+
+                  if (( HH < 3 ))
+                  then
+                    printf '  Invalid response (%d), please try again. \n' "${HH}"
+
+                  else
+                    printf '  Keeping this file. \n'
+                    unset 'fsos5[$AA]'
+                    break 00001
+                  fi
+                ;;\
+          esac
+        else
+          break 0001
+        fi
+      done
+    done
+  fi
+
+  ## Clean up from section "Disk space"
+  unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
+}
+
+
 
 #:;: '<Logs>'
 #set -x # <Logs>
