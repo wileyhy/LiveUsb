@@ -597,7 +597,7 @@ function reqd_user_files(){ :
   : 'Restore previous umask'
   builtin "${prev_umask[@]}"
       
-    #EC=101 LN="$LINENO" exit; set -x # <>
+    #EC=101 LN="$LINENO" exit # <>
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
@@ -1215,14 +1215,14 @@ function setup_dnf(){ :
   unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
   unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
   
-    #EC=101 LN="${nL}" exit; set -x # <>
+    #EC=101 LN="${nL}" exit # <>
     #pause_to_check "${nL}" 'Begin section on restarting processes?' # <>
   
   :;: 'Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs'
   #a_pids=()
   get_pids_for_restarting
   
-    #EC=101 LN="${nL}" exit; set -x # <>
+    #EC=101 LN="${nL}" exit # <>
   
   hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
   
@@ -2044,32 +2044,38 @@ function write_ssh_conf() { :
 
 #######  FUNCTION DEFINITIONS COMPLETE #######
 
-  #EC=101 LN="$LINENO" exit; set -x # <>
+  #EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Define trap on RETURN'
 trap trap_return RETURN
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Define trap on ERR'
 trap trap_err ERR
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Define trap on EXIT'
 trap trap_exit EXIT
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Test OS'
 test_os
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Variables'
 setup_vars
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: '<Logs>'
 #set -x
@@ -2085,37 +2091,44 @@ setup_vars
 :;: 'Regular users with sudo, only'
 must_be_root
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Certain files must have been installed from off-disk'
 reqd_user_files
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Network'
 setup_network
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Time'
 setup_time
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Temporary directory'
 setup_tempd
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Vim'
 setup_vim
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Minimum necessary rpms'
 min_necc_packages
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 #:;: 'Git debug settings'
 #enable_git_debug_settings
@@ -2123,42 +2136,50 @@ min_necc_packages
 :;: 'Git'
 setup_git
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Make and change into directories'
 setup_dirs
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'SSH'
 setup_ssh
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'GPG'
 setup_gpg
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'GH -- github CLI configuration'
 setup_gh_cli
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Clone repo'
 clone_repo
 
-  EC=101 LN="$LINENO" exit; set -x # <>
+  EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Bash'
 setup_bashrc
 
   EC=101 LN="${nL}" exit
+  set -x
 
 :;: 'Increase disk space'
 increase_disk_space
 
   EC=101 LN="${nL}" exit
+  set -x
 
 #:;: '<Logs>'
 #set -x # <Logs>
@@ -2177,7 +2198,8 @@ increase_disk_space
 :;: 'Dnf'
 setup_dnf
 
-  EC=101 LN="${nL}" exit; set -x # <>
+  EC=101 LN="${nL}" exit # <>
+  set -x
 
 :;: 'Restart NetworkManager if necessary'
 
