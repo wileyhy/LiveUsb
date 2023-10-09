@@ -498,6 +498,7 @@ function reqd_user_files(){ :
   readarray -t array_mt_pts < <( lsblk --noheadings --output mountpoints "${pttn_device_path}" )
   case "${#array_mt_pts[@]}" in
     0 )
+      : '  Zero matches'
       local pttn_label
       pttn_label=$( lsblk --noheadings --output label "${pttn_device_path}" )
       pttn_label="${pttn_label:=live_usb_tmplabel}"
@@ -505,10 +506,12 @@ function reqd_user_files(){ :
       data_dir="${mount_pt}/skel-LiveUsb"
       ;;\
     1 )
+      : '  One match'
       mount_pt="${array_mt_pts[*]}"
       data_dir="${mount_pt}/skel-LiveUsb"
       ;;\
     * )
+      : '  Multiple matches'
       die 'The target partition is mounted in multiple places'
       ;;\
   esac
