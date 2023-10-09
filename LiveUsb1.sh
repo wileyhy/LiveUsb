@@ -515,6 +515,12 @@ function reqd_user_files(){ :
   esac
   unset pttn_label array_mt_pts
 
+  : 'Data directory must already exist'
+  if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
+  then
+    die 'Data directory is missing'
+  fi
+
   : 'Capture previous umask and set a new one'
   local prev_umask
   read -r -a prev_umask < <( umask -p )
