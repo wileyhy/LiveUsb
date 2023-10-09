@@ -2064,7 +2064,7 @@ trap trap_exit EXIT
 test_os
 
   #EC=101 LN="$LINENO" exit # <>
-  #set -x
+  set -x
 
 :;: 'Variables'
 setup_vars
