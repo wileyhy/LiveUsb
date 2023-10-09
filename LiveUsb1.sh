@@ -750,7 +750,7 @@ function setup_dirs(){ :
   :;: 'Change dirs'
   pushd "${dev_d1}" > /dev/null || exit "${nL}"
 
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_gh_cli()'
