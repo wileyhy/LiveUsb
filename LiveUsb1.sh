@@ -474,6 +474,7 @@ function reqd_user_files(){ :
   #+  effect the local variable
   local pttn_label mount_pt data_dir
   pttn_label='29_Mar_2023'
+  pttn_uuid='949f3d8c-2dbe-4356-8a6b-3389e4c016d4'
   mount_pt="/run/media/root/${pttn_label}"
   data_dir="${mount_pt}/skel-LiveUsb"
 
