@@ -2045,6 +2045,7 @@ function write_ssh_conf() { :
 #######  FUNCTION DEFINITIONS COMPLETE #######
 
   #EC=101 LN="$LINENO" exit # <>
+  set -x
 
 :;: 'Define trap on RETURN'
 trap trap_return RETURN
