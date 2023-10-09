@@ -472,11 +472,8 @@ function reqd_user_files(){ :
 
   ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
   #+  effect the local variable
-  local pttn_label mount_pt data_dir
-  pttn_label='29_Mar_2023'
+  local pttn_uuid
   pttn_uuid='949f3d8c-2dbe-4356-8a6b-3389e4c016d4'
-  mount_pt="/run/media/root/${pttn_label}"
-  data_dir="${mount_pt}/skel-LiveUsb"
 
   : 'Vars: get list of mounts'
   ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
@@ -489,8 +486,14 @@ function reqd_user_files(){ :
   #+	but I don't want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it's a bit of future-proofing.
   local -a lsblk_out
-  readarray -d '' -t lsblk_out < <( lsblk --noheadings --output partuuid,path,mountpoints | awk '{ printf "%s %s %s\0", $1, $2, $3 }' )
+  readarray -d '' -t lsblk_out < <( lsblk --noheadings --output partuuid,path,mountpoints,label | awk '{ printf "%s %s %s\0", $1, $2, $3 }' )
   [[ -n ${lsblk_out[@]} ]] || die
+
+  : 'Vars: get mountpoint'
+  local mount_pt data_dir
+  pttn_label=$( printf '%s\n' "${lsblk_out[@]}" | awk -v lbl="${pttn_uuid}" '$1 ~ lbl { print $2 }' )
+  mount_pt="/run/media/root/${pttn_label}"
+  data_dir="${mount_pt}/skel-LiveUsb"
 
   : $'Vars: Get device name where label \x24pttn_label can be found'
   local pttn_path
