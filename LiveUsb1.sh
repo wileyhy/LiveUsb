@@ -486,7 +486,7 @@ function reqd_user_files(){ :
   #+	but I don't want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it's a bit of future-proofing.
   local pttn_device_path
-  pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk -v ptn="${pttn_uuid}" '$1 ~ ptn { print $2 }' )
+  pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk -v awk_var_ptn="${pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' )
   [[ -n ${pttn_device_path} ]] || die $'Necessary USB drive isn\x60t plugged in.'
 
   : 'Vars: get list of mounts'
