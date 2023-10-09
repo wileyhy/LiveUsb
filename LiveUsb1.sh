@@ -178,7 +178,7 @@ function enable_git_debug_settings(){ :
 
 :;: 'Define error_and_exit()'
 function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  #set -x
+  set -x
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] && return 1
