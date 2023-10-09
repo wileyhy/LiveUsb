@@ -475,7 +475,7 @@ function reqd_user_files(){ :
   local pttn_uuid
   pttn_uuid='949f3d8c-2dbe-4356-8a6b-3389e4c016d4'
 
-  : 'Vars: get list of mounts'
+  : $'Vars: Get device name identified by \x24pttn_uuid\x24'
   ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
   #+  `local lsblk_out` \n `lsblk_out=''` the assignment doesn't need a preceding `local`
   ## Note, I'm using an array with $lsblk_out so I can work around `set -u` by using a ':=' PE, and so that
@@ -485,34 +485,32 @@ function reqd_user_files(){ :
   #+  '-1' is guaranteed to exist. ...unless the array is completely empty...
   #+	but I don't want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it's a bit of future-proofing.
-  local lsblk_out
-  lsblk_out=$( lsblk --noheadings --output partuuid,path | grep "${pttn_uuid}" )
-  [[ -n ${lsblk_out} ]] || die
-
-  : $'Vars: Get device name identified by \x24pttn_uuid\x24'
   local pttn_path
-  pttn_path=$( printf '%s\n' "${lsblk_out}" | awk '{ print $2 }' )
-  
+  pttn_path=$( lsblk --noheadings --output partuuid,path | awk -v ptn="${pttn_uuid}" '$1 ~ ptn { print $2 }' )
+  [[ -n ${pttn_path} ]] || die $'Necessary USB drive isn\x60t plugged in.'
+
+  : 'Vars: get list of mounts'
+
   : 'Vars: get label and mountpoints'
-  local -a mount_pt
-  readarray -t mount_pt=$( lsblk --noheadings --output mountpoints "${pttn_path}" )
-  case "${#mount_pt[@]}" in
+  local -a mount_pts
+  local data_dir
+  
+  readarray -t mount_pts=$( lsblk --noheadings --output mountpoints "${pttn_path}" )
+  case "${#mount_pts[@]}" in
     0 )
-      local pttn_label data_dir
+      local pttn_label
       pttn_label=$( lsblk --noheadings --output label "${pttn_path}" )
-      pttn_label="${pttn_label:=live_usb_label}"
-      mount_pt="/run/media/root/${pttn_label}"
-      data_dir="${mount_pt}/skel-LiveUsb"
+      pttn_label="${pttn_label:=live_usb_tmplabel}"
+      mount_pts="/run/media/root/${pttn_label}"
+      data_dir="${mount_pts}/skel-LiveUsb"
       ;;\
     1 )
-      data_dir="${mount_pt}/skel-LiveUsb"
+      data_dir="${mount_pts}/skel-LiveUsb"
       ;;\
     * )
-      die
+      die 'Error: The target partition is mounted in multiple places'
       ;;\
   esac
-  
-
 
   : 'Capture previous umask and set a new one'
   local prev_umask
@@ -566,17 +564,17 @@ function reqd_user_files(){ :
           fi
 
           : 'If the partition is not mounted which holds the data directory, then mount it'
-          if ! grep --quiet "$mount_pt" <<< "${lsblk_out[@]}" # <>
+          if ! grep --quiet "$mount_pts" <<< "${lsblk_out[@]}" # <>
           then
 
             : 'Mountpoint must exist'
-            if ! [[ -d "${mount_pt}" ]]
+            if ! [[ -d "${mount_pts}" ]]
             then
-              sudo -- mkdir --parents -- "${mount_pt}" || die
+              sudo -- mkdir --parents -- "${mount_pts}" || die
             fi
 
             : $'Perform mount operation and re-sample \x60lsblk\x60'
-            sudo -- mount -- "${pttn_path}" "${mount_pt}" || die
+            sudo -- mount -- "${pttn_path}" "${mount_pts}" || die
 
             readarray -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints )
           fi
