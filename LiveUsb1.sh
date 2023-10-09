@@ -198,7 +198,7 @@ function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bnd
 
   #true "${fn_bndry} ${FUNCNAME[0]}() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
-  builtin exit "${loc_exit_code}"
+  LN="${loc_lineno}" builtin exit "${loc_exit_code}"
 }
 
 :;: 'Define get_pids_for_restarting()'
