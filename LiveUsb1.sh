@@ -2058,13 +2058,13 @@ trap trap_err ERR
 trap trap_exit EXIT
 
   #EC=101 LN="$LINENO" exit # <>
-  set -x
+  #set -x
 
 :;: 'Test OS'
 test_os
 
-  EC=101 LN="$LINENO" exit # <>
-  set -x
+  #EC=101 LN="$LINENO" exit # <>
+  #set -x
 
 :;: 'Variables'
 setup_vars
