@@ -695,7 +695,6 @@ function rsync_install_if_missing(){ :
   set -x
 
   local fn_target_dir fn_umask fn_source_var
-  #set -
   fn_source_var="$1"
   fn_target_dir="$2"
 
