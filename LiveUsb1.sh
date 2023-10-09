@@ -753,8 +753,7 @@ function setup_dirs(){ :
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-
-
+:;: 'Define setup_gh_cli()'
 function setup_gh_cli(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -802,10 +801,7 @@ function setup_gh_cli(){ :
   true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-
-
-
-:;: 'setup_git()'
+:;: 'Define setup_git()'
 function setup_git(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -
