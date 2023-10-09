@@ -483,13 +483,13 @@ function rm(){ :
   binary_rpm=$(type -P rpm)
   :
   set -v
-  : 'Must use GNU rm and a current version of Bash'
+  : 'Must use GNU rm'
   local rm_version
   rm_version=$("${binary_rm}" --version 2>&1 | head -1)
   :
-  if ! [[ "${rm_version}" =~ GNU ]] || [[ ${BASH_VERSINFO:-0} -le 4 ]]
+  if ! [[ "${rm_version}" =~ GNU ]]
   then
-    printf '\n\tError, GNU `rm` and Bash 5 are required; removing this function.\n\n'
+    printf '\n\tError, GNU `rm` is required; removing this function.\n\n'
     unset 'rm'
     unset -f 'rm'
     unset -n 'rm'
