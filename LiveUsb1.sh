@@ -475,7 +475,7 @@ function reqd_user_files(){ :
   local pttn_uuid
   pttn_uuid='949f3d8c-2dbe-4356-8a6b-3389e4c016d4'
 
-  : $'Vars: Get device name identified by \x24pttn_uuid\x24'
+  : $'Vars: Get device name identified by \x22\x24pttn_uuid\x22'
   ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
   #+  `local lsblk_out` \n `lsblk_out=''` the assignment doesn't need a preceding `local`
   ## Note, I'm using an array with $lsblk_out so I can work around `set -u` by using a ':=' PE, and so that
