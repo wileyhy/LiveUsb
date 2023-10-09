@@ -488,10 +488,8 @@ function reqd_user_files(){ :
   local pttn_device_path
   pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk -v awk_var_ptn="${pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' )
   [[ -n ${pttn_device_path} ]] || die $'Necessary USB drive isn\x60t plugged in.'
-
-  : 'Vars: get list of mounts'
-
-  : 'Vars: get label and mountpoints'
+  :
+  : 'Vars: get mountpoints and label'
   local -a array_mt_pts
   local mount_pt data_dir
 
