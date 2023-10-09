@@ -139,6 +139,19 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
     #__vte_osc7
 #}
 
+function clone_repo(){ :
+  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+  
+  [[ ${PWD} = "${dev_d1}" ]] || die
+
+  if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
+  then
+    git clone --verbose --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
+  fi
+  
+  true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+}
+
 :;: $'Define \x60die\x60 alias to function error_and_exit()'
 alias die='error_and_exit "${nL}"'
 
@@ -1516,12 +1529,11 @@ setup_gh_cli
   set -x
 
 :;: 'Clone repo'
-[[ ${PWD} = "${dev_d1}" ]] || die
+clone_repo
 
-if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
-then
-  git clone --verbose --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || exit "${nL}"
-fi
+
+
+
 
 :;: 'Bash'
 ## Note, this section is for .bashrc. VTE functions are from Fedora 38, Sun 09 July 2023, altered from vte.sh
