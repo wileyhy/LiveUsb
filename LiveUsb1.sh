@@ -486,8 +486,7 @@ function reqd_user_files(){ :
   #+  the last line of the array, index '-1', but this is really just a practice, since a lot of times index
   #+  zero gets unset for whatever reason, but if there are any values in the array at all, then index
   #+  '-1' is guaranteed to exist. ...unless the array is completely empty...
-  #+	but I don't want to UNSET ie RESET the array on each loop. If it's actually empty, I want to fill
-  #+  it....
+  #+	but I don't want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it's a bit of future-proofing.
   local -a lsblk_out
   readarray -d '' -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints | awk '{ printf "%s %s %s\0", $1, $2, $3 }' )
