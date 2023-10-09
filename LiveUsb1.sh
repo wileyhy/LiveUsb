@@ -1475,50 +1475,56 @@ setup_ssh
 :;: 'GPG'
 setup_gpg
 
-
-
-
 :;: 'GH -- github CLI configuration'
-declare -A github_configs
-github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
-gh_config_list_out=$( gh config list | tr '\n' ' ' )
+setup_gh_cli
 
-for KK in "${!github_configs[@]}"
-do
-  if ! [[ ${gh_config_list_out} = "${KK}=${github_configs[$KK]}" ]]
+function setup_gh_cli(){ :
+  declare -A github_configs
+  github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
+  gh_config_list_out=$( gh config list | tr '\n' ' ' )
+
+  for KK in "${!github_configs[@]}"
+  do
+    if ! [[ ${gh_config_list_out} = "${KK}=${github_configs[$KK]}" ]]
+    then
+      gh config set "${KK}" "${github_configs[$KK]}"
+    fi
+  done
+  unset KK gh_config_list_out github_configs
+
+    wait -f # <>
+    hash -r
+
+  :;: 'GH -- Login to github'
+  ## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
+  printf -v count_gh_auth_checkmarks '%s' "$( gh auth status |& grep --count $'\xe2\x9c\x93' )"
+
+  if ! gh auth status 2>/dev/null 1>&2 || [[ ${count_gh_auth_checkmarks} -ne 4 ]]
   then
-    gh config set "${KK}" "${github_configs[$KK]}"
+    if ! pgrep 'firefox'
+    then
+      firefox --browser 2>/dev/null 1>&2 &
+      sleep 5
+      pause_to_check "${nL}" 'Waiting till browser is open before running  gh auth  command'
+      gh_auth_login_command
+    fi
   fi
-done
-unset KK gh_config_list_out github_configs
 
-  wait -f # <>
-  hash -r
+  :;: 'GH -- Get SSH & GPG keys'
+  for QQ in ssh-key gpg-key
+  do
+    if ! gh "${QQ}" list > /dev/null
+    then
+      gh_auth_login_command
+    fi
+  done
+  unset QQ
+}
 
-:;: 'GH -- Login to github'
-## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
-printf -v count_gh_auth_checkmarks '%s' "$( gh auth status |& grep --count $'\xe2\x9c\x93' )"
 
-if ! gh auth status 2>/dev/null 1>&2 || [[ ${count_gh_auth_checkmarks} -ne 4 ]]
-then
-  if ! pgrep 'firefox'
-  then
-    firefox --browser 2>/dev/null 1>&2 &
-    sleep 5
-    pause_to_check "${nL}" 'Waiting till browser is open before running  gh auth  command'
-    gh_auth_login_command
-  fi
-fi
 
-:;: 'GH -- Get SSH & GPG keys'
-for QQ in ssh-key gpg-key
-do
-  if ! gh "${QQ}" list > /dev/null
-  then
-    gh_auth_login_command
-  fi
-done
-unset QQ
+
+
 
   set -x
 
