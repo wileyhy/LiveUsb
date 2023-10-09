@@ -490,7 +490,7 @@ function reqd_user_files(){ :
   #+  it....
   #+ In this script, index zero should exist, barring any future changes. So, it's a bit of future-proofing.
   local -a lsblk_out
-  readarray -d '' -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints | awk '{ print $1,$2,$3 }' )
+  readarray -d '' -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints | awk '{ printf "%s %s %s\0", $1, $2, $3 }' )
   [[ -n ${lsblk_out[@]} ]] || die
 
   : $'Vars: Get device name where label \x24pttn_label can be found'
