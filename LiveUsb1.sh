@@ -209,8 +209,8 @@ function get_pids_for_restarting(){ :
   # shellcheck disable=SC2034
   local dnf_o
   local pipline0 pipline1 pipline2
-  local -g a_pids
-  local -g a_pids=()
+  local -ga a_pids
+  local -ga a_pids=()
 
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream. Yes, some of the array names are in fact spelled uncorrectly.
@@ -220,20 +220,34 @@ function get_pids_for_restarting(){ :
   #+  associative array, and that seems like adding complexity.
 
   readarray -t dnf_o < <( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || die )
-  [[ "${#dnf_o[@]}" -eq 0 ]] && return
+  if [[ "${#dnf_o[@]}" -eq 0 ]]
+  then
+    return 0
+  fi
 
   readarray -t pipline0 < <( grep --invert-match --fixed-strings --regexp='/firefox/' <<< "${dnf_o[@]}" )
-  [[ "${#pipline0[@]}" -eq 0 ]] && return
+  if [[ "${#pipline0[@]}" -eq 0 ]]
+  then 
+    return 0
+  fi
 
   readarray -t pipline1 < <( awk '{ print $1 }' <<< "${pipline0[@]}" )
-  [[ "${#pipline1[@]}" -eq 0 ]] && return
+  if [[ "${#pipline1[@]}" -eq 0 ]]
+  then
+    return 0
+  fi
 
   readarray -t pipline2 < <( grep --only-matching --extended-regexp ^'[0-9]*'$ <<< "${pipline1[@]}" )
-  [[ "${#pipline2[@]}" -eq 0 ]] && return
+  if [[ "${#pipline2[@]}" -eq 0 ]]
+  then
+    return 0
+  fi
 
   readarray -d '' -t a_pids < <( tr '\n' '\0' <<< "${pipline2[@]}" )
-  [[ "${#a_pids[@]}" -eq 0 ]] && return
-
+  if [[ "${#a_pids[@]}" -eq 0 ]]
+  then
+    return 0
+  fi
 }
 
 :;: 'Define gh_auth_login_command()'
@@ -430,7 +444,7 @@ function must_be_root(){ :
 
 :;: 'Define pause_to_check()'
 ## Usage,   pause_to_check "${nL}"
-function pause_to_check() { local - -I EC=101 LN="$1" hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function pause_to_check() { local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
   local -I EC=101 LN="$1"
 
@@ -527,11 +541,11 @@ function reqd_user_files(){ :
   : 'Data directory must be readable via ACL'
 
 
-  : 'Data directory must already exist'
-  if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
-  then
-    die 'Data directory is missing'
-  fi
+  #: 'Data directory must already exist'
+  #if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
+  #then
+    #die 'Data directory is missing'
+  #fi
 
   : 'Capture previous umask and set a new one'
   local prev_umask
@@ -595,8 +609,17 @@ function reqd_user_files(){ :
               sudo -- mkdir --parents -- "${mount_pt}" || die
             fi
 
+	    ## Bug, must test for whether pttn is mounted
+
             : $'Perform mount operation and re-sample \x60lsblk\x60'
-            sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || die
+            local is_mounted
+	    is_mounted=$( mount | grep "${pttn_device_path##*/}" )
+	    declare -p is_mounted
+
+	    if [[ -z ${is_mounted} ]]
+            then
+              sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || die
+            fi
 
             readarray -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints )
           fi
@@ -620,7 +643,7 @@ function reqd_user_files(){ :
         if [[ ${QQ[BB]} = ~/.gnupg ]]
         then
           : $'...if the user\x60s Github GPG key is _not_ found in ~/.gnupg ...'
-          count_of_user_keys=$( gpg2 --list-keys 2>&1 | grep -c "${user_github_gpg_key}" )
+          printf -v count_of_user_keys '%d' "$( gpg2 --list-keys 2>&1 | grep -c "${user_github_gpg_key:?}" )"
 
           if [[ ${count_of_user_keys} -eq 0 ]]
           then
@@ -2130,37 +2153,37 @@ must_be_root
 :;: 'Certain files must have been installed from off-disk'
 reqd_user_files
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Network'
 setup_network
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Time'
 setup_time
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Temporary directory'
 setup_tempd
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Vim'
 setup_vim
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Minimum necessary rpms'
 min_necc_packages
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 #:;: 'Git debug settings'
@@ -2169,49 +2192,49 @@ min_necc_packages
 :;: 'Git'
 setup_git
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Make and change into directories'
 setup_dirs
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'SSH'
 setup_ssh
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'GPG'
 setup_gpg
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'GH -- github CLI configuration'
 setup_gh_cli
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Clone repo'
 clone_repo
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Bash'
 setup_bashrc
 
-  EC=101 LN="${nL}" exit
+  #EC=101 LN="${nL}" exit
   set -x
 
 :;: 'Increase disk space'
 increase_disk_space
 
-  EC=101 LN="${nL}" exit
+  #EC=101 LN="${nL}" exit
   set -x
 
 #:;: '<Logs>'
@@ -2231,7 +2254,7 @@ increase_disk_space
 :;: 'Dnf'
 setup_dnf
 
-  EC=101 LN="${nL}" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: 'Restart NetworkManager if necessary'
