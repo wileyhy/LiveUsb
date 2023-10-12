@@ -637,10 +637,10 @@ function reqd_user_files(){ :
 
             : $'Perform mount operation and re-sample \x60lsblk\x60'
             local is_mounted
-	    is_mounted=$( mount | grep "${pttn_device_path##*/}" )
-	    declare -p is_mounted
+            is_mounted=$( mount | grep "${pttn_device_path##*/}" )
+            declare -p is_mounted
 
-	    if [[ -z ${is_mounted} ]]
+            if [[ -z ${is_mounted} ]]
             then
               sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || die
             fi
