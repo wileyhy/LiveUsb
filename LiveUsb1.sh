@@ -1064,7 +1064,7 @@ function setup_bashrc(){ :
   : '  bashrc -- Functions (a.k.a. "subroutines")'
   for AA in "${fcns_for_bashrc_1[@]}"
   do
-    bashrc_strings_F1+=( ["define subroutines ${AA}"]="function $( declare -pf "${AA}" )" )
+    bashrc_strings_F1+=( ["define subroutine ${AA}"]="function $( declare -pf "${AA}" )" )
   done
   unset AA
 
