@@ -1562,7 +1562,7 @@ function setup_git(){ :
 
   builtin "${prev_umask[@]}"
 
-  :;: 'Git -- remove a configuration key/value pair if present'
+  :;: 'Git -- remove a particular configuration key/value pair if present'
   if printf '%s\n' "${git_cnf_glob_list[@]}" | grep gpg.format "${qui__[@]}"
   then
     git config --global --unset gpg.format
