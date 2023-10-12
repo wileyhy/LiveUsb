@@ -946,7 +946,7 @@ function rsync_install_if_missing(){ :
 :;: 'Define setup_bashrc()'
 function setup_bashrc(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
-  #set -x
+  set -x
 
   :;: '  bashrc -- Do some backups'
   files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
