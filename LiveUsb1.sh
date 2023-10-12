@@ -63,7 +63,7 @@ alias .^:=': $color_reset ; :'
   user_github_gpg_key='E287D0CF528591CE'
   
   : 'Array of arrays of file names'
-  arrays_of_conf_files=( files_for_use_with_github_depth_{1..10} )
+  arrays_of_conf_files=( files_for_use_with_github_depth_{1..4} )
   unset "${arrays_of_conf_files[@]}"
 
   : 'Lists of required files'
