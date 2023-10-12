@@ -657,23 +657,26 @@ function reqd_user_files(){ :
 
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
 
-      else
-        :;: 'If the target conf file/dir _does_ exist...'
-        : '...and that conf file/dir is for GPG ...'
-        ## Note, pattern `~'/.gnupg'` fails and expands as "+ [[ /home/liveuser/.gnupg = ~\/\.\g\n\u\p\g ]]"
-        #+  pattern "~/'.gnupg'" ok; expands as "+ [[ /home/liveuser/.gnupg = \/\h\o\m\e\/\l\i\v\e\u\s\e\r/\.\g\n\u\p\g ]]"
-        #+  pattern "~/.gnupg" ok; expands as "+ [[ /home/liveuser/.gnupg = \/\h\o\m\e\/\l\i\v\e\u\s\e\r/.gnupg ]]"
-        ## Bug? if a tilda is abutted by a single quote, tilda expansion is not performed?
-        if [[ ${QQ[BB]} = ~/.gnupg ]]
-        then
-          : $'...if the user\x60s Github GPG key is _not_ found in ~/.gnupg ...'
-          printf -v count_of_user_keys '%d' "$( gpg2 --list-keys 2>&1 | grep -c "${user_github_gpg_key:?}" )"
+      ## Note, this entire `else` branch has been obviated by only allowing rsync to copy over specific 
 
-          if [[ ${count_of_user_keys} -eq 0 ]]
-          then
-            rsync_install_if_missing  "${source_file}" "${dest_dir}"
-          fi
-        fi
+      #+  files (as basenames) and not any directories (as basenames)
+      #else
+        #:;: 'If the target conf file/dir _does_ exist...'
+        #: '...and that conf file/dir is for GPG ...'
+        ### Note, pattern `~'/.gnupg'` fails and expands as "+ [[ /home/liveuser/.gnupg = ~\/\.\g\n\u\p\g ]]"
+        ##+  pattern "~/'.gnupg'" ok; expands as "+ [[ /home/liveuser/.gnupg = \/\h\o\m\e\/\l\i\v\e\u\s\e\r/\.\g\n\u\p\g ]]"
+        ##+  pattern "~/.gnupg" ok; expands as "+ [[ /home/liveuser/.gnupg = \/\h\o\m\e\/\l\i\v\e\u\s\e\r/.gnupg ]]"
+        ### Bug? if a tilda is abutted by a single quote, tilda expansion is not performed?
+        #if [[ ${QQ[BB]} = ~/.gnupg ]]
+        #then
+          #: $'...if the user\x60s Github GPG key is _not_ found in ~/.gnupg ...'
+          #printf -v count_of_user_keys '%d' "$( gpg2 --list-keys 2>&1 | grep -c "${user_github_gpg_key:?}" )"
+          #if [[ ${count_of_user_keys} -eq 0 ]]
+          #then
+            #rsync_install_if_missing  "${source_file}" "${dest_dir}"
+          #fi
+        #fi
+
       fi
     done
     unset BB
