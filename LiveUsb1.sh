@@ -1735,6 +1735,7 @@ function setup_ssh(){ :
   ssh_usr_conf_dir=~/.ssh/
 
   ## Bug - security, these `chown` commands should operate on the files while they're still in skel_LiveUsb
+  #+  see also similar code in setup_gpg(), possibly elsewhere also  :-\
 
   if [[ -d ${ssh_usr_conf_dir} ]]
   then
