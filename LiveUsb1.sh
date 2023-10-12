@@ -701,9 +701,9 @@ function rm(){ :
   #+  also incluse '-g'
   unalias -a
   hash -r
-  local -Ig PATH
+  local -I PATH
   PATH='/usr/bin:/usr/sbin'
-  local -gr PATH
+  local -r PATH
   local binary_rm
   binary_rm=$(type -P rm)
   local -r binary_rm
