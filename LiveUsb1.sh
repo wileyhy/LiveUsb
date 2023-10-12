@@ -63,7 +63,10 @@ alias .^:=': $color_reset ; :'
   user_github_gpg_key='E287D0CF528591CE'
   gpg_d=~/.gnupg
 
-  files_for_use_with_github_depth_1=( ~/.ssh "${gpg_d}" ~/.vimrc ~/.mozilla )
+  files_for_use_with_github_depth_1=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
+  files_for_use_with_github_depth_1=( "${gpg_d}"/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
+  files_for_use_with_github_depth_1=( ~/.vimrc )
+  files_for_use_with_github_depth_1=( ~/.mozilla )
   files_for_use_with_github_depth_2=( ~/.config/gh )
   files_for_use_with_github_depth_3=( ~/.config/procps/toprc )
   arrays_of_conf_files=( files_for_use_with_github_depth_1 files_for_use_with_github_depth_2
