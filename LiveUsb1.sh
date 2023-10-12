@@ -2144,7 +2144,6 @@ function write_ssh_conf() { :
 
   #EC=101 LN="$LINENO" exit # <>
   #set -x
-  die testing
 
 :;: 'Define trap on RETURN'
 trap trap_return RETURN
@@ -2169,6 +2168,7 @@ setup_vars
 
   #EC=101 LN="$LINENO" exit # <>
   #set -x
+  die testing
 
 :;: '<Logs>'
 #set -x
