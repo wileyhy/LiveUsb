@@ -177,7 +177,7 @@ function clone_repo(){ :
   if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]] || 
       ! [[ ${loc_hash_of_read_me_file} = ${sha256_of_repo_readme} ]]
   then
-    git clone --verbose --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || die
+    git clone --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || die
   fi
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
@@ -882,7 +882,7 @@ function rm(){ :
     return
   elif ! [[ -d ${recycle_bin} ]]
   then
-    command -- mkdir --mode 0700 --verbose -- "${recycle_bin}" || return "$LINENO"
+    command -- mkdir --mode 0700 "${verb__[@]}" "${recycle_bin}" || return "$LINENO"
   fi
   :
   : 'If operands exist...'
@@ -902,7 +902,7 @@ function rm(){ :
       target_f="${recycle_bin}/${time_sfx}.${QQ##*/}"
       :
       : 'Move the file into the recycle bin'
-      command -- mv --verbose -- "${QQ}" "${target_f}" || return "$LINENO"
+      command -- mv "${verb__[@]}" "${QQ}" "${target_f}" || return "$LINENO"
       :
       : $'Build \x60at\x60 command'
       local rm_cmd
@@ -938,7 +938,7 @@ function rsync_install_if_missing(){ :
   else
     read -r -a fn_umask < <( umask -p )
     umask 077
-    mkdir --verbose --parents -- "${fn_target_dir}"
+    mkdir --parents "${verb__[@]}" "${fn_target_dir}"
     builtin "${fn_umask[@]}"
     unset fn_umask
   fi
@@ -977,7 +977,7 @@ function setup_bashrc(){ :
     fi
 
     : '  bashrc -- ...per-script-execution file backup'
-    sudo -- cp --archive -- "${WW}" "${WW}~" || die "${WW}"
+    sudo -- cp --archive --no-dereference "${verb__[@]}" "${WW}" "${WW}~" || die "${WW}"
   done
   unset WW
 
@@ -1658,14 +1658,14 @@ function setup_gpg(){ :
     printf '\n\tgpg-agent daemon IS RUNNING\n\n'
 
     ## Why was this command in here???
-    #gpgconf --verbose --kill gpg-agent
+    #gpgconf --kill "${verb__[@]}" gpg-agent
 
   else
     printf '\n\tgpg-agent daemon is NOT running\n\n'
   fi
 
   ## Why was this command in here???
-  #gpg-connect-agent --verbose /bye
+  #gpg-connect-agent "${verb__[@]}" /bye
 
   GPG_TTY=$( tty )
   export GPG_TTY
