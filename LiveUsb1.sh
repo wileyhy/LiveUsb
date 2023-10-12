@@ -170,7 +170,7 @@ function clone_repo(){ :
   #set -x
   
   local loc_hash_of_read_me_file
-  loc_hash_of_read_me_file=$( sha256sum ${scr_repo_nm}/README.md )
+  loc_hash_of_read_me_file=$( sha256sum ${scr_repo_nm}/README.md | cut -d' ' -f1 )
 
   [[ ${PWD} = "${dev_d1}" ]] || die
 
