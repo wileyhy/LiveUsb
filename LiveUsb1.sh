@@ -168,10 +168,14 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 function clone_repo(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
+  
+  local loc_hash_of_read_me_file
+  loc_hash_of_read_me_file=$( sha256sum ${scr_repo_nm}/README.md )
 
   [[ ${PWD} = "${dev_d1}" ]] || die
 
-  if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]]
+  if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]] || 
+      ! [[ ${loc_hash_of_read_me_file} = ${sha256_of_repo_readme} ]]
   then
     git clone --verbose --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || die
   fi
