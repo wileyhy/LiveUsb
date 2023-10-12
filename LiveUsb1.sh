@@ -1734,6 +1734,8 @@ function setup_ssh(){ :
   local ssh_usr_conf_dir
   ssh_usr_conf_dir=~/.ssh/
 
+  ## Bug - security, these `chown` commands should operate on the files while they're still in skel_LiveUsb
+
   if [[ -d ${ssh_usr_conf_dir} ]]
   then
     sudo -- \
