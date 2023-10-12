@@ -691,7 +691,7 @@ function reqd_user_files(){ :
 :;: 'Define rm() -- for bashrc only'
 ## Note, rm(), command shadowing is intended in this case
 function rm(){ :
-  local - && set +x
+  local - && set -x
   :
   : 'Some input must exist'
   [[ ${#@} -eq 0 ]] && return "${LINENO}"
