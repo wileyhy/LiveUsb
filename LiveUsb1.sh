@@ -51,6 +51,7 @@ alias .^:=': $color_reset ; :'
 {
   scr_repo_nm='LiveUsb'
   scr_nm='LiveUsb1.sh'
+  sha256_of_repo_readme='da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c'
   readonly scr_repo_nm scr_nm
 
   script_start_time=$( date +%H:%M:%S )
