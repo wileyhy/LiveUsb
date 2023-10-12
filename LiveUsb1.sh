@@ -63,11 +63,11 @@ alias .^:=': $color_reset ; :'
   user_github_gpg_key='E287D0CF528591CE'
   gpg_d=~/.gnupg
 
-  files_for_use_with_github_level_1=( ~/.ssh "${gpg_d}" ~/.vimrc ~/.mozilla )
-  files_for_use_with_github_level_2=( ~/.config/gh )
-  files_for_use_with_github_level_3=( ~/.config/procps/toprc )
-  arrays_of_conf_files=( files_for_use_with_github_level_1 files_for_use_with_github_level_2
-    files_for_use_with_github_level_3 )
+  files_for_use_with_github_depth_1=( ~/.ssh "${gpg_d}" ~/.vimrc ~/.mozilla )
+  files_for_use_with_github_depth_2=( ~/.config/gh )
+  files_for_use_with_github_depth_3=( ~/.config/procps/toprc )
+  arrays_of_conf_files=( files_for_use_with_github_depth_1 files_for_use_with_github_depth_2
+    files_for_use_with_github_depth_3 )
 
   [[ -o xtrace ]] && xon=yes && set +x
   ps_o=$( ps aux )
