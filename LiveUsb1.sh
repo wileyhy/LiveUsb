@@ -1757,7 +1757,7 @@ function setup_ssh(){ :
       find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
         chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' ||
           die
-    find "${ssh_usr_conf_dir}" -xdev -type d -execdirchmod 700 "${verb__[@]}" '{}' ';'
+    find "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
     find "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
   else
     die
