@@ -177,7 +177,7 @@ function clone_repo(){ :
   [[ ${PWD} = "${dev_d1}" ]] || die
 
   if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]] || 
-      ! [[ ${loc_hash_of_read_me_file} = ${sha256_of_repo_readme} ]]
+      ! [[ ${loc_hash_of_read_me_file} = "${sha256_of_repo_readme}" ]]
   then
     git clone --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || die
   fi
