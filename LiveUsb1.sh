@@ -2261,7 +2261,7 @@ setup_gpg
 :;: 'GH -- github CLI configuration'
 setup_gh_cli
 
-  EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="$LINENO" exit # <>
   set -x
 
 :;: 'Clone repo'
