@@ -1456,7 +1456,7 @@ function setup_gh_cli(){ :
 
   for KK in "${!github_configs[@]}"
   do
-    if ! [[ ${gh_config_list_out} =~ "${KK}=${github_configs[$KK]}" ]]
+    if ! [[ ${gh_config_list_out} = "${KK}=${github_configs[$KK]}" ]]
     then
       gh config set "${KK}" "${github_configs[$KK]}"
     fi
