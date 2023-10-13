@@ -17,7 +17,8 @@
 ## Note, idempotent script
 ## Note, find, stat and [[ (and ls) don't effect ext4 timestamps, as tested, but idempotent chown and chmod 
 #+  do, and of course touch does; if there's no change in the file, rsync doesn't, but if the file changes, 
-#+  it does. Also, btime on ext4 still isn't consistent. grep has no effect on times.
+#+  it does. Also, btime on ext4 still isn't consistent. grep has no effect on times. cp -a effects ctimes
+#+  even if file contents do not change.
 ## TODO: add colors to xtrace comments
 
 # <> Debugging
