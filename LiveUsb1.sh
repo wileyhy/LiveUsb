@@ -2168,7 +2168,7 @@ setup_vars
 
   #EC=101 LN="$LINENO" exit # <>
   #set -x
-  die testing
+  #die testing
 
 :;: '<Logs>'
 #set -x
