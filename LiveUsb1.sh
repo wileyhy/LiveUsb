@@ -15,7 +15,8 @@
 ## Note, style, function definition syntax, '(){ :' makes plain xtrace easier to read
 ## Note, style, `! [[ -e` doesn't show the '!' in xtrace, whereas `[[ ! -e` does, and yet, for `grep`.....
 ## Note, idempotent script
-
+## Note, find, stat and [[ (and ls) don't effect ext4 timestamps, as tested, but idempotent chown and chmod 
+#+  do, and of course touch does
 ## TODO: add colors to xtrace comments
 
 # <> Debugging
@@ -968,12 +969,16 @@ function setup_bashrc(){ :
       die "${WW}"
     fi
 
+    ## Bug: chmod changes the ctime, even with no change of DAC's
+
     : '  bashrc -- ...of the array files_for_use_with_bash'
     if ! sudo -- [ -e "${WW}.orig" ]
     then
       sudo -- rsync --checksum --archive -- "${WW}" "${WW}.orig"
       sudo -- chmod 400 -- "${WW}.orig"
-      sudo -- chattr +i -- "${WW}.orig"
+
+      ## Adding attr changes ctime once; removing attr changes ctime every time
+      sudo -- chattr +i -- "${WW}.orig" 
     fi
 
     : '  bashrc -- ...per-script-execution file backup'
@@ -1743,13 +1748,15 @@ function setup_ssh(){ :
   ## Bug - security, these `chown` commands should operate on the files while they're still in skel_LiveUsb
   #+  see also similar code in setup_gpg(), possibly elsewhere also  :-\
 
+  ## Bug, chown changes ctime on every execution, whether or not the ownership changes
+
   if [[ -d ${ssh_usr_conf_dir} ]]
   then
     sudo -- \
       find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
         chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' ||
           die
-    find "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
+    find "${ssh_usr_conf_dir}" -xdev -type d -execdirchmod 700 "${verb__[@]}" '{}' ';'
     find "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
   else
     die
