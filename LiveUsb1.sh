@@ -16,7 +16,8 @@
 ## Note, style, `! [[ -e` doesn't show the '!' in xtrace, whereas `[[ ! -e` does, and yet, for `grep`.....
 ## Note, idempotent script
 ## Note, find, stat and [[ (and ls) don't effect ext4 timestamps, as tested, but idempotent chown and chmod 
-#+  do, and of course touch does
+#+  do, and of course touch does; if there's no change in the file, rsync doesn't, but if the file changes, 
+#+  it does. Also, btime on ext4 still isn't consistent
 ## TODO: add colors to xtrace comments
 
 # <> Debugging
