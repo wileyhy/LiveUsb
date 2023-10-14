@@ -1040,6 +1040,12 @@ function setup_bashrc(){ :
   vars_for_bashrc_3=( 'PROMPT_COMMAND' )
   fcns_for_bashrc_1=( 'rm' ) #'__vte_osc7' '__vte_prompt_command'
 
+    # indices=()
+    #
+    # list_{ index }=( group ) 
+    #
+    # identify [ var or fn ] by parsing shell builtins
+
   :;: '  bashrc -- Variables'
   missing_vars_and_fns=()
 
