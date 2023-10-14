@@ -293,6 +293,8 @@ function gh_auth_login_command(){ :
     gh auth logout
   fi
 
+  ## Bug, output of `gh auth login`: "! Authentication credentials saved in plain text"
+
   ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to
   #+  refresh auth manually; using short options for just this reason
   gh auth login -p 'ssh' -h 'github.com' -s 'admin:public_key,read:gpg_key,admin:ssh_signing_key' -w || die
