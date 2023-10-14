@@ -968,7 +968,7 @@ function setup_bashrc(){ :
 
   for WW in "${files_for_use_with_bash[@]}"
   do
-    : '  bashrc -- File must exist'
+    : '  bashrc -- RC File must exist'
     if ! sudo -- [ -f "${WW}" ]
     then
       die "${WW}"
@@ -1005,14 +1005,14 @@ function setup_bashrc(){ :
   fi
 
   :;: '  bashrc -- Set up PROMPT_COMMAND'
-  : '  bashrc -- Variables dependency level 1'
+  : '  bashrc -- Variables dependency -- level 1 --'
   pc_regx='not found$'
   prompt_colors_reset=$( tput sgr0 )
 
-  : '  bashrc -- Variables dependency level 2'
+  : '  bashrc -- Variables dependency -- level 2 --'
   prompt_cmd_0='printf "%b" "${prompt_colors_reset}"'
 
-  : '  bashrc -- Variables dependency level 3'
+  : '  bashrc -- Variables dependency -- level 3 --'
   ## Note, PROMPT_COMMAND could have been inherited as a string variable
   unset PROMPT_COMMAND
   declare -a PROMPT_COMMAND
