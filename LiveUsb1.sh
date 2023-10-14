@@ -297,6 +297,8 @@ function gh_auth_login_command(){ :
   #+  refresh auth manually; using short options for just this reason
   gh auth login -p 'ssh' -h 'github.com' -s 'admin:public_key,read:gpg_key,admin:ssh_signing_key' -w || die
 
+  ## TODO, move these git and gh commands into setup_git() and setup_gh_cli(), respectively
+
   : 'GH - Use GitHub CLI as a credential helper'
   git config --global credential.helper "cache --timeout=3600"
   gh auth setup-git --hostname 'github.com'
