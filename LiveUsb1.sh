@@ -1073,8 +1073,10 @@ function setup_bashrc(){ :
   
   : '  bashrc -- Define bashrc_strings_*'
   ## Note, you want for these array elements to represent just one parameter or function each.  ...what does this mean?
-  unset       bashrc_strings_F1   bashrc_strings_V1   bashrc_strings_V2   bashrc_strings_V3
-  declare -A  bashrc_strings_F1   bashrc_strings_V1   bashrc_strings_V2   bashrc_strings_V3
+  local -a bashrc_Associative_arrays
+  local -a bashrc_Associative_arrays=( bashrc_strings_F1   bashrc_strings_V1   bashrc_strings_V2   bashrc_strings_V3 )
+  unset "${bashrc_Associative_arrays[@]}"
+  declare -A "${bashrc_Associative_arrays[@]}"
 
   : '  bashrc -- Variables'
   local XX YY ZZ
@@ -1091,15 +1093,17 @@ function setup_bashrc(){ :
   unset AA
 
   :;: '  bashrc -- Write functions and variable definitions into bashrc files'
-  write_bashrc_strings bashrc_strings_F1
-  write_bashrc_strings bashrc_strings_V1
-  write_bashrc_strings bashrc_strings_V2
-  write_bashrc_strings bashrc_strings_V3
+  for KK in "${!bashrc_Associative_arrays[@]}"
+  do
+    write_bashrc_strings "${bashrc_Associative_arrays[$KK]}"
+  done
 
   :;: '  bashrc -- Clean up'
   unset pc_regx prompt_cmd_0
-  unset files_for_use_with_bash bashrc_strings_F bashrc_strings_V
+  unset files_for_use_with_bash
   unset -f write_bashrc_strings
+  unset "${bashrc_Associative_arrays[@]}"
+  unset bashrc_Associative_arrays
 
   #true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
