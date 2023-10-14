@@ -1069,12 +1069,15 @@ function setup_bashrc(){ :
     die, "${missing_vars_and_fns[@]}"
   fi
 
-  :;: '  bashrc -- Define bashrc_strings_*'
+  :;: '  bashrc -- Create Associative arrays of required parameters'
+  
+  : '  bashrc -- Define bashrc_strings_*'
   ## Note, you want for these array elements to represent just one parameter or function each.  ...what does this mean?
-  unset       bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
-  declare -A  bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
+  unset       bashrc_strings_F1   bashrc_strings_V1   bashrc_strings_V2   bashrc_strings_V3
+  declare -A  bashrc_strings_F1   bashrc_strings_V1   bashrc_strings_V2   bashrc_strings_V3
 
   : '  bashrc -- Variables'
+  local XX YY ZZ
   for XX in "${vars_for_bashrc_1[@]}"; do bashrc_strings_V1+=( ["define parameter ${XX}"]=$( declare -p "${XX}" ) ); done
   for YY in "${vars_for_bashrc_2[@]}"; do bashrc_strings_V2+=( ["define parameter ${YY}"]=$( declare -p "${YY}" ) ); done
   for ZZ in "${vars_for_bashrc_3[@]}"; do bashrc_strings_V3+=( ["define parameter ${ZZ}"]=$( declare -p "${ZZ}" ) ); done
