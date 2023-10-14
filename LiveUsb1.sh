@@ -979,7 +979,7 @@ function setup_bashrc(){ :
     : '  bashrc -- ...of the array files_for_use_with_bash'
     if ! sudo -- [ -e "${WW}.orig" ]
     then
-      sudo -- rsync --checksum --archive -- "${WW}" "${WW}.orig"
+      sudo -- rsync --checksum --archive "${verb__[@]}" "${WW}" "${WW}.orig"
       sudo -- chmod 400 -- "${WW}.orig"
 
       ## Adding attr changes ctime once; removing attr changes ctime every time
