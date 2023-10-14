@@ -1007,10 +1007,10 @@ function setup_bashrc(){ :
   :;: '  bashrc -- Set up PROMPT_COMMAND'
   : '  bashrc -- Variables dependency level 1'
   pc_regx='not found$'
-  propmt_colors_reset=$( tput sgr0 )
+  prompt_colors_reset=$( tput sgr0 )
 
   : '  bashrc -- Variables dependency level 2'
-  prompt_cmd_0='printf "%b" "${propmt_colors_reset}"'
+  prompt_cmd_0='printf "%b" "${prompt_colors_reset}"'
 
   : '  bashrc -- Variables dependency level 3'
   ## Note, PROMPT_COMMAND could have been inherited as a string variable
@@ -1036,7 +1036,7 @@ function setup_bashrc(){ :
   ## Note, there are multiple lists for variables due to layers of dependencies. Later in the process,
   #+  each of these groups is relayed using associative arrays, which do not reliably maintain their internal
   #+  ordering, so, some consistent ordering must be imposed here.
-  vars_for_bashrc_1=( 'BROWSER' 'EDITOR' 'PS0' 'propmt_colors_reset' )
+  vars_for_bashrc_1=( 'BROWSER' 'EDITOR' 'PS0' 'prompt_colors_reset' )
   vars_for_bashrc_2=( 'prompt_cmd_0' )
   vars_for_bashrc_3=( 'PROMPT_COMMAND' )
   fcns_for_bashrc_1=( 'rm' ) #'__vte_osc7' '__vte_prompt_command'
