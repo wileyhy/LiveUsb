@@ -1046,6 +1046,9 @@ function setup_bashrc(){ :
     #
     # identify [ var or fn ] by parsing shell builtins
 
+    ## TODO, write lists of how the data is to be written in bashrc, and of how the data exists originally, 
+    #+  then with those endpoints, chart how to transform the strings from a simple list to output in bashrc
+
   :;: '  bashrc -- Variables'
   missing_vars_and_fns=()
 
