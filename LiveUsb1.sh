@@ -295,8 +295,7 @@ function gh_auth_login_command(){ :
 
   ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to
   #+  refresh auth manually; using short options for just this reason
-  gh auth login -p 'ssh' -h 'github.com' -s 'admin:public_key,read:gpg_key,admin:ssh_signing_key' -w ||
-    exit "${nL}"
+  gh auth login -p 'ssh' -h 'github.com' -s 'admin:public_key,read:gpg_key,admin:ssh_signing_key' -w || die
 
   : 'GH - Use GitHub CLI as a credential helper'
   git config --global credential.helper "cache --timeout=3600"
