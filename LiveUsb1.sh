@@ -1468,7 +1468,7 @@ function setup_gh_cli(){ :
     wait -f # <>
     hash -r
 
-  ## Bug, `gh auth status` is executed too many (ie, 3) times
+  ## Bug, `gh auth status` is executed too many (ie, 3) times. Both the checkmarks and the exit code are used
 
   :;: 'GH -- Login to github'
   ## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
@@ -1491,7 +1491,7 @@ function setup_gh_cli(){ :
   :;: 'GH -- Get SSH & GPG keys'
   for QQ in ssh-key gpg-key
   do
-    if ! gh "${QQ}" list > /dev/null
+    if ! gh "${QQ}" list > /dev/null 2>&1
     then
       gh_auth_login_command
     fi
