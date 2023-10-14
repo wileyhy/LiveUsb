@@ -1078,10 +1078,15 @@ function setup_bashrc(){ :
   unset "${bashrc_Assoc_arrays[@]}"
   declare -A "${bashrc_Assoc_arrays[@]}"
 
+  # for AA in bashrc_Assoc_arrays
+  #   if vars
+  #     for BB in bashrc_strngs*[ number ]
+  #       Ass
+
   : '  bashrc -- Variables'
   ## Note, three temp vars are used here because of the correspondence of numbers, ie, 1 and 1, 2 and 2, etc
   #+  between the names of the respective indexed and associative arrays. In effect, this is the clearest and 
-  #+  shortest way to write it in bash, for the intended purpose, to the best of my knowledge.
+  #+  shortest way to write it in bash (5.2), for the intended purpose, to the best of my knowledge.
   local XX YY ZZ
   for XX in "${vars_for_bashrc_1[@]}"; do bashrc_strngs_V1+=( ["define parameter ${XX}"]=$( declare -p "${XX}" ) ); done
   for YY in "${vars_for_bashrc_2[@]}"; do bashrc_strngs_V2+=( ["define parameter ${YY}"]=$( declare -p "${YY}" ) ); done
