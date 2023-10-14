@@ -1482,6 +1482,9 @@ function setup_gh_cli(){ :
     fi
   fi
 
+  ## Bug, when `gh ssh-key list` fails, then after gh_auth_login_command() executes, `gh ssh-key list` is 
+  #+  not executed again, when it should be
+
   :;: 'GH -- Get SSH & GPG keys'
   for QQ in ssh-key gpg-key
   do
