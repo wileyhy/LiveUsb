@@ -987,7 +987,7 @@ function setup_bashrc(){ :
     fi
 
     : '  bashrc -- ...per-script-execution file backup'
-    sudo -- cp --archive --no-dereference "${verb__[@]}" "${WW}" "${WW}~" || die "${WW}"
+    sudo -- rsync --archive --checksum "${verb__[@]}" "${WW}" "${WW}~" || die "${WW}"
   done
   unset WW
 
