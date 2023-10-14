@@ -1075,8 +1075,7 @@ function setup_bashrc(){ :
   ## Note, you want for these array elements to represent just one parameter or function each.  ...what does this mean?
   local -a bashrc_Assoc_arrays
   local -a bashrc_Assoc_arrays=( Aa_bashrc_strngs_F1   Aa_bashrc_strngs_V1   Aa_bashrc_strngs_V2   Aa_bashrc_strngs_V3 )
-  unset "${bashrc_Assoc_arrays[@]}"
-  declare -A "${bashrc_Assoc_arrays[@]}"
+  local -A "${bashrc_Assoc_arrays[@]}"
 
   # for AA in bashrc_Assoc_arrays
   #   if vars
