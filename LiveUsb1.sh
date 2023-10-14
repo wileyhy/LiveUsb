@@ -1078,9 +1078,21 @@ function setup_bashrc(){ :
   local -A "${bashrc_Assoc_arrays[@]}"
 
   # for AA in bashrc_Assoc_arrays
-  #   if vars
-  #     for BB in bashrc_strngs*[ number ]
-  #       Ass
+  #
+  #     bashrc_Assoc_arrays === Aa_bashrc_strngs_F1   Aa_bashrc_strngs_V1 ...
+  #
+  #   if AA = *_V{ number } # ie, is for variables
+  #
+  #       AA === Aa_bashrc_strngs_V1
+  #
+  #     for BB in !vars_for_bashrc_{ number }
+  #
+  #         vars_for_bashrc_{ number __1__ }[BB] === vars_for_bashrc_1
+  #         
+  #       for XX in  vars_for_bashrc_{ number __1__ }[BB]
+  #
+  #       local -A Aa_bashrc_strngs_V{ number }[$AA] = [def parm BB]=$( declare -p BB)
+  #
 
   : '  bashrc -- Variables'
   ## Note, three temp vars are used here because of the correspondence of numbers, ie, 1 and 1, 2 and 2, etc
