@@ -1044,6 +1044,7 @@ function setup_bashrc(){ :
   :;: '  bashrc -- Variables'
   missing_vars_and_fns=()
 
+  : 'Note, test for whether the reqd variables are defined in the script#s current execution environment'
   for QQ in "${vars_for_bashrc_1[@]}" "${vars_for_bashrc_2[@]}" "${vars_for_bashrc_3[@]}"
   do
     if [[ $( declare -p "${QQ}" 2>&1 ) =~ ${pc_regx} ]]
