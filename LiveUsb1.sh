@@ -993,7 +993,7 @@ function setup_bashrc(){ :
 
   :;: '  bashrc -- Env parameters for bashrc'
 
-  :;: '  bashrc -- Color code assigned to PS0, ducking xtrace'
+  :;: '  bashrc -- PS0 -- Assign color code and duck xtrace'
   ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
   if [[ -o xtrace ]]
   then
@@ -1004,15 +1004,14 @@ function setup_bashrc(){ :
     PS0=$( tput setaf 43 )
   fi
 
-  :;: '  bashrc -- Set up PROMPT_COMMAND'
-  : '  bashrc -- Variables dependency -- level 1 --'
+  :;: '  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 1 --'
   pc_regx='not found$'
   prompt_colors_reset=$( tput sgr0 )
 
-  : '  bashrc -- Variables dependency -- level 2 --'
+  : '  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 2 --'
   prompt_cmd_0='printf "%b" "${prompt_colors_reset}"'
 
-  : '  bashrc -- Variables dependency -- level 3 --'
+  : '  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 3 --'
   ## Note, PROMPT_COMMAND could have been inherited as a string variable
   unset PROMPT_COMMAND
   declare -a PROMPT_COMMAND
@@ -1023,7 +1022,7 @@ function setup_bashrc(){ :
     PROMPT_COMMAND+=( __vte_prompt_command )
   fi
 
-  :;: '  bashrc -- Other parameters'
+  : '  bashrc -- Other parameters'
   PS1="[\\u@\\h]\\\$ "
   BROWSER=$( command -v firefox )
   EDITOR=$( command -v vim )
