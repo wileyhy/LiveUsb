@@ -1071,10 +1071,10 @@ function setup_bashrc(){ :
 
   :;: '  bashrc -- Create Associative arrays of required parameters'
   
-  : '  bashrc -- Define bashrc_strngs_*'
+  : '  bashrc -- Define Aa_bashrc_strngs_*'
   ## Note, you want for these array elements to represent just one parameter or function each.  ...what does this mean?
   local -a bashrc_Assoc_arrays
-  local -a bashrc_Assoc_arrays=( bashrc_strngs_F1   bashrc_strngs_V1   bashrc_strngs_V2   bashrc_strngs_V3 )
+  local -a bashrc_Assoc_arrays=( Aa_bashrc_strngs_F1   Aa_bashrc_strngs_V1   Aa_bashrc_strngs_V2   Aa_bashrc_strngs_V3 )
   unset "${bashrc_Assoc_arrays[@]}"
   declare -A "${bashrc_Assoc_arrays[@]}"
 
@@ -1088,16 +1088,16 @@ function setup_bashrc(){ :
   #+  between the names of the respective indexed and associative arrays. In effect, this is the clearest and 
   #+  shortest way to write it in bash (5.2), for the intended purpose, to the best of my knowledge.
   local XX YY ZZ
-  for XX in "${vars_for_bashrc_1[@]}"; do bashrc_strngs_V1+=( ["define parameter ${XX}"]=$( declare -p "${XX}" ) ); done
-  for YY in "${vars_for_bashrc_2[@]}"; do bashrc_strngs_V2+=( ["define parameter ${YY}"]=$( declare -p "${YY}" ) ); done
-  for ZZ in "${vars_for_bashrc_3[@]}"; do bashrc_strngs_V3+=( ["define parameter ${ZZ}"]=$( declare -p "${ZZ}" ) ); done
+  for XX in "${vars_for_bashrc_1[@]}"; do Aa_bashrc_strngs_V1+=( ["define parameter ${XX}"]=$( declare -p "${XX}" ) ); done
+  for YY in "${vars_for_bashrc_2[@]}"; do Aa_bashrc_strngs_V2+=( ["define parameter ${YY}"]=$( declare -p "${YY}" ) ); done
+  for ZZ in "${vars_for_bashrc_3[@]}"; do Aa_bashrc_strngs_V3+=( ["define parameter ${ZZ}"]=$( declare -p "${ZZ}" ) ); done
   unset XX YY ZZ
 
   : '  bashrc -- Functions (a.k.a. "subroutines")'
   local AA
   for AA in "${fcns_for_bashrc_1[@]}"
   do
-    bashrc_strngs_F1+=( ["define subroutine ${AA}"]="function $( declare -pf "${AA}" )" )
+    Aa_bashrc_strngs_F1+=( ["define subroutine ${AA}"]="function $( declare -pf "${AA}" )" )
   done
   unset AA
 
