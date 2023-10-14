@@ -73,30 +73,30 @@ alias .^:=': $color_reset ; :'
 
   : 'Lists of required files'
   ## TODO
-  #: 'Files, firefox'
+  #: '  Files, firefox'
   #files_for_use_with_github_depth_1+=( ~/.mozilla )
   
-  : 'Files, gh (cli)'
+  : '  Files, gh (cli)'
   files_for_use_with_github_depth_3+=( ~/.config/gh/{config.yml,gpg-agent.conf,hosts.yml,pubring.kbx,trustdb.gpg} )
   files_for_use_with_github_depth_4+=( ~/.config/gh/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev 
       ~/.config/gh/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key)
   
-  : 'Files, gpg'
+  : '  Files, gpg'
   gpg_d=~/.gnupg
   files_for_use_with_github_depth_2+=( "${gpg_d}"/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
   files_for_use_with_github_depth_3+=( "${gpg_d}"/crls.d/DIR.txt 
       "${gpg_d}"/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev 
       "${gpg_d}"/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
   
-  : 'Files, ssh'
+  : '  Files, ssh'
   files_for_use_with_github_depth_2+=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
   
-  : 'Files, top'
+  : '  Files, top'
   files_for_use_with_github_depth_3+=( ~/.config/procps/toprc )
   
-  : 'Files, vim'
+  : '  Files, vim'
   files_for_use_with_github_depth_1+=( ~/.vimrc )
-  : 'End of Files lists'
+  : '  End of Files lists'
 
   [[ -o xtrace ]] && xon=yes && set +x
   ps_o=$( ps aux )
