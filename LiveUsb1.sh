@@ -1086,6 +1086,7 @@ function setup_bashrc(){ :
   unset XX YY ZZ
 
   : '  bashrc -- Functions (a.k.a. "subroutines")'
+  local AA
   for AA in "${fcns_for_bashrc_1[@]}"
   do
     bashrc_strings_F1+=( ["define subroutine ${AA}"]="function $( declare -pf "${AA}" )" )
@@ -1093,10 +1094,12 @@ function setup_bashrc(){ :
   unset AA
 
   :;: '  bashrc -- Write functions and variable definitions into bashrc files'
+  local KK
   for KK in "${!bashrc_Associative_arrays[@]}"
   do
     write_bashrc_strings "${bashrc_Associative_arrays[$KK]}"
   done
+  unset KK
 
   :;: '  bashrc -- Clean up'
   unset pc_regx prompt_cmd_0
