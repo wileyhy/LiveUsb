@@ -1075,7 +1075,7 @@ function setup_bashrc(){ :
   declare -A  bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
 
   : '  bashrc -- Variables'
-  for XX in "${vars_for_bashrc_2[@]}"; do bashrc_strings_V1+=( ["define parameter ${XX}"]=$( declare -p "${XX}" ) ); done
+  for XX in "${vars_for_bashrc_1[@]}"; do bashrc_strings_V1+=( ["define parameter ${XX}"]=$( declare -p "${XX}" ) ); done
   for YY in "${vars_for_bashrc_2[@]}"; do bashrc_strings_V2+=( ["define parameter ${YY}"]=$( declare -p "${YY}" ) ); done
   for ZZ in "${vars_for_bashrc_3[@]}"; do bashrc_strings_V3+=( ["define parameter ${ZZ}"]=$( declare -p "${ZZ}" ) ); done
   unset XX YY ZZ
