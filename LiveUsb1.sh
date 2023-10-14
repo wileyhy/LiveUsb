@@ -1070,7 +1070,7 @@ function setup_bashrc(){ :
   fi
 
   :;: '  bashrc -- Define bashrc_strings_*'
-  ## Note, you want for these array elements to represent just one parameter or function each
+  ## Note, you want for these array elements to represent just one parameter or function each.  ...what does this mean?
   unset       bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
   declare -A  bashrc_strings_F1 bashrc_strings_V1 bashrc_strings_V2 bashrc_strings_V3
 
