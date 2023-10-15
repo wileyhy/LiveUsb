@@ -1406,7 +1406,7 @@ function setup_git(){ :
   :;: 'Git -- remove a particular configuration key/value pair if present'
   if printf '%s\n' "${git_cnf_glob_list[@]}" | grep gpg.format "${qui__[@]}"
   then
-    git config --global --unset gpg.format
+    git config --global --unset gpg.format "${verb__[@]}"
   fi
 
   :;: 'Git -- setup configuration - Loop B'
