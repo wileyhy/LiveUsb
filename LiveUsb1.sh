@@ -525,7 +525,7 @@ function reqd_user_files(){ :
   local pttn_uuid
   pttn_uuid='949f3d8c-2dbe-4356-8a6b-3389e4c016d4'
 
-  : $'Vars: Get device name identified by \x22\x24pttn_uuid\x22'
+  : $'Vars: Is device identified by \x22\x24pttn_uuid\x22 attached to this machine? If so, get device path'
   ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
   #+  `local lsblk_out` \n `lsblk_out=''` the assignment doesn't need a preceding `local`
   ## Note, I'm using an array with $lsblk_out so I can work around `set -u` by using a ':=' PE, and so that
@@ -537,7 +537,7 @@ function reqd_user_files(){ :
   #+ In this script, index zero should exist, barring any future changes. So, it's a bit of future-proofing.
   local pttn_device_path
   pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk -v awk_var_ptn="${pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' )
-  [[ -n ${pttn_device_path} ]] || die $'Necessary USB drive isn\x60t plugged in.'
+  [[ -n ${pttn_device_path} ]] || die $'Necessary USB drive isn\x60t plugged in or its filesystem has changed.'
   :
   : 'Vars: get mountpoints and label'
   local -a array_mt_pts
@@ -547,6 +547,8 @@ function reqd_user_files(){ :
   case "${#array_mt_pts[@]}" in
     0 )
       : '  Zero matches'
+      ## Note, plugged in and not mounted means the LABEL would still be visible, if there is one: the USB
+      #+  drive holding the data could change, which would change the PARTUUID
       local pttn_label
       pttn_label=$( lsblk --noheadings --output label "${pttn_device_path}" )
       pttn_label="${pttn_label:=live_usb_tmplabel}"
