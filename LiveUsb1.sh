@@ -1817,7 +1817,7 @@ function setup_vim(){ :
   fi
 
   ## Clean up after section Vim
-  /bin/rm --one-file-system --preserve-root=all --force "${verb__[@]}" "${tmp_dir}/vim-conf-text"
+  /bin/rm --force --one-file-system --preserve-root=all "${verb__[@]}" "${tmp_dir}/vim-conf-text"
   unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
