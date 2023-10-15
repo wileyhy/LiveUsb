@@ -1643,7 +1643,7 @@ function setup_ssh(){ :
     #+    Binary `kill` has a few options not available with the builtin, such as '--timeout', which can be
     #+  used to avoid writing an extra for loop...
     #+
-    #+      sudo /bin/kill --verbose \
+    #+      sudo -- /bin/kill --verbose \
     #+          --timeout 1000 HUP \
     #+          --timeout 1000 USR1 \
     #+          --timeout 1000 TERM \
