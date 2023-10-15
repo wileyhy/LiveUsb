@@ -547,8 +547,8 @@ function reqd_user_files(){ :
   case "${#array_mt_pts[@]}" in
     0 )
       : '  Zero matches'
-      ## Note, plugged in and not mounted means the LABEL would still be visible, if there is one: the USB
-      #+  drive holding the data could change, which would change the PARTUUID
+      ## Note, 'plugged in and not mounted' means the LABEL would still be visible, if there is one: the USB
+      #+  drive or the filesystem holding the data could change, and either change would rewrite the PARTUUID
       local pttn_label
       pttn_label=$( lsblk --noheadings --output label "${pttn_device_path}" )
       pttn_label="${pttn_label:=live_usb_tmplabel}"
