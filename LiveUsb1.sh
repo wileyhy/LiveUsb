@@ -664,7 +664,7 @@ function reqd_user_files(){ :
           fi
 
           :;: 'If the source conf file/dir still does not exist, then throw an error'
-          if ! sudo [ -e "${source_file}" ]
+          if ! sudo -- [ -e "${source_file}" ]
           then
             die "${QQ[BB]}" "${source_file}"
           fi
