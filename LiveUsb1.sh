@@ -317,7 +317,7 @@ function gh_auth_login_command(){ :
   ## TODO, move these git and gh commands into setup_git() and setup_gh_cli), respectively
 
   : 'GH - Use GitHub CLI as a credential helper'
-  git config --global credential.helper "cache --timeout=3600"
+  git config --global credential.helper "cache --timeout=3600" "${verb__[@]}"
   gh auth setup-git --hostname 'github.com'
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
