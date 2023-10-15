@@ -632,7 +632,8 @@ function reqd_user_files(){ :
               sudo -- mkdir --parents -- "${mount_pt}" || die
             fi
 
-            ## Bug, must test for whether pttn is mounted
+            ## Q, such a test already exists, ~ line 540. see var $pttn_device_path
+              ## Bug? must test for whether pttn is mounted
 
             : $'Perform mount operation and re-sample \x60lsblk\x60'
             local is_mounted
