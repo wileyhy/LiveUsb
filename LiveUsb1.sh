@@ -74,8 +74,11 @@ alias .^:=': $color_reset ; :'
   readonly user_real_name user_github_email_address user_github_gpg_key
  
   :;: 'Parameters regarding required files'
-  ## Note, array names $files_for_use_with_github_depth_* are created here and within the next 
+  ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more 
+  #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and are numbered sequentially are created here on one line only and have values assigned to each of them within the next ~50 lines. The list of index numbers is created
+  #+  just once, so the indices in the assignment section below must match the indices created here. 
   arrays_of_conf_files=( files_for_use_with_github_depth_{1..4} )
+  readonly arrays_of_conf_files
   unset "${arrays_of_conf_files[@]}"
 
   ## Bug? this is really a lot of manually entered data ...of filenames -- it's a lot to maintain. :-\
