@@ -71,9 +71,12 @@ alias .^:=': $color_reset ; :'
   user_github_gpg_key='E287D0CF528591CE'
   
   :;: 'Parameters regarding required files'
-  ## Note, array names $files_for_use_with_github_depth_* are defined here an used within the next 
+  ## Note, array names $files_for_use_with_github_depth_* are created here and within the next 
+  declare -a files_for_use_with_github_depth_{1..4}
   arrays_of_conf_files=( files_for_use_with_github_depth_{1..4} )
   unset "${arrays_of_conf_files[@]}"
+
+  ## Bug, this is really a lot of manually entered data ...of filenames -- it's a lot to maintain. :-\
 
   ## TODO
   #: '  Files, firefox'
