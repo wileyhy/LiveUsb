@@ -70,11 +70,11 @@ alias .^:=': $color_reset ; :'
   user_github_email_address='84648683+wileyhy@users.noreply.github.com'
   user_github_gpg_key='E287D0CF528591CE'
   
-  : 'Array of arrays of file names'
+  :;: 'Parameters regarding required files'
+  ## Note, array names $files_for_use_with_github_depth_* are defined here an used within the next 
   arrays_of_conf_files=( files_for_use_with_github_depth_{1..4} )
   unset "${arrays_of_conf_files[@]}"
 
-  : 'Lists of required files'
   ## TODO
   #: '  Files, firefox'
   #files_for_use_with_github_depth_1+=( ~/.mozilla )
@@ -685,9 +685,11 @@ function reqd_user_files(){ :
     unset BB
   done
   unset AA QQ
+  unset arrays_of_conf_files
 
   : 'Restore previous umask'
   builtin "${prev_umask[@]}"
+  unset prev_umask
 
     #EC=101 LN="$LINENO" exit # <>
 
