@@ -697,7 +697,6 @@ function reqd_user_files(){ :
     unset BB
   done
   unset AA QQ
-  unset arrays_of_conf_files
 
   : 'Restore previous umask'
   builtin "${prev_umask[@]}"
