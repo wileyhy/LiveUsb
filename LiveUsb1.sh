@@ -195,7 +195,7 @@ function clone_repo(){ :
   if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]] || 
       ! [[ ${loc_hash_of_read_me_file} = "${sha256_of_repo_readme}" ]]
   then
-    git clone --origin 'github' "${verb__[@]}" "https://github.com/wileyhy/${scr_repo_nm}" || die
+    git clone --origin 'github' "https://github.com/wileyhy/${scr_repo_nm}" || die
   fi
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
