@@ -138,7 +138,6 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  'must_be_root()'
   #+  'pause_to_check()'
   #+  'reqd_user_files()'
-  #+  'rm()'
   #+  'rsync_install_if_missing()'
   #+  'setup_dirs()'
   #+  'setup_git()'
