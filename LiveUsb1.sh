@@ -820,7 +820,7 @@ function setup_bashrc(){ :
   vars_for_bashrc_1=( 'BROWSER' 'EDITOR' 'PS0' 'prompt_colors_reset' )
   vars_for_bashrc_2=( 'prompt_cmd_0' )
   vars_for_bashrc_3=( 'PROMPT_COMMAND' )
-  #fcns_for_bashrc_1=( 'rm' ) #'__vte_osc7' '__vte_prompt_command'
+  fcns_for_bashrc_1=() #'rm' ) #'__vte_osc7' '__vte_prompt_command'
 
     # indices=()
     #
