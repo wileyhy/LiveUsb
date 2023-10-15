@@ -1601,7 +1601,7 @@ function setup_ssh(){ :
   then
     if ! grep 'ForwardAgent yes' "${qui__[@]}" "${ssh_user_conf_file}"
     then
-      /bin/rm -f "${qui__[@]}" "${ssh_user_conf_file}"
+      /bin/rm -f "${verb__[@]}" "${ssh_user_conf_file}"
       write_ssh_conf
     fi
   else
