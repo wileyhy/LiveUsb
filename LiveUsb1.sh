@@ -75,9 +75,9 @@ alias .^:=': $color_reset ; :'
  
   :;: 'Parameters regarding required files'
   ## Note, array names $files_for_use_with_github_depth_* are created here and within the next 
-  declare -a files_for_use_with_github_depth_{1..4}
   arrays_of_conf_files=( files_for_use_with_github_depth_{1..4} )
   unset "${arrays_of_conf_files[@]}"
+  declare -a "${arrays_of_conf_files[@]}"
 
   ## Bug? this is really a lot of manually entered data ...of filenames -- it's a lot to maintain. :-\
   #+  Wouldn't it be better to just always keep the data directory... in proper intended order...?
