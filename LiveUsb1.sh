@@ -139,7 +139,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  'pause_to_check()'
   #+  'reqd_user_files()'
   #+  'rsync_install_if_missing()'
-  #+  'setup_dirs()'
+  #+  'setup_user_dirs()'
   #+  'setup_git()'
   #+  'setup_gpg()'
   #+  'setup_network()'
@@ -1239,8 +1239,8 @@ function setup_dnf(){ :
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-:;: 'Define setup_dirs()'
-function setup_dirs(){ :
+:;: 'Define setup_user_dirs()'
+function setup_user_dirs(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
@@ -2071,7 +2071,7 @@ setup_git
   set -x
 
 :;: 'Make and change into directories'
-setup_dirs
+setup_user_dirs
 
   #EC=101 LN="$LINENO" exit # <>
   set -x
