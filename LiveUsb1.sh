@@ -219,7 +219,7 @@ function enable_git_debug_settings(){ :
   GIT_TRACE_PERFORMANCE=true
   GIT_TRACE_SETUP=true
   GIT_TRACE_SHALLOW=true
-  [[ -f /home/liveuser/.gitconfig ]] && git config --global --list --show-origin --show-scope "${verb__[@]}" | cat
+  [[ -f /home/liveuser/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
