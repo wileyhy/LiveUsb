@@ -2158,7 +2158,7 @@ then
 fi
 
 :;: 'Clean up & exit'
-/bin/rm --force --recursive "${verb__[@]}" "${tmp_dir}"
+/bin/rm --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 EC='00' LN="${nL}" exit
 
