@@ -52,6 +52,9 @@ alias .^:=': $color_reset ; :'
 :;: 'Variables likely to be manually changed with some regularity, or which absolutely must be defined early on'
 # shellcheck disable=SC2034
 {
+  script_start_time=$( date +%H:%M:%S )
+  readonly script_start_time
+
   scr_repo_nm='LiveUsb'
   scr_nm='LiveUsb1.sh'
   sha256_of_repo_readme='da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c'
@@ -60,16 +63,14 @@ alias .^:=': $color_reset ; :'
   data_pttn_uuid='949f3d8c-2dbe-4356-8a6b-3389e4c016d4'
   readonly data_pttn_uuid
 
-  script_start_time=$( date +%H:%M:%S )
-  readonly script_start_time
-
   fn_bndry=' ~~~ ~~~ ~~~ '
   fn_lvl=0
 
   user_real_name='Wiley Young'
   user_github_email_address='84648683+wileyhy@users.noreply.github.com'
   user_github_gpg_key='E287D0CF528591CE'
-  
+  readonly user_real_name user_github_email_address user_github_gpg_key
+ 
   :;: 'Parameters regarding required files'
   ## Note, array names $files_for_use_with_github_depth_* are created here and within the next 
   declare -a files_for_use_with_github_depth_{1..4}
