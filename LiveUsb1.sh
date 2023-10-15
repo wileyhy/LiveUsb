@@ -144,7 +144,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  'setup_gpg()'
   #+  'setup_network()'
   #+  'setup_ssh()'
-  #+  'setup_dirs_temp()'
+  #+  'setup_temp_dirs()'
   #+  'setup_time()'
   #+  'setup_vars()'
   #+  'setup_vim()'
@@ -1689,8 +1689,8 @@ function setup_ssh(){ :
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-:;: 'setup_dirs_temp()'
-function setup_dirs_temp(){ :
+:;: 'setup_temp_dirs()'
+function setup_temp_dirs(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
@@ -2044,7 +2044,7 @@ setup_time
   set -x
 
 :;: 'Temporary directory'
-setup_dirs_temp
+setup_temp_dirs
 
   #EC=101 LN="$LINENO" exit # <>
   set -x
