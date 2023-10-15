@@ -64,7 +64,9 @@ alias .^:=': $color_reset ; :'
   readonly data_pttn_uuid
 
   fn_bndry=' ~~~ ~~~ ~~~ '
+  readonly fn_bndry
   fn_lvl=0
+  declare -i fn_lvl
 
   user_real_name='Wiley Young'
   user_github_email_address='84648683+wileyhy@users.noreply.github.com'
