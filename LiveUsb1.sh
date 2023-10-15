@@ -464,7 +464,7 @@ function min_necc_packages(){ :
   do
     if ! rpm --query --quiet "$XX"
     then
-      sudo dnf --assumeyes install "$XX"
+      sudo -- dnf --assumeyes install "$XX"
 
       ## TODO: comment out this use of $a_pids, re declaring and unsetting
       #unset -v a_pids
