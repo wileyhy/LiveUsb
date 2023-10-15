@@ -55,6 +55,7 @@ alias .^:=': $color_reset ; :'
   scr_repo_nm='LiveUsb'
   scr_nm='LiveUsb1.sh'
   sha256_of_repo_readme='da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c'
+  pttn_uuid='949f3d8c-2dbe-4356-8a6b-3389e4c016d4'
   readonly scr_repo_nm scr_nm
 
   script_start_time=$( date +%H:%M:%S )
@@ -522,8 +523,6 @@ function reqd_user_files(){ :
 
   ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
   #+  effect the local variable
-  local pttn_uuid
-  pttn_uuid='949f3d8c-2dbe-4356-8a6b-3389e4c016d4'
 
   : $'Vars: Is device identified by \x22\x24pttn_uuid\x22 attached to this machine? If so, get device path'
   ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
