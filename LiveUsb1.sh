@@ -570,6 +570,7 @@ function reqd_user_files(){ :
   #: $'FS mounting must automatically \x60umount\x60 after 15 minutes, and automatically \x60mount\x60 on access by authorized user'
   #: 'Data directory must be readable via ACL'
 
+  ## Q, Why is this block commented out?
   #: 'Data directory must already exist'
   #if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
   #then
