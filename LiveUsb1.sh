@@ -583,12 +583,12 @@ function reqd_user_files(){ :
   umask 177
 
   :;: 'For each array of conf files and/or directories'
+  local AA
   local -n QQ
   ## It isn't strictly necessary to declare QQ as a nameref here, since unsetting QQ (see below) removes the
   #+  nameref attribute, but I intend to use QQ as a nameref, so declaring QQ without a nameref attribute
   #+  would be confusing
 
-  local AA
   for AA in "${arrays_of_conf_files[@]}"
   do
     :;: 'Loop A'
