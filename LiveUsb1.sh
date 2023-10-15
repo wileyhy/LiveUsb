@@ -412,7 +412,7 @@ function increase_disk_space(){ :
             y|t)  printf '  %s %b %s %s \n' 'Script,' ' \x60rm -i\x60 ' 'requires a typed [yN] response,' \
                     'it defaults to do-not-delete if a user just presses [enter].'
 
-                  if sudo -- command rm --one-file-system --preserve-root=all --interactive -- "${JJ}"
+                  if sudo -- /bin/rm --one-file-system --preserve-root=all --interactive -- "${JJ}"
                   then
                     unset 'fsos5[$AA]'
                     break 00001
