@@ -20,6 +20,7 @@
 #+  it does. Also, btime on ext4 still isn't consistent. grep has no effect on times. cp -a effects ctimes
 #+  even if file contents do not change.
 ## TODO: add colors to xtrace comments
+## Note, systed services to disable: bluetooth, cups, [ systemd-resolved ? ]; services to possibly enable: sshd, sssd
 
 # <> Debugging
 #set -x # <>
