@@ -964,7 +964,7 @@ function setup_dnf(){ :
     # addl_pkgs+=( ${for_char_sets:=}    enca moreutils uchardet )
       addl_pkgs+=( ${for_duh:=}          info plocate pdfgrep wdiff )
       addl_pkgs+=( ${for_firefox:=}      mozilla-noscript mozilla-privacy-badger mozilla-https-everywhere )
-      addl_pkgs+=( ${for_fs_maint:=}     bleachbit python3-psutil )
+      addl_pkgs+=( ${for_fs_maint:=}     bleachbit python3-psutil stacer )
     # addl_pkgs+=( ${for_fun:=}          supertuxkart )
     # addl_pkgs+=( ${for_gcov:=}         gcc )
       addl_pkgs+=( ${for_git:=}          git gh )
