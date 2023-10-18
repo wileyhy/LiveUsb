@@ -1503,10 +1503,7 @@ function setup_gpg(){ :
   )
   [[ -n ${problem_files[@]} ]] || die
 
-  sudo -- \
-    find -- "${gpg_d}" -xdev '(' '!' -uid "${login_uid}" -o '!' -gid "${login_gid}" ')' -execdir \
-      chown "${login_uid}:${login_gid}" "${verb__[@]}" '{}' ';' ||
-        exit "${nL}"
+  :;: $'If any files are owned by root, then change their ownership to \x24USER'
   sudo -- \
     find -- "${gpg_d}" -xdev '(' -uid 0 -o -gid 0 ')' -execdir \
       chown "${login_uid}:${login_gid}" "${verb__[@]}" '{}' ';' ||
