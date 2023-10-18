@@ -1,0 +1,41 @@
+function set()
+{
+  local -
+  builtin set -x
+
+  local XX regx_0
+  regx_0='not found$'
+  for XX in qui__ verb__
+  do
+    if [[ "$(declare -Ip "${XX}" 2>&1)" =~ ${regx_0} ]]
+    then
+      local -g "${XX}"=()
+    fi
+  done
+
+  if [[ ${#@} -eq 0 ]];
+  then
+    builtin set;
+    return;
+  fi;
+
+  local regx_1 regx_2 regx_3;
+  regx_1='\-.*x';
+  regx_2='\+.*x';
+  regx_3='\-';
+
+  if [[ $@ =~ ${regx_1} ]];
+  then
+    qui__=(--);
+    verb__=(--verbose --);
+
+  elif [[ $@ =~ ${regx_2} ]] || [[ $@ =~ ${regx_3} ]];
+  then
+    qui__=(--quiet --);
+    verb__=(--);
+  fi;
+
+  unset regx_1 regx_2 regx_3;
+  builtin set "$@";
+}
+
