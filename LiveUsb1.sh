@@ -1495,11 +1495,11 @@ function setup_gpg(){ :
   problem_files=()
   readarray -d '' -t problem_files < <(
     sudo -- \
-      find -- "${gpg_d}" -xdev 
+      find -- "${gpg_d}" -xdev \
         '(' \
-          '(' '!' -uid "${login_gid}" -a '!' -gid 0 ')' -o 
+          '(' '!' -uid "${login_gid}" -a '!' -gid 0 ')' -o \
           '(' '!' -gid "${login_uid}" -a '!' -uid 0 ')' \
-        ')' -print0
+        ')' -print0 \
   )
   [[ -n ${problem_files[@]} ]] || die
 
