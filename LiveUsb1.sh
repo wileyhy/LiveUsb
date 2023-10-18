@@ -40,9 +40,9 @@ function set()
   regx_0='not found$'
   for XX in qui__ verb__
   do
-    if [[ "$(declare -p "${XX}" 2>&1)" =~ ${regx_0} ]]
+    if [[ "$(declare -Ip "${XX}" 2>&1)" =~ ${regx_0} ]]
     then
-      "${XX}"=()
+      local -g "${XX}"=()
     fi
   done
   
