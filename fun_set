@@ -5,27 +5,28 @@ function set()
   local - # is there a way to undo this setting?  After `local -` all executions of `set` are limited to local scope
   builtin set -x
 
-  local XX regx_0
+  local XX regx_0 regx_1 regx_2 regx_3;
   regx_0='not found$'
-  for XX in qui__ verb__
-  do
-    if [[ "$(declare -p "${XX}" 2>&1)" =~ ${regx_0} ]]
-    then
-      local -Iga "${XX}=()"
-    fi
-  done
-  unset XX
+  regx_1='\-.*x';
+  regx_2='\+.*x';
+  regx_3='\-';
+
+  if ! [[ $@ =~ ${regx_3} ]];
+    for XX in qui__ verb__
+    do
+      if [[ "$(declare -p "${XX}" 2>&1)" =~ ${regx_0} ]]
+      then
+        local -Iga "${XX}=()"
+      fi
+    done
+    unset XX
+  fi
 
   if [[ ${#@} -eq 0 ]];
   then
     builtin set;
     return;
   fi;
-
-  local regx_1 regx_2 regx_3;
-  regx_1='\-.*x';
-  regx_2='\+.*x';
-  regx_3='\-';
 
   if [[ $@ =~ ${regx_1} ]];
   then
@@ -36,21 +37,9 @@ function set()
   then
     qui__=(--quiet --);
     verb__=(--);
-
-  elif [[ $@ =~ ${regx_3} ]];
-  then
-    local YY
-    for YY in qui__ verb__
-    do
-      if [[ "$(declare -p "${YY}" 2>&1)" =~ ${regx_0} ]]
-      then
-        local -Iga "${YY}=()"
-      fi
-    done
-    unset YY
   fi;
 
-  unset regx_1 regx_2 regx_3;
+  unset XX regx_0 regx_1 regx_2 regx_3;
   builtin set "$@";
 }
 
