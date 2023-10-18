@@ -31,6 +31,8 @@ set -T # <>
 set -e # <>
 set -o pipefail # <>
 
+## TODO, at min, add back in the definitions of qui__ and verb__
+
 #function set()
 
 umask 077
