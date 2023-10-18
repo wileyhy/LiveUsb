@@ -42,7 +42,7 @@ function set()
   do
     if [[ "$(declare -p "${XX}" 2>&1)" =~ ${regx_0} ]]
     then
-      declare -a "${XX}"
+      "${XX}"=()
     fi
   done
   
@@ -59,13 +59,13 @@ function set()
   
   if [[ $@ =~ ${regx_1} ]];
   then
-    local -Ig qui__=(--);
-    local -Ig verb__=(--verbose --);
+    qui__=(--);
+    verb__=(--verbose --);
 
   elif [[ $@ =~ ${regx_2} ]] || [[ $@ =~ ${regx_3} ]];
   then
-    local -Ig qui__=(--quiet --);
-    local -Ig verb__=(--);
+    qui__=(--quiet --);
+    verb__=(--);
   fi;
   
   unset regx_1 regx_2 regx_3;
