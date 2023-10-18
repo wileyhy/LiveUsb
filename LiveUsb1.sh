@@ -1739,11 +1739,16 @@ function setup_vars(){ :
   #+  from ShellCheck
   LC_ALL=''
   PS1=''
+  
   ## Note, ps(1), "The real group ID identifies the group of the user who created the process" and "The 
   #+  effective group ID describes the group whose file access permissions are used by the process"
   #+ See output of:  `ps ax -o euid,RUID,pid,ppid,stat,cmd | awk '$1 !~ $2'`
+  ## Note, sudo(1), "SUDO_UID: Set to the user-ID of the user who invoked sudo."
   if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); fi
   if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); fi
+  SUDO_UID=$( sudo printenv SUDO_UID )
+  SUDO_GID=$( sudo printenv SUDO_GID )
+
   # shellcheck disable=SC2034
   local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
