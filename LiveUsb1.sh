@@ -1467,7 +1467,7 @@ function setup_git(){ :
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
-    sudo -- chown "${RUID}:${RGID}" "${verb__[@]}" "${HH}"
+    sudo -- chown "${ruid}:${rgid}" "${verb__[@]}" "${HH}"
     chmod 0400 "${verb__[@]}" "${HH}"
   done
   unset HH
@@ -1484,8 +1484,8 @@ function setup_gpg(){ :
   #set -x
 
   sudo -- \
-    find "${gpg_d}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
-      chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' ||
+    find "${gpg_d}" -xdev '(' '!' -uid "${ruid}" -o '!' -gid "${rgid}" ')' -execdir \
+      chown "${ruid}:${rgid}" "${verb__[@]}" '{}' ';' ||
         exit "${nL}"
   find "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
   find "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
@@ -1586,8 +1586,8 @@ function setup_ssh(){ :
   if [[ -d ${ssh_usr_conf_dir} ]]
   then
     sudo -- \
-      find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
-        chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' ||
+      find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${ruid}" -o '!' -gid "${rgid}" ')' -execdir \
+        chown "${ruid}:${rgid}" "${verb__[@]}" '{}' ';' ||
           die
     find "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
     find "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
@@ -1739,8 +1739,8 @@ function setup_vars(){ :
   #+  from ShellCheck
   LC_ALL=''
   PS1=''
-  if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); readonly RUID; fi
-  if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); readonly RGID; fi
+  if [[ -z ${ruid:=} ]]; then ruid=$( id -u "$( logname )" ); readonly ruid; fi
+  if [[ -z ${rgid:=} ]]; then rgid=$( id -g "$( logname )" ); readonly rgid; fi
   # shellcheck disable=SC2034
   local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
