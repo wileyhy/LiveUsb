@@ -12,6 +12,7 @@ function set()
   regx_3='\-';
 
   if ! [[ $@ =~ ${regx_3} ]];
+  then
     for XX in qui__ verb__
     do
       if [[ "$(declare -p "${XX}" 2>&1)" =~ ${regx_0} ]]
