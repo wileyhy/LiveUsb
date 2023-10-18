@@ -1739,6 +1739,9 @@ function setup_vars(){ :
   #+  from ShellCheck
   LC_ALL=''
   PS1=''
+  ## Note, ps(1), "The real group ID identifies the group of the user who created the process" and "The 
+  #+  effective group ID describes the group whose file access permissions are used by the process"
+  #+ See output of:  `ps ax -o euid,ruid,pid,ppid,stat,cmd | awk '$1 !~ $2'`
   if [[ -z ${ruid:=} ]]; then ruid=$( id -u "$( logname )" ); readonly ruid; fi
   if [[ -z ${rgid:=} ]]; then rgid=$( id -g "$( logname )" ); readonly rgid; fi
   # shellcheck disable=SC2034
