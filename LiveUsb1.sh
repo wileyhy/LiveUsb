@@ -1742,8 +1742,8 @@ function setup_vars(){ :
   ## Note, ps(1), "The real group ID identifies the group of the user who created the process" and "The 
   #+  effective group ID describes the group whose file access permissions are used by the process"
   #+ See output of:  `ps ax -o euid,RUID,pid,ppid,stat,cmd | awk '$1 !~ $2'`
-  if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); readonly RUID; fi
-  if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); readonly RGID; fi
+  if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); fi
+  if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); fi
   # shellcheck disable=SC2034
   local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 
