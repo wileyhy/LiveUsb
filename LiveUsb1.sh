@@ -1742,7 +1742,7 @@ function setup_vars(){ :
   
   ## Note, ps(1), "The real group ID identifies the group of the user who created the process" and "The 
   #+  effective group ID describes the group whose file access permissions are used by the process"
-  #+ See output of:  `ps ax -o euid,login_uid,pid,ppid,stat,cmd | awk '$1 !~ $2'`
+  #+ See output of:  `ps ax -o euid,ruid,egid,rgid,pid,ppid,stat,cmd | awk '$1 !~ $2 || $3 !~ $4'`
   ## Note, sudo(1), "SUDO_UID: Set to the user-ID of the user who invoked sudo."
   if [[ -z ${login_uid:=} ]]; then login_uid=$( id -u "$( logname )" ); fi
   if [[ -z ${login_gid:=} ]]; then login_gid=$( id -g "$( logname )" ); fi
