@@ -1501,7 +1501,7 @@ function setup_gpg(){ :
           '(' '!' -gid "${login_uid}" -a '!' -uid 0 ')' \
         ')' -print0 \
   )
-  [[ -n ${problem_files[@]} ]] || die Incorrect ownership on -- "${problem_files[@]}"
+  [[ -n ${problem_files[@]} ]] && die Incorrect ownership on -- "${problem_files[@]}"
   unset problem_files
 
   :;: $'If any files are owned by root, then change their ownership to \x24USER'
