@@ -31,30 +31,37 @@ set -T # <>
 set -e # <>
 set -o pipefail # <>
 
-function set(){
-  if [[ ${#@} -eq 0 ]]
-  then
-    builtin set
-    return
-  fi
-
-  local regx_1 regx_2 regx_3
-  regx_1='\-.*x'
-  regx_2='\+.*x'
-  regx_3='\-'
+function set()
+{
+  local -
+  set -x
+  local -Ig qui__=()
+  local -Ig verb__=()
   
-  if [[ $@ =~ ${regx_1} ]]
+  if [[ ${#@} -eq 0 ]];
   then
-    qui__=( '--' )
-    verb__=( '--verbose' '--' )
+    builtin set;
+    return;
+  fi;
   
-  elif [[ $@ =~ ${regx_2} ]] || [[ $@ =~ ${regx_3} ]]
-    qui__=( '--quiet' '--' )
-    verb__=( '--' )
-  fi
-  unset regx_1 regx_2 regx_3
+  local regx_1 regx_2 regx_3;
+  regx_1='\-.*x';
+  regx_2='\+.*x';
+  regx_3='\-';
+  
+  if [[ $@ =~ ${regx_1} ]];
+  then
+    local -Ig qui__=(--);
+    local -Ig verb__=(--verbose --);
 
-  builtin set "$@"
+  elif [[ $@ =~ ${regx_2} ]] || [[ $@ =~ ${regx_3} ]];
+  then
+    local -Ig qui__=(--quiet --);
+    local -Ig verb__=(--);
+  fi;
+  
+  unset regx_1 regx_2 regx_3;
+  builtin set "$@";
 }
 
 umask 077
