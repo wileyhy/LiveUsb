@@ -1490,8 +1490,25 @@ function setup_gpg(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
+  :;: $'If any files in \x24gpg_d are not owned by either \x24USER or root, then error out and exit'
+  local -a problem_files
+  problem_files=()
+  readarray -d '' -t problem_files < <(
+    sudo -- \
+      find "${gpg_d}" -xdev 
+        '(' \
+          '(' '!' -uid "${login_gid}" -a '!' -gid 0 ')' -o 
+          '(' '!' -gid "${login_uid}" -a '!' -uid 0 ')' \
+        ')' -print0
+  )
+  [[ -n ${problem_files[@]} ]] || die
+
   sudo -- \
     find "${gpg_d}" -xdev '(' '!' -uid "${login_uid}" -o '!' -gid "${login_gid}" ')' -execdir \
+      chown "${login_uid}:${login_gid}" "${verb__[@]}" '{}' ';' ||
+        exit "${nL}"
+  sudo -- \
+    find "${gpg_d}" -xdev '(' -uid 0 -o -gid 0 ')' -execdir \
       chown "${login_uid}:${login_gid}" "${verb__[@]}" '{}' ';' ||
         exit "${nL}"
   find "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
