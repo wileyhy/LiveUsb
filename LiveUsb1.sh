@@ -1746,8 +1746,8 @@ function setup_vars(){ :
   ## Note, sudo(1), "SUDO_UID: Set to the user-ID of the user who invoked sudo."
   if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); fi
   if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); fi
-  SUDO_UID=$( sudo printenv SUDO_UID )
-  SUDO_GID=$( sudo printenv SUDO_GID )
+  saved_SUDO_UID=$( sudo printenv SUDO_UID )
+  saved_SUDO_GID=$( sudo printenv SUDO_GID )
 
   # shellcheck disable=SC2034
   local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
