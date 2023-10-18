@@ -31,14 +31,23 @@ set -T # <>
 set -e # <>
 set -o pipefail # <>
 
-if [[ -o xtrace ]]
-then
-  qui__=( '--' )
-  verb__=( '--verbose' '--' )
-else
-  qui__=( '--quiet' '--' )
-  verb__=( '--' )
-fi
+function set(){
+  local regx_1 regx_2 regx_3
+  regx_1='\-.*x'
+  regx_2='\+.*x'
+  regx_3='\-'
+  
+  if [[ $@ =~ ${regx_1} ]]
+  then
+    qui__=( '--' )
+    verb__=( '--verbose' '--' )
+  
+  elif [[ $@ =~ ${regx_2} ]] || [[ $@ =~ ${regx_3} ]]
+    qui__=( '--quiet' '--' )
+    verb__=( '--' )
+  fi
+  unset regx_1 regx_2 regx_3
+}
 
 umask 077
 hash -r
