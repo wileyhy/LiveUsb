@@ -11,7 +11,7 @@ function set()
   do
     if [[ "$(declare -Ip "${XX}" 2>&1)" =~ ${regx_0} ]]
     then
-      local -g "${XX}"=()
+      local -Iga "${XX}=()"
     fi
   done
 
