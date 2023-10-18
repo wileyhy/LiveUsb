@@ -2,7 +2,7 @@
 
 function set()
 {
-  local -
+  local - # is there a way to undo this setting?  After `local -` all executions of `set` are limited to local scope
   builtin set -x
 
   local XX regx_0
@@ -14,6 +14,7 @@ function set()
       local -Iga "${XX}=()"
     fi
   done
+  unset XX
 
   if [[ ${#@} -eq 0 ]];
   then
@@ -31,10 +32,22 @@ function set()
     qui__=(--);
     verb__=(--verbose --);
 
-  elif [[ $@ =~ ${regx_2} ]] || [[ $@ =~ ${regx_3} ]];
+  elif [[ $@ =~ ${regx_2} ]];
   then
     qui__=(--quiet --);
     verb__=(--);
+
+  elif [[ $@ =~ ${regx_3} ]];
+  then
+    local YY
+    for YY in qui__ verb__
+    do
+      if [[ "$(declare -p "${YY}" 2>&1)" =~ ${regx_0} ]]
+      then
+        local -Iga "${YY}=()"
+      fi
+    done
+    unset YY
   fi;
 
   unset regx_1 regx_2 regx_3;
