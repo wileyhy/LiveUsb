@@ -32,6 +32,12 @@ set -e # <>
 set -o pipefail # <>
 
 function set(){
+  if [[ ${#@} -eq 0 ]]
+  then
+    builtin set
+    return
+  fi
+
   local regx_1 regx_2 regx_3
   regx_1='\-.*x'
   regx_2='\+.*x'
@@ -47,6 +53,8 @@ function set(){
     verb__=( '--' )
   fi
   unset regx_1 regx_2 regx_3
+
+  builtin set "$@"
 }
 
 umask 077
