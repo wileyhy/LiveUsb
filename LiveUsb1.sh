@@ -1467,8 +1467,15 @@ function setup_git(){ :
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
-    sudo -- chown "${login_uid}:${login_gid}" "${verb__[@]}" "${HH}"
-    chmod 0400 "${verb__[@]}" "${HH}"
+    if ! [[ "$(stat -c%u "${HH}")" = "${login_uid}" ]] || ! [[ "$(stat -c%g "${HH}")" = "${login_gid}" ]]
+    then
+      sudo -- chown "${login_uid}:${login_gid}" "${verb__[@]}" "${HH}"
+    fi
+
+    if ! [[ "$(stat -c%a "${HH}")" = 0400 ]]
+    then
+      chmod 0400 "${verb__[@]}" "${HH}"
+    fi
   done
   unset HH
 
