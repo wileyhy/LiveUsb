@@ -1509,7 +1509,7 @@ function setup_gpg(){ :
       chown "${login_uid}:${login_gid}" "${verb__[@]}" '{}' ';' ||
         exit "${nL}"
   
-  :;: 'If any dir perms aren`t 700 or any file perms aren`t 600, then make them so'
+  :;: $'If any dir perms aren\x27t 700 or any file perms aren\x27t 600, then make them so'
   find -- "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
   find -- "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
 
