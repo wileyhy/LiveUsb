@@ -1,0 +1,6 @@
+find(1)
+              If you use this option [ie, "-execdir"], you must ensure that your PATH environment variable does not
+              reference `.'; otherwise, an attacker can run any commands they like by leaving an appropriately-named file in  a
+              directory  in  which  you will run -execdir.  The same applies to having entries in PATH which are empty or which
+              are not absolute directory names.
+
