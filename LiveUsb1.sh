@@ -339,13 +339,13 @@ function increase_disk_space(){ :
   #+  Fedora-like systems
 
   declare -A fsos5
-  readarray -d '' -t dirs1 < <( find / ! -path / -prune -type d -print0 )
+  readarray -d '' -t dirs1 < <( find -- / ! -path / -prune -type d -print0 )
 
   readarray -d '' -t dirs2 < <(
-    find "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
+    find -- "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
 
   readarray -d '' -t fsos3 < <(
-    find "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
+    find -- "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
 
   if (( ${#fsos3[@]} > 0 ))
   then
@@ -1495,7 +1495,7 @@ function setup_gpg(){ :
   problem_files=()
   readarray -d '' -t problem_files < <(
     sudo -- \
-      find "${gpg_d}" -xdev 
+      find -- "${gpg_d}" -xdev 
         '(' \
           '(' '!' -uid "${login_gid}" -a '!' -gid 0 ')' -o 
           '(' '!' -gid "${login_uid}" -a '!' -uid 0 ')' \
@@ -1504,15 +1504,15 @@ function setup_gpg(){ :
   [[ -n ${problem_files[@]} ]] || die
 
   sudo -- \
-    find "${gpg_d}" -xdev '(' '!' -uid "${login_uid}" -o '!' -gid "${login_gid}" ')' -execdir \
+    find -- "${gpg_d}" -xdev '(' '!' -uid "${login_uid}" -o '!' -gid "${login_gid}" ')' -execdir \
       chown "${login_uid}:${login_gid}" "${verb__[@]}" '{}' ';' ||
         exit "${nL}"
   sudo -- \
-    find "${gpg_d}" -xdev '(' -uid 0 -o -gid 0 ')' -execdir \
+    find -- "${gpg_d}" -xdev '(' -uid 0 -o -gid 0 ')' -execdir \
       chown "${login_uid}:${login_gid}" "${verb__[@]}" '{}' ';' ||
         exit "${nL}"
-  find "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
-  find "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
+  find -- "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
+  find -- "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
 
   : 'GPG -- If a gpg-agent daemon is running, or not, then, either way say so'
   if grep --extended-regexp '[g]pg-a.*daemon' "${qui__[@]}" <<< "${ps_o}"
@@ -1610,11 +1610,11 @@ function setup_ssh(){ :
   if [[ -d ${ssh_usr_conf_dir} ]]
   then
     sudo -- \
-      find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${login_uid}" -o '!' -gid "${login_gid}" ')' -execdir \
-        chown "${login_uid}:${login_gid}" "${verb__[@]}" '{}' ';' ||
+      find -- "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${login_uid}" -o '!' -gid "${login_gid}" ')' \
+      -execdir chown "${login_uid}:${login_gid}" "${verb__[@]}" '{}' ';' ||
           die
-    find "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
-    find "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
+    find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
+    find -- "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
   else
     die
   fi
@@ -1806,7 +1806,7 @@ function setup_vim(){ :
 		EOF
 
   : $'Get an array of the FS location\x28s\x29 of root\x27s vimrc\x28s\x29'
-  readarray -d '' -t arr_vrc < <( sudo -- find /root -name '*vimrc*' -print0 )
+  readarray -d '' -t arr_vrc < <( sudo -- find -- /root -name '*vimrc*' -print0 )
 
   case "${#arr_vrc[@]}" in
     0 )
