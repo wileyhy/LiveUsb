@@ -34,9 +34,17 @@ set -o pipefail # <>
 function set()
 {
   local -
-  set -x
-  local -Ig qui__=()
-  local -Ig verb__=()
+  builtin set -x
+  
+  local XX regx_0
+  regx_0='not found$'
+  for XX in qui__ verb__
+  do
+    if [[ "$(declare -p "${XX}" 2>&1)" =~ ${regx_0} ]]
+    then
+      declare -a "${XX}"
+    fi
+  done
   
   if [[ ${#@} -eq 0 ]];
   then
