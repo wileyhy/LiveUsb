@@ -1467,7 +1467,7 @@ function setup_git(){ :
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
-    sudo -- chown "${RUID}:${RGID}" "${verb__[@]}" "${HH}"
+    sudo -- chown "${login_uid}:${RGID}" "${verb__[@]}" "${HH}"
     chmod 0400 "${verb__[@]}" "${HH}"
   done
   unset HH
@@ -1484,8 +1484,8 @@ function setup_gpg(){ :
   #set -x
 
   sudo -- \
-    find "${gpg_d}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
-      chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' ||
+    find "${gpg_d}" -xdev '(' '!' -uid "${login_uid}" -o '!' -gid "${RGID}" ')' -execdir \
+      chown "${login_uid}:${RGID}" "${verb__[@]}" '{}' ';' ||
         exit "${nL}"
   find "${gpg_d}" -xdev -type d '!' -perm 700  -execdir chmod 700 "${verb__[@]}" '{}' ';'
   find "${gpg_d}" -xdev -type f '!' -perm 600  -execdir chmod 600 "${verb__[@]}" '{}' ';'
@@ -1586,8 +1586,8 @@ function setup_ssh(){ :
   if [[ -d ${ssh_usr_conf_dir} ]]
   then
     sudo -- \
-      find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${RUID}" -o '!' -gid "${RGID}" ')' -execdir \
-        chown "${RUID}:${RGID}" "${verb__[@]}" '{}' ';' ||
+      find "${ssh_usr_conf_dir}" -xdev '(' '!' -uid "${login_uid}" -o '!' -gid "${RGID}" ')' -execdir \
+        chown "${login_uid}:${RGID}" "${verb__[@]}" '{}' ';' ||
           die
     find "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" '{}' ';'
     find "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" '{}' ';'
@@ -1742,9 +1742,9 @@ function setup_vars(){ :
   
   ## Note, ps(1), "The real group ID identifies the group of the user who created the process" and "The 
   #+  effective group ID describes the group whose file access permissions are used by the process"
-  #+ See output of:  `ps ax -o euid,RUID,pid,ppid,stat,cmd | awk '$1 !~ $2'`
+  #+ See output of:  `ps ax -o euid,login_uid,pid,ppid,stat,cmd | awk '$1 !~ $2'`
   ## Note, sudo(1), "SUDO_UID: Set to the user-ID of the user who invoked sudo."
-  if [[ -z ${RUID:=} ]]; then RUID=$( id -u "$( logname )" ); fi
+  if [[ -z ${login_uid:=} ]]; then login_uid=$( id -u "$( logname )" ); fi
   if [[ -z ${RGID:=} ]]; then RGID=$( id -g "$( logname )" ); fi
   saved_SUDO_UID=$( sudo printenv SUDO_UID )
   saved_SUDO_GID=$( sudo printenv SUDO_GID )
