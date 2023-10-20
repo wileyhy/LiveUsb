@@ -1218,7 +1218,7 @@ function setup_dnf(){ :
               sleep 1
 
               :;: '...and if the PID in question no longer exists then unset the current array index number'
-              if ps --no-headers --quick-pid "${ZZ}"
+              if [[ -n "$( ps --no-headers --quick-pid "${ZZ}" | grep -v 'defunct' )" ]]
               then
                 is_pid_a_zombie=$( ps aux | awk "\$2 ~ /${ZZ}/ { print \$8 }" )
 
@@ -1232,7 +1232,7 @@ function setup_dnf(){ :
                 fi
               else
                 unset 'a_pids[YY]'
-                break 0001
+                continue 0001
               fi
             else
               unset 'a_pids[YY]'
