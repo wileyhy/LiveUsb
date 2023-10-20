@@ -552,9 +552,16 @@ function reqd_user_files(){ :
   :
   : 'Vars: get mountpoints and label'
   local -a array_mt_pts
-  local mount_pt data_dir
-
   readarray -t array_mt_pts < <( lsblk --noheadings --output mountpoints "${pttn_device_path}" )
+  
+  local YY
+  for YY in "${!array_mt_pts[@]}"
+  do
+    [[ -z ${array_mt_pts[YY]} ]] && unset 'array_mt_pts[YY]'
+  done
+  unset YY
+
+  local mount_pt data_dir is_mounted
   case "${#array_mt_pts[@]}" in
     0 )
       : '  Zero matches'
@@ -565,18 +572,21 @@ function reqd_user_files(){ :
       pttn_label="${pttn_label:=live_usb_tmplabel}"
       mount_pt="/run/media/root/${pttn_label}"
       data_dir="${mount_pt}/skel-LiveUsb"
+      is_mounted=no
+      unset pttn_label
       ;;\
     1 )
       : '  One match'
       mount_pt="${array_mt_pts[*]}"
       data_dir="${mount_pt}/skel-LiveUsb"
+      is_mounted=yes
       ;;\
     * )
       : '  Multiple matches'
       die 'The target partition is mounted in multiple places'
       ;;\
   esac
-  unset pttn_label array_mt_pts
+  unset array_mt_pts
 
   #: 'Mountpoint must be readable via ACL'
   #: 'FS mounting must be restricted to root and/or liveuser'
@@ -611,7 +621,7 @@ function reqd_user_files(){ :
     #+  directly, `foo=bar`, then on the second loop `local -p QQ` prints the former value of QQ. Perhaps
     #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
     ## Note, remember, namerefs can only be unset with the -n flag to the `unset` builtin
-    unset -n QQ
+    #unset -n QQ
     local -n QQ
     local -n QQ="${AA}"   ## good code
     #QQ="${AA}"           ## baaad code
@@ -636,7 +646,7 @@ function reqd_user_files(){ :
         then
 
           : 'If the partition is not mounted which holds the data directory, then mount it'
-          if ! grep --quiet "${mount_pt}" <<< "${lsblk_out[@]}" # <>
+          if [[ ${is_mounted} = no ]]
           then
 
             : 'Mountpoint must exist'
@@ -645,20 +655,12 @@ function reqd_user_files(){ :
               sudo -- mkdir --parents -- "${mount_pt}" || die
             fi
 
-            ## Q, such a test already exists, ~ line 540. see var $pttn_device_path
-              ## Bug? must test for whether pttn is mounted
+            sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || die
 
-            : $'Perform mount operation and re-sample \x60lsblk\x60'
-            local is_mounted
-            is_mounted=$( mount | grep "${pttn_device_path##*/}" )
-            declare -p is_mounted
-
-            if [[ -z ${is_mounted} ]]
+            if mount | grep -q "${pttn_device_path}"
             then
-              sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || die
+              is_mounted=yes
             fi
-
-            readarray -t lsblk_out < <( lsblk --noheadings --output label,path,mountpoints )
           fi
 
           :;: 'If the source conf file/dir still does not exist, then throw an error'
@@ -670,7 +672,7 @@ function reqd_user_files(){ :
 
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
 
-      ## Note, this entire `else` branch has been obviated by only allowing rsync to copy over specific 
+      ## Note, this entire `else` branch has been obviated by only allowing rsync to copy over specific files
 
       #+  files (as basenames) and not any directories (as basenames)
       #else
@@ -691,10 +693,14 @@ function reqd_user_files(){ :
         #fi
 
       fi
+      unset source_file dest_dir
     done
     unset BB
+    unset -n QQ
   done
-  unset AA QQ
+  unset AA
+  unset mount_pt data_dir is_mounted
+  unset pttn_device_path
 
   : 'Restore previous umask'
   builtin "${prev_umask[@]}"
@@ -727,6 +733,8 @@ function rsync_install_if_missing(){ :
     builtin "${fn_umask[@]}"
     unset fn_umask
   fi
+
+  ## Bug, variable $data_dir is defined in a different function
 
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
@@ -1496,7 +1504,7 @@ function setup_gpg(){ :
           '(' '!' -gid "${login_uid}" -a '!' -uid 0 ')' \
         ')' -print0 \
   )
-  [[ -n ${problem_files[@]} ]] && die Incorrect ownership on -- "${problem_files[@]}"
+  [[ -n ${problem_files[*]} ]] && die Incorrect ownership on -- "${problem_files[@]}"
   unset problem_files
 
   :;: $'If any files are owned by root, then change their ownership to \x24USER'
