@@ -1232,7 +1232,7 @@ function setup_dnf(){ :
                 fi
               else
                 unset 'a_pids[YY]'
-                continue 0001
+                continue 0002
               fi
             else
               unset 'a_pids[YY]'
