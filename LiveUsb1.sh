@@ -1220,9 +1220,9 @@ function setup_dnf(){ :
               :;: '...and if the PID in question no longer exists then unset the current array index number'
               if ps --no-headers --quick-pid "${ZZ}"
               then
-                is_zombie=$( ps aux | awk "\$2 ~ /${ZZ}/ { print \$8 }" )
+                is_pid_a_zombie=$( ps aux | awk "\$2 ~ /${ZZ}/ { print \$8 }" )
 
-                if [[ ${is_zombie} = 'Z' ]]
+                if [[ ${is_pid_a_zombie} = 'Z' ]]
                 then
                   : 'Process is a zombie; unsetting'
                   unset 'a_pids[YY]'
@@ -1246,7 +1246,7 @@ function setup_dnf(){ :
         break 1
       fi
     done
-    unset II XX a_pids is_zombie
+    unset II XX a_pids is_pid_a_zombie
   fi
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
