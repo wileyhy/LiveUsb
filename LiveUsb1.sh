@@ -1214,6 +1214,9 @@ function setup_dnf(){ :
               #+ than whether the  kill  operation succeeded, per  info kill .
               sudo -- "$(type -P kill)" --signal "${AA}" -- "${ZZ}"
 
+              :;: 'Evidently, I need to give the system a little MORE time for processing'
+              sleep 1
+
               :;: '...and if the PID in question no longer exists then unset the current array index number'
               if ps --no-headers --quick-pid "${ZZ}"
               then
