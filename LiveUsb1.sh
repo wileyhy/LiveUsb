@@ -1280,7 +1280,8 @@ function setup_gh_cli(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
-  declare -A github_configs
+  local -A github_configs
+  local gh_config_list_out
   github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
   gh_config_list_out=$( gh config list | tr '\n' ' ' )
 
@@ -1291,7 +1292,8 @@ function setup_gh_cli(){ :
       gh config set "${KK}" "${github_configs[$KK]}"
     fi
   done
-  unset KK gh_config_list_out github_configs
+  unset KK 
+  unset gh_config_list_out github_configs
 
     wait -f # <>
     hash -r
