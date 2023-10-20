@@ -1206,6 +1206,8 @@ function setup_dnf(){ :
             :;: '...if the PID is still running...'
             if ps --no-headers --quick-pid "${ZZ}"
             then
+              :;: 'Evidently, I need to give the system a little time for processing'
+              sleep 1
 
               :;: $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
               ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
