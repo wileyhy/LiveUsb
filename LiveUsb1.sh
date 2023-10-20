@@ -271,7 +271,7 @@ function get_pids_for_restarting(){ :
 
     declare -p dnf_o
 
-  readarray -t pipline0 < <( grep --invert-match --fixed-strings --regexp='/firefox/' <<< "${dnf_o[@]}" )
+  readarray -t pipline0 < <( printf '%s\n' "${dnf_o[@]}" | grep --invert-match --fixed-strings --regexp='/firefox/' )
   if [[ "${#pipline0[@]}" -eq 0 ]]
   then 
     return 0
