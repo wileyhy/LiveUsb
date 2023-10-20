@@ -1226,16 +1226,17 @@ function setup_dnf(){ :
                 then
                   : 'Process is a zombie; unsetting'
                   unset 'a_pids[YY]'
-                  break 00001
+                  break 1
                 else
-                  continue 00001
+                  continue 1
                 fi
               else
                 unset 'a_pids[YY]'
+                continue 2
               fi
             else
               unset 'a_pids[YY]'
-              break 001
+              break 1
             fi
           done
           unset AA
