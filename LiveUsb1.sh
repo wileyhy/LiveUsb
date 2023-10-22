@@ -1622,12 +1622,6 @@ function setup_ssh(){ als_function_boundary_in
   ## Bug? not necc to restart ssh-agent if both of these vars exist?
   ## TODO, I do this duck-xtrace dance a few time in this script, but the procedure isn\t normalized yet; do so
 
-  :;: $'Collect output of \x60ps\x60, but without printing it to xtrace'
-  local xon
-  [[ -o xtrace ]] && xon=yes && set -
-  [[ ${xon:=} = yes ]] && set -x
-  unset xon
-
   : "Make sure ssh daemon is running (?)"
   if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]]
   then
