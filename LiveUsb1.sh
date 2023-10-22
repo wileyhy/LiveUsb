@@ -454,7 +454,7 @@ function min_necc_packages(){ :
 
   ## Bug, command list hardcoded in multiplt places. s/b coded in just one place, ie at TOF w reqd files lists
 
-  for XX in git gh ShellCheck
+  for XX in git gh ShellCheck vim
   do
     if ! rpm --query --quiet "$XX"
     then
