@@ -69,10 +69,14 @@ alias .^:=': $color_reset ; :'
   data_pttn_uuid="949f3d8c-2dbe-4356-8a6b-3389e4c016d4"
   readonly data_pttn_uuid
 
-  fn_bndry=" ~~~ ~~~ ~~~ "
-  readonly fn_bndry
+  fn_bndry_sh=" ~~~ ~~~ ~~~ "
+  fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
+  readonly fn_bndry_sh fn_bndry_lo
   fn_lvl=0
   declare -i fn_lvl
+
+  alias function_boundary_in
+  alias function_boundary_out='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
 
   user_real_name="Wiley Young"
   user_github_email_address="84648683+wileyhy@users.noreply.github.com"
@@ -1906,7 +1910,7 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
 function trap_return(){ :
   local -
   #set -x
-  true "${fn_bndry} ${fn_bndry} ${fn_bndry} ${fn_bndry} ${fn_bndry} ${FUNCNAME[1]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  true "${fn_bndry} ${fn_bndry} ${fn_bndry} ${fn_bndry} ${FUNCNAME[1]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: "Define write_bashrc_strings()"
