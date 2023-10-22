@@ -1660,7 +1660,7 @@ function setup_ssh(){ :
   unset xon
 
   : 'Make sure ssh daemon is running (?)'
-  if [[ -z ${SSH_AUTH_SOCK:=} ]] || [[ -z ${SSH_AGENT_PID:=} ]]
+  if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]]
   then
 
     ## Bug, window manager is hard coded, "startxfce4"
