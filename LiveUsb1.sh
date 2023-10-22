@@ -2191,6 +2191,8 @@ then
   printf '\n\t cd "%s/%s" ; git status \n\n' "${dev_d1}" "${scr_repo_nm}"
 fi
 
+  set -v ## <>
+
 :;: "Clean up & exit"
 #"$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
