@@ -241,8 +241,7 @@ function enable_git_debug_settings(){ :
 }
 
 :;: "Define error_and_exit()"
-function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" \
-    _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
 
   ## Some positional parameters must exist
@@ -499,8 +498,7 @@ function must_be_root(){ :
 
 :;: "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
-function pause_to_check() { local - hyphn="$-" reply \
-    _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function pause_to_check() { local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
   local -I EC=101 LN="$1"
 
@@ -1874,8 +1872,7 @@ function test_os(){ :
 }
 
 :;: "Define trap_err()"
-function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_" \
-    _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
@@ -1890,8 +1887,7 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
 :;: "Define trap_exit()"
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$nL}" \
-    _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$nL}" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
 
   trap - EXIT
