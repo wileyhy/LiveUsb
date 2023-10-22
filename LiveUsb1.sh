@@ -2,22 +2,22 @@
 ## #!/bin/env -iS bash
 
 ## Note: ...undocumented feature??
-#+    Use 'env -i' or else the script's execution environment will inherit any exported anything,
-#+  including and especially functions, from its caller, e.g., any locally defined functions (such as 'rm'!)
+#+    Use `env -i` or else the script\s execution environment will inherit any exported anything,
+#+  including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`!)
 #+  which might be intended to supercede any of the aliases which some Linux distributions often define and
-#+  provide for users' convenience.  These exported functions which are received from the caller's
-#+  environment get printed above the script's shebang in xtrace when xtrace and vebose are both enabled on the shebang line.
-#+    ...also, using 'env' messes up vim's default bash-colorizations
+#+  provide for users\ convenience.  These exported functions which are received from the caller\s
+#+  environment get printed above the script\s shebang in xtrace when xtrace and vebose are both enabled on the shebang line.
+#+    ...also, using `env` messes up vim\s default bash-colorizations
 
 ## LiveUsb1
 
-## Note, written from within a Fedora instance, see hardcoded /run/media/root'
-## Note, style, function definition syntax, '(){ :' makes plain xtrace easier to read
-## Note, style, '! [[ -e' doesn't show the '!' in xtrace, whereas '[[ ! -e' does, and yet, for 'grep'.....
+## Note, written from within a Fedora instance, see hardcoded /run/media/root
+## Note, style, function definition syntax, "(){ :" makes plain xtrace easier to read
+## Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas "[[ ! -e" does, and yet, for `grep`.....
 ## Note, idempotent script
-## Note, find, stat and [[ (and ls) don't effect ext4 timestamps, as tested, but idempotent chown and chmod 
-#+  do, and of course touch does; if there's no change in the file, rsync doesn't, but if the file changes, 
-#+  it does. Also, btime on ext4 still isn't consistent. grep has no effect on times. cp -a effects ctimes
+## Note, find, stat and [[ (and ls) don\t effect ext4 timestamps, as tested, but idempotent chown and chmod 
+#+  do, and of course touch does; if there\s no change in the file, rsync doesn\t, but if the file changes, 
+#+  it does. Also, btime on ext4 still isn\t consistent. grep has no effect on times. cp -a effects ctimes
 #+  even if file contents do not change.
 ## TODO: add colors to xtrace comments
 ## Note, systed services to disable: bluetooth, cups, [ systemd-resolved ? ]; services to possibly enable: sshd, sssd
@@ -45,117 +45,131 @@ shopt -s expand_aliases
 alias .y:=': $color_yellow ; :'
 alias .^:=': $color_reset ; :'
 
-:;: 'Variables likely to be manually changed with some regularity, or which absolutely must be defined early on'
+:;: "Variables likely to be manually changed with some regularity, or which absolutely must be defined early on"
 # shellcheck disable=SC2034
 {
   script_start_time=$( date +%H:%M:%S )
   readonly script_start_time
 
-  scr_repo_nm='LiveUsb'
-  scr_nm='LiveUsb1.sh'
-  sha256_of_repo_readme='da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c'
+  scr_repo_nm="LiveUsb"
+  scr_nm="LiveUsb1.sh"
+  sha256_of_repo_readme="da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c"
   readonly scr_repo_nm scr_nm sha256_of_repo_readme 
 
-  data_pttn_uuid='949f3d8c-2dbe-4356-8a6b-3389e4c016d4'
+  data_pttn_uuid="949f3d8c-2dbe-4356-8a6b-3389e4c016d4"
   readonly data_pttn_uuid
 
-  fn_bndry=' ~~~ ~~~ ~~~ '
+  fn_bndry=" ~~~ ~~~ ~~~ "
   readonly fn_bndry
   fn_lvl=0
   declare -i fn_lvl
 
-  user_real_name='Wiley Young'
-  user_github_email_address='84648683+wileyhy@users.noreply.github.com'
-  user_github_gpg_key='E287D0CF528591CE'
+  user_real_name="Wiley Young"
+  user_github_email_address="84648683+wileyhy@users.noreply.github.com"
+  user_github_gpg_key="E287D0CF528591CE"
   readonly user_real_name user_github_email_address user_github_gpg_key
 
-  list_of_minimum_reqd_rpms=( git gh ShellCheck vim )
+  list_of_minimum_reqd_rpms=( 
+    [0]="ShellCheck" 
+    [1]="gh" 
+    [2]="git" 
+    [3]="vim"
+  )
   readonly list_of_minimum_reqd_rpms
  
-  :;: 'Parameters regarding required files'
+  ## TODO, change files_for_use_with_github_depth_1 to files_for_use_with_github_depth_0, et al
+
+  :;: "Parameters regarding required files"
   ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more 
   #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and are numbered sequentially are created here on one line only and have values assigned to each of them within the next ~50 lines. The list of index numbers is created
   #+  just once, so the indices in the assignment section below must match the indices created here. 
-  arrays_of_conf_files=( files_for_use_with_github_depth_{1..4} )
+  arrays_of_conf_files=(
+    [0]="files_for_use_with_github_depth_1"
+    [1]="files_for_use_with_github_depth_2"
+    [2]="files_for_use_with_github_depth_3"
+    [3]="files_for_use_with_github_depth_4"
+  )
   readonly arrays_of_conf_files
   unset "${arrays_of_conf_files[@]}"
 
-  ## Bug? this is really a lot of manually entered data ...of filenames -- it's a lot to maintain. :-\
-  #+  Wouldn't it be better to just always keep the data directory... in proper intended order...?
-  #+  But then the data dir can be changed and there wouldn't be any process of making sure the DACs
-  #+  are correct. On the other hand, it's easier to maintain a simple set of files. ...but their state
-  #+  wouldn't necessarily have been documented, which is valuable in and of itself. Otherwise, if they
+  ## Bug? this is really a lot of manually entered data ...of filenames -- it\s a lot to maintain. :-\
+  #+  Wouldn\t it be better to just always keep the data directory... in proper intended order...?
+  #+  But then the data dir can be changed and there wouldn\t be any process of making sure the DACs
+  #+  are correct. On the other hand, it\s easier to maintain a simple set of files. ...but their state
+  #+  wouldn\t necessarily have been documented, which is valuable in and of itself. Otherwise, if they
   #+  were changed accidentally, how would you know any change had occurred?
 
   ## TODO
-  #: '  Files, firefox'
+  #: "  Files, firefox"
   #files_for_use_with_github_depth_1+=( ~/.mozilla )
 
-  : '  Files, gh (cli)'
+  : "  Files, gh (cli)"
   files_for_use_with_github_depth_3+=( ~/.config/gh/{config.yml,gpg-agent.conf,hosts.yml,pubring.kbx,trustdb.gpg} )
   files_for_use_with_github_depth_4+=( ~/.config/gh/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev 
       ~/.config/gh/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key)
   
-  : '  Files, gpg'
+  ## TODO: variable "gpg_d" is extra
+
+  : "  Files, gpg"
   gpg_d=~/.gnupg
   files_for_use_with_github_depth_2+=( "${gpg_d}"/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
-  files_for_use_with_github_depth_3+=( "${gpg_d}"/crls.d/DIR.txt 
-      "${gpg_d}"/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev 
-      "${gpg_d}"/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
+  files_for_use_with_github_depth_3+=( "${gpg_d}/crls.d/DIR.txt"
+      "${gpg_d}/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev" 
+      "${gpg_d}/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key" )
   
-  : '  Files, ssh'
+  : "  Files, ssh"
   files_for_use_with_github_depth_2+=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
   
-  : '  Files, top'
+  : "  Files, top"
   files_for_use_with_github_depth_3+=( ~/.config/procps/toprc )
   
-  : '  Files, vim'
+  : "  Files, vim"
   files_for_use_with_github_depth_1+=( ~/.vimrc )
-  : '  End of Files lists'
+  : "  End of Files lists"
 
   [[ -o xtrace ]] && xon=yes && set +x
   ps_o=$( ps aux )
   readonly ps_o
-  [[ ${xon:=} = 'yes' ]] && set -x
+  [[ ${xon:=} = yes ]] && set -x
 }
 
-:;: 'Write to TTY'
+:;: "Write to TTY"
 printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 
 ##  FUNCTION DEFINITIONS, BEGIN ##
 
-:;: 'Functions and Aliases TOC...'
+:;: "Functions and Aliases TOC..."
   ## functions_this_script=(
-  #+  '__vte_osc7()'
-  #+  '__vte_prompt_command()'
-  #+  'die'
-  #+  'enable_git_debug_settings()'
-  #+  'error_and_exit()'
-  #+  'get_pids_for_restarting()'
-  #+  'gh_auth_login_command()'
-  #+  'min_necc_packages()'
-  #+  'must_be_root()'
-  #+  'pause_to_check()'
-  #+  'reqd_user_files()'
-  #+  'rsync_install_if_missing()'
-  #+  'setup_user_dirs()'
-  #+  'setup_git()'
-  #+  'setup_gpg()'
-  #+  'setup_network()'
-  #+  'setup_ssh()'
-  #+  'setup_temp_dirs()'
-  #+  'setup_time()'
-  #+  'setup_vars()'
-  #+  'setup_vim()'
-  #+  'test_dns()'
-  #+  'test_os()'
-  #+  'trap_err()'
-  #+  'trap_exit()'
-  #+  'trap_return()'
-  #+  'write_bashrc_strings()'
+  #+  "__vte_osc7()"
+  #+  "__vte_prompt_command()"
+  #+  "die"
+  #+  "enable_git_debug_settings()"
+  #+  "error_and_exit()"
+  #+  "get_pids_for_restarting()"
+  #+  "gh_auth_login_command()"
+  #+  "min_necc_packages()"
+  #+  "must_be_root()"
+  #+  "pause_to_check()"
+  #+  "reqd_user_files()"
+  #+  "rsync_install_if_missing()"
+  #+  "setup_user_dirs()"
+  #+  "setup_git()"
+  #+  "setup_gpg()"
+  #+  "setup_network()"
+  #+  "setup_ssh()"
+  #+  "setup_temp_dirs()"
+  #+  "setup_time()"
+  #+  "setup_vars()"
+  #+  "setup_vim()"
+  #+  "test_dns()"
+  #+  "test_os()"
+  #+  "trap_err()"
+  #+  "trap_exit()"
+  #+  "trap_return()"
+  #+  "write_bashrc_strings()"
   #+)
 
-#:;: 'Define __vte_osc7() -- for bashrc only'
+#:;: "Define __vte_osc7() -- for bashrc only"
 # shellcheck disable=SC2317
 #function __vte_osc7(){
   #local - cmd urlencode_o
@@ -167,7 +181,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 #}
 
-#:;: 'Define __vte_prompt_command() -- for bashrc only'
+#:;: "Define __vte_prompt_command() -- for bashrc only"
 # shellcheck disable=SC2317
 #function __vte_prompt_command(){
     #local - fn_pwd
@@ -194,19 +208,19 @@ function clone_repo(){ :
   if [[ ! -d ${scr_repo_nm} ]] || [[ ! -f ${scr_repo_nm}/README.md ]] || 
       ! [[ ${loc_hash_of_read_me_file} = "${sha256_of_repo_readme}" ]]
   then
-    git clone --origin 'github' "https://github.com/wileyhy/${scr_repo_nm}" || die
+    git clone --origin github "https://github.com/wileyhy/${scr_repo_nm}" || die
   fi
 }
 
-:;: $'Define \x60die\x60 alias to function error_and_exit()'
+:;: "Define \"die\" alias to function error_and_exit()"
 alias die='error_and_exit "${nL}"'
 
-:;: 'Define enable_git_debug_settings()'
+:;: "Define enable_git_debug_settings()"
 function enable_git_debug_settings(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
-  :;: 'Variables -- Global git debug settings'
+  :;: "Variables -- Global git debug settings"
   GIT_TRACE=true
   GIT_CURL_VERBOSE=true
   GIT_SSH_COMMAND="ssh -vvv"
@@ -219,7 +233,7 @@ function enable_git_debug_settings(){ :
   [[ -f ~/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat
 }
 
-:;: 'Define error_and_exit()'
+:;: "Define error_and_exit()"
 function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
 
@@ -242,7 +256,7 @@ function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bnd
   LN="${loc_lineno}" builtin exit "${loc_exit_code}"
 }
 
-:;: 'Define get_pids_for_restarting()'
+:;: "Define get_pids_for_restarting()"
 function get_pids_for_restarting(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   #set -x
@@ -256,7 +270,7 @@ function get_pids_for_restarting(){ :
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream. Yes, some of the array names are in fact spelled uncorrectly.
 
-  ## Note, this set of arrays could be a function, but 'return' can only return from one function level at
+  ## Note, this set of arrays could be a function, but `return` can only return from one function level at
   #+  at time, or it could be a loop, but the array names and command strings would have to be in an
   #+  associative array, and that seems like adding complexity.
 
@@ -287,7 +301,7 @@ function get_pids_for_restarting(){ :
   fi
 }
 
-:;: 'Define gh_auth_login_command()'
+:;: "Define gh_auth_login_command()"
 function gh_auth_login_command(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   # set -
@@ -297,41 +311,41 @@ function gh_auth_login_command(){ :
     gh auth logout
   fi
 
-  ## Bug, output of 'gh auth login': "! Authentication credentials saved in plain text"
+  ## Bug, output of `gh auth login`: "! Authentication credentials saved in plain text"
 
-  ## Note, do not break this line with any backslashed newlines or it will fail and you'll have to
+  ## Note, do not break this line with any backslashed newlines or it will fail and you\ll have to
   #+  refresh auth manually; using short options for just this reason
-  gh auth login -p 'ssh' -h 'github.com' -s 'admin:public_key,read:gpg_key,admin:ssh_signing_key' -w || die
+  gh auth login -p ssh -h github.com -s admin:public_key,read:gpg_key,admin:ssh_signing_key -w || die
 
   ## TODO, move these git and gh commands into setup_git() and setup_gh_cli), respectively
 
-  : 'GH - Use GitHub CLI as a credential helper'
+  : "GH - Use GitHub CLI as a credential helper"
   git config --global credential.helper "cache --timeout=3600"
-  gh auth setup-git --hostname 'github.com'
+  gh auth setup-git --hostname github.com
 }
 
-:;: 'Define increase_disk_space()'
+:;: "Define increase_disk_space()"
 function increase_disk_space(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
-  ## Note, for $dirs1 , find  syntax based on Mascheck's
+  ## Note, for $dirs1 , find  syntax based on Mascheck\s
   ## Note, for $dirs2 , use of bit bucket because GVFS ‘/run/user/1000/doc’ cannot be read, even by root
-  ## Note, for $fsos3 , '--and' is not POSIX compliant
+  ## Note, for $fsos3 , "--and" is not POSIX compliant
   ## Note, for $fsos4 , sorts by unique inode and delimits by nulls
 
-  ## Bug, Hardcoded path, for $dirs2 , '/run/media/root' is a default for mounting external media on
+  ## Bug, Hardcoded path, for $dirs2 , /run/media/root is a default for mounting external media on
   #+  Fedora-like systems
 
   declare -A fsos5
-  readarray -d '' -t dirs1 < <( find -- / ! -path / -prune -type d -print0 )
+  readarray -d '' -t dirs1 < <( find -- /  \!  -path / -prune -type d -print0 )
 
   readarray -d '' -t dirs2 < <(
-    find -- "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
+    find -- "${dirs1[@]}" -type d -name '*locale*'  \!  -ipath '*/run/media/root/*' -print0 2> /dev/null )
 
   readarray -d '' -t fsos3 < <(
-    find -- "${dirs2[@]}" -type f -size +$(( 2**16 )) '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
+    find -- "${dirs2[@]}" -type f -size +$(( 2**16 ))  \(  \!  -ipath '*en_*' -a  \!  -ipath '*/.git/*'  \)  -print0 )
 
   if (( ${#fsos3[@]} > 0 ))
   then
@@ -345,7 +359,7 @@ function increase_disk_space(){ :
         tr --delete '\n'
       )
 
-    ## Question, does this assoc array fsos5 need to be declared as such? (I don't think so, but...)
+    ## Question, does this assoc array fsos5 need to be declared as such? (I don\t think so, but...)
 
     set -- "${fsos4[@]}"
 
@@ -361,10 +375,10 @@ function increase_disk_space(){ :
     done
   fi
 
-  : 'If any larger local data files were found, then remove them interactively'
+  : "If any larger local data files were found, then remove them interactively"
   if [[ -n ${!fsos5[*]} ]]
   then
-    : 'Inform user of any found FSOs'
+    : "Inform user of any found FSOs"
     printf '%s, Delete these files? \n' "${scr_nm}"
     declare -p fsos5
     sleep 3
@@ -382,7 +396,7 @@ function increase_disk_space(){ :
         then
           declare ls_out
           readarray -t ls_out < <( ls -l --all --human-readable --classify --inode --directory --zero "${JJ}" )
-          ## Note, '\x60' is a "grave accent"
+          ## Note, "\x60" is a "grave accent"
           printf '%s, output of %bls%b, %s \n' "${scr_nm}" '\x60' '\x60' "$( realpath -e "${JJ}" )"
           printf '%s\n' "${ls_out[@]}"
           unset ls_out
@@ -395,22 +409,22 @@ function increase_disk_space(){ :
             0|1)  printf '  Zero and one are ambiguous, please use letters. \n'
                   continue 0001
                 ;;\
-            y|t)  printf '  %s %b %s %s \n' 'Script,' ' \x60rm -i\x60 ' 'requires a typed [yN] response,' \
-                    'it defaults to do-not-delete if a user just presses [enter].'
+            y|t)  printf '  %s %b %s %s \n' "Script," ' \x60rm -i\x60 ' "requires a typed [yN] response," \
+                    "it defaults to do-not-delete if a user just presses [enter]."
 
                   if sudo -- /bin/rm --interactive --one-file-system --preserve-root=all "${verb__[@]}" "${JJ}"
                   then
                     unset 'fsos5[$AA]'
                     break 00001
                   else
-                    die 'Unknown error'
+                    die "Unknown error"
                   fi
                 ;;\
             n|f)  printf '  Keeping this file. \n'
                   unset 'fsos5[$AA]'
                   break 00001
                 ;;\
-            *)    HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit's off
+            *)    HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit\s off
 
                   if (( HH < 3 ))
                   then
@@ -432,7 +446,7 @@ function increase_disk_space(){ :
   unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
 }
 
-:;: 'Define min_necc_packages()'
+:;: "Define min_necc_packages()"
 function min_necc_packages(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -461,20 +475,20 @@ function min_necc_packages(){ :
   unset XX
 }
 
-:;: 'Define must_be_root()'
+:;: "Define must_be_root()"
 function must_be_root(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
   if (( UID == 0 ))
   then
-    die 'Must be a regular user and use sudo'
+    die "Must be a regular user and use sudo"
   else
     sudo --validate || die
   fi
 }
 
-:;: 'Define pause_to_check()'
+:;: "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
 function pause_to_check() { local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -506,16 +520,16 @@ function pause_to_check() { local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0
   ## TODO: copy out this construct to the rest of the functions, re bndry_cmd
   ## SAVE this block
   #local bndry_cmd
-  #if [[ $hyphn =~ x ]]; then bndry_cmd='echo'; else bndry_cmd='true'; fi
+  #if [[ $hyphn =~ x ]]; then bndry_cmd="echo"; else bndry_cmd="true"; fi
   #"${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-:;: 'reqd_user_files()'
+:;: "reqd_user_files()"
 function reqd_user_files(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
-  ## Note, QQ must be declared as local before unsetting it inside the function so that the 'unset' will
+  ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
   #+  effect the local variable
 
   : $'Vars: Is device identified by \x22\x24data_pttn_uuid\x22 attached to this machine? If so, get device path'
@@ -691,7 +705,7 @@ function reqd_user_files(){ :
     #EC=101 LN="$LINENO" exit # <>
 }
 
-:;: 'Define rsync_install_if_missing()'
+:;: "Define rsync_install_if_missing()"
 function rsync_install_if_missing(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -723,7 +737,7 @@ function rsync_install_if_missing(){ :
   unset fn_source_var fn_target_dir
 }
 
-:;: 'Define setup_bashrc()'
+:;: "Define setup_bashrc()"
 function setup_bashrc(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
@@ -904,7 +918,7 @@ function setup_bashrc(){ :
 
 ## Bug, setup_dnf is too long and too complicated
 
-:;: 'Define setup_dnf()'
+:;: "Define setup_dnf()"
 function setup_dnf(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1228,7 +1242,7 @@ function setup_dnf(){ :
   fi
 }
 
-:;: 'Define setup_user_dirs()'
+:;: "Define setup_user_dirs()"
 function setup_user_dirs(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1257,7 +1271,7 @@ function setup_user_dirs(){ :
   pushd "${dev_d1}" > /dev/null || exit "${nL}"
 }
 
-:;: 'Define setup_gh_cli()'
+:;: "Define setup_gh_cli()"
 function setup_gh_cli(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1313,7 +1327,7 @@ function setup_gh_cli(){ :
   unset QQ
 }
 
-:;: 'Define setup_git()'
+:;: "Define setup_git()"
 function setup_git(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1380,7 +1394,7 @@ function setup_git(){ :
   done
   unset ZZ git_regexp
 
-  :;: 'Git -- Create files and set DAC's as necessary - Loop A'
+  :;: $'Git -- Create files and set DAC\x60s as necessary - Loop A'
   local AA
   for AA in "${git_files_a[@]}"
   do
@@ -1429,7 +1443,7 @@ function setup_git(){ :
 
 		EOF
 
-    # shellcheck disable=SC2024 #(info): sudo doesn't affect redirects. Use sudo cat file | ..
+    # shellcheck disable=SC2024 #(info): sudo does not affect redirects. Use sudo cat file | ..
     tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || exit "${nL}"
     chmod 0644 "${verb__[@]}" "${git_mesg}" || exit "${nL}"
   fi
@@ -1450,7 +1464,7 @@ function setup_git(){ :
     chmod 0644 "${verb__[@]}" "${git_ignr}" || exit "${nL}"
   fi
 
-  :;: 'Git -- Set correct DAC's (ownership and permissions)'
+  :;: $'Git -- Set correct DAC\x60s (ownership and permissions)'
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
@@ -1518,7 +1532,7 @@ function setup_gpg(){ :
   export GPG_TTY
 }
 
-:;: 'Define setup_network()'
+:;: "Define setup_network()"
 function setup_network(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1572,7 +1586,7 @@ function setup_network(){ :
   unset -f test_dns
 }
 
-:;: 'Define setup_ssh()'
+:;: "Define setup_ssh()"
 function setup_ssh(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   # set -
@@ -1583,7 +1597,7 @@ function setup_ssh(){ :
   local ssh_usr_conf_dir
   ssh_usr_conf_dir=~/.ssh/
 
-  ## Bug - security, these 'chown' commands should operate on the files while they're still in skel_LiveUsb
+  ## Bug - security, these #chown# commands should operate on the files while they are still in skel_LiveUsb
   #+  see also similar code in setup_gpg(), possibly elsewhere also  :-\
 
   ## Bug, chown changes ctime on every execution, whether or not the ownership changes
@@ -1706,7 +1720,7 @@ function setup_temp_dirs(){ :
   readonly tmp_dir
 }
 
-:;: 'Define setup_time()'
+:;: "Define setup_time()"
 function setup_time(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1717,7 +1731,7 @@ function setup_time(){ :
   sudo -- chronyc makestep > /dev/null
 }
 
-:;: 'Define setup_vars()'
+:;: "Define setup_vars()"
 function setup_vars(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1754,7 +1768,7 @@ function setup_vars(){ :
   local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 }
 
-:;: 'Define setup_vim()'
+:;: "Define setup_vim()"
 function setup_vim(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1831,7 +1845,7 @@ function setup_vim(){ :
   unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 }
 
-:;: 'Define test_dns()'
+:;: "Define test_dns()"
 function test_dns(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1841,7 +1855,7 @@ function test_dns(){ :
   return "${ping_exit_code}"
 }
 
-:;: 'Define test_os()'
+:;: "Define test_os()"
 function test_os(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
@@ -1856,7 +1870,7 @@ function test_os(){ :
   fi
 }
 
-:;: 'Define trap_err()'
+:;: "Define trap_err()"
 function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
@@ -1869,7 +1883,7 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
 ## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2
 #+  of  trap  "args section" ??
 
-:;: 'Define trap_exit()'
+:;: "Define trap_exit()"
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
 function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$LINENO}" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
@@ -1887,14 +1901,14 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
   builtin exit "${exit_trap_ec}"
 }
 
-:;: 'Define trap_return()'
+:;: "Define trap_return()"
 function trap_return(){ :
   local -
   #set -x
   true "${fn_bndry} ${fn_bndry} ${fn_bndry} ${fn_bndry} ${fn_bndry} ${FUNCNAME[1]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-:;: 'Define write_bashrc_strings()'
+:;: "Define write_bashrc_strings()"
 function write_bashrc_strings(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   #set -x
@@ -1978,13 +1992,13 @@ function write_ssh_conf() { :
   #EC=101 LN="$LINENO" exit # <>
   #set -x
 
-:;: 'Define trap on RETURN'
+:;: "Define trap on RETURN"
 trap trap_return RETURN
 
-:;: 'Define trap on ERR'
+:;: "Define trap on ERR"
 trap trap_err ERR
 
-:;: 'Define trap on EXIT'
+:;: "Define trap on EXIT"
 trap trap_exit EXIT
 
   #EC=101 LN="$LINENO" exit # <>
