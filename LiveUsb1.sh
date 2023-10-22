@@ -31,9 +31,18 @@ set -T # <>
 set -e # <>
 set -o pipefail # <>
 
-## TODO, at min, add back in the definitions of qui__ and verb__
-
 #function set()
+
+declare -a qui__ verb__
+if [[ -o xtrace ]]
+then
+  qui__=( [0]="--" )
+  verb__=( [0]="--verbose" [1]="--" )
+else
+  qui__=( [0]="--quiet" [1]="--" )
+  verb__=( [0]="--" )
+fi
+export qui__ verb__
 
 umask 077
 hash -r
