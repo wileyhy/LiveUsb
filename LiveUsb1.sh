@@ -403,7 +403,7 @@ function increase_disk_space(){ :
           case "${yes_or_no}" in
             0|1)  printf '  Zero and one are ambiguous, please use letters. \n'
                   continue 1
-                ;;#
+                ;; #
             y|t)  printf '  %s %b %s %s \n' "Script," ' \x60rm -i\x60 ' "requires a typed [yN] response," \
                     "it defaults to do-not-delete if a user just presses [enter]."
 
@@ -414,11 +414,11 @@ function increase_disk_space(){ :
                   else
                     die "Unknown error"
                   fi
-                ;;#
+                ;; #
             n|f)  printf '  Keeping this file. \n'
                   unset "Aa_fsos5[$AA]"
                   break 1
-                ;;#
+                ;; #
             *)    HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit\s off
 
                   if (( HH < 3 ))
@@ -430,7 +430,7 @@ function increase_disk_space(){ :
                     unset "Aa_fsos5[$AA]"
                     break 1
                   fi
-                ;;#
+                ;; #
           esac
         else
           break 0001
@@ -504,11 +504,11 @@ function pause_to_check() { local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0
   case $reply in
     Y* | y* | $'\n' | \  )
       printf '\nOkay\n\n' >&2
-      ;;#
+      ;; #
     * )
       printf '\nExiting, line %d\n\n' "${KK}" >&2
       builtin exit
-      ;;#
+      ;; #
   esac
   unset KK
 
@@ -565,17 +565,17 @@ function reqd_user_files(){ :
       data_dir="${mount_pt}/skel-LiveUsb"
       is_mounted=no
       unset pttn_label
-      ;;#
+      ;; #
     1 )
       : "  One match"
       mount_pt="${array_mt_pts[*]}"
       data_dir="${mount_pt}/skel-LiveUsb"
       is_mounted=yes
-      ;;#
+      ;; #
     * )
       : "  Multiple matches"
       die "The target partition is mounted in multiple places"
-      ;;#
+      ;; #
   esac
   unset array_mt_pts
 
@@ -1276,7 +1276,7 @@ function setup_gh_cli(){ :
 
   ## Bug, `gh auth status` is executed too many (ie, 3) times. Both the checkmarks and the exit code are used
 
-    gh auth status ## <>
+    #gh auth status ## <>
 
   :;: "GH -- Login to github"
   ## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
@@ -1490,8 +1490,8 @@ function setup_gpg(){ :
         exit "${nL}"
 
   :;: $'If any dir perms aren\x60t 700 or any file perms aren\x60t 600, then make them so'
-  find -- "${gpg_d}" -xdev -type d \! -perm 700  -execdir chmod 700 "${verb__[@]}" \{\} \;#
-  find -- "${gpg_d}" -xdev -type f \! -perm 600  -execdir chmod 600 "${verb__[@]}" \{\} \;#
+  find -- "${gpg_d}" -xdev -type d \! -perm 700  -execdir chmod 700 "${verb__[@]}" \{\} \; #
+  find -- "${gpg_d}" -xdev -type f \! -perm 600  -execdir chmod 600 "${verb__[@]}" \{\} \; #
 
   : "GPG -- If a gpg-agent daemon is running, or not, then, either way say so"
   if grep --extended-regexp "[g]pg-a.*daemon" "${qui__[@]}" <<< "${ps_o}"
@@ -1543,14 +1543,14 @@ function setup_network(){ :
     case "${#ifaces[@]}" in
       0 )
         die "No network device available"
-        ;;#
+        ;; #
       1 )
         nmcli c up "${ifaces[*]}"
         sleep 5
-        ;;#
+        ;; #
       * )
         die "Multiple network devices available"
-        ;;#
+        ;; #
     esac
 
     if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
@@ -1588,8 +1588,8 @@ function setup_ssh(){ :
       find -- "${ssh_usr_conf_dir}" -xdev  \(  \!  -uid "${login_uid}" -o  \!  -gid "${login_gid}"  \) \
       -execdir chown "${login_uid}:${login_gid}" "${verb__[@]}" \{\} \;  ||
           die
-    find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" \{\} \;#
-    find -- "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" \{\} \;#
+    find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" \{\} \; #
+    find -- "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" \{\} \; #
   else
     die
   fi
@@ -1666,13 +1666,13 @@ function setup_ssh(){ :
             else
               "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[*]}"
             fi
-          ;;#
+          ;; #
         *)  for VV in "${ssh_agent_pids[@]}"
             do
               "$( type -P kill )" "${verb__[@]}" "${VV}"
             done
             unset VV
-          ;;#
+          ;; #
       esac
     fi
 
@@ -1780,15 +1780,15 @@ function setup_vim(){ :
   case "${#arr_vrc[@]}" in
     0 )
         strng_vrc=/root/.vimrc
-      ;;#
+      ;; #
     1 )
         strng_vrc="${arr_vrc[*]:=/root/.vimrc}"
-      ;;#
+      ;; #
     *)
         printf '\n  Multiple .vimrc files found, please edit the filesystem.\n' >&2
         printf '\t%s\n' "${arr_vrc[@]}" >&2
         die
-      ;;#
+      ;; #
   esac
 
   if (( "${#arr_vrc[@]}" == 1 ))
