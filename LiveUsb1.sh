@@ -1666,7 +1666,7 @@ function setup_ssh(){ als_function_boundary_in
                 declare -p SSH_AGENT_PID
 
             else
-              
+              : warning: SSH_AGENT_PID does not exist
             fi
           ;; #
         *)  for VV in "${ssh_agent_pids[@]}"
