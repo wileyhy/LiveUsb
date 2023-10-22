@@ -1857,9 +1857,9 @@ function setup_vim(){ :
     sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || die
 
     : 'Copy the root file to ~'"${USER}"$' and repair DAC\x60s on '"${USER}"$'\x60s copy'
-    sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || die
-    sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
-    chmod 0400 -- "/home/${USER}/.vimrc"
+    sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc || die
+    sudo -- chown "${UID}:${UID}" -- ~/.vimrc
+    chmod 0400 -- ~/.vimrc
 
     : 'Reset the umask'
     builtin "${umask_prior[@]}"
