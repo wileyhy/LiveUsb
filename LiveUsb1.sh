@@ -82,7 +82,7 @@ alias .^:=': $color_reset ; :'
   user_github_gpg_key="E287D0CF528591CE"
   readonly user_real_name user_github_email_address user_github_gpg_key
 
-  list_of_minimum_reqd_rpms=( [0]="ShellCheck" [1]="gh" [2]="git" [3]="vim" )
+  list_of_minimum_reqd_rpms=( [0]="ShellCheck" [1]="firewall-config" [2]="gh" [3]="git" [4]="vim" )
   readonly list_of_minimum_reqd_rpms
 
   :;: "Parameters regarding required files"
@@ -952,10 +952,22 @@ function setup_dnf(){ als_function_boundary_in
       addl_pkgs=(  ${for_admin:=}        ncdu pwgen )
       addl_pkgs+=( ${for_bash:=}         bash bash-completion )
     # addl_pkgs+=( ${for_bashdb:=}       bash-devel make autoconf )
-      addl_pkgs+=( ${for_critical_A:=}   sudo nss openssh chrony dnf gpgme xfce4-terminal )
-      addl_pkgs+=( ${for_critical_B:=}   NetworkManager NetworkManager-{adsl,bluetooth,libnm,ppp} )
-      addl_pkgs+=( ${for_critical_C:=}   NetworkManager-{team,wifi,wwan} )
+      addl_pkgs+=( ${for_critical_X:=}   libsss_sudo sudo{,-python-plugin} )
+      addl_pkgs+=( ${for_critical_X:=}   nss{,-{mdns,sofokn{,-freebl},sysinit,util}} )
+      addl_pkgs+=( ${for_critical_X:=}   openssh{,-{clients,server}} )
+      addl_pkgs+=( ${for_critical_X:=}   chrony )
+      addl_pkgs+=( ${for_critical_X:=}   gnupg2{,-smime} {archlinux,debian,ubu}-keyring 
+                                         {distribution,fedora}-gpg-keys python3-gpg )
+      addl_pkgs+=( ${for_critical_X:=}   xfce4-terminal )
+      addl_pkgs+=( ${for_critical_X:=}   NetworkManager NetworkManager-{adsl,bluetooth,libnm,ppp} )
+      addl_pkgs+=( ${for_critical_X:=}   NetworkManager-{team,wifi,wwan} util-linux )
+      addl_pkgs+=( ${for_critical_X:=}   firewall-config python3-firewall firewalld{,-filesystem} )
+      addl_pkgs+=( ${for_critical_X:=}   firefox{,-langpacks} mozilla-{filesystem,https-everywhere,noscript,privacy-badger} 
+                                         mozjs102 perl-Mozilla-CA )
+      addl_pkgs+=( ${for_critical_X:=}   iptables-{libs,nft} {,python3-}nftables )
+      addl_pkgs+=( ${for_critical_X:=}   dnf{,-data,-plugins-core} python3-dnf{,-plugins-core} {python3-,}libdnf )
     # addl_pkgs+=( ${for_careful:=}      systemd auditd sssd )
+    # addl_pkgs+=( ${for_careful:=}      sssd{,-{ad,client,common{,-pac},ipa,kcm,krb5{,-common},ldap,nfs-idmap,proxy}} )
     # addl_pkgs+=( ${for_db_ish:=}       libreoffice-calc )
     # addl_pkgs+=( ${for_bug_rpts:=}     inxi zsh dash mksh lynx )
     # addl_pkgs+=( ${for_char_sets:=}    enca moreutils uchardet )
