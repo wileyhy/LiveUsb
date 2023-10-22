@@ -74,7 +74,7 @@ alias .^:=': $color_reset ; :'
   readonly fn_bndry_sh fn_bndry_lo
   fn_lvl=0
 
-  alias als_function_boundary_in='local - loc_hyphn="$-" loc_exit_code="$?" loc_lineno="${LN:-$nL}" loc_undersc="$_" _="${fn_bndry_sh} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++ fn_lvl ))"' ## AJAX -- see "++ " >> "++"
+  alias als_function_boundary_in='local - loc_hyphn="$-" loc_exit_code="$?" loc_lineno="${LN:-$nL}" loc_undersc="$_" _="${fn_bndry_sh} ${FUNCNAME[0]}() BEGINS ~ ${fn_lvl} to $(( ++fn_lvl ))"'
   alias als_function_boundary_out='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
 
   user_real_name="Wiley Young"
