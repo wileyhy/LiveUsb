@@ -179,6 +179,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  "trap_exit()"
   #+  "trap_return()"
   #+  "write_bashrc_strings()"        # y
+  #+  "write_ssh_conf()"              # y
   #+)
 
 #:;: "Define __vte_osc7() -- for bashrc only"
