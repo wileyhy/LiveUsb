@@ -68,6 +68,9 @@ alias .^:=': $color_reset ; :'
   user_github_email_address='84648683+wileyhy@users.noreply.github.com'
   user_github_gpg_key='E287D0CF528591CE'
   readonly user_real_name user_github_email_address user_github_gpg_key
+
+  list_of_minimum_reqd_rpms=( git gh ShellCheck vim )
+  readonly list_of_minimum_reqd_rpms
  
   :;: 'Parameters regarding required files'
   ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more 
