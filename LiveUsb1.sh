@@ -76,8 +76,10 @@ alias .^:=': $color_reset ; :'
 
   :;: "Parameters regarding required files"
   ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more
-  #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and are numbered sequentially are created here on one line only and have values assigned to each of them within the next ~50 lines. The list of index numbers is created
-  #+  just once, so the indices in the assignment section below must match the indices created here.
+  #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and 
+  #+  are numbered sequentially are created here on one line only and have values assigned to each of them 
+  #+  within the next ~50 lines. The list of index numbers is created just once, so the indices in the 
+  #+  assignment section below must match the indices created here.
   arrays_of_conf_files=(
     [0]="files_for_use_with_github_depth_1"
     [1]="files_for_use_with_github_depth_2"
@@ -229,7 +231,8 @@ function enable_git_debug_settings(){ :
 }
 
 :;: "Define error_and_exit()"
-function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" \
+    _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
 
   ## Some positional parameters must exist
@@ -485,7 +488,8 @@ function must_be_root(){ :
 
 :;: "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
-function pause_to_check() { local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function pause_to_check() { local - hyphn="$-" reply \
+    _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
   local -I EC=101 LN="$1"
 
@@ -538,7 +542,9 @@ function reqd_user_files(){ :
   #+	but I don\t want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it\s a bit of future-proofing.
   local pttn_device_path
-  pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk -v awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' )
+  pttn_device_path=$( lsblk --noheadings --output partuuid,path | 
+    awk -v awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' 
+  )
   [[ -n ${pttn_device_path} ]] || die $'Necessary USB drive isn\x60t plugged in or its filesystem has changed.'
   :
   : "Vars: get mountpoints and label"
@@ -581,7 +587,8 @@ function reqd_user_files(){ :
 
   #: "Mountpoint must be readable via ACL"
   #: "FS mounting must be restricted to root and/or liveuser"
-  #: $'FS mounting must automatically \x60umount\x60 after 15 minutes, and automatically \x60mount\x60 on access by authorized user'
+  #: $'FS mounting must automatically \x60umount\x60 after 15 minutes, and automatically \x60mount\x60 on 
+  #+    access by authorized user'
   #: "Data directory must be readable via ACL"
 
   ## Q, Why is this block commented out?
@@ -1851,7 +1858,8 @@ function test_os(){ :
 }
 
 :;: "Define trap_err()"
-function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_" \
+    _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
@@ -1866,7 +1874,8 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
 :;: "Define trap_exit()"
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$LINENO}" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$LINENO}" \
+    _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
 
   trap - EXIT
