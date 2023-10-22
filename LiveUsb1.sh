@@ -1594,7 +1594,7 @@ function setup_ssh(){ als_function_boundary_in
   then
     sudo -- \
       find -- "${ssh_usr_conf_dir}" -xdev  \(  \!  -uid "${login_uid}" -o  \!  -gid "${login_gid}"  \) \
-      -execdir chown "${login_uid}:${login_gid}" "${verb__[@]}" \{\} \;  ||
+        -execdir chown "${login_uid}:${login_gid}" "${verb__[@]}" \{\} \;  ||
           die
     find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" \{\} \; #
     find -- "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" \{\} \; #
