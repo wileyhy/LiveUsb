@@ -1620,11 +1620,16 @@ function setup_ssh(){ als_function_boundary_in
 
     ## Bug, window manager is hard coded, "startxfce4"
 
+    :;: "Get the PID of any running SSH Agents -- there may be more than one"
     local -a ssh_agent_pids
     readarray -t ssh_agent_pids < <( ps h -C 'ssh-agent -s' -o pid | tr -d ' ' )
 
     if [[ -z ${ssh_agent_pids[@]} ]]
     then
+      :;: $'If there aren\x60t any SSH Agents running, then start one'
+      ssh-agent -s
+
+      :;: "Try again to get the PID of the SSH Agent"
       local awk_o
       awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /exec -l/ && $0 !~ /grep / && $0 !~ /man / { print $2 }' <<< "${ps_o}" )
       readarray -t ssh_agent_pids <<< "${awk_o[@]}"
@@ -1672,7 +1677,7 @@ function setup_ssh(){ als_function_boundary_in
 
         ## Bug, the branches of this if-fi block are either kill the current agent, or kill the current agent
 
-        1)  if [[ -n ${SSH_AGENT_PID} ]]
+        1)  if [[ -n ${SSH_AGENT_PID:-} ]]
             then
               : okay
 
