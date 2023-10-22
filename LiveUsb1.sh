@@ -74,8 +74,8 @@ alias .^:=': $color_reset ; :'
   readonly fn_bndry_sh fn_bndry_lo
   fn_lvl=0
 
-  alias function_boundary_in='local - loc_hyphn="$-" loc_exit_code="$?" loc_lineno="${LN:-$nL}" loc_undersc="$_" _="${fn_bndry_sh} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++ fn_lvl ))"' ## AJAX -- see "++ " >> "++"
-  alias function_boundary_out='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
+  alias als_function_boundary_in='local - loc_hyphn="$-" loc_exit_code="$?" loc_lineno="${LN:-$nL}" loc_undersc="$_" _="${fn_bndry_sh} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++ fn_lvl ))"' ## AJAX -- see "++ " >> "++"
+  alias als_function_boundary_out='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
 
   user_real_name="Wiley Young"
   user_github_email_address="84648683+wileyhy@users.noreply.github.com"
@@ -202,7 +202,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
     #__vte_osc7
 #}
 
-function clone_repo(){ function_boundary_in
+function clone_repo(){ als_function_boundary_in
   #set -x
 
   local loc_hash_of_read_me_file
@@ -221,7 +221,7 @@ function clone_repo(){ function_boundary_in
 alias die='error_and_exit "${nL}"'
 
 :;: "Define enable_git_debug_settings()"
-function enable_git_debug_settings(){ function_boundary_in
+function enable_git_debug_settings(){ als_function_boundary_in
   #set -x
 
   :;: "Variables -- Global git debug settings"
@@ -238,7 +238,7 @@ function enable_git_debug_settings(){ function_boundary_in
 }
 
 :;: "Define error_and_exit()"
-function error_and_exit(){ function_boundary_in
+function error_and_exit(){ als_function_boundary_in
   set -x
 
   ## Some positional parameters must exist
@@ -261,7 +261,7 @@ function error_and_exit(){ function_boundary_in
 }
 
 :;: "Define get_pids_for_restarting()"
-function get_pids_for_restarting(){ function_boundary_in
+function get_pids_for_restarting(){ als_function_boundary_in
   #set -x
 
   # shellcheck disable=SC2034
@@ -305,7 +305,7 @@ function get_pids_for_restarting(){ function_boundary_in
 }
 
 :;: "Define gh_auth_login_command()"
-function gh_auth_login_command(){ function_boundary_in 
+function gh_auth_login_command(){ als_function_boundary_in 
   # set -
 
   if gh auth status
@@ -327,7 +327,7 @@ function gh_auth_login_command(){ function_boundary_in
 }
 
 :;: "Define increase_disk_space()"
-function increase_disk_space(){ function_boundary_in
+function increase_disk_space(){ als_function_boundary_in
   #set -x
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
@@ -449,7 +449,7 @@ function increase_disk_space(){ function_boundary_in
 }
 
 :;: "Define min_necc_packages()"
-function min_necc_packages(){ function_boundary_in
+function min_necc_packages(){ als_function_boundary_in
   #set -x
 
   local XX
@@ -477,7 +477,7 @@ function min_necc_packages(){ function_boundary_in
 }
 
 :;: "Define must_be_root()"
-function must_be_root(){ function_boundary_in
+function must_be_root(){ als_function_boundary_in
   #set -x
 
   if (( UID == 0 ))
@@ -490,7 +490,7 @@ function must_be_root(){ function_boundary_in
 
 :;: "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
-function pause_to_check() { function_boundary_in
+function pause_to_check(){ als_function_boundary_in
   #set -x
   local -I EC=101 LN="$1"
 
@@ -526,7 +526,7 @@ function pause_to_check() { function_boundary_in
 }
 
 :;: "reqd_user_files()"
-function reqd_user_files(){ function_boundary_in
+function reqd_user_files(){ als_function_boundary_in
   #set -x
 
   ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
@@ -693,7 +693,7 @@ function reqd_user_files(){ function_boundary_in
 }
 
 :;: "Define rsync_install_if_missing()"
-function rsync_install_if_missing(){ function_boundary_in
+function rsync_install_if_missing(){ als_function_boundary_in
   #set -x
 
   local fn_target_dir fn_umask fn_source_var
@@ -724,7 +724,7 @@ function rsync_install_if_missing(){ function_boundary_in
 }
 
 :;: "Define setup_bashrc()"
-function setup_bashrc(){ function_boundary_in
+function setup_bashrc(){ als_function_boundary_in
   set -x
 
   :;: "  bashrc -- Do some backups"
@@ -911,7 +911,7 @@ function setup_bashrc(){ function_boundary_in
 ## Bug, setup_dnf is too long and too complicated
 
 :;: "Define setup_dnf()"
-function setup_dnf(){ function_boundary_in
+function setup_dnf(){ als_function_boundary_in
   #set -x
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
@@ -1237,7 +1237,7 @@ function setup_dnf(){ function_boundary_in
 }
 
 :;: "Define setup_user_dirs()"
-function setup_user_dirs(){ function_boundary_in
+function setup_user_dirs(){ als_function_boundary_in
   #set -x
 
   ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
@@ -1265,7 +1265,7 @@ function setup_user_dirs(){ function_boundary_in
 }
 
 :;: "Define setup_gh_cli()"
-function setup_gh_cli(){ function_boundary_in
+function setup_gh_cli(){ als_function_boundary_in
   #set -x
 
   local -A github_configs
@@ -1320,7 +1320,7 @@ function setup_gh_cli(){ function_boundary_in
 }
 
 :;: "Define setup_git()"
-function setup_git(){ function_boundary_in
+function setup_git(){ als_function_boundary_in
   #set -x
 
   ## Note: git ui colors: normal black red green yellow blue magenta cyan white
@@ -1476,7 +1476,7 @@ function setup_git(){ function_boundary_in
 }
 
 :;: "setup_gpg()"
-function setup_gpg(){ function_boundary_in
+function setup_gpg(){ als_function_boundary_in
   #set -x
 
   :;: "If any files in ~/.gnupg are not owned by either USER or root, then error out and exit"
@@ -1523,7 +1523,7 @@ function setup_gpg(){ function_boundary_in
 }
 
 :;: "Define setup_network()"
-function setup_network(){ function_boundary_in
+function setup_network(){ als_function_boundary_in
   #set -x
 
   dns_srv_1=8.8.8.8
@@ -1576,7 +1576,7 @@ function setup_network(){ function_boundary_in
 }
 
 :;: "Define setup_ssh()"
-function setup_ssh(){ function_boundary_in
+function setup_ssh(){ als_function_boundary_in
   # set -
 
   ## Note, Unused var?
@@ -1699,7 +1699,7 @@ function setup_ssh(){ function_boundary_in
 }
 
 :;: "setup_temp_dirs()"
-function setup_temp_dirs(){ function_boundary_in
+function setup_temp_dirs(){ als_function_boundary_in
   #set -x
 
   tmp_dir=$( TMPDIR="" mktemp --directory --suffix=-LiveUsb 2>&1 || die )
@@ -1708,7 +1708,7 @@ function setup_temp_dirs(){ function_boundary_in
 }
 
 :;: "Define setup_time()"
-function setup_time(){ function_boundary_in
+function setup_time(){ als_function_boundary_in
   #set -x
 
   sudo -- timedatectl set-local-rtc 0
@@ -1718,7 +1718,7 @@ function setup_time(){ function_boundary_in
 }
 
 :;: "Define setup_vars()"
-function setup_vars(){ function_boundary_in
+function setup_vars(){ als_function_boundary_in
   #set -x
 
   :;: "Vars, dirs, etc"
@@ -1754,7 +1754,7 @@ function setup_vars(){ function_boundary_in
 }
 
 :;: "Define setup_vim()"
-function setup_vim(){ function_boundary_in
+function setup_vim(){ als_function_boundary_in
   #set -x
 
   : "Heredoc of vim-conf-text"
@@ -1827,7 +1827,7 @@ function setup_vim(){ function_boundary_in
 }
 
 :;: "Define test_dns()"
-function test_dns(){ function_boundary_in
+function test_dns(){ als_function_boundary_in
   #set -x
 
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
@@ -1835,7 +1835,7 @@ function test_dns(){ function_boundary_in
 }
 
 :;: "Define test_os()"
-function test_os(){ function_boundary_in
+function test_os(){ als_function_boundary_in
   #set -x
 
   local kern_rel
@@ -1849,7 +1849,7 @@ function test_os(){ function_boundary_in
 }
 
 :;: "Define trap_err()"
-function trap_err(){ function_boundary_in
+function trap_err(){ als_function_boundary_in
   #set -x
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
@@ -1864,7 +1864,7 @@ function trap_err(){ function_boundary_in
 :;: "Define trap_exit()"
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ function_boundary_in
+function trap_exit(){ als_function_boundary_in
   set -x
 
   trap - EXIT
@@ -1882,12 +1882,12 @@ function trap_exit(){ function_boundary_in
 :;: "Define trap_return()"
 function trap_return(){ :
   local -
-  #set -x
-  function_boundary_out
+  set -x
+  als_function_boundary_out
 }
 
 :;: "Define write_bashrc_strings()"
-function write_bashrc_strings(){ function_boundary_in
+function write_bashrc_strings(){ als_function_boundary_in
   #set -x
 
   :;: "Certain parameters must be defined and have non-zero values"
@@ -1958,7 +1958,7 @@ function write_bashrc_strings(){ function_boundary_in
 ## TODO, look at how each conf file is defined and written, each one's a little different. Make them 
 #+  uniform with each other, since the purpose of each section is the same in each case.
 
-function write_ssh_conf() { function_boundary_in
+function write_ssh_conf(){ als_function_boundary_in
   #set -x
 
   cat <<- \EOF > "${ssh_user_conf_file}"
