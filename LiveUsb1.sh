@@ -1723,7 +1723,7 @@ function setup_ssh(){ :
     #+  pseudo-terminal allocation.
     ssh-add ~/.ssh/id_ed25519
     ssh-add -L
-    ssh -T git@github.com
+    #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
   fi
 
   #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
