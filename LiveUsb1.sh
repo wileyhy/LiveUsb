@@ -1663,6 +1663,8 @@ function setup_ssh(){ :
 
     ## Bug, window manager is hard coded, "startxfce4"
 
+    local awk_o ssh_agent_pids
+    ssh_agent_pids=()
     awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /exec -l/ { print $2 }' <<< "${ps_o}" )
 
     if [[ -n ${awk_o} ]]
