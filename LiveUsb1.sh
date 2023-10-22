@@ -82,7 +82,7 @@ alias .^:=': $color_reset ; :'
   user_github_gpg_key="E287D0CF528591CE"
   readonly user_real_name user_github_email_address user_github_gpg_key
 
-  list_of_minimum_reqd_rpms=( [0]="ShellCheck" [1]="firewall-config" [2]="gh" [3]="git" [4]="vim" )
+  list_of_minimum_reqd_rpms=( [0]="ShellCheck" [1]="firewall-config" [2]="gh" [3]="git" [4]="vim-enhanced" )
   readonly list_of_minimum_reqd_rpms
 
   :;: "Parameters regarding required files"
@@ -2194,5 +2194,5 @@ fi
 :;: "Clean up & exit"
 #"$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
-EC=00 LN="${nL}" exit
+EC="00" LN="${nL}" exit
 
