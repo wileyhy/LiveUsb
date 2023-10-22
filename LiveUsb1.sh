@@ -145,35 +145,40 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 
 ##  FUNCTION DEFINITIONS, BEGIN ##
 
-:;: "Functions and Aliases TOC..."
+:;: "Functions and Aliases TOC..."    ## Conf files?
   ## functions_this_script=(
   #+  "__vte_osc7()"
   #+  "__vte_prompt_command()"
+  #+  "clone_repo()"
   #+  "die"
   #+  "enable_git_debug_settings()"
   #+  "error_and_exit()"
   #+  "get_pids_for_restarting()"
   #+  "gh_auth_login_command()"
+  #+  "increase_disk_space()"
   #+  "min_necc_packages()"
   #+  "must_be_root()"
   #+  "pause_to_check()"
-  #+  "reqd_user_files()"
+  #+  "reqd_user_files()"             # y
   #+  "rsync_install_if_missing()"
-  #+  "setup_user_dirs()"
-  #+  "setup_git()"
-  #+  "setup_gpg()"
+  #+  "setup_bashrc()"                # y
+  #+  "setup_dnf()"
+  #+  "setup_gh_cli()"                # y
+  #+  "setup_git()"                   # y
+  #+  "setup_gpg()"                   # y
   #+  "setup_network()"
-  #+  "setup_ssh()"
-  #+  "setup_temp_dirs()"
+  #+  "setup_ssh()"                   # y
+  #+  "setup_temp_dirs()"             # y
   #+  "setup_time()"
+  #+  "setup_user_dirs()"             # y
   #+  "setup_vars()"
-  #+  "setup_vim()"
+  #+  "setup_vim()"                   # y
   #+  "test_dns()"
   #+  "test_os()"
   #+  "trap_err()"
   #+  "trap_exit()"
   #+  "trap_return()"
-  #+  "write_bashrc_strings()"
+  #+  "write_bashrc_strings()"        # y
   #+)
 
 #:;: "Define __vte_osc7() -- for bashrc only"
@@ -206,16 +211,17 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 function clone_repo(){ als_function_boundary_in
   #set -x
 
-  local loc_hash_of_read_me_file
-  loc_hash_of_read_me_file=$( sha256sum ${scr_repo_nm}/README.md | cut -d" " -f1 )
+  local hash_of_read_me_file
+  hash_of_read_me_file=$( sha256sum ${scr_repo_nm}/README.md | cut -d" " -f1 )
 
   [[ ${PWD} = "${dev_d1}" ]] || die
 
   if ! [[ -d ${scr_repo_nm} ]] || ! [[ -f ${scr_repo_nm}/README.md ]] ||
-      ! [[ ${loc_hash_of_read_me_file} = "${sha256_of_repo_readme}" ]]
+      ! [[ ${hash_of_read_me_file} = "${sha256_of_repo_readme}" ]]
   then
     git clone --origin github "https://github.com/wileyhy/${scr_repo_nm}" || die
   fi
+  unset hash_of_read_me_file
 }
 
 :;: "Define \"die\" alias to function error_and_exit()"
@@ -235,7 +241,7 @@ function enable_git_debug_settings(){ als_function_boundary_in
   GIT_TRACE_PERFORMANCE=true
   GIT_TRACE_SETUP=true
   GIT_TRACE_SHALLOW=true
-  [[ -f ~/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat
+  [[ -f ~/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat -n
 }
 
 :;: "Define error_and_exit()"
@@ -1237,34 +1243,6 @@ function setup_dnf(){ als_function_boundary_in
   fi
 }
 
-:;: "Define setup_user_dirs()"
-function setup_user_dirs(){ als_function_boundary_in
-  #set -x
-
-  ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
-  #+   popd
-
-  :;: "Variables -- global, for use for entire script"
-  dev_d1=~/MYPROJECTS
-  dev_d2=~/OTHERSPROJECTS
-  readonly dev_d1
-  readonly dev_d2
-
-  :;: "Make dirs"
-  local UU
-  for UU in "${dev_d1}" "${dev_d2}"
-  do
-    if ! [[ -d ${UU} ]]
-    then
-      mkdir --mode=0700 "${verb__[@]}" "${UU}" || die
-    fi
-  done
-  unset UU
-
-  :;: "Change dirs"
-  pushd "${dev_d1}" > /dev/null || die
-}
-
 :;: "Define setup_gh_cli()"
 function setup_gh_cli(){ als_function_boundary_in
   #set -x
@@ -1720,6 +1698,34 @@ function setup_time(){ als_function_boundary_in
   sudo -- chronyc makestep > /dev/null
 }
 
+:;: "Define setup_user_dirs()"
+function setup_user_dirs(){ als_function_boundary_in
+  #set -x
+
+  ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
+  #+   popd
+
+  :;: "Variables -- global, for use for entire script"
+  dev_d1=~/MYPROJECTS
+  dev_d2=~/OTHERSPROJECTS
+  readonly dev_d1
+  readonly dev_d2
+
+  :;: "Make dirs"
+  local UU
+  for UU in "${dev_d1}" "${dev_d2}"
+  do
+    if ! [[ -d ${UU} ]]
+    then
+      mkdir --mode=0700 "${verb__[@]}" "${UU}" || die
+    fi
+  done
+  unset UU
+
+  :;: "Change dirs"
+  pushd "${dev_d1}" > /dev/null || die
+}
+
 :;: "Define setup_vars()"
 function setup_vars(){ als_function_boundary_in
   #set -x
@@ -1782,14 +1788,16 @@ function setup_vim(){ als_function_boundary_in
 		EOF
 
   : $'Get an array of the FS location\x28s\x29 of root\x60s vimrc\x28s\x29'
+  local -a arr_vrc
   readarray -d "" -t arr_vrc < <( sudo -- find -- /root -name "*vimrc*" -print0 )
 
+  local strng_vrc
   case "${#arr_vrc[@]}" in
     0 )
         strng_vrc=/root/.vimrc
       ;; #
     1 )
-        strng_vrc="${arr_vrc[*]:=/root/.vimrc}"
+        strng_vrc="${arr_vrc[*]}"
       ;; #
     *)
         printf '\n  Multiple .vimrc files found, please edit the filesystem.\n' >&2
@@ -1802,6 +1810,7 @@ function setup_vim(){ als_function_boundary_in
   then
     read -r WW XX < <( sudo -- sha256sum -- "${tmp_dir}/vim-conf-text" 2>&1 )
     read -r YY XX < <( sudo -- sha256sum -- "${strng_vrc}" 2>&1 )
+    unset      XX
   else
     sudo -- touch -- "${strng_vrc}" # <> set-e
   fi
@@ -1826,7 +1835,7 @@ function setup_vim(){ als_function_boundary_in
     : "Reset the umask"
     builtin "${umask_prior[@]}"
   fi
-  unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
+  unset arr_vrc strng_vrc WW YY umask_prior
 }
 
 :;: "Define test_dns()"
