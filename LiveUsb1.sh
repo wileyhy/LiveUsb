@@ -498,12 +498,13 @@ function must_be_root(){ :
 
 :;: "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
-function pause_to_check() { local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function pause_to_check() { local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
   local -I EC=101 LN="$1"
 
   shift
   local -a KK=( "$@" )
+  local reply 
 
   [[ -n ${KK[*]:0:1} ]] && printf '\n%s, ${FUNCNAME[0]}(), %s\n' "${scr_nm}" "${KK[@]}" >&2
   printf '\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n' >&2
