@@ -953,7 +953,7 @@ function setup_dnf(){ als_function_boundary_in
       addl_pkgs+=( ${for_bash:=}         bash bash-completion )
     # addl_pkgs+=( ${for_bashdb:=}       bash-devel make autoconf )
       addl_pkgs+=( ${for_critical_A:=}   libsss_sudo sudo{,-python-plugin} )
-      addl_pkgs+=( ${for_critical_B:=}   nss{,-{mdns,sofokn{,-freebl},sysinit,util}} )
+      addl_pkgs+=( ${for_critical_B:=}   nss{,-{mdns,softokn{,-freebl},sysinit,util}} )
       addl_pkgs+=( ${for_critical_C:=}   openssh{,-{clients,server}} )
       addl_pkgs+=( ${for_critical_D:=}   chrony )
       addl_pkgs+=( ${for_critical_E:=}   gnupg2{,-smime} {archlinux,debian,ubu}-keyring 
