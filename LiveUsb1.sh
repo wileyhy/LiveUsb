@@ -342,7 +342,7 @@ function increase_disk_space(){ :
     find -- "${dirs1[@]}" -type d -name '*locale*' ! -ipath '*/run/media/root/*' -print0 2> /dev/null )
 
   readarray -d '' -t fsos3 < <(
-    find -- "${dirs2[@]}" -type f -size +2048b '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
+    find -- "${dirs2[@]}" -type f -size +$(( 2**16 )) '(' ! -ipath '*en_*' -a !  -ipath '*/.git/*' ')' -print0 )
 
   if (( ${#fsos3[@]} > 0 ))
   then
