@@ -105,14 +105,12 @@ alias .^:=': $color_reset ; :'
   files_for_use_with_github_depth_4+=( ~/.config/gh/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev
       ~/.config/gh/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key)
 
-  ## TODO: variable "gpg_d" is extra
 
   : "  Files, gpg"
-  gpg_d=~/.gnupg
-  files_for_use_with_github_depth_2+=( "${gpg_d}"/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
-  files_for_use_with_github_depth_3+=( "${gpg_d}/crls.d/DIR.txt"
-      "${gpg_d}/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev"
-      "${gpg_d}/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key" )
+  files_for_use_with_github_depth_2+=( ~/.gnupg/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
+  files_for_use_with_github_depth_3+=( ~/.gnupg/crls.d/DIR.txt
+      ~/.gnupg/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev
+      ~/.gnupg/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
 
   : "  Files, ssh"
   files_for_use_with_github_depth_2+=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
@@ -1476,12 +1474,12 @@ function setup_gpg(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   #set -x
 
-  :;: $'If any files in \x24gpg_d are not owned by either \x24USER or root, then error out and exit'
+  :;: "If any files in ~/.gnupg are not owned by either USER or root, then error out and exit"
   local -a problem_files
   problem_files=()
   readarray -d "" -t problem_files < <(
     sudo -- \
-      find -- "${gpg_d}" -xdev \
+      find -- ~/.gnupg -xdev \
         \( \
           \(  \!  -uid "${login_gid}" -a  \! -gid 0  \) -o \
           \(  \!  -gid "${login_uid}" -a  \! -uid 0  \) \
@@ -1492,13 +1490,13 @@ function setup_gpg(){ :
 
   :;: $'If any files are owned by root, then change their ownership to \x24USER'
   sudo -- \
-    find -- "${gpg_d}" -xdev \( -uid 0 -o -gid 0 \) -execdir \
+    find -- ~/.gnupg -xdev \( -uid 0 -o -gid 0 \) -execdir \
       chown "${login_uid}:${login_gid}" "${verb__[@]}" \{\} \; ||
         exit "${nL}"
 
   :;: $'If any dir perms aren\x60t 700 or any file perms aren\x60t 600, then make them so'
-  find -- "${gpg_d}" -xdev -type d \! -perm 700  -execdir chmod 700 "${verb__[@]}" \{\} \; #
-  find -- "${gpg_d}" -xdev -type f \! -perm 600  -execdir chmod 600 "${verb__[@]}" \{\} \; #
+  find -- ~/.gnupg -xdev -type d \! -perm 700  -execdir chmod 700 "${verb__[@]}" \{\} \; #
+  find -- ~/.gnupg -xdev -type f \! -perm 600  -execdir chmod 600 "${verb__[@]}" \{\} \; #
 
   : "GPG -- If a gpg-agent daemon is running, or not, then, either way say so"
   if grep --extended-regexp "[g]pg-a.*daemon" "${qui__[@]}" <<< "${ps_o}"
