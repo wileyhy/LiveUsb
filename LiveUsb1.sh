@@ -202,8 +202,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
     #__vte_osc7
 #}
 
-function clone_repo(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function clone_repo(){ function_boundary_in
   #set -x
 
   local loc_hash_of_read_me_file
@@ -222,8 +221,7 @@ function clone_repo(){ :
 alias die='error_and_exit "${nL}"'
 
 :;: "Define enable_git_debug_settings()"
-function enable_git_debug_settings(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function enable_git_debug_settings(){ function_boundary_in
   #set -x
 
   :;: "Variables -- Global git debug settings"
@@ -240,7 +238,7 @@ function enable_git_debug_settings(){ :
 }
 
 :;: "Define error_and_exit()"
-function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function error_and_exit(){ function_boundary_in
   set -x
 
   ## Some positional parameters must exist
@@ -263,8 +261,7 @@ function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bnd
 }
 
 :;: "Define get_pids_for_restarting()"
-function get_pids_for_restarting(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+function get_pids_for_restarting(){ function_boundary_in
   #set -x
 
   # shellcheck disable=SC2034
@@ -308,8 +305,7 @@ function get_pids_for_restarting(){ :
 }
 
 :;: "Define gh_auth_login_command()"
-function gh_auth_login_command(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+function gh_auth_login_command(){ function_boundary_in 
   # set -
 
   if gh auth status
@@ -331,8 +327,7 @@ function gh_auth_login_command(){ :
 }
 
 :;: "Define increase_disk_space()"
-function increase_disk_space(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function increase_disk_space(){ function_boundary_in
   #set -x
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
@@ -454,8 +449,7 @@ function increase_disk_space(){ :
 }
 
 :;: "Define min_necc_packages()"
-function min_necc_packages(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function min_necc_packages(){ function_boundary_in
   #set -x
 
   local XX
@@ -483,8 +477,7 @@ function min_necc_packages(){ :
 }
 
 :;: "Define must_be_root()"
-function must_be_root(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function must_be_root(){ function_boundary_in
   #set -x
 
   if (( UID == 0 ))
@@ -497,7 +490,7 @@ function must_be_root(){ :
 
 :;: "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
-function pause_to_check() { local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function pause_to_check() { function_boundary_in
   #set -x
   local -I EC=101 LN="$1"
 
@@ -533,8 +526,7 @@ function pause_to_check() { local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() B
 }
 
 :;: "reqd_user_files()"
-function reqd_user_files(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function reqd_user_files(){ function_boundary_in
   #set -x
 
   ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
@@ -701,8 +693,7 @@ function reqd_user_files(){ :
 }
 
 :;: "Define rsync_install_if_missing()"
-function rsync_install_if_missing(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function rsync_install_if_missing(){ function_boundary_in
   #set -x
 
   local fn_target_dir fn_umask fn_source_var
@@ -733,8 +724,7 @@ function rsync_install_if_missing(){ :
 }
 
 :;: "Define setup_bashrc()"
-function setup_bashrc(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_bashrc(){ function_boundary_in
   set -x
 
   :;: "  bashrc -- Do some backups"
@@ -921,8 +911,7 @@ function setup_bashrc(){ :
 ## Bug, setup_dnf is too long and too complicated
 
 :;: "Define setup_dnf()"
-function setup_dnf(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_dnf(){ function_boundary_in
   #set -x
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
@@ -1248,8 +1237,7 @@ function setup_dnf(){ :
 }
 
 :;: "Define setup_user_dirs()"
-function setup_user_dirs(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_user_dirs(){ function_boundary_in
   #set -x
 
   ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
@@ -1277,8 +1265,7 @@ function setup_user_dirs(){ :
 }
 
 :;: "Define setup_gh_cli()"
-function setup_gh_cli(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_gh_cli(){ function_boundary_in
   #set -x
 
   local -A github_configs
@@ -1333,8 +1320,7 @@ function setup_gh_cli(){ :
 }
 
 :;: "Define setup_git()"
-function setup_git(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_git(){ function_boundary_in
   #set -x
 
   ## Note: git ui colors: normal black red green yellow blue magenta cyan white
@@ -1490,8 +1476,7 @@ function setup_git(){ :
 }
 
 :;: "setup_gpg()"
-function setup_gpg(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_gpg(){ function_boundary_in
   #set -x
 
   :;: "If any files in ~/.gnupg are not owned by either USER or root, then error out and exit"
@@ -1538,8 +1523,7 @@ function setup_gpg(){ :
 }
 
 :;: "Define setup_network()"
-function setup_network(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_network(){ function_boundary_in
   #set -x
 
   dns_srv_1=8.8.8.8
@@ -1592,8 +1576,7 @@ function setup_network(){ :
 }
 
 :;: "Define setup_ssh()"
-function setup_ssh(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+function setup_ssh(){ function_boundary_in
   # set -
 
   ## Note, Unused var?
@@ -1716,8 +1699,7 @@ function setup_ssh(){ :
 }
 
 :;: "setup_temp_dirs()"
-function setup_temp_dirs(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_temp_dirs(){ function_boundary_in
   #set -x
 
   tmp_dir=$( TMPDIR="" mktemp --directory --suffix=-LiveUsb 2>&1 || die )
@@ -1726,8 +1708,7 @@ function setup_temp_dirs(){ :
 }
 
 :;: "Define setup_time()"
-function setup_time(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_time(){ function_boundary_in
   #set -x
 
   sudo -- timedatectl set-local-rtc 0
@@ -1737,8 +1718,7 @@ function setup_time(){ :
 }
 
 :;: "Define setup_vars()"
-function setup_vars(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_vars(){ function_boundary_in
   #set -x
 
   :;: "Vars, dirs, etc"
@@ -1774,8 +1754,7 @@ function setup_vars(){ :
 }
 
 :;: "Define setup_vim()"
-function setup_vim(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function setup_vim(){ function_boundary_in
   #set -x
 
   : "Heredoc of vim-conf-text"
@@ -1848,8 +1827,7 @@ function setup_vim(){ :
 }
 
 :;: "Define test_dns()"
-function test_dns(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function test_dns(){ function_boundary_in
   #set -x
 
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
@@ -1857,8 +1835,7 @@ function test_dns(){ :
 }
 
 :;: "Define test_os()"
-function test_os(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function test_os(){ function_boundary_in
   #set -x
 
   local kern_rel
@@ -1872,7 +1849,7 @@ function test_os(){ :
 }
 
 :;: "Define trap_err()"
-function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_trap_undersc="$_" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function trap_err(){ function_boundary_in
   #set -x
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
@@ -1887,7 +1864,7 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
 :;: "Define trap_exit()"
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$nL}" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
+function trap_exit(){ function_boundary_in
   set -x
 
   trap - EXIT
@@ -1906,12 +1883,11 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
 function trap_return(){ :
   local -
   #set -x
-  true "${fn_bndry} ${fn_bndry} ${fn_bndry} ${fn_bndry} ${FUNCNAME[1]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
+  function_boundary_out
 }
 
 :;: "Define write_bashrc_strings()"
-function write_bashrc_strings(){ :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+function write_bashrc_strings(){ function_boundary_in
   #set -x
 
   :;: "Certain parameters must be defined and have non-zero values"
@@ -1982,8 +1958,7 @@ function write_bashrc_strings(){ :
 ## TODO, look at how each conf file is defined and written, each one's a little different. Make them 
 #+  uniform with each other, since the purpose of each section is the same in each case.
 
-function write_ssh_conf() { :
-  local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
+function write_ssh_conf() { function_boundary_in
   #set -x
 
   cat <<- \EOF > "${ssh_user_conf_file}"
