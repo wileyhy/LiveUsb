@@ -23,6 +23,7 @@
 ## Note, systed services to disable: bluetooth, cups, [ systemd-resolved ? ]; services to possibly enable: sshd, sssd
 
 # <> Debugging
+declare -nx nL=L\INENO
 #set -x # <>
 set -a # <>
 set -C # <>
@@ -465,9 +466,9 @@ function min_necc_packages(){ :
 
   for XX in "${list_of_minimum_reqd_rpms[@]}"
   do
-    if ! rpm --query --quiet "$XX"
+    if ! rpm --query --quiet "${XX}"
     then
-      sudo -- dnf --assumeyes install "$XX"
+      sudo -- dnf --assumeyes install "${XX}"
 
       ## TODO, comment out this use of $a_pids, re declaring and unsetting
       #unset -v a_pids
@@ -547,9 +548,13 @@ function reqd_user_files(){ :
   #+  "-1" is guaranteed to exist. ...unless the array is completely empty...
   #+	but I don\t want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it\s a bit of future-proofing.
+  
+  ## TODO, with all relevant `awk` commands, change program quoting from double to single and use "--assign"
+  #+  with some variable as in this next block.
+  
   local pttn_device_path
   pttn_device_path=$( lsblk --noheadings --output partuuid,path | 
-    awk -v awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' 
+    awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' 
   )
   [[ -n ${pttn_device_path} ]] || die $'Necessary USB drive isn\x60t plugged in or its filesystem has changed.'
   :
@@ -646,7 +651,7 @@ function reqd_user_files(){ :
       then
 
         :;: "If the source conf file/dir does not exist, then find it"
-        if ! [[ -e "${source_file}" ]]
+        if ! [[ -e ${source_file} ]]
         then
 
           : "If the partition is not mounted which holds the data directory, then mount it"
@@ -654,7 +659,7 @@ function reqd_user_files(){ :
           then
 
             : "Mountpoint must exist"
-            if ! [[ -d "${mount_pt}" ]]
+            if ! [[ -d ${mount_pt} ]]
             then
               sudo -- mkdir --parents -- "${mount_pt}" || die
             fi
@@ -690,7 +695,7 @@ function reqd_user_files(){ :
   builtin "${prev_umask[@]}"
   unset prev_umask
 
-    #EC=101 LN="$LINENO" exit # <>
+    #EC=101 LN="${nL}" exit # <>
 }
 
 :;: "Define rsync_install_if_missing()"
@@ -702,9 +707,9 @@ function rsync_install_if_missing(){ :
   fn_source_var="$1"
   fn_target_dir="$2"
 
-  if [[ -e "${fn_target_dir}" ]]
+  if [[ -e ${fn_target_dir} ]]
   then
-    if ! [[ -d "${fn_target_dir}" ]]
+    if ! [[ -d ${fn_target_dir} ]]
     then
       die "${fn_target_dir}"
     fi
@@ -786,8 +791,10 @@ function setup_bashrc(){ :
   ## Note, PROMPT_COMMAND could have been inherited as a string variable
   unset PROMPT_COMMAND
   declare -a PROMPT_COMMAND
-  PROMPT_COMMAND=([0]="printf \"%b\" \"\${prompt_colors_reset}\"")
-
+  
+  ## Bug? shouldn't this array $PROMPT_COMMAND have as value index 0 the variable $prompt_cmd_0 ?
+  #PROMPT_COMMAND=([0]="printf \"%b\" \"\${prompt_colors_reset}\"")
+  PROMPT_COMMAND=( [0]="${prompt_cmd_0}" )
 
   if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${pc_regx} ]]
   then
@@ -1030,7 +1037,7 @@ function setup_dnf(){ :
     unset HH
 
     ## If count of upgradeable rpms is 0, then break loop
-    if [[ "${#pkgs_for_upgrade[@]}" -eq 0 ]]
+    if [[ ${#pkgs_for_upgrade[@]} -eq 0 ]]
     then
       break
     fi
@@ -1106,6 +1113,7 @@ function setup_dnf(){ :
 
         for WW in "${a_pids[@]}"
         do
+          ## TODO, re awk
           ps aux | awk "\$2 ~ /${WW}/ { print }"
 
           #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?"
@@ -1114,10 +1122,11 @@ function setup_dnf(){ :
             --timeout 1000 HUP \
             --timeout 1000 USR1 \
             --timeout 1000 TERM \
-            --timeout 1000 KILL -- "$WW"
+            --timeout 1000 KILL -- "${WW}"
 
           sleep 3
 
+          ## TODO, re awk
           ps aux | awk "\$2 ~ /${WW}/ { print }"
 
           #pause_to_check "${nL}" "Now do you need to manually restart anything?"
@@ -1146,7 +1155,7 @@ function setup_dnf(){ :
 
   ## TODO: change temp-vars (II, XX, etc) to fully named vars
 
-  if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] || [[ "${#a_pids[@]}" -gt 0 ]]
+  if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] || [[ ${#a_pids[@]} -gt 0 ]]
   then
     while true
     do
@@ -1197,7 +1206,7 @@ function setup_dnf(){ :
               :;: $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
               ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
               #+ than whether the  kill  operation succeeded, per  info kill .
-              sudo -- "$(type -P kill)" --signal "${AA}" -- "${ZZ}"
+              sudo -- "$( type -P kill )" --signal "${AA}" -- "${ZZ}"
 
               :;: "Evidently, I need to give the system a little MORE time for processing"
               sleep 1
@@ -1205,6 +1214,7 @@ function setup_dnf(){ :
               :;: "...and if the PID in question no longer exists then unset the current array index number"
               if [[ -n "$( ps --no-headers --quick-pid "${ZZ}" | grep -v defunct )" ]]
               then
+                ## TODO, re awk
                 is_pid_a_zombie=$( ps aux | awk "\$2 ~ /${ZZ}/ { print \$8 }" )
 
                 if [[ ${is_pid_a_zombie} = Z ]]
@@ -1255,13 +1265,13 @@ function setup_user_dirs(){ :
   do
     if ! [[ -d ${UU} ]]
     then
-      mkdir --mode=0700 "${verb__[@]}" "${UU}" || exit "${nL}"
+      mkdir --mode=0700 "${verb__[@]}" "${UU}" || die
     fi
   done
   unset UU
 
   :;: "Change dirs"
-  pushd "${dev_d1}" > /dev/null || exit "${nL}"
+  pushd "${dev_d1}" > /dev/null || die
 }
 
 :;: "Define setup_gh_cli()"
@@ -1437,8 +1447,8 @@ function setup_git(){ :
 		EOF
 
     # shellcheck disable=SC2024 #(info): sudo does not affect redirects. Use sudo cat file | ..
-    tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || exit "${nL}"
-    chmod 0644 "${verb__[@]}" "${git_mesg}" || exit "${nL}"
+    tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || die
+    chmod 0644 "${verb__[@]}" "${git_mesg}" || die
   fi
 
   :;: "Git -- gitignore (global)"
@@ -1453,20 +1463,20 @@ function setup_git(){ :
 		EOF
 
     # shellcheck disable=SC2024
-    tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || exit "${nL}"
-    chmod 0644 "${verb__[@]}" "${git_ignr}" || exit "${nL}"
+    tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || die
+    chmod 0644 "${verb__[@]}" "${git_ignr}" || die
   fi
 
   :;: $'Git -- Set correct DAC\x60s (ownership and permissions)'
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
-    if ! [[ "$(stat -c%u "${HH}")" = "${login_uid}" ]] || ! [[ "$(stat -c%g "${HH}")" = "${login_gid}" ]]
+    if ! [[ "$( stat -c%u "${HH}" )" = "${login_uid}" ]] || ! [[ "$( stat -c%g "${HH}" )" = "${login_gid}" ]]
     then
       sudo -- chown "${login_uid}:${login_gid}" "${verb__[@]}" "${HH}"
     fi
 
-    if ! [[ "$(stat -c%a "${HH}")" = 0400 ]]
+    if ! [[ "$( stat -c%a "${HH}" )" = 0400 ]]
     then
       chmod 0400 "${verb__[@]}" "${HH}"
     fi
@@ -1500,7 +1510,7 @@ function setup_gpg(){ :
   sudo -- \
     find -- ~/.gnupg -xdev \( -uid 0 -o -gid 0 \) -execdir \
       chown "${login_uid}:${login_gid}" "${verb__[@]}" \{\} \; ||
-        exit "${nL}"
+        die
 
   :;: $'If any dir perms aren\x60t 700 or any file perms aren\x60t 600, then make them so'
   find -- ~/.gnupg -xdev -type d \! -perm 700  -execdir chmod 700 "${verb__[@]}" \{\} \; #
@@ -1696,7 +1706,7 @@ function setup_ssh(){ :
     ## Bug? hardcoded filename
 
     ## Note:  ssh-add  and  ssh  don\t have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
-    #+  pseudo-terminal allocation.
+    #+  pseudo-terminal allocation."
     ssh-add ~/.ssh/id_ed25519
     ssh-add -L
     #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
@@ -1841,8 +1851,7 @@ function test_dns(){ :
   #set -x
 
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
-  ping_exit_code=$?
-  return "${ping_exit_code}"
+  return "$?"
 }
 
 :;: "Define test_os()"
@@ -1877,7 +1886,7 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
 :;: "Define trap_exit()"
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$LINENO}" \
+function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-$nL}" \
     _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
   set -x
 
@@ -1921,12 +1930,12 @@ function write_bashrc_strings(){ :
     for file_x in "${files_for_use_with_bash[@]}"
     do :;: "Loop B - For each .bashrc"
 
-      : "file_x  ${file_x}"
+      : "file_x, ${file_x}"
 
       for Aa_index in "${!fn_nameref[@]}"
       do :;: "Loop C - For each definition (function or parameter)"
 
-        : "Aa_index  ${Aa_index}"
+        : "Aa_index, ${Aa_index}"
         Aa_element="${fn_nameref[${Aa_index}]}"
 
         :;: "(1) If the definition is not yet written into the file..."
@@ -1941,6 +1950,8 @@ function write_bashrc_strings(){ :
         fi
 
         ## Bug: what if it\s a multiline alias?
+
+        ## Question, can `sed` take variable assignments the way `awk` can?
 
         :;: "(2) If there is an alias by the same name, then delete it from the bashrc file at hand..."
         sudo -- sed --in-place "/^alias ${Aa_index##* }=/d" -- "${file_x}"
@@ -1968,6 +1979,9 @@ function write_bashrc_strings(){ :
   unset JJ
 }
 
+## TODO, look at how each conf file is defined and written, each one's a little different. Make them 
+#+  uniform with each other, since the purpose of each section is the same in each case.
+
 function write_ssh_conf() { :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $((++fn_lvl))"
   #set -x
@@ -1981,7 +1995,7 @@ function write_ssh_conf() { :
 
 #######  FUNCTION DEFINITIONS COMPLETE #######
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   #set -x
 
 :;: "Define trap on RETURN"
@@ -1993,19 +2007,19 @@ trap trap_err ERR
 :;: "Define trap on EXIT"
 trap trap_exit EXIT
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   #set -x
 
 :;: "Test OS"
 test_os
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   #set -x
 
 :;: "Variables"
 setup_vars
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   #set -x
   #die testing
 
@@ -2023,43 +2037,43 @@ setup_vars
 :;: "Regular users with sudo, only"
 must_be_root
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Certain files must have been installed from off-disk"
 reqd_user_files
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Network"
 setup_network
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Time"
 setup_time
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Temporary directory"
 setup_temp_dirs
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Vim"
 setup_vim
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Minimum necessary rpms"
 min_necc_packages
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 #:;: "Git debug settings"
@@ -2068,37 +2082,37 @@ min_necc_packages
 :;: "Git"
 setup_git
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Make and change into directories"
 setup_user_dirs
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "SSH"
 setup_ssh
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "GPG"
 setup_gpg
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "GH -- github CLI configuration"
 setup_gh_cli
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Clone repo"
 clone_repo
 
-  #EC=101 LN="$LINENO" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Bash"
@@ -2146,7 +2160,7 @@ done
 unset BB
 
 # <Logs> Write to TTY and exit
-#"$(type -P kill)" --signal USR2 -- "$$" # <Logs>
+#"$( type -P kill )" --signal USR2 -- "$$" # <Logs>
 
 :;: "Remind user of commands for the interactive shell"
 
