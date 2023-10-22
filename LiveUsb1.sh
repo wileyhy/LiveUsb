@@ -252,7 +252,7 @@ function get_pids_for_restarting(){ :
 
   # shellcheck disable=SC2034
   local dnf_o
-  local pipline0 pipline1 pipline2
+  local pipline0 pipline1
   local -ga a_pids
   a_pids=()
 
@@ -283,13 +283,7 @@ function get_pids_for_restarting(){ :
     return 0
   fi
 
-  readarray -t pipline2 < <( printf '%s\n' "${pipline1[@]}" | grep --only-matching --extended-regexp ^'[0-9]*'$ )
-  if [[ "${#pipline2[@]}" -eq 0 ]]
-  then
-    return 0
-  fi
-
-  readarray -d '' -t a_pids < <( printf '%s\0' "${pipline2[@]}" )
+  readarray -t a_pids < <( printf '%s\n' "${pipline1[@]}" | grep --only-matching --extended-regexp ^'[0-9]*'$ )
   if [[ "${#a_pids[@]}" -eq 0 ]]
   then
     return 0
