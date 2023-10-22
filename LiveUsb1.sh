@@ -416,7 +416,7 @@ function increase_disk_space(){ :
             y|t)  printf '  %s %b %s %s \n' "Script," ' \x60rm -i\x60 ' "requires a typed [yN] response," \
                     "it defaults to do-not-delete if a user just presses [enter]."
 
-                  if sudo -- /bin/rm --interactive --one-file-system --preserve-root=all "${verb__[@]}" "${JJ}"
+            if sudo -- "$( type -P rm )" --interactive --one-file-system --preserve-root=all "${verb__[@]}" "${JJ}"
                   then
                     unset "Aa_fsos5[$AA]"
                     break 1
@@ -1362,8 +1362,8 @@ function setup_git(){ :
     [commit.template]="${git_mesg}"
     [core.editor]=vim
     [core.excludesfile]="${git_ignr}"
-    [core.pager]=/usr/bin/less
-    [gpg.program]=/usr/bin/gpg2
+    [core.pager]="$( type -P less )"
+    [gpg.program]="$( type -P gpg2 )"
     [help.autocorrect]=prompt
     [init.defaultBranch]=main
     [user.email]="${user_github_email_address}"
@@ -1615,7 +1615,7 @@ function setup_ssh(){ :
   then
     if ! grep "ForwardAgent yes" "${qui__[@]}" "${ssh_user_conf_file}"
     then
-      /bin/rm --force --one-file-system --preserve-root=all "${verb__[@]}" "${ssh_user_conf_file}"
+      "$( type -P rm )" --force --one-file-system --preserve-root=all "${verb__[@]}" "${ssh_user_conf_file}"
       write_ssh_conf
     fi
   else
@@ -1660,7 +1660,7 @@ function setup_ssh(){ :
     #+    Binary `kill` has a few options not available with the builtin, such as "--timeout", which can be
     #+  used to avoid writing an extra for loop...
     #+
-    #+      sudo -- /bin/kill --verbose \
+    #+      sudo -- "$( type -P kill )" --verbose \
     #+          --timeout 1000 HUP \
     #+          --timeout 1000 USR1 \
     #+          --timeout 1000 TERM \
@@ -1832,9 +1832,6 @@ function setup_vim(){ :
     : "Reset the umask"
     builtin "${umask_prior[@]}"
   fi
-
-  ## Clean up after section Vim
-  #/bin/rm --force --one-file-system --preserve-root=all "${verb__[@]}" "${tmp_dir}/vim-conf-text"
   unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
 }
 
@@ -2162,7 +2159,7 @@ then
 fi
 
 :;: "Clean up & exit"
-#/bin/rm --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
+#"$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 EC=00 LN="${nL}" exit
 
