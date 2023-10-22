@@ -133,6 +133,7 @@ alias .^:=': $color_reset ; :'
   files_for_use_with_github_depth_0+=( ~/.vimrc )
   : "  End of Files lists"
 
+  ## TODO, I do this duck-xtrace dance a few time in this script, but the procedure isn\t normalized yet; do so
   [[ -o xtrace ]] && xon=yes && set +x
   ps_o=$( ps aux )
   readonly ps_o
@@ -1579,22 +1580,20 @@ function setup_network(){ als_function_boundary_in
 function setup_ssh(){ als_function_boundary_in
   # set -
 
-  ## Note, Unused var?
-  #ssh_system_conf=/etc/ssh/ssh_config
-
-  local ssh_usr_conf_dir
-  ssh_usr_conf_dir=~/.ssh/
-
   ## Bug - security, these #chown# commands should operate on the files while they are still in skel_LiveUsb
   #+  see also similar code in setup_gpg(), possibly elsewhere also  :-\
 
   ## Bug, chown changes ctime on every execution, whether or not the ownership changes
 
+  :;: $'Make sure the SSH config dir for USER exists and has correct DAC\x60s'
+  local ssh_usr_conf_dir
+  ssh_usr_conf_dir=~/.ssh/
+
   if [[ -d ${ssh_usr_conf_dir} ]]
   then
     sudo -- \
-      find -- "${ssh_usr_conf_dir}" -xdev  \(  \!  -uid "${login_uid}" -o  \!  -gid "${login_gid}"  \) \
-        -execdir chown "${login_uid}:${login_gid}" "${verb__[@]}" \{\} \;  ||
+      find -- "${ssh_usr_conf_dir}" -xdev  \(  \! -uid "${login_uid}"  -o  \! -gid "${login_gid}"  \) \
+        -execdir  chown -- "${login_uid}:${login_gid}" "${verb__[@]}" \{\} \;  ||
           die
     find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" \{\} \; #
     find -- "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" \{\} \; #
@@ -1603,6 +1602,7 @@ function setup_ssh(){ als_function_boundary_in
   fi
   unset ssh_usr_conf_dir
 
+  :;: $'Make sure the SSH config file for USER exists and has correct DAC\x60s'
   local ssh_user_conf_file
   ssh_user_conf_file=~/.ssh/config
 
@@ -1620,7 +1620,6 @@ function setup_ssh(){ als_function_boundary_in
   unset -f write_ssh_conf
 
   ## Bug? not necc to restart ssh-agent if both of these vars exist?
-  ## TODO, I do this duck-xtrace dance a few time in this script, but the procedure isn\t normalized yet; do so
 
     declare -p SSH_AUTH_SOCK SSH_AGENT_PID
 
@@ -1630,13 +1629,15 @@ function setup_ssh(){ als_function_boundary_in
 
     ## Bug, window manager is hard coded, "startxfce4"
 
-    local awk_o ssh_agent_pids
-    ssh_agent_pids=()
-    awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /exec -l/ { print $2 }' <<< "${ps_o}" )
+    local -a ssh_agent_pids
+    readarray -t ssh_agent_pids < <( ps -C 'ssh-agent -s' -o pid )
 
-    if [[ -n ${awk_o} ]]
+    if [[ -z ${ssh_agent_pids[@]} ]]
     then
-      readarray -t ssh_agent_pids <<< "${awk_o}"
+      local awk_o
+      awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /exec -l/ && $0 !~ /grep / && $0 !~ /man / { print $2 }' <<< "${ps_o}" )
+      readarray -t ssh_agent_pids <<< "${awk_o[@]}"
+      unset awk_o
     fi
 
     ## Bug? `command -p kill "$AA"` executes the bash builtin, judging by the output of `command -p kill`
@@ -1666,7 +1667,7 @@ function setup_ssh(){ als_function_boundary_in
 
         ## Bug, the branches of this if-fi block are either kill the current agent, or kill the current agent
 
-        1)  if [[ -v SSH_AGENT_PID ]]
+        1)  if [[ -n ${SSH_AGENT_PID} ]]
             then
               : okay
 
@@ -1674,8 +1675,7 @@ function setup_ssh(){ als_function_boundary_in
                 declare -p SSH_AGENT_PID
 
             else
-              ## Note:  ssh-agent  doesn\t have any long options.  ssh-agent -k  is "kill the current agent."
-              ssh-agent -k || "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[*]}"
+              
             fi
           ;; #
         *)  for VV in "${ssh_agent_pids[@]}"
@@ -1683,13 +1683,13 @@ function setup_ssh(){ als_function_boundary_in
               "$( type -P kill )" "${verb__[@]}" "${VV}"
             done
             unset VV
+
+            ## Note:  ssh-agent -s  is "generate Bourne shell commands on stdout."
+            ssh_agent_o=$( ssh-agent -s )
+            eval "${ssh_agent_o}"
           ;; #
       esac
     fi
-
-    ## Note:  ssh-agent -s  is "generate Bourne shell commands on stdout."
-    ssh_agent_o=$( ssh-agent -s )
-    eval "${ssh_agent_o}"
 
     ## Bug? hardcoded filename
 
@@ -1861,7 +1861,7 @@ function trap_err(){ als_function_boundary_in
   declare -p err_trap_hyphn err_trap_ec err_trap_undersc
 }
 
-## Bug, these var assignments $exit_trap_ec and $lineno only fail when they\re on line number >=2
+## Bug, these var assignments $loc_exit_code and $lineno only fail when they\re on line number >=2
 #+  of  trap  "args section" ??
 
 :;: "Define trap_exit()"
@@ -1872,14 +1872,14 @@ function trap_exit(){ als_function_boundary_in
 
   trap - EXIT
 
-  #if [[ ${exit_trap_ec} = 00 ]]
+  #if [[ ${loc_exit_code} = 00 ]]
   #then
     #: "End of script, line ${lineno}"
   #else
     #: "End of EXIT trap"
   #fi
 
-  builtin exit "${exit_trap_ec}"
+  builtin exit "${loc_exit_code}"
 }
 
 :;: "Define trap_return()"
