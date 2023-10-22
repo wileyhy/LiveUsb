@@ -1622,6 +1622,8 @@ function setup_ssh(){ als_function_boundary_in
   ## Bug? not necc to restart ssh-agent if both of these vars exist?
   ## TODO, I do this duck-xtrace dance a few time in this script, but the procedure isn\t normalized yet; do so
 
+    declare -p SSH_AUTH_SOCK SSH_AGENT_PID
+
   : "Make sure ssh daemon is running (?)"
   if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]]
   then
@@ -1661,12 +1663,19 @@ function setup_ssh(){ als_function_boundary_in
     if [[ ${#ssh_agent_pids[@]} -gt 0 ]]
     then
       case "${#ssh_agent_pids[@]}" in
+
+        ## Bug, the branches of this if-fi block are either kill the current agent, or kill the current agent
+
         1)  if [[ -v SSH_AGENT_PID ]]
             then
-              ## Note:  ssh-agent  doesn\t have any long options.  ssh-agent -k  is "kill the current agent."
-              ssh-agent -k
+              : okay
+
+                echo SSH Agent exists
+                declare -p SSH_AGENT_PID
+
             else
-              "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[*]}"
+              ## Note:  ssh-agent  doesn\t have any long options.  ssh-agent -k  is "kill the current agent."
+              ssh-agent -k || "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[*]}"
             fi
           ;; #
         *)  for VV in "${ssh_agent_pids[@]}"
