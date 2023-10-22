@@ -1856,7 +1856,7 @@ function setup_vim(){ :
     : 'Write the root file'
     sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || die
 
-    : $'Copy the root file to ~liveuser and repair DAC\x27s on liveuser\x27s copy'
+    : 'Copy the root file to ' $' and repair DAC\x60s on liveuser\x60s copy'
     sudo -- rsync --archive --checksum -- "${strng_vrc}" "/home/${USER}/.vimrc" || die
     sudo -- chown "${UID}:${UID}" -- "/home/${USER}/.vimrc"
     chmod 0400 -- "/home/${USER}/.vimrc"
