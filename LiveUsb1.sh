@@ -289,7 +289,7 @@ function get_pids_for_restarting(){ :
     return 0
   fi
 
-  readarray -d '' -t a_pids < <( printf '%s\0' <<< "${pipline2[@]}" )
+  readarray -d '' -t a_pids < <( printf '%s\0' "${pipline2[@]}" )
   if [[ "${#a_pids[@]}" -eq 0 ]]
   then
     return 0
