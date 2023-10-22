@@ -1612,7 +1612,7 @@ function setup_ssh(){ als_function_boundary_in
 
   ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
-    declare -p SSH_AUTH_SOCK SSH_AGENT_PID
+    #declare -p SSH_AUTH_SOCK SSH_AGENT_PID
 
   : "Make sure ssh daemon is running (?)"
   if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]]
