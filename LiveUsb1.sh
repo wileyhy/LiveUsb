@@ -2196,5 +2196,5 @@ fi
 :;: "Clean up & exit"
 #"$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
-EC="00" LN="${nL}" exit
+EC=00 LN="${nL}" exit
 
