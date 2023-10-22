@@ -1705,7 +1705,7 @@ function setup_ssh(){ als_function_boundary_in
 
     ## Note:  ssh-add  and  ssh  don\t have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
     #+  pseudo-terminal allocation."
-    ssh-add ~/.ssh/id_ed25519
+    ssh-add
     ssh-add -L
     #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
   fi
