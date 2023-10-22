@@ -1629,6 +1629,20 @@ function setup_ssh(){ als_function_boundary_in
       awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /exec -l/ && $0 !~ /grep / && $0 !~ /man / { print $2 }' <<< "${ps_o}" )
       readarray -t ssh_agent_pids <<< "${awk_o[@]}"
       unset awk_o
+    else
+      case "${#ssh_agent_pids[@]}" in
+        1 ) 
+            if [[ -z ${SSH_AGENT_PID:-} ]]
+            then
+              SSH_AGENT_PID="${ssh_agent_pids[*]}"
+
+                declare -p SSH_AGENT_PID
+            fi
+          ;; #
+        * )
+            die "More than one ssh-agent is running -- ${ssh_agent_pids[*]}"
+          ;; #
+      esac
     fi
 
     ## Bug? `command -p kill "$AA"` executes the bash builtin, judging by the output of `command -p kill`
