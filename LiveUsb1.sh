@@ -956,6 +956,8 @@ function setup_dnf(){ :
   ## Removals for security
   #pkg_nms_for_removal+=( blueman bluez )
 
+  ## Bug: xfce4-terminal -- hardcoded WM
+
   # shellcheck disable=SC2206
   {
       addl_pkgs=(  ${for_admin:=}        ncdu pwgen )
