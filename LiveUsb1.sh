@@ -1303,6 +1303,8 @@ function setup_gh_cli(){ :
 
   ## Bug, `gh auth status` is executed too many (ie, 3) times. Both the checkmarks and the exit code are used
 
+    gh auth status ## <>
+
   :;: 'GH -- Login to github'
   ## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
   printf -v count_gh_auth_checkmarks '%s' "$( gh auth status |& grep --count $'\xe2\x9c\x93' )"
