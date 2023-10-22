@@ -1173,7 +1173,7 @@ function setup_dnf(){ :
         XX="${#a_pids[@]}"
 
         :;: 'Print some info and wait for it to be read'
-        ## Note, '\x27' is a single quote
+        ## Note, '\x60' is a grace accent used as a single quote
         printf '\n  %b for restarting, count, %d \n\n' 'PID\x27s' "${XX}"
 
           sleep 1 # <>
