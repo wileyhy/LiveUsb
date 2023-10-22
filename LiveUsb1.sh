@@ -1621,7 +1621,7 @@ function setup_ssh(){ als_function_boundary_in
     ## Bug, window manager is hard coded, "startxfce4"
 
     local -a ssh_agent_pids
-    readarray -t ssh_agent_pids < <( ps -C 'ssh-agent -s' -o pid )
+    readarray -t ssh_agent_pids < <( ps h -C 'ssh-agent -s' -o pid )
 
     if [[ -z ${ssh_agent_pids[@]} ]]
     then
