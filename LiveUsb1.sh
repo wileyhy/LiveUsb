@@ -278,7 +278,7 @@ function get_pids_for_restarting(){ :
   #+  associative array, and that seems like adding complexity.
 
   readarray -t dnf_o < <( sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || die )
-  if [[ "${#dnf_o[@]}" -eq 0 ]]
+  if [[ ${#dnf_o[@]} -eq 0 ]]
   then
     return 0
   fi
@@ -286,19 +286,19 @@ function get_pids_for_restarting(){ :
     declare -p dnf_o
 
   readarray -t pipline0 < <( printf '%s\n' "${dnf_o[@]}" | grep --invert-match --fixed-strings --regexp="/firefox/" )
-  if [[ "${#pipline0[@]}" -eq 0 ]]
+  if [[ ${#pipline0[@]} -eq 0 ]]
   then
     return 0
   fi
 
   readarray -t pipline1 < <( printf '%s\n' "${pipline0[@]}" | awk '{ print $1 }' )
-  if [[ "${#pipline1[@]}" -eq 0 ]]
+  if [[ ${#pipline1[@]} -eq 0 ]]
   then
     return 0
   fi
 
   readarray -t a_pids < <( printf '%s\n' "${pipline1[@]}" | grep --only-matching --extended-regexp ^"[0-9]*"$ )
-  if [[ "${#a_pids[@]}" -eq 0 ]]
+  if [[ ${#a_pids[@]} -eq 0 ]]
   then
     return 0
   fi
@@ -391,7 +391,7 @@ function increase_disk_space(){ :
       HH=0
       II=0
       JJ="${Aa_fsos5[$AA]#.}"
-      printf '%s,   File %d, \n' "${scr_nm}" "$(( ++II ))"
+      printf '%s,   File %d, \n' "${scr_nm}" $(( ++II ))
 
       while true
       do
@@ -404,9 +404,10 @@ function increase_disk_space(){ :
           printf '%s\n' "${ls_out[@]}"
           unset ls_out
 
+          local yes_or_no
+          yes_or_no=n
           read -r -p " > [yN] " -t 600 yes_or_no
           yes_or_no="${yes_or_no,,?}"
-          yes_or_no="${yes_or_no:=n}"
 
           case "${yes_or_no}" in
             0|1)  printf '  Zero and one are ambiguous, please use letters. \n'
