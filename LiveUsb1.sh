@@ -1315,7 +1315,7 @@ function setup_gh_cli(){ :
     then
       firefox --browser 2>/dev/null 1>&2 &
       sleep 5
-      pause_to_check "${nL}" 'Waiting till browser is open before running  gh auth  command'
+      pause_to_check "${nL}" $'Waiting till browser is open before running \x60gh auth\x60 command'
       gh_auth_login_command
     fi
   fi
