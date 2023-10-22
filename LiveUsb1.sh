@@ -254,7 +254,7 @@ function get_pids_for_restarting(){ :
   local dnf_o
   local pipline0 pipline1 pipline2
   local -ga a_pids
-  local -ga a_pids=()
+  a_pids=()
 
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream. Yes, some of the array names are in fact spelled uncorrectly.
