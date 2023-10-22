@@ -196,8 +196,6 @@ function clone_repo(){ :
   then
     git clone --origin 'github' "https://github.com/wileyhy/${scr_repo_nm}" || die
   fi
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: $'Define \x60die\x60 alias to function error_and_exit()'
@@ -219,8 +217,6 @@ function enable_git_debug_settings(){ :
   GIT_TRACE_SETUP=true
   GIT_TRACE_SHALLOW=true
   [[ -f ~/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define error_and_exit()'
@@ -242,8 +238,6 @@ function error_and_exit(){ local - loc_hyphn="$-" loc_exit_code="$?" _="${fn_bnd
   shift
 
   printf '%s, Error, line %d, %s\n' "${scr_nm}" "${loc_lineno}" "$*" >&2
-
-  #true "${fn_bndry} ${FUNCNAME[0]}() ENDS ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
   LN="${loc_lineno}" builtin exit "${loc_exit_code}"
 }
@@ -314,8 +308,6 @@ function gh_auth_login_command(){ :
   : 'GH - Use GitHub CLI as a credential helper'
   git config --global credential.helper "cache --timeout=3600"
   gh auth setup-git --hostname 'github.com'
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define increase_disk_space()'
@@ -437,11 +429,7 @@ function increase_disk_space(){ :
       done
     done
   fi
-
-  ## Clean up from section "Disk space"
   unset dirs1 dirs2 fsos3 fsos4 fsos5 AA HH II JJ yes_or_no
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define min_necc_packages()'
@@ -471,8 +459,6 @@ function min_necc_packages(){ :
     fi
   done
   unset XX
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define must_be_root()'
@@ -486,8 +472,6 @@ function must_be_root(){ :
   else
     sudo --validate || die
   fi
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define pause_to_check()'
@@ -520,10 +504,9 @@ function pause_to_check() { local - hyphn="$-" reply _="${fn_bndry} ${FUNCNAME[0
   unset KK
 
   ## TODO: copy out this construct to the rest of the functions, re bndry_cmd
-
-  local bndry_cmd
-  if [[ $hyphn =~ x ]]; then bndry_cmd='echo'; else bndry_cmd='true'; fi
-
+  ## SAVE this block
+  #local bndry_cmd
+  #if [[ $hyphn =~ x ]]; then bndry_cmd='echo'; else bndry_cmd='true'; fi
   #"${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
@@ -706,8 +689,6 @@ function reqd_user_files(){ :
   unset prev_umask
 
     #EC=101 LN="$LINENO" exit # <>
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define rsync_install_if_missing()'
@@ -740,8 +721,6 @@ function rsync_install_if_missing(){ :
     sudo -- rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || die "${fn_target_dir}"
   fi
   unset fn_source_var fn_target_dir
-
-  #true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_bashrc()'
@@ -921,8 +900,6 @@ function setup_bashrc(){ :
   unset -f write_bashrc_strings
   unset "${bashrc_Assoc_arrays[@]}"
   unset bashrc_Assoc_arrays
-
-  #true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ## Bug, setup_dnf is too long and too complicated
@@ -1249,7 +1226,6 @@ function setup_dnf(){ :
     done
     unset II XX a_pids is_pid_a_zombie
   fi
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_user_dirs()'
@@ -1279,8 +1255,6 @@ function setup_user_dirs(){ :
 
   :;: 'Change dirs'
   pushd "${dev_d1}" > /dev/null || exit "${nL}"
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_gh_cli()'
@@ -1337,8 +1311,6 @@ function setup_gh_cli(){ :
     fi
   done
   unset QQ
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_git()'
@@ -1496,8 +1468,6 @@ function setup_git(){ :
 
   ## Clean up after section "Git"
   unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'setup_gpg()'
@@ -1546,8 +1516,6 @@ function setup_gpg(){ :
 
   GPG_TTY=$( tty )
   export GPG_TTY
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_network()'
@@ -1602,8 +1570,6 @@ function setup_network(){ :
   ## Clean up from Network
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_ssh()'
@@ -1728,8 +1694,6 @@ function setup_ssh(){ :
     ssh-add -L
     #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
   fi
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'setup_temp_dirs()'
@@ -1740,8 +1704,6 @@ function setup_temp_dirs(){ :
   tmp_dir=$( TMPDIR='' mktemp --directory --suffix=-LiveUsb 2>&1 || die )
   [[ -d ${tmp_dir} ]] || die
   readonly tmp_dir
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_time()'
@@ -1753,8 +1715,6 @@ function setup_time(){ :
   sudo -- timedatectl set-timezone America/Vancouver
   sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || die
   sudo -- chronyc makestep > /dev/null
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_vars()'
@@ -1792,8 +1752,6 @@ function setup_vars(){ :
 
   # shellcheck disable=SC2034
   local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define setup_vim()'
@@ -1871,8 +1829,6 @@ function setup_vim(){ :
   ## Clean up after section Vim
   #/bin/rm --force --one-file-system --preserve-root=all "${verb__[@]}" "${tmp_dir}/vim-conf-text"
   unset arr_vrc strng_vrc write2fs WW XX YY umask_prior
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define test_dns()'
@@ -1882,8 +1838,6 @@ function test_dns(){ :
 
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   ping_exit_code=$?
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
   return "${ping_exit_code}"
 }
 
@@ -1900,8 +1854,6 @@ function test_os(){ :
   then
     die 'OS is not Fedora'
   fi
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 :;: 'Define trap_err()'
@@ -1912,8 +1864,6 @@ function trap_err(){ local - err_trap_hyphn="$-" err_trap_ec="${EC:-$?}" err_tra
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
   declare -p LC_ALL LINENO PATH PIPESTATUS PPID PWD SHELL SHELLOPTS SHLVL UID
   declare -p err_trap_hyphn err_trap_ec err_trap_undersc
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 ## Bug, these var assignments $exit_trap_ec and $lineno only fail when they're on line number >=2
@@ -1933,8 +1883,6 @@ function trap_exit(){ local - hyphn="$-" exit_trap_ec="${EC:-$?}" lineno="${LN:-
   #else
     #: 'End of EXIT trap'
   #fi
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 
   builtin exit "${exit_trap_ec}"
 }
@@ -2012,8 +1960,6 @@ function write_bashrc_strings(){ :
     : 'Loop A - shut' ;:
   done
   unset JJ
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 function write_ssh_conf() { :
@@ -2025,8 +1971,6 @@ function write_ssh_conf() { :
 	ForwardAgent yes
 
 	EOF
-
-  #true "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
 #######  FUNCTION DEFINITIONS COMPLETE #######
