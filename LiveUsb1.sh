@@ -277,19 +277,19 @@ function get_pids_for_restarting(){ :
     return 0
   fi
 
-  readarray -t pipline1 < <( awk '{ print $1 }' <<< "${pipline0[@]}" )
+  readarray -t pipline1 < <( printf '%s\n' "${pipline0[@]}" | awk '{ print $1 }' )
   if [[ "${#pipline1[@]}" -eq 0 ]]
   then
     return 0
   fi
 
-  readarray -t pipline2 < <( grep --only-matching --extended-regexp ^'[0-9]*'$ <<< "${pipline1[@]}" )
+  readarray -t pipline2 < <( printf '%s\n' "${pipline1[@]}" | grep --only-matching --extended-regexp ^'[0-9]*'$ )
   if [[ "${#pipline2[@]}" -eq 0 ]]
   then
     return 0
   fi
 
-  readarray -d '' -t a_pids < <( tr '\n' '\0' <<< "${pipline2[@]}" )
+  readarray -d '' -t a_pids < <( printf '%s\0' <<< "${pipline2[@]}" )
   if [[ "${#a_pids[@]}" -eq 0 ]]
   then
     return 0
