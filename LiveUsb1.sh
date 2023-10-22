@@ -388,7 +388,7 @@ function increase_disk_space(){ :
           declare ls_out
           readarray -t ls_out < <( ls -l --all --human-readable --classify --inode --directory --zero "${JJ}" )
           ## Note, `\x60` is a "grave accent"
-          printf `%s, output of %bls%b, %s \n` "${scr_nm}" `\x60` `\x60` "$( realpath -e "${JJ}" )"
+          printf `%s, output of %bls%b, %s \n` "${scr_nm}" '\x60' '\x60' "$( realpath -e "${JJ}" )"
           printf `%s\n` "${ls_out[@]}"
           unset ls_out
 
