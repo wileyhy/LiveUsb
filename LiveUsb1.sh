@@ -922,6 +922,8 @@ function setup_bashrc(){ :
   #true "${fn_bndry} ${FUNCNAME[0]} ()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
+## Bug, setup_dnf is too long and too complicated
+
 :;: 'Define setup_dnf()'
 function setup_dnf(){ :
   local - hyphn="$-" _="${fn_bndry} ${FUNCNAME[0]}() BEGINS ${fn_bndry} ${fn_lvl} to $(( ++fn_lvl ))"
