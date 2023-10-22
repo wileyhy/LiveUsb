@@ -81,8 +81,6 @@ alias .^:=': $color_reset ; :'
   list_of_minimum_reqd_rpms=( [0]="ShellCheck" [1]="gh" [2]="git" [3]="vim" )
   readonly list_of_minimum_reqd_rpms
 
-  ## TODO, change files_for_use_with_github_depth_0 to files_for_use_with_github_depth_0, et al
-
   :;: "Parameters regarding required files"
   ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more
   #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and 
