@@ -1627,7 +1627,7 @@ function setup_ssh(){ als_function_boundary_in
     if [[ -z ${ssh_agent_pids[@]} ]]
     then
       :;: $'If there aren\x60t any SSH Agents running, then start one'
-      ssh-agent -s
+      #ssh-agent -s
 
       :;: "Try again to get the PID of the SSH Agent"
       local awk_o
