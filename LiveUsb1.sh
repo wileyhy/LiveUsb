@@ -1677,7 +1677,8 @@ function setup_ssh(){ als_function_boundary_in
 
         ## Bug, the branches of this if-fi block are either kill the current agent, or kill the current agent
 
-        1)  if [[ -n ${SSH_AGENT_PID:-} ]]
+        1 )
+            if [[ -n ${SSH_AGENT_PID:-} ]]
             then
               : okay
 
@@ -1688,11 +1689,14 @@ function setup_ssh(){ als_function_boundary_in
               : warning: SSH_AGENT_PID does not exist
             fi
           ;; #
-        *)  for VV in "${ssh_agent_pids[@]}"
-            do
-              "$( type -P kill )" "${verb__[@]}" "${VV}"
-            done
-            unset VV
+        * )
+            #for VV in "${ssh_agent_pids[@]}"
+            #do
+              #"$( type -P kill )" "${verb__[@]}" "${VV}"
+            #done
+            #unset VV
+
+            die "More than one ssh-agent is running -- ${ssh_agent_pids[*]}"
 
             ## Note:  ssh-agent -s  is "generate Bourne shell commands on stdout."
             ssh_agent_o=$( ssh-agent -s )
@@ -1703,10 +1707,14 @@ function setup_ssh(){ als_function_boundary_in
 
     ## Bug? hardcoded filename
 
+    ## https://stackoverflow.com/questions/10032461/git-keeps-asking-me-for-my-ssh-key-passphrase
+    ssh_agent_o=$( ssh-agent -s )
+    eval "${ssh_agent_o}"
+    
     ## Note:  ssh-add  and  ssh  don\t have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
     #+  pseudo-terminal allocation."
-    ssh-add
-    ssh-add -L
+    ssh-add -v
+    ssh-add -L -v
     #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
   fi
 }
