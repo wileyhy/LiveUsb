@@ -1,0 +1,103 @@
+#!/bin/sh -Ceux
+## `wtf`
+
+## Environment
+## Note, IFS, This string should be "space, tab, newline." Vim might 
+#+  try to substitute spaces for the tab.
+IFS='   
+' 
+LC_ALL="C"
+PATH="/usr/bin:/usr/sbin"
+\export LC_ALL PATH
+
+## Note and Question, set, Disable pathname expansion, ie, before the 
+#+  shell parses the contents of PATH...?
+\set -f 
+\unset -f unalias printf
+\unalias -a
+
+# Question, Is ENV parsed by subshells? Probably it's parsed by `sh -c`
+unset ENV
+IFS=$( printf ' \t\n' )
+## Shadows -- POSIX                                                                         SBU ali key fun bui fil
+##                                                                              | export    Y   x   n   N   O   _
+##                                                Env vars reqd:    export : --
+##                                                                              | set       Y   x   n   N   O   _
+##                                                Env vars reqd:    set       : --
+##                                                                              | unset     Y   x   n   N   O   _
+##                                                Env vars reqd:    unset : --
+##                                                                              | unalias   n   x   n   X   nO  OP
+##                                                Env vars reqd:    unalias : LC_ALL file(PATH)
+##                                                                              | unset     Y   X   n   N   O   _
+##                                                Env vars reqd:    unset : --
+##                                                                              | printf    n   X   n   X   nO  OP
+##                                                Env vars reqd:    printf : LC_ALL file(PATH)
+
+# &Subshells, CSubs
+#export             LC_ALL  PATH
+## Note, exp reqd:  ^       ^     `command`
+## Note, exp reqd:  ^             `getconf`
+
+unset -f command getconf
+PATH="$( command -p getconf PATH ):$PATH"
+## Shadows -- POSIX                                                                         SBU ali key fun bui fil
+##                                                                              | unset     Y   X   n   N   O   _
+##                                                Env vars reqd:    unset : --
+##                                                                              | command   n   X   n   X   nO  OP
+##                                                Env vars reqd:    command : LC_ALL PATH file(PATH)
+##                                                                              | getconf   n   X   n   X   n   OP
+##                                                Env vars reqd:    getconf : LC_ALL file(PATH)
+# &Subshells, CSubs
+#export             LC_ALL  PATH
+## Note, exp reqd:  ^       ^     `env`
+## Note, exp reqd:  ^             `getconf`
+
+unset CDPATH
+unset -f test awk
+if test -z "${HOME}"
+then
+  HOME=$( awk -F : -v usr="${USER}" '$1 ~ usr { print $6 }' /etc/passwd )
+  export HOME
+fi
+## Shadows -- POSIX                                                                         SBU ali key fun bui fil
+##                                                                              | unset     Y   X   n   N   O   _
+##                                                Env vars reqd:    unset     : --
+##                                                                              | test      n   X   n   X   nO  O
+##                                                Env vars reqd:    test      : LC_ALL                          file(PATH)
+##                                                                              | awk       n   X   n   X   n   O
+##                                                Env vars reqd:    awk       : LC_ALL PATH                     file(PATH)
+##                                                                              | export    Y   X   n   N   O   _
+##                                                Env vars reqd:    export    : --
+
+## Note, cd, Reset the PWD variable, just in case
+unset -f cd
+cd -P 
+export PWD
+## Shadows -- POSIX                                                                         SBU ali key fun bui fil
+##                                                                              | unset     Y   X   n   N   O   _
+##                                                Env vars reqd:    unset     : --
+##                                                                              | cd        n   X   n   X   nO  O
+##                                                Env vars reqd:    cd        : CDPATH HOME LC_ALL PWD          file(PATH)
+##                                                                              | export    Y   X   n   N   O   _
+##                                                Env vars reqd:    export    : --
+# &Subshells, CSubs
+#export             LC_ALL  PATH
+## Note, exp reqd:  ^       ^     `awk`
+
+unset -f env sh test
+sh -c 'env -i PATH="/my/bin:$( getconf PATH ):$PATH" $( getconf V7_ENV ) wtf.sh'
+## Shadows -- POSIX                                                                         SBU ali key fun bui fil
+##                                                                              | unset     Y   X   n   N   O   _
+##                                                Env vars reqd:    unset     : --
+##                                                                              | sh        n   X   n   x   n   O
+##                                                Env vars reqd:              : ENV HOME LC_ALL PATH PWD        file(PATH)
+##                                                                              | env       n   X   n   x   n   O
+##                                                Env vars reqd:              : LC_ALL PATH                     file(PATH)
+##                                                                              | getconf   n   X   n   x   n   O
+##                                                Env vars reqd:    getconf   : LC_ALL                          file(PATH)
+
+exit 00
+##                                                                              | exit      Y   X   n   N   O   _
+##                                                Env vars reqd:              : --
+
+
