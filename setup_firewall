@@ -1,0 +1,277 @@
+#!/bin/bash -Ceux
+# setup_firewall()
+
+
+## Vars
+list_rpms=( firewall-config macchanger python3 )
+svc="firewalld.service"
+target_def_zn="drop"
+readonly list_rpms svc target_def_zn
+
+
+## Need rpms
+sudo dnf -y install "${list_rpms[@]}" || die
+sudo dnf -y upgrade "*firewall*"
+
+
+## Need running service
+systemctl is-enabled "${svc}" || sudo systemctl enable "${svc}"
+systemctl is-active "${svc}" || sudo systemctl start "${svc}"
+
+
+## Need running firewall
+YY=yy ZZ=zz
+
+while true
+do
+	## If the firewall isn't running, then...
+	if ! [[ "$( firewall-cmd --state )" = "running" ]]
+	then
+		## ...on the first attempt...
+		if [[ -z $XX ]] 
+		then
+			## ...just try to reload/restart it
+			sudo systemctl try-reload-or-restart "${svc}"
+
+			## And mark step one as done
+			unset YY
+			XX=xx
+
+		## ...on the second attempt...
+		elif [[ -z $YY ]]
+		then	
+			## ...parse `systemctl status`, and...
+			KK=$( systemctl status "${svc}" | 
+				awk '/\s*Active:/ { print $2 }' )
+
+			## ...if it isn't active, then...
+			if ! [[ $KK = "active" ]]
+			then
+				## ...unmask, enable, start...
+				sudo systemctl stop "${svc}"
+				sudo systemctl unmask "${svc}"	
+				sudo systemctl enable "${svc}"	
+				sudo systemctl start "${svc}"
+
+				## ...and mark step two as done.
+				unset ZZ
+				YY=yy
+			fi
+			unset KK
+
+		## ...on the third attempt, error out.
+		elif [[ -z $ZZ ]]
+		then
+			die Firewall is down
+		fi
+	fi
+done
+unset KK
+firewall-cmd --check-config || die
+
+
+## Zone
+if ! [[ "$( firewall-cmd --get-default-zone )" = "${target_def_zn}" ]]
+then
+	sudo firewall-cmd --set-default-zone="${target_def_zn}"
+
+	if ! [[ "$( firewall-cmd --get-default-zone )" = "${target_def_zn}" ]]
+	then	
+		die Firewall zone failed to apply
+	fi
+fi
+firewall-cmd --check-config || die
+
+
+## Interfaces
+declare -a ip_a_interfaces fwc_assigned_ifcs
+
+## Get the lists of available and assigned (non-loopback) network interfaces
+readarray -d "" -t ip_a_interfaces < <( ip a | awk -F": " '$1 ~ /[0-9]{1,2}/ && $2 ~ /[[:alnum:]]/ && $2 !~ /\<lo\>/  { printf "%s\0", $2 }' | sort -z )
+readarray -d "" -t fwc_assigned_ifcs < <( firewall-cmd --zone="${target_def_zn}" --list-interfaces | awk 'BEGIN { RS=" " }; { printf "%s\0", $1 }' | sort -z )
+
+## If the counts and strings of each list are not the same, then...
+if ! [[ "${#ip_a_interfaces[@]}" -eq "${#fwc_assigned_ifcs[@]}" ]] ||
+	! [[ "${ip_a_interfaces[*]}" = "${fwc_assigned_ifcs[*]}" ]]
+then
+	## ...add each found interface to the default zone...
+	for QQ in "${ip_a_interfaces[@]}"
+	do
+		sudo firewall-cmd --zone="${target_def_zn}" --add-interface="${QQ}"
+	done
+
+	## ...then verify it. Get the list of assigned interfaces again...
+	unset fwc_assigned_ifcs
+	readarray -d "" -t fwc_assigned_ifcs < <( firewall-cmd --zone="${target_def_zn}" --list-interfaces | awk 'BEGIN { RS=" " }; { printf "%s\0", $1 }' | sort -z )
+
+	## ...and if the counts and strings of each list are not the same again, then error out.
+	if if ! [[ "${#ip_a_interfaces[@]}" -eq "${#fwc_assigned_ifcs[@]}" ]] ||
+        	! [[ "${ip_a_interfaces[*]}" = "${fwc_assigned_ifcs[*]}" ]]
+	then
+		die
+	fi
+fi
+#unset ip_a_interfaces fwc_assigned_ifcs
+firewall-cmd --check-config || die
+
+
+## Sources
+[[ -z "${ip_a_interfaces[*]}" ]] && die
+
+## Need interfaces down
+for II in "${ip_a_interfaces}"
+do
+	nmcli d disconnect "${II}"
+done
+unset II
+
+## For each (non-loopback) interface on the system...
+unset all_sys_real_and_fake_macs
+
+for HH in "${ip_a_interfaces[@]}"
+do
+	## ...reset to permanent MAC addresses, change to a spoofed MAC...
+	macchanger -p "${HH}"
+	macchanger -ae "${HH}"
+	
+	## ...and get those MAC addresses (real and fake)
+	readarray -t macs_per_ifc < <( macchanger -s "${HH}" | 
+		grep -oEe '\<([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})\>' )
+
+	for KK in "${macs_per_ifc[@]}"
+	do
+		all_sys_real_and_fake_macs+=( "${KK}" )
+	done
+	unset KK
+done
+unset HH
+
+## Get the list of real MAC's directly from `ip a`, just in case
+readarray -d "" -t ip_a_macs < <( ip a | grep -zoEe '\<([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})\>' | grep -zve '00:00:' -e 'ff:ff:' )
+
+## Add MAC's from `ip a` to the MAC's from `macchanger`
+for LL in "${ip_a_macs[@]}"
+do
+	all_sys_real_and_fake_macs+=( "${LL}" )
+done
+unset LL
+
+fwc_zone_srcs=$( firewall-cmd --zone="${target_def_zn}" --list-sources )
+
+## For each of the MAC addresses in the full list...
+for MM in "${all_sys_real_and_fake_macs[@]}"
+do
+	## ...if it hasn't been added to the default zone yet...
+	if ! [[ "${fwc_zone_srcs}" =~ "${MM}" ]]
+	then
+		## ...then add it
+		firewall-cmd --zone="${target_def_zn}" --add-source="${MM}"
+	fi
+done
+unset MM
+firewall-cmd --check-config || die
+
+
+## Forwarding
+firewall-cmd --zone=drop --remove-forward
+firewall-cmd --check-config || die
+
+
+## Log denied
+firewall-cmd --set-log-denied=unicast
+firewall-cmd --check-config || die
+
+
+## Lockdown whitelists
+firewall-cmd --list-lockdown-whitelist-commands
+
+firewall-cmd --list-lockdown-whitelist-contexts
+
+firewall-cmd --remove-lockdown-whitelist-context=
+
+firewall-cmd --list-lockdown-whitelist-uids
+
+firewall-cmd --remove-lockdown-whitelist-uid=
+
+firewall-cmd --list-lockdown-whitelist-users
+
+
+
+which python3
+which firewall-config
+firewall-cmd --lockdown-on
+firewall-cmd --lockdown-off
+getenforce
+sestatus
+firewalld --runtime-to-permanent
+firewall-cmd --runtime-to-permanent
+firewall-cmd --zone --list-all
+firewall-cmd --zone=drop --list-all
+firewall-cmd --query-lockdown
+firewall-cmd --lockdown-off
+firewall-cmd --stae
+firewall-cmd --state
+dnf needs-restarting
+systemctl try-reload-or-restart firewalld.service 
+date
+firewall-cmd --query-lockdown
+history | grep firewall-cmd
+firewall-cmd --list-lockdown-whitelist-commands; firewall-cmd --list-lockdown-whitelist-contexts; firewall-cmd --list-lockdown-whitelist-uids; firewall-cmd --list-lockdown-whitelist-users
+firewall-cmd --remove-lockdown-whitelist-context=system_u:system_r:NetworkManager_t:s0 --remove-lockdown-whitelist-context=system_u:system_r:virtd_t:s0-s0:c0.c1023; firewall-cmd --remove-lockdown-whitelist-uid=0
+firewall-cmd --list-lockdown-whitelist-commands; firewall-cmd --list-lockdown-whitelist-contexts; firewall-cmd --list-lockdown-whitelist-uids; firewall-cmd --list-lockdown-whitelist-users
+history | grep firewall-cmd
+history | grep list-all
+firewall-cmd --zone=drop --list-all
+history | grep source
+firewall-cmd --zone=drop --add-source=12:59:e7:e4:18:43 --add-source=20:79:18:b0:59:1e #--add-interface=wlo1 --remove-forward
+firewall-cmd --zone=drop --list-all
+which macchanger
+which rfkill
+macchanger wlo1
+macchanger -ab wlo1
+macchanger -a wlo1
+macchanger -p wlo1
+macchanger -a wlo1
+macchanger -p wlo1
+macchanger -ae wlo1
+macchanger -abe wlo1
+macchanger -ae wlo1
+ip a
+firewall-cmd --zone=drop --add-source=20:79:18:d5:ec:f9 --add-source=20:79:18:b0:59:1e --add-source=20:79:18:2b:e0:63 #--add-interface=wlo1 --remove-forward
+firewall-cmd --zone=drop --list-all
+firewall-cmd --zone=drop --add-interface=wlo1
+firewall-cmd --zone=drop --list-all
+firewall-cmd --zone=drop --remove-forward
+firewall-cmd --zone=drop --list-all
+firewall-cmd --set-log-denied=unicast
+firewall-cmd --zone=drop --list-all
+history | grep firewall-cmd
+firewall-cmd --state
+firewall-cmd --check-config
+firewall-cmd --get-default-zone
+firewall-cmd --zone=drop --list-all
+firewall-cmd --list-all
+history | grep firewall-cmd
+firewall-cmd --list-lockdown-whitelist-commands; firewall-cmd --list-lockdown-whitelist-contexts; firewall-cmd --list-lockdown-whitelist-uids; firewall-cmd --list-lockdown-whitelist-users
+firewall-cmd --list-all
+firewall-cmd --lockdown-on
+firewall-cmd --lockdown-off
+firewall-cmd --list-all
+firewall-cmd --runtime-to-permanent
+firewall-cmd --list-all
+systemctl try-reload-or-restart firewalld.service 
+firewall-cmd --list-all
+firewall-cmd --state
+systemctl status firewalld.service 
+firewall-cmd --query-lockdown
+firewall-config
+bg
+systemctl status firewalld.service 
+firewall-cmd --query-lockdown
+firewall-cmd --state
+firewall-cmd --list-all
+systemctl status 
+history > hist
+vim hist 
+history | cut -c 8- | head
+history | cut -c 8- > hist
