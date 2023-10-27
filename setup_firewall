@@ -251,7 +251,10 @@ firewall-cmd --zone="${target_def_zn}" --remove-forward
 
 
 ## Log denied
-firewall-cmd --set-log-denied="${log_deny}"
+if ! [[ "$( firewall-cmd --get-log-denied )" = "${log_deny}" ]]
+then
+  firewall-cmd --set-log-denied="${log_deny}"
+fi
 
 
 ## Lockdown whitelists
@@ -305,6 +308,39 @@ then
 fi
 
 exit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 readarray -t fwc_llw_cmds < <(
   firewall-cmd --list-lockdown-whitelist-commands )
