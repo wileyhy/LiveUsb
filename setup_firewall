@@ -1,6 +1,41 @@
 #!/bin/bash -Ceux
 # setup_firewall()
 
+shopt -s expand_aliases
+
+declare -nx nL=L\INENO
+fn_bndry_sh=" ~~~ ~~~ ~~~ "
+fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
+fn_lvl=0
+
+alias als_function_boundary_in='local - _="${fn_bndry_lo} ${fn_bndry_sh} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" loc_hyphn="$-" loc_exit_code="${EC:-$?}" loc_lineno="${LN:-$nL}"'
+
+alias als_function_boundary_out='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
+
+function error_and_exit(){ als_function_boundary_in
+  set -x
+
+  ## Some positional parameters must exist
+  [[ $# -lt 1 ]] && return 1
+
+  ## The first positional parameter must be a digit, and should be the LINENO from where error_and_exit() is called
+  if ! [[ $1 = [0-9]* ]]
+  then
+    printf '\n%s, %s, Error, first positional parameter must be a line number\n\n' "${scr_nm}" "${FUNCNAME[0]}"
+    return 2
+  fi
+
+  local loc_lineno
+  loc_lineno="$1"
+  shift
+
+  printf '%s, Error, line %d, %s\n' "${scr_nm}" "${loc_lineno}" "$*" >&2
+  LN="${loc_lineno}" builtin exit "${loc_exit_code}"
+}
+
+alias die='error_and_exit "${nL}"'
+
+
 
 ## Vars
 default_lockdown_whitelist_cmd="/usr/bin/python3 -sP /usr/bin/firewall-config"
