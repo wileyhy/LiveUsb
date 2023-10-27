@@ -195,10 +195,14 @@ unset II
 ## For each (non-loopback) interface on the system...
 unset all_sys_real_and_fake_macs
 
+## Bug, as I recall, for `macchanger` to work, I have to power down, in 
+#+  order, networking, radio, connection and device
+
+
 for HH in "${ip_a_interfaces[@]}"
 do
 	## ...reset to permanent MAC addresses, change to a spoofed MAC...
-	sudo -- macchanger -p "${HH}"
+	sudo -- macchanger -p "${HH}" || die
 	sudo -- macchanger -ae "${HH}" || die
 	
 	## ...and get those MAC addresses (real and fake)
