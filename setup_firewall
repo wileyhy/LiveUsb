@@ -7,6 +7,7 @@ declare -nx nL=L\INENO
 fn_bndry_sh=" ~~~ ~~~ ~~~ "
 fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
 fn_lvl=0
+scr_nm="LiveUsb1.sh"
 
 alias als_function_boundary_in='local - _="${fn_bndry_lo} ${fn_bndry_sh} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" loc_hyphn="$-" loc_exit_code="${EC:-$?}" loc_lineno="${LN:-$nL}"'
 
