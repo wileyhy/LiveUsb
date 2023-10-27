@@ -178,7 +178,7 @@ for HH in "${ip_a_interfaces[@]}"
 do
 	## ...reset to permanent MAC addresses, change to a spoofed MAC...
 	macchanger -p "${HH}"
-	macchanger -ae "${HH}"
+	sudo -- macchanger -ae "${HH}"
 	
 	## ...and get those MAC addresses (real and fake)
 	readarray -t macs_per_ifc < <( macchanger -s "${HH}" | 
