@@ -207,7 +207,8 @@ do
 
 	for KK in "${macs_per_ifc[@]}"
 	do
-		all_sys_real_and_fake_macs+=( "${KK}" )
+    ## ...and make uppercase
+		all_sys_real_and_fake_macs+=( "${KK^^}" )
 	done
 	unset KK
 done
@@ -222,7 +223,8 @@ readarray -d "" -t ip_a_macs < <(
 ## Add MAC's from `ip a` to the MAC's from `macchanger`
 for LL in "${ip_a_macs[@]}"
 do
-	all_sys_real_and_fake_macs+=( "${LL}" )
+  ## ...and make uppercase
+	all_sys_real_and_fake_macs+=( "${LL^^}" )
 done
 unset LL
 
