@@ -198,7 +198,7 @@ unset all_sys_real_and_fake_macs
 for HH in "${ip_a_interfaces[@]}"
 do
 	## ...reset to permanent MAC addresses, change to a spoofed MAC...
-	macchanger -p "${HH}"
+	sudo -- macchanger -p "${HH}"
 	sudo -- macchanger -ae "${HH}" || die
 	
 	## ...and get those MAC addresses (real and fake)
@@ -354,15 +354,15 @@ firewall-cmd --zone="${target_def_zn}" --add-source=12:59:e7:e4:18:43 --add-sour
 firewall-cmd --zone="${target_def_zn}" --list-all
 which macchanger
 which rfkill
-macchanger wlo1
-macchanger -ab wlo1
-macchanger -a wlo1
-macchanger -p wlo1
-macchanger -a wlo1
-macchanger -p wlo1
-macchanger -ae wlo1
-macchanger -abe wlo1
-macchanger -ae wlo1
+sudo -- macchanger wlo1
+sudo -- macchanger -ab wlo1
+sudo -- macchanger -a wlo1
+sudo -- macchanger -p wlo1
+sudo -- macchanger -a wlo1
+sudo -- macchanger -p wlo1
+sudo -- macchanger -ae wlo1
+sudo -- macchanger -abe wlo1
+sudo -- macchanger -ae wlo1
 ip a
 firewall-cmd --zone="${target_def_zn}" --add-source=20:79:18:d5:ec:f9 --add-source=20:79:18:b0:59:1e --add-source=20:79:18:2b:e0:63 #--add-interface=wlo1 --remove-forward
 firewall-cmd --zone="${target_def_zn}" --list-all
