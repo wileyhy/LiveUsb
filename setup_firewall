@@ -167,7 +167,12 @@ fi
 ## Need interfaces down
 for II in "${ip_a_interfaces}"
 do
-	nmcli d disconnect "${II}"
+  ifc_state=$( nmcli | awk '$1 ~ /^wlo1/ { print $2 }' )
+	if [[ ${ifc_state} = "connected" ]]
+  then
+    nmcli d disconnect "${II}"
+  fi
+  unset ifc_state
 done
 unset II
 
