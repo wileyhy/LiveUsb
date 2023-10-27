@@ -3,20 +3,20 @@
 
 
 ## Vars
-list_rpms=( firewall-config macchanger python3 )
+list_rpms=( firewall-config macchanger python3 rfkill )
 svc="firewalld.service"
 target_def_zn="drop"
 readonly list_rpms svc target_def_zn
 
 
 ## Need rpms
-sudo dnf -y install "${list_rpms[@]}" || die
-sudo dnf -y upgrade "*firewall*"
+sudo -- dnf -y install "${list_rpms[@]}" || die
+sudo -- dnf -y upgrade "*firewall*"
 
 
 ## Need running service
-systemctl is-enabled "${svc}" || sudo systemctl enable "${svc}"
-systemctl is-active "${svc}" || sudo systemctl start "${svc}"
+systemctl is-enabled "${svc}" || sudo -- systemctl enable "${svc}"
+systemctl is-active "${svc}" || sudo -- systemctl start "${svc}"
 
 
 ## Need running firewall
@@ -31,7 +31,7 @@ do
 		if [[ -z $XX ]] 
 		then
 			## ...just try to reload/restart it
-			sudo systemctl try-reload-or-restart "${svc}"
+			sudo -- systemctl try-reload-or-restart "${svc}"
 
 			## And mark step one as done
 			unset YY
@@ -48,10 +48,10 @@ do
 			if ! [[ $KK = "active" ]]
 			then
 				## ...unmask, enable, start...
-				sudo systemctl stop "${svc}"
-				sudo systemctl unmask "${svc}"	
-				sudo systemctl enable "${svc}"	
-				sudo systemctl start "${svc}"
+				sudo -- systemctl stop "${svc}"
+				sudo -- systemctl unmask "${svc}"	
+				sudo -- systemctl enable "${svc}"	
+				sudo -- systemctl start "${svc}"
 
 				## ...and mark step two as done.
 				unset ZZ
@@ -73,7 +73,7 @@ firewall-cmd --check-config || die
 ## Zone
 if ! [[ "$( firewall-cmd --get-default-zone )" = "${target_def_zn}" ]]
 then
-	sudo firewall-cmd --set-default-zone="${target_def_zn}"
+	sudo -- firewall-cmd --set-default-zone="${target_def_zn}"
 
 	if ! [[ "$( firewall-cmd --get-default-zone )" = "${target_def_zn}" ]]
 	then	
@@ -97,7 +97,7 @@ then
 	## ...add each found interface to the default zone...
 	for QQ in "${ip_a_interfaces[@]}"
 	do
-		sudo firewall-cmd --zone="${target_def_zn}" --add-interface="${QQ}"
+		sudo -- firewall-cmd --zone="${target_def_zn}" --add-interface="${QQ}"
 	done
 
 	## ...then verify it. Get the list of assigned interfaces again...
@@ -173,7 +173,7 @@ firewall-cmd --check-config || die
 
 
 ## Forwarding
-firewall-cmd --zone=drop --remove-forward
+firewall-cmd --zone="${target_def_zn}" --remove-forward
 firewall-cmd --check-config || die
 
 
@@ -206,13 +206,13 @@ sestatus
 firewalld --runtime-to-permanent
 firewall-cmd --runtime-to-permanent
 firewall-cmd --zone --list-all
-firewall-cmd --zone=drop --list-all
+firewall-cmd --zone="${target_def_zn}" --list-all
 firewall-cmd --query-lockdown
 firewall-cmd --lockdown-off
 firewall-cmd --stae
 firewall-cmd --state
 dnf needs-restarting
-systemctl try-reload-or-restart firewalld.service 
+systemctl try-reload-or-restart "${svc}" 
 date
 firewall-cmd --query-lockdown
 history | grep firewall-cmd
@@ -221,10 +221,10 @@ firewall-cmd --remove-lockdown-whitelist-context=system_u:system_r:NetworkManage
 firewall-cmd --list-lockdown-whitelist-commands; firewall-cmd --list-lockdown-whitelist-contexts; firewall-cmd --list-lockdown-whitelist-uids; firewall-cmd --list-lockdown-whitelist-users
 history | grep firewall-cmd
 history | grep list-all
-firewall-cmd --zone=drop --list-all
+firewall-cmd --zone="${target_def_zn}" --list-all
 history | grep source
-firewall-cmd --zone=drop --add-source=12:59:e7:e4:18:43 --add-source=20:79:18:b0:59:1e #--add-interface=wlo1 --remove-forward
-firewall-cmd --zone=drop --list-all
+firewall-cmd --zone="${target_def_zn}" --add-source=12:59:e7:e4:18:43 --add-source=20:79:18:b0:59:1e #--add-interface=wlo1 --remove-forward
+firewall-cmd --zone="${target_def_zn}" --list-all
 which macchanger
 which rfkill
 macchanger wlo1
@@ -237,19 +237,19 @@ macchanger -ae wlo1
 macchanger -abe wlo1
 macchanger -ae wlo1
 ip a
-firewall-cmd --zone=drop --add-source=20:79:18:d5:ec:f9 --add-source=20:79:18:b0:59:1e --add-source=20:79:18:2b:e0:63 #--add-interface=wlo1 --remove-forward
-firewall-cmd --zone=drop --list-all
-firewall-cmd --zone=drop --add-interface=wlo1
-firewall-cmd --zone=drop --list-all
-firewall-cmd --zone=drop --remove-forward
-firewall-cmd --zone=drop --list-all
+firewall-cmd --zone="${target_def_zn}" --add-source=20:79:18:d5:ec:f9 --add-source=20:79:18:b0:59:1e --add-source=20:79:18:2b:e0:63 #--add-interface=wlo1 --remove-forward
+firewall-cmd --zone="${target_def_zn}" --list-all
+firewall-cmd --zone="${target_def_zn}" --add-interface=wlo1
+firewall-cmd --zone="${target_def_zn}" --list-all
+firewall-cmd --zone="${target_def_zn}" --remove-forward
+firewall-cmd --zone="${target_def_zn}" --list-all
 firewall-cmd --set-log-denied=unicast
-firewall-cmd --zone=drop --list-all
+firewall-cmd --zone="${target_def_zn}" --list-all
 history | grep firewall-cmd
 firewall-cmd --state
 firewall-cmd --check-config
 firewall-cmd --get-default-zone
-firewall-cmd --zone=drop --list-all
+firewall-cmd --zone="${target_def_zn}" --list-all
 firewall-cmd --list-all
 history | grep firewall-cmd
 firewall-cmd --list-lockdown-whitelist-commands; firewall-cmd --list-lockdown-whitelist-contexts; firewall-cmd --list-lockdown-whitelist-uids; firewall-cmd --list-lockdown-whitelist-users
@@ -259,14 +259,14 @@ firewall-cmd --lockdown-off
 firewall-cmd --list-all
 firewall-cmd --runtime-to-permanent
 firewall-cmd --list-all
-systemctl try-reload-or-restart firewalld.service 
+systemctl try-reload-or-restart "${svc}" 
 firewall-cmd --list-all
 firewall-cmd --state
-systemctl status firewalld.service 
+systemctl status "${svc}" 
 firewall-cmd --query-lockdown
 firewall-config
 bg
-systemctl status firewalld.service 
+systemctl status "${svc}" 
 firewall-cmd --query-lockdown
 firewall-cmd --state
 firewall-cmd --list-all
@@ -275,3 +275,31 @@ history > hist
 vim hist 
 history | cut -c 8- | head
 history | cut -c 8- > hist
+
+
+
+sudo -- firewall-cmd --set-default-zone="${target_def_zn}"
+sudo -- systemctl start "${svc}"
+sudo -- firewall-cmd --set-default-zone="${target_def_zn}"
+ip a
+sudo -- firewall-cmd --zone="${target_def_zn}" --add-interface=wlo1
+sudo -- firewall-cmd --zone="${target_def_zn}" --add-source=52:81:c8:e7:33:f9 --add-source=20:79:18:b0:59:1e
+sudo -- firewall-cmd --zone="${target_def_zn}" --remove-forward
+sudo -- firewall-cmd --set-log-denied=unicast
+sudo -- firewall-cmd --zone="${target_def_zn}" --list-all
+sudo -- firewall-cmd --query-forward
+sudo -- firewall-cmd --remove-forward
+sudo -- firewall-cmd --zone="${target_def_zn}" --list-all
+sudo -- firewall-cmd --zone="${target_def_zn}" --add-source=52:81:c8:e7:33:f9 --add-source=20:79:18:b0:59:1e
+sudo -- firewall-cmd --zone="${target_def_zn}" --add-interface=wlo1
+sudo -- firewall-cmd --zone="${target_def_zn}" --list-all
+sudo -- firewall-cmd --query-lockdown
+sudo -- firewall-cmd --lockdown=on
+sudo -- firewall-cmd --lockdown-on
+sudo -- firewall-cmd --query-lockdown
+sudo -- firewall-cmd --runtime-to-permanent
+sudo -- firewall-cmd --check-config
+sudo -- firewall-cmd --reload
+sudo -- firewall-cmd --zone="${target_def_zn}" --list-all
+sudo -- firewall-cmd -
+
