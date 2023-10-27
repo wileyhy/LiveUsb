@@ -152,8 +152,8 @@ then
       sort -z )
 
 	## ...and if the counts and strings of each list are not the same again, then error out.
-	if if ! [[ "${#ip_a_interfaces[@]}" -eq "${#fwc_assigned_ifcs[@]}" ]] ||
-        	! [[ "${ip_a_interfaces[*]}" = "${fwc_assigned_ifcs[*]}" ]]
+	if ! [[ "${#ip_a_interfaces[@]}" -eq "${#fwc_assigned_ifcs[@]}" ]] ||
+    ! [[ "${ip_a_interfaces[*]}" = "${fwc_assigned_ifcs[*]}" ]]
 	then
 		die
 	fi
