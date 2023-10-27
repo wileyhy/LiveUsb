@@ -36,7 +36,23 @@ function error_and_exit(){ als_function_boundary_in
 
 alias die='error_and_exit "${nL}"'
 
+:;: "Define trap_exit()"
+## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
+# shellcheck disable=SC2317
+function trap_exit(){ als_function_boundary_in
+  set -x
 
+  trap - EXIT
+
+  #if [[ ${loc_exit_code} = 00 ]]
+  #then
+    #: "End of script, line ${lineno}"
+  #else
+    #: "End of EXIT trap"
+  #fi
+
+  builtin exit "${loc_exit_code}"
+}
 
 ## Vars
 default_lockdown_whitelist_cmd="/usr/bin/python3 -sP /usr/bin/firewall-config"
