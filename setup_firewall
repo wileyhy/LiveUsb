@@ -4,6 +4,7 @@
 
 ## Vars
 list_rpms=( firewall-config macchanger python3 rfkill )
+log_deny="unicast"
 svc="firewalld.service"
 target_def_zn="drop"
 readonly list_rpms svc target_def_zn
@@ -20,7 +21,7 @@ systemctl is-active "${svc}" || sudo -- systemctl start "${svc}"
 
 
 ## Need running firewall
-YY=yy ZZ=zz
+XX="1st_attempt" YY="" ZZ=""
 
 while true
 do
@@ -28,24 +29,23 @@ do
 	if ! [[ "$( firewall-cmd --state )" = "running" ]]
 	then
 		## ...on the first attempt...
-		if [[ -z $XX ]] 
+		if [[ -n ${XX} ]] 
 		then
 			## ...just try to reload/restart it
 			sudo -- systemctl try-reload-or-restart "${svc}"
 
 			## And mark step one as done
-			unset YY
-			XX=xx
+			XX="" YY="2nd_attempt"
 
 		## ...on the second attempt...
-		elif [[ -z $YY ]]
+		elif [[ -n ${YY} ]]
 		then	
 			## ...parse `systemctl status`, and...
 			KK=$( systemctl status "${svc}" | 
 				awk '/\s*Active:/ { print $2 }' )
 
 			## ...if it isn't active, then...
-			if ! [[ $KK = "active" ]]
+			if ! [[ ${KK} = "active" ]]
 			then
 				## ...unmask, enable, start...
 				sudo -- systemctl stop "${svc}"
@@ -54,20 +54,18 @@ do
 				sudo -- systemctl start "${svc}"
 
 				## ...and mark step two as done.
-				unset ZZ
-				YY=yy
+				YY="" ZZ="3rd_attempt"
 			fi
 			unset KK
 
 		## ...on the third attempt, error out.
-		elif [[ -z $ZZ ]]
+		elif [[ -n ${ZZ} ]]
 		then
 			die Firewall is down
 		fi
 	fi
 done
-unset KK
-firewall-cmd --check-config || die
+unset XX YY ZZ
 
 
 ## Zone
@@ -80,7 +78,6 @@ then
 		die Firewall zone failed to apply
 	fi
 fi
-firewall-cmd --check-config || die
 
 
 ## Interfaces
@@ -112,7 +109,6 @@ then
 	fi
 fi
 #unset ip_a_interfaces fwc_assigned_ifcs
-firewall-cmd --check-config || die
 
 
 ## Sources
@@ -169,17 +165,14 @@ do
 	fi
 done
 unset MM
-firewall-cmd --check-config || die
 
 
 ## Forwarding
 firewall-cmd --zone="${target_def_zn}" --remove-forward
-firewall-cmd --check-config || die
 
 
 ## Log denied
-firewall-cmd --set-log-denied=unicast
-firewall-cmd --check-config || die
+firewall-cmd --set-log-denied="${log_deny}"
 
 
 ## Lockdown whitelists
@@ -243,11 +236,10 @@ firewall-cmd --zone="${target_def_zn}" --add-interface=wlo1
 firewall-cmd --zone="${target_def_zn}" --list-all
 firewall-cmd --zone="${target_def_zn}" --remove-forward
 firewall-cmd --zone="${target_def_zn}" --list-all
-firewall-cmd --set-log-denied=unicast
+firewall-cmd --set-log-denied="${log_deny}"
 firewall-cmd --zone="${target_def_zn}" --list-all
 history | grep firewall-cmd
 firewall-cmd --state
-firewall-cmd --check-config
 firewall-cmd --get-default-zone
 firewall-cmd --zone="${target_def_zn}" --list-all
 firewall-cmd --list-all
@@ -285,7 +277,7 @@ ip a
 sudo -- firewall-cmd --zone="${target_def_zn}" --add-interface=wlo1
 sudo -- firewall-cmd --zone="${target_def_zn}" --add-source=52:81:c8:e7:33:f9 --add-source=20:79:18:b0:59:1e
 sudo -- firewall-cmd --zone="${target_def_zn}" --remove-forward
-sudo -- firewall-cmd --set-log-denied=unicast
+sudo -- firewall-cmd --set-log-denied="${log_deny}"
 sudo -- firewall-cmd --zone="${target_def_zn}" --list-all
 sudo -- firewall-cmd --query-forward
 sudo -- firewall-cmd --remove-forward
@@ -298,7 +290,7 @@ sudo -- firewall-cmd --lockdown=on
 sudo -- firewall-cmd --lockdown-on
 sudo -- firewall-cmd --query-lockdown
 sudo -- firewall-cmd --runtime-to-permanent
-sudo -- firewall-cmd --check-config
+sudo -- firewall-cmd --check-config || die
 sudo -- firewall-cmd --reload
 sudo -- firewall-cmd --zone="${target_def_zn}" --list-all
 sudo -- firewall-cmd -
