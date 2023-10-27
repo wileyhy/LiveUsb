@@ -3,11 +3,12 @@
 
 
 ## Vars
+default_lockdown_whitelist_cmd="/usr/bin/python3 -sP /usr/bin/firewall-config"
 list_rpms=( firewall-config macchanger python3 rfkill )
 log_deny="unicast"
 svc="firewalld.service"
 target_def_zn="drop"
-readonly list_rpms svc target_def_zn
+readonly default_lockdown_whitelist_cmd list_rpms log_deny svc target_def_zn
 
 
 ## Need rpms
@@ -84,8 +85,14 @@ fi
 declare -a ip_a_interfaces fwc_assigned_ifcs
 
 ## Get the lists of available and assigned (non-loopback) network interfaces
-readarray -d "" -t ip_a_interfaces < <( ip a | awk -F": " '$1 ~ /[0-9]{1,2}/ && $2 ~ /[[:alnum:]]/ && $2 !~ /\<lo\>/  { printf "%s\0", $2 }' | sort -z )
-readarray -d "" -t fwc_assigned_ifcs < <( firewall-cmd --zone="${target_def_zn}" --list-interfaces | awk 'BEGIN { RS=" " }; { printf "%s\0", $1 }' | sort -z )
+readarray -d "" -t ip_a_interfaces < <( 
+  ip a | 
+    awk -F": " '$1 ~ /[0-9]{1,2}/ && $2 ~ /[[:alnum:]]/ && $2 !~ /\<lo\>/  { printf "%s\0", $2 }' | 
+    sort -z )
+readarray -d "" -t fwc_assigned_ifcs < <( 
+  firewall-cmd --zone="${target_def_zn}" --list-interfaces | 
+    awk 'BEGIN { RS=" " }; { printf "%s\0", $1 }' | 
+    sort -z )
 
 ## If the counts and strings of each list are not the same, then...
 if ! [[ "${#ip_a_interfaces[@]}" -eq "${#fwc_assigned_ifcs[@]}" ]] ||
@@ -99,7 +106,10 @@ then
 
 	## ...then verify it. Get the list of assigned interfaces again...
 	unset fwc_assigned_ifcs
-	readarray -d "" -t fwc_assigned_ifcs < <( firewall-cmd --zone="${target_def_zn}" --list-interfaces | awk 'BEGIN { RS=" " }; { printf "%s\0", $1 }' | sort -z )
+	readarray -d "" -t fwc_assigned_ifcs < <( 
+    firewall-cmd --zone="${target_def_zn}" --list-interfaces | 
+      awk 'BEGIN { RS=" " }; { printf "%s\0", $1 }' | 
+      sort -z )
 
 	## ...and if the counts and strings of each list are not the same again, then error out.
 	if if ! [[ "${#ip_a_interfaces[@]}" -eq "${#fwc_assigned_ifcs[@]}" ]] ||
@@ -143,7 +153,10 @@ done
 unset HH
 
 ## Get the list of real MAC's directly from `ip a`, just in case
-readarray -d "" -t ip_a_macs < <( ip a | grep -zoEe '\<([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})\>' | grep -zve '00:00:' -e 'ff:ff:' )
+readarray -d "" -t ip_a_macs < <( 
+  ip a | 
+    grep -zoEe '\<([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})\>' | 
+    grep -zve '00:00:' -e 'ff:ff:' )
 
 ## Add MAC's from `ip a` to the MAC's from `macchanger`
 for LL in "${ip_a_macs[@]}"
@@ -176,16 +189,72 @@ firewall-cmd --set-log-denied="${log_deny}"
 
 
 ## Lockdown whitelists
-firewall-cmd --list-lockdown-whitelist-commands
 
+## Note, Security, Hard code the defaults here, so that if they#re changed 
+#+  above in-script, or changed in the rpm, some logging of the change will 
+#+  also occur.
+
+## Hard-coded sha1 hash of default lockdown whitelist command. The sha1 hash 
+#+  is of the whitelist commandline itself; this is why a `printf` is 
+#+  necessary at assignment of $lgr_cmd_0
+ro_hard_coded_sha1="a5a8aaea19f048850865ba553fe1f4edd5319d73"
+ro_hard_coded_wl_cmd="/usr/bin/python3 -sP /usr/bin/firewall-config"
+lgr_cmd_0='declare -p ro_hard_coded_sha1 ro_hard_coded_wl_cmd'
+
+## Note, lgr_cmd_1, Yes, this escape-of-a-single-quote syntax is correct.
+lgr_cmd_1='printf "%s\\n" "${default_lockdown_whitelist_cmd}" | sha1sum | awk '\''{ print $1 }'\' 
+readonly ro_hard_coded_sha1 ro_hard_coded_wl_cmd
+
+## If the hashes of the command strings are different, 
+if ! [[ "$( eval "${lgr_cmd_1}" )"  = ${ro_hard_coded_sha1} ]]
+then
+  ## There#s an `eval` below, so single-quoting each entire command string (ie, 
+  #+  in the $lgr_cmd_[0-9]* variables) is also necessary, in order to abide by 
+  #+  bash-5#s word-splitting rules.
+  
+  log_discrepancy()
+  {
+    local -
+    set -x
+    
+    [[ "$#@" -eq 1 ]] || die
+
+    local AA base_var_name range_digits
+    local -n BB
+    base_var_name="${1%_*}"
+    readarray -t range_digits < <( seq 0 "${1##*_}" )
+
+    for AA in "${range_digits[@]}"
+    do
+      declare -n BB="${base_var_name}_${AA}"
+      logger -- "\"${BB[@]}\""\: "$( eval "${BB[@]}" )"
+    done
+    
+    unset AA base_var_name range_digits
+    unset -n BB
+  }
+  log_discrepancy lgr_cmd_1
+fi
+
+readarray -t fwc_llw_cmds < <(
+  firewall-cmd --list-lockdown-whitelist-commands )
+
+for CC in "${fwc_llw_cmds[@]}"
+do
+  
+firewall-cmd --add-lockdown-whitelist-command="${ro_hard_coded_wl_cmd}"
+
+readarray -t fwc_llw_cntxts
 firewall-cmd --list-lockdown-whitelist-contexts
-
 firewall-cmd --remove-lockdown-whitelist-context=
 
-firewall-cmd --list-lockdown-whitelist-uids
 
+readarray -t fwc_llw_uids
+firewall-cmd --list-lockdown-whitelist-uids
 firewall-cmd --remove-lockdown-whitelist-uid=
 
+
+readarray -t fwc_llw_usrs
 firewall-cmd --list-lockdown-whitelist-users
 
 
