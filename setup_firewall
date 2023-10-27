@@ -235,7 +235,7 @@ do
 	if ! [[ "${fwc_zone_srcs}" =~ "${MM}" ]]
 	then
 		## ...then add it
-		firewall-cmd --zone="${target_def_zn}" --add-source="${MM}"
+		sudo -- firewall-cmd --zone="${target_def_zn}" --add-source="${MM}"
 	fi
 done
 unset MM
