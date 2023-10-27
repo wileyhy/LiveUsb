@@ -48,9 +48,11 @@ readonly default_lockdown_whitelist_cmd list_rpms log_deny svc target_def_zn
 
 
 ## Need rpms
-sudo -- dnf -y install "${list_rpms[@]}" || die
-sudo -- dnf -y upgrade "*firewall*"
-
+if ping -c1 8.8.8.8 2>/dev/null 1>&2
+then
+  sudo -- dnf -y install "${list_rpms[@]}" || die
+  sudo -- dnf -y upgrade "*firewall*"
+fi
 
 ## Need running service
 systemctl is-enabled "${svc}" || sudo -- systemctl enable "${svc}"
@@ -100,7 +102,9 @@ do
 		then
 			die Firewall is down
 		fi
-	fi
+  else 
+    break
+  fi
 done
 unset XX YY ZZ
 
