@@ -238,6 +238,9 @@ do
 	then
 		## ...then add it
 		sudo -- firewall-cmd --zone="${target_def_zn}" --add-source="${MM}"
+
+    ## ...and update the current list
+    fwc_zone_srcs=$( firewall-cmd --zone="${target_def_zn}" --list-sources )
 	fi
 done
 unset MM
