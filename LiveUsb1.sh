@@ -23,8 +23,8 @@
 ## Note, systed services to disable: bluetooth, cups, [ systemd-resolved ? ]; services to possibly enable: sshd, sssd
 
 # <> Debugging
+set -x # <>
 declare -nx nL=L\INENO ## <> Note, this assignment is repeated here; originally it\s located in setup_vars()
-#set -x # <>
 set -a # <>
 set -C # <>
 set -u # <>
