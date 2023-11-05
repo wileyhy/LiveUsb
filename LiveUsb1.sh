@@ -1129,13 +1129,16 @@ function setup_dnf(){ als_function_boundary_in
 
         for WW in "${a_pids[@]}"
         do
+            echo '"${a_pids[$WW]}":' "${a_pids[$WW]}"
+            echo '"${WW}":' "${WW}"
+
           ## TODO, re awk
           ps aux | awk --assign 'CC=${WW}' '$2 ~ CC { print }'
 
           #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?"
 
           sleep 1
-          pgrep -- "${a_pids[WW]}" >/dev/null || continue
+          pgrep -- "${a_pids[$WW]}" >/dev/null || continue
           
           sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
             --timeout 1000 HUP \
