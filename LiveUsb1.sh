@@ -551,9 +551,6 @@ function reqd_user_files(){ als_function_boundary_in
   #+	but I don\t want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it\s a bit of future-proofing.
   
-  ## TODO, with all relevant `awk` commands, change program quoting from double to single and use "--assign"
-  #+  with some variable as in this next block.
-  
   local pttn_device_path
   pttn_device_path=$( lsblk --noheadings --output partuuid,path | 
     awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' 
@@ -1038,8 +1035,6 @@ function setup_dnf(){ als_function_boundary_in
   while true
   do
 
-    ## Bug: extra grep - sb wi same awk cmd
-
     ## Get full list of rpms to upgrade, in an array; exit on non-zero
     readarray -d "" -t pkgs_for_upgrade < <(
       sudo -- dnf --assumeno --security upgrade 2>/dev/null |
@@ -1137,7 +1132,6 @@ function setup_dnf(){ als_function_boundary_in
         do
             echo '"${WW}":' "${WW}"
 
-          ## TODO, re awk
           ps aux | awk --assign 'CC=${WW}' '$2 ~ CC { print }'
 
           #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?"
@@ -1156,8 +1150,6 @@ function setup_dnf(){ als_function_boundary_in
           unset EE
           sleep 3
 
-          ## TODO, re awk
-          ps aux | awk "\$2 ~ /${WW}/ { print }"
           ps aux | awk --assign 'DD=${WW}' '$2 ~ DD { print }'
 
           #pause_to_check "${nL}" "Now do you need to manually restart anything?"
@@ -1245,8 +1237,7 @@ function setup_dnf(){ als_function_boundary_in
               :;: "...and if the PID in question no longer exists then unset the current array index number"
               if [[ -n "$( ps --no-headers --quick-pid "${ZZ}" | grep -v defunct )" ]]
               then
-                ## TODO, re awk
-                is_pid_a_zombie=$( ps aux | awk "\$2 ~ /${ZZ}/ { print \$8 }" )
+                is_pid_a_zombie=$( ps aux | awk --assign "EE=${ZZ}" '$2 ~ EE { print \$8 }' )
 
                 if [[ ${is_pid_a_zombie} = Z ]]
                 then
@@ -2047,10 +2038,16 @@ function write_ssh_conf(){ als_function_boundary_in
 	EOF
 }
 
-#######  FUNCTION DEFINITIONS COMPLETE #######
-
   #EC=101 LN="${nL}" exit # <>
   #set -x
+
+#######  FUNCTION DEFINITIONS COMPLETE #######
+
+:;: "Regular users with sudo, only"
+must_be_root
+
+  #EC=101 LN="${nL}" exit # <>
+  set -x
 
 :;: "Define trap on RETURN"
 trap trap_return RETURN
@@ -2077,7 +2074,7 @@ setup_vars
   #set -x
   #die testing
 
-:;: "<Logs>"
+#:;: "<Logs>"
 #set -x
 #logf="${tmp_dir}/log.${scr_nm}.${script_start_time}.txt"
 #printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}"
@@ -2087,12 +2084,6 @@ setup_vars
 # EXIT -- for exiting
 # HUP USR1 TERM KILL -- for restarting processes
 # INT QUIT USR2 -- for stopping logging
-
-:;: "Regular users with sudo, only"
-must_be_root
-
-  #EC=101 LN="${nL}" exit # <>
-  set -x
 
 :;: "Certain files must have been installed from off-disk"
 reqd_user_files
@@ -2124,19 +2115,17 @@ setup_vim
   #EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Minimum necessary rpms"
-min_necc_packages
-
-  #EC=101 LN="${nL}" exit # <>
-  set -x
-
 :;: "Bash"
 setup_bashrc
 
   #EC=101 LN="${nL}" exit
   set -x
 
-## Bug, all of the OS changes should be completed BEFORE setting up the dev environment
+:;: "Minimum necessary rpms"
+min_necc_packages
+
+  #EC=101 LN="${nL}" exit # <>
+  set -x
 
 :;: "Increase disk space"
 increase_disk_space
