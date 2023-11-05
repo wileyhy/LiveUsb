@@ -47,13 +47,13 @@ export qui__ verb__
 
 umask 077
 hash -r
+shopt -s expand_aliases
 
 ## How to add colors to xtrace comments
-color_yellow=$( tput setaf 11 )
-color_reset=$( tput sgr0 )
-shopt -s expand_aliases
-alias .y:=': $color_yellow ; :'
-alias .^:=': $color_reset ; :'
+#color_yellow=$( tput setaf 11 )
+#color_reset=$( tput sgr0 )
+#alias .y:=': $color_yellow ; :'
+#alias .^:=': $color_reset ; :'
 
 :;: "Variables likely to be manually changed with some regularity, or which absolutely must be defined early on"
 # shellcheck disable=SC2034
@@ -1950,7 +1950,7 @@ function trap_exit(){ als_function_boundary_in
 }
 
 : "Define trap_return()"
-function trap_return(){ :
+function trap_return(){
   local -
   set -x
   als_function_boundary_out_1
