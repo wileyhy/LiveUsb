@@ -494,6 +494,8 @@ function must_be_root(){ als_function_boundary_in
   else
     sudo --validate || die
   fi
+
+  als_function_boundary_out
 }
 
 :;: "Define pause_to_check()"
@@ -533,7 +535,7 @@ function pause_to_check(){ als_function_boundary_in
   #"${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-:;: "reqd_user_files()"
+:;: "Define reqd_user_files()"
 function reqd_user_files(){ als_function_boundary_in
   #set -x
 
@@ -1480,7 +1482,7 @@ function setup_git(){ als_function_boundary_in
   unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys
 }
 
-:;: "setup_gpg()"
+:;: "Define setup_gpg()"
 function setup_gpg(){ als_function_boundary_in
   #set -x
 
@@ -1732,7 +1734,7 @@ function setup_ssh(){ als_function_boundary_in
   fi
 }
 
-:;: "setup_temp_dirs()"
+:;: "Define setup_temp_dirs()"
 function setup_temp_dirs(){ als_function_boundary_in
   #set -x
 
