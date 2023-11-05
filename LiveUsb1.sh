@@ -34,6 +34,7 @@ set -o pipefail # <>
 
 #function set()
 
+:
 declare -a qui__ verb__
 if [[ -o xtrace ]]
 then
@@ -44,7 +45,7 @@ else
   verb__=( [0]="--" )
 fi
 export qui__ verb__
-
+:
 umask 077
 hash -r
 shopt -s expand_aliases
@@ -60,32 +61,32 @@ shopt -s expand_aliases
 {
   script_start_time=$( date +%H:%M:%S )
   readonly script_start_time
-
+  :
   scr_repo_nm="LiveUsb"
   scr_nm="LiveUsb1.sh"
   sha256_of_repo_readme="da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c"
   readonly scr_repo_nm scr_nm sha256_of_repo_readme
-
+  :
   data_pttn_uuid="949f3d8c-2dbe-4356-8a6b-3389e4c016d4"
   readonly data_pttn_uuid
-
+  :
   fn_bndry_sh=" ~~~ ~~~ ~~~ "
   fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
   readonly fn_bndry_sh fn_bndry_lo
   fn_lvl=0
-
+  :
   alias als_function_boundary_in='local - _="${fn_bndry_lo} ${fn_bndry_sh} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" loc_hyphn="$-" loc_exit_code="${EC:-$?}" loc_lineno="${LN:-$nL}"'
   alias als_function_boundary_out_0='true "${fn_bndry_lo} ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
   alias als_function_boundary_out_1='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
-
+  :
   user_real_name="Wiley Young"
   user_github_email_address="84648683+wileyhy@users.noreply.github.com"
   user_github_gpg_key="E287D0CF528591CE"
   readonly user_real_name user_github_email_address user_github_gpg_key
-
+  :
   list_of_minimum_reqd_rpms=( [0]="ShellCheck" [1]="firewall-config" [2]="gh" [3]="git" [4]="vim-enhanced" )
   readonly list_of_minimum_reqd_rpms
-
+  :
   :;: "Parameters regarding required files"
   ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more
   #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and 
@@ -100,7 +101,7 @@ shopt -s expand_aliases
   )
   readonly arrays_of_conf_files
   unset "${arrays_of_conf_files[@]}"
-
+  :
   ## Bug? this is really a lot of manually entered data ...of filenames -- it\s a lot to maintain. :-\
   #+  Wouldn\t it be better to just always keep the data directory... in proper intended order...?
   #+  But then the data dir can be changed and there wouldn\t be any process of making sure the DACs
@@ -111,7 +112,7 @@ shopt -s expand_aliases
   ## TODO
   #: "  Files, firefox"
   #files_for_use_with_github_depth_0+=( ~/.mozilla )
-
+  :
   : "  Files, gh (cli)"
   files_for_use_with_github_depth_2+=( ~/.config/gh/{config.yml,gpg-agent.conf,hosts.yml,pubring.kbx,trustdb.gpg} )
   files_for_use_with_github_depth_3+=( ~/.config/gh/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev
