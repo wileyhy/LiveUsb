@@ -625,7 +625,7 @@ function reqd_user_files(){ als_function_boundary_in
 
   for AA in "${arrays_of_conf_files[@]}"
   do
-    :;: "Loop A:1 - Start";:
+    :;: "Loop A - open" ;:
 
     : "Vars"
     ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
@@ -641,7 +641,7 @@ function reqd_user_files(){ als_function_boundary_in
     local BB
     for BB in "${!QQ[@]}"
     do
-      :;: "Loop A:1:a - Start";:
+      :;: "Loop A:1 - open" ;:
 
       : "Vars"
       local source_file dest_dir
@@ -685,15 +685,19 @@ function reqd_user_files(){ als_function_boundary_in
 
       fi
       unset source_file dest_dir
+      :;: "Loop A:1 - shut" ;:
     done
+    :;: "Loops A:1 - complete" ;:
+
     unset BB
     unset -n QQ
-    :;: "Loop A:1:a - End";:
+    :;: "Loop A - shut" ;:
   done
+
   unset AA
   unset mount_pt data_dir is_mounted
   unset pttn_device_path
-  :;: "Loop A:1 - End";:
+  :;: "Loops A - complete" ;:
 
   : "Restore previous umask"
   builtin "${prev_umask[@]}"
@@ -1393,16 +1397,17 @@ function setup_git(){ als_function_boundary_in
   done
   unset ZZ git_regexp
 
-  :;: $'Git -- Create files and set DAC\x60s as necessary - Loop A'
+  :;: $'Git -- Create files and set DAC\x60s as necessary - Loop B' ;:
   local AA
   for AA in "${git_files_a[@]}"
   do
-    :;: "  Loop A - open"
+    :;: "  Loop B - open" ;:
     sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
     sudo -- chmod 0644 "${verb__[@]}" "${AA}"
-    : "  Loop A - shut" ;:
+    :;: "  Loop B - shut" ;:
   done
   unset AA
+  :;: "  Loops B - complete" ;:
 
   builtin "${prev_umask[@]}"
 
@@ -1412,11 +1417,11 @@ function setup_git(){ als_function_boundary_in
     git config --global --unset gpg.format
   fi
 
-  :;: "Git -- setup configuration - Loop B"
+  :;: "Git -- setup configuration - Loop C" ;:
   local BB
   for BB in "${!git_keys[@]}"
   do
-    :;: "  Loop B - open"
+    :;: "  Loop C - open" ;:
 
       : "BB:$BB" # <>
 
@@ -1424,9 +1429,10 @@ function setup_git(){ als_function_boundary_in
     then
       git config --global "${BB}" "${git_keys[$BB]}"
     fi
-    : "  Loop B - shut" ;:
+    :;: "  Loop C - shut" ;:
   done
   unset BB
+  :;: "  Loops C - complete" ;:
 
   :;: "Git -- gitmessage (global)"
   if ! [[ -f ${git_mesg} ]]
@@ -1966,18 +1972,21 @@ function write_bashrc_strings(){ als_function_boundary_in
   local -n fn_nameref
 
   for JJ
-  do :;: "Loop A - For each set of strings to append into bashrc"
+  do
+    :;: "Loop D - For each set of strings to append into bashrc" ;:
 
     unset -n fn_nameref
     local -n fn_nameref="$JJ"
 
     for file_x in "${files_for_use_with_bash[@]}"
-    do :;: "Loop B - For each .bashrc"
+    do
+      :;: "Loop D:1 - For each .bashrc" ;:
 
       : "file_x, ${file_x}"
 
       for Aa_index in "${!fn_nameref[@]}"
-      do :;: "Loop C - For each definition (function or parameter)"
+      do
+        :;: "Loop D:1:a - For each definition (function or parameter)" ;:
 
         : "Aa_index, ${Aa_index}"
         Aa_element="${fn_nameref[${Aa_index}]}"
@@ -2000,10 +2009,10 @@ function write_bashrc_strings(){ als_function_boundary_in
         :;: "(2) If there is an alias by the same name, then delete it from the bashrc file at hand..."
         sudo -- sed --in-place "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
-        : "Loop C - shut" ;:
+        :;: "Loop D:1:a - shut" ;:
       done
       unset Aa_element
-      :;: "Loop C - complete"
+      :;: "Loops D:1:a - complete" ;:
 
       :;: "For each file, if absent add a newline at EOF"
       if sudo -- tail --lines 1 -- "${file_x}" | grep --quiet --extended-regexp "[[:graph:]]"
@@ -2011,16 +2020,18 @@ function write_bashrc_strings(){ als_function_boundary_in
         printf '\n' | sudo -- tee --append -- "${file_x}" > /dev/null
       fi
 
-      : "Loop B - shut" ;:
+      :;: "Loop D:1 - shut" ;:
     done
+    :;: "Loops D:1 - complete" ;:
 
     :;: "Reset for the next loop, assuming there is one"
     ## Note, ?? use  unset  so that values from previous loops will not interfere with the current loop
     shift
 
-    : "Loop A - shut" ;:
+    :;: "Loop D - shut" ;:
   done
   unset JJ
+  :;: "Loops D - complete" ;:
 }
 
 ## TODO, look at how each conf file is defined and written, each one's a little different. Make them 
