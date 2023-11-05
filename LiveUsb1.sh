@@ -625,7 +625,7 @@ function reqd_user_files(){ als_function_boundary_in
 
   for AA in "${arrays_of_conf_files[@]}"
   do
-    :;: "Loop A"
+    :;: "Loop A:1 - Start";:
 
     : "Vars"
     ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
@@ -641,7 +641,7 @@ function reqd_user_files(){ als_function_boundary_in
     local BB
     for BB in "${!QQ[@]}"
     do
-      :;: "Loop B"
+      :;: "Loop A:1:a - Start";:
 
       : "Vars"
       local source_file dest_dir
@@ -688,10 +688,12 @@ function reqd_user_files(){ als_function_boundary_in
     done
     unset BB
     unset -n QQ
+    :;: "Loop A:1:a - End";:
   done
   unset AA
   unset mount_pt data_dir is_mounted
   unset pttn_device_path
+  :;: "Loop A:1 - End";:
 
   : "Restore previous umask"
   builtin "${prev_umask[@]}"
