@@ -205,7 +205,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
     #__vte_osc7
 #}
 
-: "Define clone_repo)"
+: "Define clone_repo()"
 function clone_repo(){ als_function_boundary_in
   #set -x # []
 
