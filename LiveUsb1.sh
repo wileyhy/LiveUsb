@@ -2123,6 +2123,9 @@ setup_user_dirs
   #EC=101 LN="${nL}" exit # <>
   set -x
 
+## Bug, all of the OS changes should be completed BEFORE setting up the dev environment
+
+
 :;: "SSH"
 setup_ssh
 
