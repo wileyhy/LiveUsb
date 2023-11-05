@@ -2148,7 +2148,7 @@ increase_disk_space
 :;: "Dnf"
 setup_dnf
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Restart NetworkManager if necessary"
