@@ -87,7 +87,7 @@ shopt -s expand_aliases
   list_of_minimum_reqd_rpms=( [0]="ShellCheck" [1]="firewall-config" [2]="gh" [3]="git" [4]="vim-enhanced" )
   readonly list_of_minimum_reqd_rpms
   :
-  :;: "Parameters regarding required files"
+  : "Parameters regarding required files"
   ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more
   #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and 
   #+  are numbered sequentially are created here on one line only and have values assigned to each of them 
@@ -108,46 +108,40 @@ shopt -s expand_aliases
   #+  are correct. On the other hand, it\s easier to maintain a simple set of files. ...but their state
   #+  wouldn\t necessarily have been documented, which is valuable in and of itself. Otherwise, if they
   #+  were changed accidentally, how would you know any change had occurred?
-
   ## TODO
   #: "  Files, firefox"
   #files_for_use_with_github_depth_0+=( ~/.mozilla )
-  :
+
   : "  Files, gh (cli)"
   files_for_use_with_github_depth_2+=( ~/.config/gh/{config.yml,gpg-agent.conf,hosts.yml,pubring.kbx,trustdb.gpg} )
   files_for_use_with_github_depth_3+=( ~/.config/gh/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev
       ~/.config/gh/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key)
-
-
   : "  Files, gpg"
   files_for_use_with_github_depth_1+=( ~/.gnupg/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
   files_for_use_with_github_depth_2+=( ~/.gnupg/crls.d/DIR.txt
       ~/.gnupg/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev
       ~/.gnupg/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
-
   : "  Files, ssh"
   files_for_use_with_github_depth_1+=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
-
   : "  Files, top"
   files_for_use_with_github_depth_2+=( ~/.config/procps/toprc )
-
   : "  Files, vim"
   files_for_use_with_github_depth_0+=( ~/.vimrc )
   : "  End of Files lists"
-
+  :
   ## TODO, I do this duck-xtrace dance a few time in this script, but the procedure isn\t normalized yet; do so
   [[ -o xtrace ]] && xon=yes && set +x
   ps_o=$( ps aux )
   readonly ps_o
   [[ ${xon:=} = yes ]] && set -x
 }
-
-:;: "Write to TTY"
+:
+: "Write to TTY"
 printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 
 ##  FUNCTION DEFINITIONS, BEGIN ##
-
-:;: "Functions and Aliases TOC..."    ## Conf files?
+:
+: "Functions and Aliases TOC..."    ## Conf files?
   ## functions_this_script=(
   #+  "__vte_osc7()"
   #+  "__vte_prompt_command()"
@@ -211,6 +205,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
     #__vte_osc7
 #}
 
+: "Define clone_repo)"
 function clone_repo(){ als_function_boundary_in
   #set -x
 
@@ -294,7 +289,7 @@ function get_pids_for_restarting(){ als_function_boundary_in
     return 0
   fi
 
-    declare -p dnf_o
+    #declare -p dnf_o # <>
 
   readarray -t pipline0 < <( printf '%s\n' "${dnf_o[@]}" | grep --invert-match --fixed-strings --regexp="/firefox/" )
   if [[ ${#pipline0[@]} -eq 0 ]]
@@ -419,13 +414,15 @@ function increase_disk_space(){ als_function_boundary_in
           yes_or_no="${yes_or_no,,?}"
 
           case "${yes_or_no}" in
-            0|1)  printf '  Zero and one are ambiguous, please use letters. \n'
+            0 | 1 )  
+                  printf '  Zero and one are ambiguous, please use letters. \n'
                   continue 1
                 ;; #
-            y|t)  printf '  %s %b %s %s \n' "Script," ' \x60rm -i\x60 ' "requires a typed [yN] response," \
+            y | t )  
+                  printf '  %s %b %s %s \n' "Script," ' \x60rm -i\x60 ' "requires a typed [yN] response," \
                     "it defaults to do-not-delete if a user just presses [enter]."
 
-            if sudo -- "$( type -P rm )" --interactive --one-file-system --preserve-root=all "${verb__[@]}" "${JJ}"
+                  if sudo -- "$( type -P rm )" --interactive --one-file-system --preserve-root=all "${verb__[@]}" "${JJ}"
                   then
                     unset "Aa_fsos5[$AA]"
                     break 1
@@ -433,11 +430,12 @@ function increase_disk_space(){ als_function_boundary_in
                     die "Unknown error"
                   fi
                 ;; #
-            n|f)  printf '  Keeping this file. \n'
+            n | f )  
+                  printf '  Keeping this file. \n'
                   unset "Aa_fsos5[$AA]"
                   break 1
                 ;; #
-            *)    HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit\s off
+            * )   HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit\s off
 
                   if (( HH < 3 ))
                   then
@@ -451,7 +449,7 @@ function increase_disk_space(){ als_function_boundary_in
                 ;; #
           esac
         else
-          break 0001
+          break 1
         fi
       done
     done
