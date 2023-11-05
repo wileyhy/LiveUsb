@@ -182,7 +182,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 # shellcheck disable=SC2317
 #function __vte_osc7(){
   #local - cmd urlencode_o
-  #set -
+  #set - # []
   #cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
   #[[ -n ${cmd} ]] || return
   #urlencode_o=$( "${cmd}" )
@@ -194,7 +194,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 # shellcheck disable=SC2317
 #function __vte_prompt_command(){
     #local - fn_pwd
-    #set -
+    #set - # []
     #fn_pwd=~
     #if ! [[ ${PWD} = ~ ]]; then
         #fn_pwd="${fn_pwd//[[:cntrl:]]}"
@@ -207,7 +207,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 
 : "Define clone_repo)"
 function clone_repo(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   local hash_of_read_me_file
   hash_of_read_me_file=$( sha256sum ${scr_repo_nm}/README.md | cut -d" " -f1 )
@@ -228,7 +228,7 @@ alias die='error_and_exit "${nL}"'
 
 : "Define enable_git_debug_settings()"
 function enable_git_debug_settings(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   :;: "Variables -- Global git debug settings"
   GIT_TRACE=true
@@ -245,7 +245,7 @@ function enable_git_debug_settings(){ als_function_boundary_in
 
 : "Define error_and_exit()"
 function error_and_exit(){ als_function_boundary_in
-  set -x
+  set -x # []
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] && return 1
@@ -268,7 +268,7 @@ function error_and_exit(){ als_function_boundary_in
 
 : "Define get_pids_for_restarting()"
 function get_pids_for_restarting(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   # shellcheck disable=SC2034
   local dnf_o
@@ -314,7 +314,7 @@ function get_pids_for_restarting(){ als_function_boundary_in
 function gh_auth_login_command(){ als_function_boundary_in 
   # set -
 
-  if gh auth status
+  if gh auth status >/dev/null 2>&1
   then
     gh auth logout
   fi
@@ -324,17 +324,11 @@ function gh_auth_login_command(){ als_function_boundary_in
   ## Note, do not break this line with any backslashed newlines or it will fail and you\ll have to
   #+  refresh auth manually; using short options for just this reason
   gh auth login -p ssh -h github.com -s admin:public_key,read:gpg_key,admin:ssh_signing_key -w || die
-
-  ## TODO, move these git and gh commands into setup_git() and setup_gh_cli), respectively
-
-  : "GH - Use GitHub CLI as a credential helper"
-  git config --global credential.helper "cache --timeout=3600"
-  gh auth setup-git --hostname github.com
 }
 
 : "Define increase_disk_space()"
 function increase_disk_space(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
   ## Note, for $dirs1 , find  syntax based on Mascheck\s
@@ -459,7 +453,7 @@ function increase_disk_space(){ als_function_boundary_in
 
 : "Define min_necc_packages()"
 function min_necc_packages(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   local XX
 
@@ -487,7 +481,7 @@ function min_necc_packages(){ als_function_boundary_in
 
 : "Define must_be_root()"
 function must_be_root(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   if (( UID == 0 ))
   then
@@ -502,7 +496,7 @@ function must_be_root(){ als_function_boundary_in
 : "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
 function pause_to_check(){ als_function_boundary_in
-  #set -x
+  #set -x # []
   local -I EC=101 LN="$1"
 
   shift
@@ -538,7 +532,7 @@ function pause_to_check(){ als_function_boundary_in
 
 : "Define reqd_user_files()"
 function reqd_user_files(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
   #+  effect the local variable
@@ -625,7 +619,7 @@ function reqd_user_files(){ als_function_boundary_in
 
   for AA in "${arrays_of_conf_files[@]}"
   do
-    :;: "Loop A - open" ;:
+    :;: 'Loop A - open \\\ ' ;:
 
     : "Vars"
     ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
@@ -641,7 +635,7 @@ function reqd_user_files(){ als_function_boundary_in
     local BB
     for BB in "${!QQ[@]}"
     do
-      :;: "Loop A:1 - open" ;:
+      :;: 'Loop A:1 - open \\\ ' ;:
 
       : "Vars"
       local source_file dest_dir
@@ -685,19 +679,19 @@ function reqd_user_files(){ als_function_boundary_in
 
       fi
       unset source_file dest_dir
-      :;: "Loop A:1 - shut" ;:
+      :;: "Loop A:1 - shut /// " ;:
     done
-    :;: "Loops A:1 - complete" ;:
+    :;: "Loops A:1 - complete === " ;:
 
     unset BB
     unset -n QQ
-    :;: "Loop A - shut" ;:
+    :;: "Loop A - shut /// " ;:
   done
 
   unset AA
   unset mount_pt data_dir is_mounted
   unset pttn_device_path
-  :;: "Loops A - complete" ;:
+  :;: "Loops A - complete === " ;:
 
   : "Restore previous umask"
   builtin "${prev_umask[@]}"
@@ -708,7 +702,7 @@ function reqd_user_files(){ als_function_boundary_in
 
 : "Define rsync_install_if_missing()"
 function rsync_install_if_missing(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   local fn_target_dir fn_umask fn_source_var
   fn_source_var="$1"
@@ -739,7 +733,7 @@ function rsync_install_if_missing(){ als_function_boundary_in
 
 : "Define setup_bashrc()"
 function setup_bashrc(){ als_function_boundary_in
-  set -x
+  set -x # []
 
   :;: "  bashrc -- Do some backups"
   files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
@@ -926,7 +920,7 @@ function setup_bashrc(){ als_function_boundary_in
 
 : "Define setup_dnf()"
 function setup_dnf(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
@@ -1272,8 +1266,12 @@ function setup_dnf(){ als_function_boundary_in
 
 : "Define setup_gh_cli()"
 function setup_gh_cli(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
+  ::: "GH -- Use GitHub CLI as a credential helper"
+  gh auth setup-git --hostname github.com
+
+  :;: "GH -- set config key-value pairs"
   local -A github_configs
   local gh_config_list_out
   github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
@@ -1327,7 +1325,7 @@ function setup_gh_cli(){ als_function_boundary_in
 
 : "Define setup_git()"
 function setup_git(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   ## Note: git ui colors: normal black red green yellow blue magenta cyan white
   #+  git ui attributes: bold dim ul (underline blink reverse)
@@ -1367,6 +1365,7 @@ function setup_git(){ als_function_boundary_in
     [core.editor]=vim
     [core.excludesfile]="${git_ignr}"
     [core.pager]="$( type -P less )"
+    [credential.helper]="cache --timeout=3600"
     [gpg.program]="$( type -P gpg2 )"
     [help.autocorrect]=prompt
     [init.defaultBranch]=main
@@ -1395,13 +1394,13 @@ function setup_git(){ als_function_boundary_in
   local AA
   for AA in "${git_files_a[@]}"
   do
-    :;: "  Loop B - open" ;:
+    :;: '  Loop B - open \\\ ' ;:
     sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
     sudo -- chmod 0644 "${verb__[@]}" "${AA}"
-    :;: "  Loop B - shut" ;:
+    :;: "  Loop B - shut /// " ;:
   done
   unset AA
-  :;: "  Loops B - complete" ;:
+  :;: "  Loops B - complete === " ;:
 
   builtin "${prev_umask[@]}"
 
@@ -1415,7 +1414,7 @@ function setup_git(){ als_function_boundary_in
   local BB
   for BB in "${!git_keys[@]}"
   do
-    :;: "  Loop C - open" ;:
+    :;: '  Loop C - open \\\ ' ;:
 
       : "BB:$BB" # <>
 
@@ -1423,10 +1422,10 @@ function setup_git(){ als_function_boundary_in
     then
       git config --global "${BB}" "${git_keys[$BB]}"
     fi
-    :;: "  Loop C - shut" ;:
+    :;: "  Loop C - shut /// " ;:
   done
   unset BB
-  :;: "  Loops C - complete" ;:
+  :;: "  Loops C - complete === " ;:
 
   :;: "Git -- gitmessage (global)"
   if ! [[ -f ${git_mesg} ]]
@@ -1485,7 +1484,7 @@ function setup_git(){ als_function_boundary_in
 
 : "Define setup_gpg()"
 function setup_gpg(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   :;: "If any files in ~/.gnupg are not owned by either USER or root, then error out and exit"
   local -a problem_files
@@ -1532,7 +1531,7 @@ function setup_gpg(){ als_function_boundary_in
 
 : "Define setup_network()"
 function setup_network(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   dns_srv_1=8.8.8.8
   dns_srv_A=75.75.75.75
@@ -1737,7 +1736,7 @@ function setup_ssh(){ als_function_boundary_in
 
 : "Define setup_temp_dirs()"
 function setup_temp_dirs(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   tmp_dir=$( TMPDIR="" mktemp --directory --suffix=-LiveUsb 2>&1 || die )
   [[ -d ${tmp_dir} ]] || die
@@ -1746,7 +1745,7 @@ function setup_temp_dirs(){ als_function_boundary_in
 
 : "Define setup_time()"
 function setup_time(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
@@ -1756,7 +1755,7 @@ function setup_time(){ als_function_boundary_in
 
 : "Define setup_git_user_dirs()"
 function setup_git_user_dirs(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
   #+   popd
@@ -1784,7 +1783,7 @@ function setup_git_user_dirs(){ als_function_boundary_in
 
 : "Define setup_vars()"
 function setup_vars(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   :;: "Vars, dirs, etc"
   ## Bug, only way to export namerefs?  `declare -nx nL=...`
@@ -1820,7 +1819,7 @@ function setup_vars(){ als_function_boundary_in
 
 : "Define setup_vim()"
 function setup_vim(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   : "Heredoc of vim-conf-text"
   cat <<- \EOF | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
@@ -1896,7 +1895,7 @@ function setup_vim(){ als_function_boundary_in
 
 : "Define test_dns()"
 function test_dns(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   return "$?"
@@ -1904,7 +1903,7 @@ function test_dns(){ als_function_boundary_in
 
 : "Define test_os()"
 function test_os(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   local kern_rel
   kern_rel=$( uname --kernel-release )
@@ -1919,7 +1918,7 @@ function test_os(){ als_function_boundary_in
 
 : "Define trap_err()"
 function trap_err(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
@@ -1934,7 +1933,7 @@ function trap_err(){ als_function_boundary_in
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
 function trap_exit(){ als_function_boundary_in
-  set -x
+  set -x # []
 
   trap - EXIT
 
@@ -1951,13 +1950,13 @@ function trap_exit(){ als_function_boundary_in
 : "Define trap_return()"
 function trap_return(){
   local -
-  set -x
+  set -x # []
   als_function_boundary_out_1
 }
 
 : "Define write_bashrc_strings()"
 function write_bashrc_strings(){ als_function_boundary_in
-  #set -x
+  #set -x # []
 
   :;: "Certain parameters must be defined and have non-zero values"
   (( ${#files_for_use_with_bash[@]} == 0 )) && die
@@ -1966,22 +1965,25 @@ function write_bashrc_strings(){ als_function_boundary_in
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
 
+  :;: "For each set of strings to append into bashrc" ;:
   for JJ
   do
-    :;: "Loop D - For each set of strings to append into bashrc" ;:
+    :;: 'Loop D - open \\\ ' ;:
 
     unset -n fn_nameref
     local -n fn_nameref="$JJ"
 
+    :;: "For each .bashrc" ;:
     for file_x in "${files_for_use_with_bash[@]}"
     do
-      :;: "Loop D:1 - For each .bashrc" ;:
+      :;: 'Loop D:1 - open \\\ ' ;:
 
       : "file_x, ${file_x}"
 
+      :;: "For each definition (function or parameter)" ;:
       for Aa_index in "${!fn_nameref[@]}"
       do
-        :;: "Loop D:1:a - For each definition (function or parameter)" ;:
+        :;: 'Loop D:1:a - open \\\ ' ;:
 
         : "Aa_index, ${Aa_index}"
         Aa_element="${fn_nameref[${Aa_index}]}"
@@ -2004,10 +2006,10 @@ function write_bashrc_strings(){ als_function_boundary_in
         :;: "(2) If there is an alias by the same name, then delete it from the bashrc file at hand..."
         sudo -- sed --in-place "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
-        :;: "Loop D:1:a - shut" ;:
+        :;: "Loop D:1:a - shut /// " ;:
       done
       unset Aa_element
-      :;: "Loops D:1:a - complete" ;:
+      :;: "Loops D:1:a - complete === " ;:
 
       :;: "For each file, if absent add a newline at EOF"
       if sudo -- tail --lines 1 -- "${file_x}" | grep --quiet --extended-regexp "[[:graph:]]"
@@ -2015,25 +2017,25 @@ function write_bashrc_strings(){ als_function_boundary_in
         printf '\n' | sudo -- tee --append -- "${file_x}" > /dev/null
       fi
 
-      :;: "Loop D:1 - shut" ;:
+      :;: "Loop D:1 - shut /// " ;:
     done
-    :;: "Loops D:1 - complete" ;:
+    :;: "Loops D:1 - complete === " ;:
 
     :;: "Reset for the next loop, assuming there is one"
     ## Note, ?? use  unset  so that values from previous loops will not interfere with the current loop
     shift
 
-    :;: "Loop D - shut" ;:
+    :;: "Loop D - shut /// " ;:
   done
   unset JJ
-  :;: "Loops D - complete" ;:
+  :;: "Loops D - complete === " ;:
 }
 
 ## TODO, look at how each conf file is defined and written, each one's a little different. Make them 
 #+  uniform with each other, since the purpose of each section is the same in each case.
 
 function write_ssh_conf(){ als_function_boundary_in
-  #set -x
+  #set - # []
 
   cat <<- \EOF > "${ssh_user_conf_file}"
 	Host github.com
@@ -2122,7 +2124,7 @@ setup_vim
 :;: "Bash"
 setup_bashrc
 
-  #EC=101 LN="${nL}" exit
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Minimum necessary rpms"
@@ -2134,7 +2136,7 @@ min_necc_packages
 :;: "Increase disk space"
 increase_disk_space
 
-  #EC=101 LN="${nL}" exit
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 #:;: "<Logs>"
