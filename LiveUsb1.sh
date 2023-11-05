@@ -1137,15 +1137,18 @@ function setup_dnf(){ als_function_boundary_in
 
           #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?"
 
+          local EE
           sleep 1
-          pgrep -- "${a_pids[$WW]}" >/dev/null || continue
-          
+          readarray -d '' -t EE < <( cat "/proc/${WW}/cmdline" )
+          pgrep -f "${EE[*]}" >/dev/null || continue
+
           sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
             --timeout 1000 HUP \
             --timeout 1000 USR1 \
             --timeout 1000 TERM \
             --timeout 1000 KILL -- "${WW}"
 
+          unset EE
           sleep 3
 
           ## TODO, re awk
