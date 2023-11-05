@@ -1952,7 +1952,7 @@ function trap_exit(){ als_function_boundary_in
 function trap_return(){ :
   local -
   set -x
-  als_function_boundary_out
+  als_function_boundary_out_1
 }
 
 : "Define write_bashrc_strings()"
