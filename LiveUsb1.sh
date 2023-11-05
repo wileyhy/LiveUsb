@@ -497,7 +497,7 @@ function must_be_root(){ als_function_boundary_in
     sudo --validate || die
   fi
 
-  als_function_boundary_out
+  als_function_boundary_out_0
 }
 
 : "Define pause_to_check()"
