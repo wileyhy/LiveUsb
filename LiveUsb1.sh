@@ -225,10 +225,11 @@ function clone_repo(){ als_function_boundary_in
   unset hash_of_read_me_file
 }
 
-:;: "Define \"die\" alias to function error_and_exit()"
+: "Define \"die\" alias to function error_and_exit()"
 alias die='error_and_exit "${nL}"'
+:
 
-:;: "Define enable_git_debug_settings()"
+: "Define enable_git_debug_settings()"
 function enable_git_debug_settings(){ als_function_boundary_in
   #set -x
 
@@ -245,7 +246,7 @@ function enable_git_debug_settings(){ als_function_boundary_in
   [[ -f ~/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat -n
 }
 
-:;: "Define error_and_exit()"
+: "Define error_and_exit()"
 function error_and_exit(){ als_function_boundary_in
   set -x
 
@@ -268,7 +269,7 @@ function error_and_exit(){ als_function_boundary_in
   LN="${loc_lineno}" builtin exit "${loc_exit_code}"
 }
 
-:;: "Define get_pids_for_restarting()"
+: "Define get_pids_for_restarting()"
 function get_pids_for_restarting(){ als_function_boundary_in
   #set -x
 
@@ -312,7 +313,7 @@ function get_pids_for_restarting(){ als_function_boundary_in
   fi
 }
 
-:;: "Define gh_auth_login_command()"
+: "Define gh_auth_login_command()"
 function gh_auth_login_command(){ als_function_boundary_in 
   # set -
 
@@ -334,7 +335,7 @@ function gh_auth_login_command(){ als_function_boundary_in
   gh auth setup-git --hostname github.com
 }
 
-:;: "Define increase_disk_space()"
+: "Define increase_disk_space()"
 function increase_disk_space(){ als_function_boundary_in
   #set -x
 
@@ -456,7 +457,7 @@ function increase_disk_space(){ als_function_boundary_in
   unset dirs1 dirs2 fsos3 fsos4 Aa_fsos5 AA HH II JJ yes_or_no
 }
 
-:;: "Define min_necc_packages()"
+: "Define min_necc_packages()"
 function min_necc_packages(){ als_function_boundary_in
   #set -x
 
@@ -484,7 +485,7 @@ function min_necc_packages(){ als_function_boundary_in
   unset XX
 }
 
-:;: "Define must_be_root()"
+: "Define must_be_root()"
 function must_be_root(){ als_function_boundary_in
   #set -x
 
@@ -498,7 +499,7 @@ function must_be_root(){ als_function_boundary_in
   als_function_boundary_out
 }
 
-:;: "Define pause_to_check()"
+: "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
 function pause_to_check(){ als_function_boundary_in
   #set -x
@@ -535,7 +536,7 @@ function pause_to_check(){ als_function_boundary_in
   #"${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
 
-:;: "Define reqd_user_files()"
+: "Define reqd_user_files()"
 function reqd_user_files(){ als_function_boundary_in
   #set -x
 
@@ -705,7 +706,7 @@ function reqd_user_files(){ als_function_boundary_in
     #EC=101 LN="${nL}" exit # <>
 }
 
-:;: "Define rsync_install_if_missing()"
+: "Define rsync_install_if_missing()"
 function rsync_install_if_missing(){ als_function_boundary_in
   #set -x
 
@@ -736,7 +737,7 @@ function rsync_install_if_missing(){ als_function_boundary_in
   unset fn_source_var fn_target_dir
 }
 
-:;: "Define setup_bashrc()"
+: "Define setup_bashrc()"
 function setup_bashrc(){ als_function_boundary_in
   set -x
 
@@ -923,7 +924,7 @@ function setup_bashrc(){ als_function_boundary_in
 
 ## Bug, setup_dnf is too long and too complicated
 
-:;: "Define setup_dnf()"
+: "Define setup_dnf()"
 function setup_dnf(){ als_function_boundary_in
   #set -x
 
@@ -1269,7 +1270,7 @@ function setup_dnf(){ als_function_boundary_in
   fi
 }
 
-:;: "Define setup_gh_cli()"
+: "Define setup_gh_cli()"
 function setup_gh_cli(){ als_function_boundary_in
   #set -x
 
@@ -1324,7 +1325,7 @@ function setup_gh_cli(){ als_function_boundary_in
   unset QQ
 }
 
-:;: "Define setup_git()"
+: "Define setup_git()"
 function setup_git(){ als_function_boundary_in
   #set -x
 
@@ -1482,7 +1483,7 @@ function setup_git(){ als_function_boundary_in
   unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys
 }
 
-:;: "Define setup_gpg()"
+: "Define setup_gpg()"
 function setup_gpg(){ als_function_boundary_in
   #set -x
 
@@ -1529,7 +1530,7 @@ function setup_gpg(){ als_function_boundary_in
   export GPG_TTY
 }
 
-:;: "Define setup_network()"
+: "Define setup_network()"
 function setup_network(){ als_function_boundary_in
   #set -x
 
@@ -1582,7 +1583,7 @@ function setup_network(){ als_function_boundary_in
   unset -f test_dns
 }
 
-:;: "Define setup_ssh()"
+: "Define setup_ssh()"
 function setup_ssh(){ als_function_boundary_in
   # set -
 
@@ -1734,7 +1735,7 @@ function setup_ssh(){ als_function_boundary_in
   fi
 }
 
-:;: "Define setup_temp_dirs()"
+: "Define setup_temp_dirs()"
 function setup_temp_dirs(){ als_function_boundary_in
   #set -x
 
@@ -1743,7 +1744,7 @@ function setup_temp_dirs(){ als_function_boundary_in
   readonly tmp_dir
 }
 
-:;: "Define setup_time()"
+: "Define setup_time()"
 function setup_time(){ als_function_boundary_in
   #set -x
 
@@ -1753,7 +1754,7 @@ function setup_time(){ als_function_boundary_in
   sudo -- chronyc makestep > /dev/null
 }
 
-:;: "Define setup_git_user_dirs()"
+: "Define setup_git_user_dirs()"
 function setup_git_user_dirs(){ als_function_boundary_in
   #set -x
 
@@ -1781,7 +1782,7 @@ function setup_git_user_dirs(){ als_function_boundary_in
   pushd "${dev_d1}" > /dev/null || die
 }
 
-:;: "Define setup_vars()"
+: "Define setup_vars()"
 function setup_vars(){ als_function_boundary_in
   #set -x
 
@@ -1817,7 +1818,7 @@ function setup_vars(){ als_function_boundary_in
   local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
 }
 
-:;: "Define setup_vim()"
+: "Define setup_vim()"
 function setup_vim(){ als_function_boundary_in
   #set -x
 
@@ -1893,7 +1894,7 @@ function setup_vim(){ als_function_boundary_in
   unset arr_vrc strng_vrc WW YY umask_prior
 }
 
-:;: "Define test_dns()"
+: "Define test_dns()"
 function test_dns(){ als_function_boundary_in
   #set -x
 
@@ -1901,7 +1902,7 @@ function test_dns(){ als_function_boundary_in
   return "$?"
 }
 
-:;: "Define test_os()"
+: "Define test_os()"
 function test_os(){ als_function_boundary_in
   #set -x
 
@@ -1915,7 +1916,7 @@ function test_os(){ als_function_boundary_in
   fi
 }
 
-:;: "Define trap_err()"
+: "Define trap_err()"
 function trap_err(){ als_function_boundary_in
   #set -x
 
@@ -1928,7 +1929,7 @@ function trap_err(){ als_function_boundary_in
 ## Bug, these var assignments $loc_exit_code and $lineno only fail when they\re on line number >=2
 #+  of  trap  "args section" ??
 
-:;: "Define trap_exit()"
+: "Define trap_exit()"
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
 function trap_exit(){ als_function_boundary_in
@@ -1946,14 +1947,14 @@ function trap_exit(){ als_function_boundary_in
   builtin exit "${loc_exit_code}"
 }
 
-:;: "Define trap_return()"
+: "Define trap_return()"
 function trap_return(){ :
   local -
   set -x
   als_function_boundary_out
 }
 
-:;: "Define write_bashrc_strings()"
+: "Define write_bashrc_strings()"
 function write_bashrc_strings(){ als_function_boundary_in
   #set -x
 
