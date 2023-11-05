@@ -170,7 +170,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
   #+  "setup_ssh()"                   # y
   #+  "setup_temp_dirs()"             # y
   #+  "setup_time()"
-  #+  "setup_user_dirs()"             # y
+  #+  "setup_git_user_dirs()"             # y
   #+  "setup_vars()"
   #+  "setup_vim()"                   # y
   #+  "test_dns()"
@@ -1752,8 +1752,8 @@ function setup_time(){ als_function_boundary_in
   sudo -- chronyc makestep > /dev/null
 }
 
-:;: "Define setup_user_dirs()"
-function setup_user_dirs(){ als_function_boundary_in
+:;: "Define setup_git_user_dirs()"
+function setup_git_user_dirs(){ als_function_boundary_in
   #set -x
 
   ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
@@ -2117,53 +2117,13 @@ min_necc_packages
   #EC=101 LN="${nL}" exit # <>
   set -x
 
-#:;: "Git debug settings"
-#enable_git_debug_settings
-
-:;: "Git"
-setup_git
-
-  #EC=101 LN="${nL}" exit # <>
-  set -x
-
-:;: "Make and change into directories"
-setup_user_dirs
-
-  #EC=101 LN="${nL}" exit # <>
-  set -x
-
-## Bug, all of the OS changes should be completed BEFORE setting up the dev environment
-
-
-:;: "SSH"
-setup_ssh
-
-  #EC=101 LN="${nL}" exit # <>
-  set -x
-
-:;: "GPG"
-setup_gpg
-
-  #EC=101 LN="${nL}" exit # <>
-  set -x
-
-:;: "GH -- github CLI configuration"
-setup_gh_cli
-
-  #EC=101 LN="${nL}" exit # <>
-  set -x
-
-:;: "Clone repo"
-clone_repo
-
-  #EC=101 LN="${nL}" exit # <>
-  set -x
-
 :;: "Bash"
 setup_bashrc
 
   #EC=101 LN="${nL}" exit
   set -x
+
+## Bug, all of the OS changes should be completed BEFORE setting up the dev environment
 
 :;: "Increase disk space"
 increase_disk_space
@@ -2205,6 +2165,45 @@ unset BB
 
 # <Logs> Write to TTY and exit
 #"$( type -P kill )" --signal USR2 -- "$$" # <Logs>
+
+:;: "SSH"
+setup_ssh
+
+  #EC=101 LN="${nL}" exit # <>
+  set -x
+
+:;: "GPG"
+setup_gpg
+
+  #EC=101 LN="${nL}" exit # <>
+  set -x
+
+:;: "Make and change into directories"
+setup_git_user_dirs
+
+  #EC=101 LN="${nL}" exit # <>
+  set -x
+
+#:;: "Git debug settings"
+#enable_git_debug_settings
+
+:;: "Git"
+setup_git
+
+  #EC=101 LN="${nL}" exit # <>
+  set -x
+
+:;: "GH -- github CLI configuration"
+setup_gh_cli
+
+  #EC=101 LN="${nL}" exit # <>
+  set -x
+
+:;: "Clone repo"
+clone_repo
+
+  #EC=101 LN="${nL}" exit # <>
+  set -x
 
 :;: "Remind user of commands for the interactive shell"
 
