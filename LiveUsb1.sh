@@ -1915,6 +1915,7 @@ function test_os(){ als_function_boundary_in
   then
     die "OS is not Fedora"
   fi
+  unset kern_rel
 }
 
 : "Define trap_err()"
