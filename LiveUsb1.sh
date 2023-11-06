@@ -2183,7 +2183,7 @@ unset BB
 :;: "SSH"
 setup_ssh
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "GPG"
