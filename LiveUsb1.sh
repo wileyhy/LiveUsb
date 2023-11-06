@@ -536,8 +536,6 @@ function reqd_user_files(){ als_function_boundary_in
 
   ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
   #+  effect the local variable
-
-  : $'Vars: Is device identified by \x22\x24data_pttn_uuid\x22 attached to this machine? If so, get device path'
   ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
   #+  `local lsblk_out \n lsblk_out=""` the assignment doesn\t need a preceding `local`
   ## Note, I\m using an array with $lsblk_out so I can work around `set -u` by using a ":=" PE, and so that
@@ -548,13 +546,15 @@ function reqd_user_files(){ als_function_boundary_in
   #+	but I don\t want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it\s a bit of future-proofing.
   
+  : $'Vars: Is device identified by \x22\x24data_pttn_uuid\x22 attached to this machine? If so, get device path'
   local pttn_device_path
   pttn_device_path=$( lsblk --noheadings --output partuuid,path | 
     awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' 
   )
   [[ -n ${pttn_device_path} ]] || die $'Necessary USB drive isn\x60t plugged in or its filesystem has changed.'
-  :
-  : "Vars: get mountpoints and label"
+  
+  :;: "Vars: get mountpoints and label"
+  local mount_pt data_dir is_mounted
   local -a array_mt_pts
   readarray -t array_mt_pts < <( lsblk --noheadings --output mountpoints "${pttn_device_path}" )
 
@@ -565,7 +565,6 @@ function reqd_user_files(){ als_function_boundary_in
   done
   unset YY
 
-  local mount_pt data_dir is_mounted
   case "${#array_mt_pts[@]}" in
     0 )
       : "  Zero matches"
@@ -638,9 +637,8 @@ function reqd_user_files(){ als_function_boundary_in
       :;: 'Loop A:1 - open \\\ ' ;:
 
       : "Vars"
-      local source_file dest_dir
+      local source_file
       source_file="${data_dir}/${QQ[BB]#~/}"
-      dest_dir="${QQ[BB]%/*}"
 
       :;: "If the target conf file/dir does not exist"
       if ! [[ -e ${QQ[BB]} ]]
@@ -675,6 +673,8 @@ function reqd_user_files(){ als_function_boundary_in
           fi
         fi
 
+        local dest_dir
+        dest_dir="${QQ[BB]%/*}"
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
 
       fi
@@ -1788,16 +1788,16 @@ function setup_vars(){ als_function_boundary_in
   :;: "Vars, dirs, etc"
   ## Bug, only way to export namerefs?  `declare -nx nL=...`
 
-  :;: "Vars... -- Error handling, variables and functions"
+  :;: "Vars... Error handling, variables and functions"
   ## Note, variable assignments, backslash escape bc  sed -i
   # shellcheck disable=SC1001
   local -gnx nL=L\INENO
 
-  :;: "Vars... -- PATH"
+  :;: "Vars... PATH"
   PATH="/usr/bin:/usr/sbin"
   export PATH
 
-  :;: "Vars... -- Other environment variables"
+  :;: "Vars... Other environment variables"
   ## Note, Initialize some env vars found in sourced files, as a workaround for nounset
   ## Note, local style, inline comments, ie, ": foo ## Note, blah", are useful for rebutting false positives
   #+  from ShellCheck
