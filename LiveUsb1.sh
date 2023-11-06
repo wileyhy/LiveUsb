@@ -461,7 +461,7 @@ function min_necc_packages(){ als_function_boundary_in
 
   #local -a a_pids
 
-  ## Bug, command list hardcoded in multiplt places. s/b coded in just one place, ie at TOF w reqd files lists
+  ## Bug, command list hardcoded in multiple places. s/b coded in just one place, ie at TOF w reqd files lists
 
   for XX in "${list_of_minimum_reqd_rpms[@]}"
   do
@@ -804,7 +804,7 @@ function setup_bashrc(){ als_function_boundary_in
   : "  bashrc -- Other parameters"
   PS1="[\\u@\\h]\\\$ "
   BROWSER=$( command -v firefox )
-  EDITOR=$( command -v vim )
+  EDITOR=$( command -v vim vi nano | head --lines=1 )
 
   :;: "  bashrc -- Append user variables and functions into .bashrc."
   ## Note, these arrays include some command substitutions which depend on some function definitions, which in
@@ -1127,29 +1127,35 @@ function setup_dnf(){ als_function_boundary_in
 
         for WW in "${a_pids[@]}"
         do
-            echo '"${WW}":' "${WW}"
+            echo '"${WW}":' "${WW}" # <>
 
           ps aux | awk --assign 'CC=${WW}' '$2 ~ CC { print }'
 
-          #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?"
+            #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?" # <>
 
+          ## Remove zombie processes, which have zero length "/proc/[pid]/cmdline" files
+
+          ## Ensure a process is still running before trying to kill it
+          ## Note, some strings from /proc/[pid]/cmdline include "[]" brackets; `pgrep -f` parses these as
+          #+  ERE's and cannot parse fixed strings, so a Parameter Expansion is necessary in order to render
+          #+  any opening bracket "[" as non-special for ERE syntax
           local EE
           sleep 1
           readarray -d '' -t EE < <( cat "/proc/${WW}/cmdline" )
+          EE="${EE[@]//\[/\\[}"
           pgrep -f "${EE[*]}" >/dev/null || continue
+          unset EE
 
+          ## Kill a particular process
           sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
             --timeout 1000 HUP \
             --timeout 1000 USR1 \
             --timeout 1000 TERM \
             --timeout 1000 KILL -- "${WW}"
-
-          unset EE
           sleep 3
-
           ps aux | awk --assign 'DD=${WW}' '$2 ~ DD { print }'
 
-          #pause_to_check "${nL}" "Now do you need to manually restart anything?"
+            #pause_to_check "${nL}" "Now do you need to manually restart anything?" # <>
 
         done
         unset WW
@@ -1234,7 +1240,7 @@ function setup_dnf(){ als_function_boundary_in
               :;: "...and if the PID in question no longer exists then unset the current array index number"
               if [[ -n "$( ps --no-headers --quick-pid "${ZZ}" | grep -v defunct )" ]]
               then
-                is_pid_a_zombie=$( ps aux | awk --assign "EE=${ZZ}" '$2 ~ EE { print \$8 }' )
+                is_pid_a_zombie=$( ps aux | awk --assign "EE=${ZZ}" '$2 ~ EE { print $8 }' )
 
                 if [[ ${is_pid_a_zombie} = Z ]]
                 then
@@ -1268,7 +1274,7 @@ function setup_dnf(){ als_function_boundary_in
 function setup_gh_cli(){ als_function_boundary_in
   #set -x # []
 
-  ::: "GH -- Use GitHub CLI as a credential helper"
+  :;: "GH -- Use GitHub CLI as a credential helper"
   gh auth setup-git --hostname github.com
 
   :;: "GH -- set config key-value pairs"
@@ -2055,6 +2061,11 @@ must_be_root
   #EC=101 LN="${nL}" exit # <>
   set -x
 
+## Note, traps
+# EXIT -- for exiting
+# HUP USR1 TERM KILL -- for restarting processes
+# INT QUIT USR2 -- for stopping logging
+
 :;: "Define trap on RETURN"
 trap trap_return RETURN
 
@@ -2086,11 +2097,6 @@ setup_vars
 #printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}"
 #exec > >( tee "${logf}" ) 2>&1
 
-## Note, traps
-# EXIT -- for exiting
-# HUP USR1 TERM KILL -- for restarting processes
-# INT QUIT USR2 -- for stopping logging
-
 :;: "Certain files must have been installed from off-disk"
 reqd_user_files
 
@@ -2115,6 +2121,12 @@ setup_temp_dirs
   #EC=101 LN="${nL}" exit # <>
   set -x
 
+:;: "Minimum necessary rpms"
+min_necc_packages
+
+  #EC=101 LN="${nL}" exit # <>
+  set -x
+
 :;: "Vim"
 setup_vim
 
@@ -2123,12 +2135,6 @@ setup_vim
 
 :;: "Bash"
 setup_bashrc
-
-  #EC=101 LN="${nL}" exit # <>
-  set -x
-
-:;: "Minimum necessary rpms"
-min_necc_packages
 
   #EC=101 LN="${nL}" exit # <>
   set -x
@@ -2156,7 +2162,7 @@ increase_disk_space
 :;: "Dnf"
 setup_dnf
 
-  EC=101 LN="${nL}" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Restart NetworkManager if necessary"
