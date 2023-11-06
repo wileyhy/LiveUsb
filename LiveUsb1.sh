@@ -1614,7 +1614,7 @@ function setup_ssh(){ als_function_boundary_in
   fi
   unset ssh_usr_conf_dir
 
-  :;: $'Make sure the SSH config file for USER exists and has correct DAC\x60s'
+  :;: $'Make sure the SSH config file for USER exists'
   local ssh_user_conf_file
   ssh_user_conf_file=~/.ssh/config
 
