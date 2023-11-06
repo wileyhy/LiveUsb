@@ -1402,7 +1402,7 @@ function setup_git(){ als_function_boundary_in
   do
     :;: '  Loop B - open \\\ ' ;:
     sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
-    sudo -- chmod 0644 "${verb__[@]}" "${AA}"
+    sudo -- chmod 0600 "${verb__[@]}" "${AA}"
     :;: "  Loop B - shut /// " ;:
   done
   unset AA
