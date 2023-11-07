@@ -66,7 +66,7 @@ shopt -s expand_aliases
   scr_nm="LiveUsb1.sh"
   datadir_basenm="skel-LiveUsb"
   datdir_idfile=".${scr_repo_nm}_id-key"
-  readonly scr_repo_nm scr_nm datadir_basenm
+  readonly scr_repo_nm scr_nm datadir_basenm datdir_idfile
   :
   sha256_of_repo_readme="da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c"
   data_pttn_uuid="949f3d8c-2dbe-4356-8a6b-3389e4c016d4"
