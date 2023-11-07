@@ -599,10 +599,19 @@ function reqd_user_files(){ als_function_boundary_in
   [[ ${mount_user} = @(root|liveuser) ]] || die
   unset mount_user
 
-  : $'FS mounting must auto- \x60umount\x60 after 15 minutes, and auto- \x60mount\x60 on access'
-  if ! mount | grep -Fe "${pttn_device_path}" | grep -q timeout
+  : "USB drive must be mounted"
+  if [[ ${is_mounted} = "no" ]]
+  then
+    sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || die
+    is_mounted=yes
+    sync -f
+  fi
+  
+  : $'FS mounting must auto- \x60umount\x60 after some time, and auto- \x60mount\x60 on access'
+  if mount | grep -Fe "${pttn_device_path}" | grep -q timeout
   then
     sudo -- mount -o remount,x-systemd.idle.timeout=10,nosuid,noexec,dev,nouser,ro -- "${pttn_device_path}"
+    sync -f
   fi
 
   : "Data directory must already exist"
