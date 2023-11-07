@@ -499,7 +499,7 @@ function pause_to_check(){ als_function_boundary_in
   set - # []
   local -I EC=101 LN="$1"
 
-  shift
+  #shift
   local -a KK=( "$@" )
   local reply 
 
