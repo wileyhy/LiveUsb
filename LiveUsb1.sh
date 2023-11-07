@@ -598,7 +598,6 @@ function reqd_user_files(){ als_function_boundary_in
   #+    access by authorized user'
   #: "Data directory must be readable via ACL"
 
-  ## Q, Why is this block commented out?
   : "Data directory must already exist"
   if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
   then
@@ -723,7 +722,11 @@ function rsync_install_if_missing(){ als_function_boundary_in
     unset fn_umask
   fi
 
-  ## Bug, variable $data_dir is defined in a different function
+  ## Bug, variable $data_dir is defined in a different function, reqd_user_files()
+  if [[ -z "${data_dir}" ]]
+  then
+    data_dir=""
+  fi
 
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
