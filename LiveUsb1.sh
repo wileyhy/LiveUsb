@@ -599,11 +599,11 @@ function reqd_user_files(){ als_function_boundary_in
   #: "Data directory must be readable via ACL"
 
   ## Q, Why is this block commented out?
-  #: "Data directory must already exist"
-  #if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
-  #then
-    #die "Data directory is missing"
-  #fi
+  : "Data directory must already exist"
+  if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
+  then
+    die "Data directory is missing or is a symlink"
+  fi
 
   : "Capture previous umask and set a new one"
   local prev_umask
