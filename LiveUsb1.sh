@@ -705,7 +705,7 @@ function reqd_user_files(){ als_function_boundary_in
           fi
 
           :;: "If the source conf file/dir still does not exist, then throw an error"
-          if ! sudo -- [ -e "${source_file}" ]
+          if ! [[ -e "${source_file}" ]]
           then
             die "${QQ[BB]}" "${source_file}"
           fi
@@ -784,7 +784,7 @@ function rsync_install_if_missing(){ als_function_boundary_in
 
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
-    sudo -- rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || die "${fn_target_dir}"
+    rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || die "${fn_target_dir}"
   fi
 
   ## Unset a local variable defined and assigned in only this function, and not any variables by the same 
@@ -1169,7 +1169,7 @@ function setup_dnf(){ als_function_boundary_in
   :;: "Find out whether an RPM is installed, one by one"
   for UU in "${!addl_pkgs[@]}"
   do
-    if sudo -- nice --adjustment=-20 -- rpm --query --quiet -- "${addl_pkgs[UU]}"
+    if rpm --query --quiet -- "${addl_pkgs[UU]}"
     then
       pkgs_installed+=( "${addl_pkgs[UU]}" )
       unset "addl_pkgs[UU]"
@@ -1229,7 +1229,7 @@ function setup_dnf(){ als_function_boundary_in
           unset EE
 
           ## Kill a particular process
-          sudo -- nice --adjustment=-20 -- "$(type -P kill)" --verbose \
+          sudo -- "$(type -P kill)" --verbose \
             --timeout 1000 HUP \
             --timeout 1000 USR1 \
             --timeout 1000 TERM \
@@ -1273,7 +1273,7 @@ function setup_dnf(){ als_function_boundary_in
 
     ## If the target file is immutable
     local has_immutable
-    has_immutable=$( sudo lsattr -l "${hash_f}" | awk '$1 ~ /i/ { printf "Yes" }' )
+    has_immutable=$( lsattr -l "${hash_f}" | awk '$1 ~ /i/ { printf "Yes" }' )
     
     if [[ ${has_immutable} = "Yes" ]] 
     then
@@ -1298,6 +1298,7 @@ function setup_dnf(){ als_function_boundary_in
   printf '%s\n' "${hash_of_installed_pkgs_B_prev}" | tee "${hash_f}"
   chmod 400 "${verb__[@]}" "${hash_f}"
   sudo chattr +i "${hash_f}"
+  unset hash_f
 
   ## TODO: change temp-vars (II, XX, etc) to fully named vars
 
@@ -1616,7 +1617,6 @@ function setup_gpg(){ als_function_boundary_in
   local -a problem_files
   problem_files=()
   readarray -d "" -t problem_files < <(
-    sudo -- \
       find -- ~/.gnupg -xdev \
         \( \
           \(  \!  -uid "${login_gid}" -a  \! -gid 0  \) -o \
@@ -1882,7 +1882,7 @@ function setup_time(){ als_function_boundary_in
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
-  sudo -- nice --adjustment=-20 -- systemctl start chronyd.service || die
+  sudo -- systemctl start chronyd.service || die
   sudo -- chronyc makestep > /dev/null
 }
 
@@ -1996,7 +1996,7 @@ function setup_vim(){ als_function_boundary_in
 
   if (( "${#arr_vrc[@]}" == 1 ))
   then
-    read -r WW XX < <( sudo -- sha256sum -- "${tmp_dir}/vim-conf-text" 2>&1 )
+    read -r WW XX < <( sha256sum -- "${tmp_dir}/vim-conf-text" 2>&1 )
     read -r YY XX < <( sudo -- sha256sum -- "${strng_vrc}" 2>&1 )
     unset      XX
   else
@@ -2030,7 +2030,7 @@ function setup_vim(){ als_function_boundary_in
 function test_dns(){ als_function_boundary_in
   #set -x # []
 
-  sudo -- ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
+  ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   return "$?"
 }
 
