@@ -599,24 +599,18 @@ function reqd_user_files(){ als_function_boundary_in
   #+    access by authorized user'
   #: "Data directory must be readable via ACL"
 
-  : "Data directory must already exist"
+  : "Data directory must already exist and verification info must be correct"
+  local ZZ
+  ZZ=$( sha256sum -b "${data_dir}/${datdir_idfile}" |
+    awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' )
+
   if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
   then
     die "Data directory is missing or is a symlink"
-  fi
-
-  : $'Data directory\x27s \x24datdir_idfile must exist'
-  if ! [[ -f "${data_dir}/${datdir_idfile}" ]]
+  elif ! [[ -f "${data_dir}/${datdir_idfile}" ]] || [[ -L "${data_dir}/${datdir_idfile}" ]]
   then
     die "Data directory ID keyfile is missing"
-  fi
-
-  : $'Data directory\x27s \x24datdir_idfile must have the correct SHA256 hash'
-  local ZZ
-  ZZ=$( sha256sum -b "${data_dir}/${datdir_idfile}" | 
-    awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' )
-
-  if ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]
+  elif ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]
   then
     die "Data directory ID keyfile hash is wrong"
   fi
