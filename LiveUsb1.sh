@@ -601,7 +601,7 @@ function reqd_user_files(){ als_function_boundary_in
 
   : "Data directory must already exist and verification info must be correct"
   local ZZ
-  ZZ=$( sha256sum -b "${data_dir}/${datdir_idfile}" |
+  ZZ=$( sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" |
     awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' )
 
   if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
