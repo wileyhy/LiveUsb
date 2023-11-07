@@ -940,21 +940,23 @@ function setup_dnf(){ als_function_boundary_in
 
   hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
-  ## If record of previous hash...B exists, check it
+  ## Define filename for record of previous hash..B
   local hash_f
-  hash_f="${tmp_dir}/setup_dnf__hash_of_installed_pkgs_B"
+  hash_f=/tmp/setup_dnf__hash_of_installed_pkgs_B_prev
 
+  ## If the record already exists, 
   if [[ -f ${hash_f} ]]
   then
+
+    ## then read it in
     source "${hash_f}"
 
-    ## If the old hash...B matches the new hash...A, then return
-    if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]]
+    ## If the old hash...B matches the new hash...A, then return from this function 
+    if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B_prev}" ]]
     then
       return
     fi
   fi
-  unset hash_f
 
   ## Removals for disk space
   pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
@@ -1194,10 +1196,42 @@ function setup_dnf(){ als_function_boundary_in
 
     #EC=101 LN="${nL}" exit # <>
 
+  ## Get new hash of installed packages, ie, ${hash..B}
   hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
-  ## Write ${hash...B} to disk
-  declare -p hash_of_installed_pkgs_B > "${tmp_dir}/setup_dnf__hash_of_installed_pkgs_B"
+  ## Write ${hash..B} to disk
+
+  local hash_of_installed_pkgs_B_prev
+  hash_of_installed_pkgs_B_prev="${hash_of_installed_pkgs_B}"
+  
+  ## If the target file exists
+  if [[ -f ${hash_f} ]]
+  then
+
+    ## If the target file is immutable
+    local has_immutable
+    has_immutable=$( sudo lsattr -l "${hash_f}" | awk '$1 ~ /i/ { printf "Yes" }' )
+    
+    if [[ ${has_immutable} = "Yes" ]] 
+    then
+
+      ## ...then remove the immutable flag
+      sudo chattr -i "${hash_f}"
+    fi
+    
+  ## if the target file does not exist
+  else
+    
+    ## then create it
+    touch "${hash_f}"
+  fi
+
+  ## State: the file exists and is writeable
+
+  ## Write ${hash..B} to disk, and make it RO and immutable
+  declare -p hash_of_installed_pkgs_B_prev > "${hash_f}"
+  chmod 400 "${verb__[@]}" "${hash_f}"
+  sudo chattr +i "${hash_f}"
 
   ## TODO: change temp-vars (II, XX, etc) to fully named vars
 
