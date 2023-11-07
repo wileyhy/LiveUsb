@@ -655,7 +655,7 @@ function reqd_user_files(){ als_function_boundary_in
 
   for AA in "${arrays_of_conf_files[@]}"
   do
-    :;: 'Loop A - open \\\ ' ;:
+    #:;: 'Loop A - open \\\ ' ;:
 
     : "Vars"
     ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
@@ -673,7 +673,7 @@ function reqd_user_files(){ als_function_boundary_in
     : "If the target conf file/dir does not exist"
     for BB in "${!QQ[@]}"
     do
-      : '    Loop A:1 - open \\\ '
+      #: '    Loop A:1 - open \\\ '
       if ! [[ -e ${QQ[BB]} ]]
       then
 
@@ -716,19 +716,19 @@ function reqd_user_files(){ als_function_boundary_in
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
         unset source_file dest_dir
       fi
-      : "    Loop A:1 - shut /// " ;:;:
+      #: "    Loop A:1 - shut /// " ;:;:
     done
-    : "Loops A:1 - complete === " ;:
+    #: "Loops A:1 - complete === " ;:
 
     unset BB
     unset -n QQ
-    :;: "Loop A - shut /// " ;:
+    #:;: "Loop A - shut /// " ;:
   done
 
   unset AA
   unset mount_pt data_dir is_mounted
   unset pttn_device_path
-  :;: "Loops A - complete === " ;:
+  #:;: "Loops A - complete === " ;:
 
   : "Restore previous umask"
   builtin "${prev_umask[@]}"
