@@ -733,7 +733,7 @@ function rsync_install_if_missing(){ als_function_boundary_in
     local -a poss_dat_dirs
     unset_local_var_rand5791=yes
     
-    readarray -d "" -t poss_dat_dirs < <( find / -path "*${datadir_basenm}*" -name '\.id_key' -print0 2>/dev/null )
+    readarray -d "" -t poss_dat_dirs < <( find / -type f -path "*${datadir_basenm}*" -name '\.id_key' -print0 2>/dev/null )
     
     local XX
     data_dir=$(
