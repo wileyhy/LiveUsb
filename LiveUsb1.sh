@@ -602,6 +602,11 @@ function reqd_user_files(){ als_function_boundary_in
   : "USB drive must be mounted"
   if [[ ${is_mounted} = "no" ]]
   then
+    if ! [[ -d "${mount_pt}" ]]
+    then
+      sudo -- mkdir --parents -- "${mount_pt}" || die
+    fi
+
     sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || die
     is_mounted=yes
     sync -f
@@ -683,11 +688,12 @@ function reqd_user_files(){ als_function_boundary_in
           if [[ ${is_mounted} = no ]]
           then
 
-            : "Mountpoint must exist"
-            if ! [[ -d ${mount_pt} ]]
-            then
-              sudo -- mkdir --parents -- "${mount_pt}" || die
-            fi
+            ## Duplicated above
+            #: "Mountpoint must exist"
+            #if ! [[ -d ${mount_pt} ]]
+            #then
+            #  sudo -- mkdir --parents -- "${mount_pt}" || die
+            #fi
 
             sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || die
 
