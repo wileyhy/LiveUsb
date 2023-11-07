@@ -1233,7 +1233,7 @@ function setup_dnf(){ als_function_boundary_in
   ## State: the file exists and is writeable
 
   ## Write ${hash..B} to disk, and make it RO and immutable
-  printf '%s' "${hash_of_installed_pkgs_B_prev}" | tee "${hash_f}"
+  printf '%s\n' "${hash_of_installed_pkgs_B_prev}" | tee "${hash_f}"
   chmod 400 "${verb__[@]}" "${hash_f}"
   sudo chattr +i "${hash_f}"
 
