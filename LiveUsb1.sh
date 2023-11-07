@@ -729,13 +729,13 @@ function rsync_install_if_missing(){ als_function_boundary_in
   ## Bug, variable $data_dir is defined in a different function, reqd_user_files()
   if [[ -z "${data_dir}" ]]
   then
-    local unset_local_var_rand5791 data_dir
-    local -a poss_dat_dirs
+    local unset_local_var_rand5791
     unset_local_var_rand5791=yes
     
+    local -a poss_dat_dirs
     readarray -d "" -t poss_dat_dirs < <( find / -type f -path "*${datadir_basenm}*" -name '\.id_key' -print0 2>/dev/null )
-    
-    local XX
+
+    local data_dir XX
     data_dir=$(
       for XX in "${poss_dat_dirs[@]}"
       do 
@@ -743,18 +743,19 @@ function rsync_install_if_missing(){ als_function_boundary_in
       done | 
         awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' 
       )
-    unset XX
+    unset XX poss_dat_dirs
   fi
 
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
     sudo -- rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || die "${fn_target_dir}"
   fi
-  unset fn_source_var fn_target_dir
 
   ## Unset a local variable defined and assigned in only this function, and not any variables by the same 
   #+  name from any other scope
-  [[ ${unset_local_var_rand5791} = "yes" ]] && unset unset_local_var_rand5791 data_dir poss_dat_dirs
+  [[ ${unset_local_var_rand5791} = "yes" ]] && unset unset_local_var_rand5791 data_dir
+  
+  unset fn_source_var fn_target_dir
 }
 
 : "Define setup_bashrc()"
