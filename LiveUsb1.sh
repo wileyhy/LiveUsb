@@ -496,14 +496,14 @@ function must_be_root(){ als_function_boundary_in
 : "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
 function pause_to_check(){ als_function_boundary_in
-  set - # []
+  #set - # []
   local -I EC=101 LN="$1"
 
   #shift
   local -a KK=( "$@" )
   local reply 
 
-  [[ -n ${KK[*]:0:1} ]] && printf '\n%s, ${FUNCNAME[0]}(), %s\n' "${scr_nm}" "${KK[@]}" >&2
+  [[ -n ${KK[*]:0:1} ]] && printf '\n%s, %s(), %s\n' "${scr_nm}" "${FUNCNAME[0]}" "${KK[@]}" >&2
   printf '\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n' >&2
 
   if ! read -N1 -p $'\nReady?\n' -rst 600 reply >&2
