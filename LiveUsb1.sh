@@ -715,6 +715,7 @@ function rsync_install_if_missing(){ als_function_boundary_in
       die "${fn_target_dir}"
     fi
   else
+    local fn_umask
     read -r -a fn_umask < <( umask -p )
     umask 077
     mkdir --parents "${verb__[@]}" "${fn_target_dir}"
@@ -725,7 +726,7 @@ function rsync_install_if_missing(){ als_function_boundary_in
   ## Bug, variable $data_dir is defined in a different function, reqd_user_files()
   if [[ -z "${data_dir}" ]]
   then
-    local unset_local_var data_dir
+    local unset_local_var_rand5791 data_dir
     local -a poss_dat_dirs
     unset_local_var=yes
     
@@ -741,7 +742,7 @@ function rsync_install_if_missing(){ als_function_boundary_in
 
   ## Unset a local variable defined and assigned in only this function, and not any variables by the same 
   #+  name from any other scope
-  [[ ${unset_local_var} = "yes" ]] && unset unset_local_var data_dir
+  [[ ${unset_local_var_rand5791} = "yes" ]] && unset unset_local_var_rand5791 data_dir poss_dat_dirs
 }
 
 : "Define setup_bashrc()"
