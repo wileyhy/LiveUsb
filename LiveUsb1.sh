@@ -529,6 +529,7 @@ function pause_to_check(){ als_function_boundary_in
   #if [[ $hyphn =~ x ]]; then bndry_cmd="echo"; else bndry_cmd="true"; fi
   #"${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
+alias pause2ck='pause_to_check "${nL}"'
 
 : "Define reqd_user_files()"
 function reqd_user_files(){ als_function_boundary_in
@@ -1597,6 +1598,8 @@ function setup_ssh(){ als_function_boundary_in
 
   ## Bug, chown changes ctime on every execution, whether or not the ownership changes
 
+    pause2ck # <>
+
   :;: $'Make sure the SSH config dir for USER exists and has correct DAC\x60s'
   local ssh_usr_conf_dir
   ssh_usr_conf_dir=~/.ssh/
@@ -1613,6 +1616,8 @@ function setup_ssh(){ als_function_boundary_in
     die
   fi
   unset ssh_usr_conf_dir
+
+    pause2ck # <>
 
   :;: $'Make sure the SSH config file for USER exists'
   local ssh_user_conf_file
@@ -1633,13 +1638,13 @@ function setup_ssh(){ als_function_boundary_in
 
   ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
-    #declare -p SSH_AUTH_SOCK SSH_AGENT_PID
+    declare -p SSH_AUTH_SOCK SSH_AGENT_PID
+
+    pause2ck # <>
 
   : "Make sure ssh daemon is running (?)"
   if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]]
   then
-
-    ## Bug, window manager is hard coded, "startxfce4"
 
     :;: "Get the PID of any running SSH Agents -- there may be more than one"
     local -a ssh_agent_pids
@@ -1648,7 +1653,7 @@ function setup_ssh(){ als_function_boundary_in
     if [[ -z ${ssh_agent_pids[@]} ]]
     then
       :;: $'If there aren\x60t any SSH Agents running, then start one'
-      #ssh-agent -s
+      ssh-agent -s
 
       :;: "Try again to get the PID of the SSH Agent"
       local awk_o
@@ -1656,6 +1661,9 @@ function setup_ssh(){ als_function_boundary_in
       readarray -t ssh_agent_pids <<< "${awk_o[@]}"
       unset awk_o
     else
+
+        pause2ck # <>
+
       case "${#ssh_agent_pids[@]}" in
         1 ) 
             if [[ -z ${SSH_AGENT_PID:-} ]]
