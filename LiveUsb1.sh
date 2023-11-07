@@ -673,13 +673,13 @@ function reqd_user_files(){ als_function_boundary_in
     do
       :;: 'Loop A:1 - open \\\ ' ;:
 
-      : "Vars"
-      local source_file
-      source_file="${data_dir}/${QQ[BB]#~/}"
-
       :;: "If the target conf file/dir does not exist"
       if ! [[ -e ${QQ[BB]} ]]
       then
+
+        : "Vars"
+        local source_file
+        source_file="${data_dir}/${QQ[BB]#~/}"
 
         :;: "If the source conf file/dir does not exist, then find it"
         if ! [[ -e ${source_file} ]]
@@ -714,9 +714,8 @@ function reqd_user_files(){ als_function_boundary_in
         local dest_dir
         dest_dir="${QQ[BB]%/*}"
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
-
+        unset source_file dest_dir
       fi
-      unset source_file dest_dir
       :;: "Loop A:1 - shut /// " ;:
     done
     :;: "Loops A:1 - complete === " ;:
