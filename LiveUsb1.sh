@@ -648,7 +648,7 @@ function reqd_user_files(){ als_function_boundary_in
 
   :;: "For each array of conf files and/or directories"
   local AA
-  local -n QQ
+  #local -n QQ
   ## It isn\t strictly necessary to declare QQ as a nameref here, since unsetting QQ (see below) removes the
   #+  nameref attribute, but I intend to use QQ as a nameref, so declaring QQ without a nameref attribute
   #+  would be confusing
@@ -657,29 +657,28 @@ function reqd_user_files(){ als_function_boundary_in
   do
     :;: 'Loop A - open \\\ ' ;:
 
-    : "Vars"
+    #: "Vars"
     ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
     #+  directly, `foo=bar`, then on the second loop `local -p QQ` prints the former value of QQ. Perhaps
     #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
     ## Note, remember, namerefs can only be unset with the -n flag to the `unset` builtin
-    #unset -n QQ
-    local -n QQ
-    local -n QQ="${AA}"   ## good code
+    #local -n QQ
+    #local -n QQ="${AA}"   ## good code
     #QQ="${AA}"           ## baaad code
 
     :;: "For each conf file or dir"
     local BB
-    for BB in "${!QQ[@]}"
+    for BB in "${!AA[@]}"
     do
       :;: 'Loop A:1 - open \\\ ' ;:
 
       :;: "If the target conf file/dir does not exist"
-      if ! [[ -e ${QQ[BB]} ]]
+      if ! [[ -e ${AA[BB]} ]]
       then
 
         : "Vars"
         local source_file
-        source_file="${data_dir}/${QQ[BB]#~/}"
+        source_file="${data_dir}/${AA[BB]#~/}"
 
         :;: "If the source conf file/dir does not exist, then find it"
         if ! [[ -e ${source_file} ]]
@@ -707,12 +706,12 @@ function reqd_user_files(){ als_function_boundary_in
           :;: "If the source conf file/dir still does not exist, then throw an error"
           if ! [[ -e "${source_file}" ]]
           then
-            die "${QQ[BB]}" "${source_file}"
+            die "${AA[BB]}" "${source_file}"
           fi
         fi
 
         local dest_dir
-        dest_dir="${QQ[BB]%/*}"
+        dest_dir="${AA[BB]%/*}"
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
         unset source_file dest_dir
       fi
@@ -721,7 +720,6 @@ function reqd_user_files(){ als_function_boundary_in
     :;: "Loops A:1 - complete === " ;:
 
     unset BB
-    unset -n QQ
     :;: "Loop A - shut /// " ;:
   done
 
