@@ -2070,13 +2070,9 @@ function trap_exit(){ als_function_boundary_in
 
   trap - EXIT
 
-  #if [[ ${loc_exit_code} = 00 ]]
-  #then
-    #: "End of script, line ${lineno}"
-  #else
-    #: "End of EXIT trap"
-  #fi
-
+  : "Remove temporary directory"
+  "$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
+  
   builtin exit "${loc_exit_code}"
 }
 
