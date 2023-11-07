@@ -64,11 +64,13 @@ shopt -s expand_aliases
   :
   scr_repo_nm="LiveUsb"
   scr_nm="LiveUsb1.sh"
-  sha256_of_repo_readme="da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c"
-  readonly scr_repo_nm scr_nm sha256_of_repo_readme
+  datadir_basenm="skel-LiveUsb"
+  readonly scr_repo_nm scr_nm datadir_basenm
   :
+  sha256_of_repo_readme="da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c"
   data_pttn_uuid="949f3d8c-2dbe-4356-8a6b-3389e4c016d4"
-  readonly data_pttn_uuid
+  data_dir_id_sha256="7542c27ad7c381b059009e2b321155b8ea498cf77daaba8c6d186d6a0e356280"
+  readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
   :
   fn_bndry_sh=" ~~~ ~~~ ~~~ "
   fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
@@ -549,9 +551,7 @@ function reqd_user_files(){ als_function_boundary_in
   
   : $'Vars: Is device identified by \x22\x24data_pttn_uuid\x22 attached to this machine? If so, get device path'
   local pttn_device_path
-  pttn_device_path=$( lsblk --noheadings --output partuuid,path | 
-    awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' 
-  )
+  pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' )
   [[ -n ${pttn_device_path} ]] || die $'Necessary USB drive isn\x60t plugged in or its filesystem has changed.'
   
   :;: "Vars: get mountpoints and label"
@@ -575,14 +575,14 @@ function reqd_user_files(){ als_function_boundary_in
       pttn_label=$( lsblk --noheadings --output label "${pttn_device_path}" )
       pttn_label="${pttn_label:=live_usb_tmplabel}"
       mount_pt="/run/media/root/${pttn_label}"
-      data_dir="${mount_pt}/skel-LiveUsb"
+      data_dir="${mount_pt}/${datadir_basenm}"
       is_mounted=no
       unset pttn_label
       ;; #
     1 )
       : "  One match"
       mount_pt="${array_mt_pts[*]}"
-      data_dir="${mount_pt}/skel-LiveUsb"
+      data_dir="${mount_pt}/${datadir_basenm}"
       is_mounted=yes
       ;; #
     * )
@@ -604,6 +604,9 @@ function reqd_user_files(){ als_function_boundary_in
     die "Data directory is missing or is a symlink"
   fi
 
+  : $'Data directory\x27s id-key must exist and must have the correct SHA256 hash'
+
+  
   : "Capture previous umask and set a new one"
   local prev_umask
   read -r -a prev_umask < <( umask -p )
@@ -728,10 +731,19 @@ function rsync_install_if_missing(){ als_function_boundary_in
   then
     local unset_local_var_rand5791 data_dir
     local -a poss_dat_dirs
-    unset_local_var=yes
+    unset_local_var_rand5791=yes
     
-    readarray -d "" -t poss_dat_dirs < <( find /run/media -type d -name skel-LiveUsb -print0 )
-    data_dir=""
+    readarray -d "" -t poss_dat_dirs < <( find / -path "*${datadir_basenm}*" -name '\.id_key' -print0 2>/dev/null )
+    
+    local XX
+    data_dir=$(
+      for XX in "${poss_dat_dirs[@]}"
+      do 
+        sha256sum -b "${XX}"
+      done | 
+        awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' 
+      )
+    unset XX
   fi
 
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
