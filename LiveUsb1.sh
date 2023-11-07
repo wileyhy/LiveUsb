@@ -549,7 +549,7 @@ function reqd_user_files(){ als_function_boundary_in
   #+  "-1" is guaranteed to exist. ...unless the array is completely empty...
   #+	but I don\t want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes. So, it\s a bit of future-proofing.
-  
+
   : $'Vars: Is device identified by \x22\x24data_pttn_uuid\x22 attached to this machine? If so, get device path'
   local pttn_device_path
   pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' )
@@ -598,8 +598,8 @@ function reqd_user_files(){ als_function_boundary_in
   [[ ${mount_user} = @(root|liveuser) ]] || die
   unset mount_user
 
-  #: $'FS mounting must automatically \x60umount\x60 after 15 minutes, and automatically \x60mount\x60 on 
-  #+    access by authorized user'
+  : $'FS mounting must auto- \x60umount\x60 after 15 minutes, and auto- \x60mount\x60 on access'
+  mount -o remount,x-systemd.idle.timeout=10,nosuid,noexec,dev,nouser,ro "${pttn_device_path}"
 
   : "Data directory must already exist"
   if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]; then die; fi
