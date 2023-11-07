@@ -599,7 +599,10 @@ function reqd_user_files(){ als_function_boundary_in
   unset mount_user
 
   : $'FS mounting must auto- \x60umount\x60 after 15 minutes, and auto- \x60mount\x60 on access'
-  mount -o remount,x-systemd.idle.timeout=10,nosuid,noexec,dev,nouser,ro "${pttn_device_path}"
+  if ! mount | grep -Fe "${pttn_device_path}" | grep -q timeout
+  then
+    mount -o remount,x-systemd.idle.timeout=10,nosuid,noexec,dev,nouser,ro "${pttn_device_path}"
+  fi
 
   : "Data directory must already exist"
   if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]; then die; fi
