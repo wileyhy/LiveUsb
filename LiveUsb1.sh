@@ -941,8 +941,9 @@ function setup_dnf(){ als_function_boundary_in
   hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
   ## Define filename for record of previous hash..B
-  local hash_f
+  local hash_f hash_of_installed_pkgs_B_prev
   hash_f=/tmp/setup_dnf__hash_of_installed_pkgs_B_prev
+  hash_of_installed_pkgs_B_prev=""
 
   ## If the record already exists, 
   if [[ -f ${hash_f} ]]
