@@ -635,8 +635,7 @@ function reqd_user_files(){ als_function_boundary_in
 
   : "Data directory verification info must be correct"
   local ZZ
-  ZZ=$( sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" |
-    awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' )
+  ZZ=$( sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" | grep -o "${data_dir_id_sha256}" )
 
   if ! [[ -f "${data_dir}/${datdir_idfile}" ]] || [[ -L "${data_dir}/${datdir_idfile}" ]]; then die; fi
   if ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]; then die; fi
