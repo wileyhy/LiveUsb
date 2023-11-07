@@ -953,7 +953,7 @@ function setup_dnf(){ als_function_boundary_in
     source "${hash_f}"
 
     ## If the old hash...B matches the new hash...A, then return from this function 
-    if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B_prev}" ]]
+    if [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B_prev}" ]]
     then
       return
     fi
