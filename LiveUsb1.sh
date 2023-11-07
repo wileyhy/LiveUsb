@@ -593,29 +593,37 @@ function reqd_user_files(){ als_function_boundary_in
   esac
   unset array_mt_pts
 
-  #: "Mountpoint must be readable via ACL"
-  #: "FS mounting must be restricted to root and/or liveuser"
+  : "FS mounting must be restricted to root and/or liveuser"
+  local mount_user="${mount_pt%/*}" mount_user="${mount_user##*/}"
+  [[ ${mount_user} = @(root|liveuser) ]] || die
+  unset mount_user
+
   #: $'FS mounting must automatically \x60umount\x60 after 15 minutes, and automatically \x60mount\x60 on 
   #+    access by authorized user'
-  #: "Data directory must be readable via ACL"
 
   : "Data directory must already exist"
+  if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]; then die; fi
+  
+  : "Directories from mount-username directory to data directory must be readable via ACL, but not writeable"
+  sudo -- setfacl --modify=u:${LOGNAME}:rx                              -- "${mount_pt%/*}"
+  
+  sudo -- setfacl --remove-all --remove-default                         -- "${mount_pt}" 
+  sudo -- setfacl --modify=u:${LOGNAME}:rx                              -- "${mount_pt}"
+  
+  sudo -- setfacl --remove-all --remove-default --recursive --physical  -- "${data_dir}" 
+  sudo -- setfacl --modify=u:${LOGNAME}:rx      --recursive --physical  -- "${data_dir}"
+
+  : "Data directory verification info must be correct"
   local ZZ
   ZZ=$( sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" |
     awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' )
 
-  if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
-  then
-    die "Data directory is missing or is a symlink"
-  fi
-  
-  : "Data directory verification info must be correct"
   if ! [[ -f "${data_dir}/${datdir_idfile}" ]] || [[ -L "${data_dir}/${datdir_idfile}" ]]
   then
-    die "Data directory ID keyfile is missing"
+    die
   elif ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]
   then
-    die "Data directory ID keyfile hash is wrong"
+    die
   fi
   unset ZZ
   
