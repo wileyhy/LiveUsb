@@ -594,7 +594,8 @@ function reqd_user_files(){ als_function_boundary_in
   unset array_mt_pts
 
   : "FS mounting must be restricted to root and/or liveuser"
-  local mount_user="${mount_pt%/*}" mount_user="${mount_user##*/}"
+  local mount_user
+  mount_user="${mount_pt%/*}" mount_user="${mount_user##*/}"
   [[ ${mount_user} = @(root|liveuser) ]] || die
   unset mount_user
 
