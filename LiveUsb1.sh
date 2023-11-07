@@ -65,6 +65,7 @@ shopt -s expand_aliases
   scr_repo_nm="LiveUsb"
   scr_nm="LiveUsb1.sh"
   datadir_basenm="skel-LiveUsb"
+  datdir_idfile=".${scr_repo_nm}_id-key"
   readonly scr_repo_nm scr_nm datadir_basenm
   :
   sha256_of_repo_readme="da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c"
@@ -604,8 +605,8 @@ function reqd_user_files(){ als_function_boundary_in
     die "Data directory is missing or is a symlink"
   fi
 
-  : $'Data directory\x27s id-key must exist and must have the correct SHA256 hash'
-
+  : $'Data directory\x27s \x24datdir_idfile must exist and must have the correct SHA256 hash'
+  "${data_dir}/${datdir_idfile}"
   
   : "Capture previous umask and set a new one"
   local prev_umask
@@ -733,7 +734,8 @@ function rsync_install_if_missing(){ als_function_boundary_in
     unset_local_var_rand5791=yes
     
     local -a poss_dat_dirs
-    readarray -d "" -t poss_dat_dirs < <( find / -type f -path "*${datadir_basenm}*" -name '\.id_key' -print0 2>/dev/null )
+    readarray -d "" -t poss_dat_dirs < <( 
+      find / -type f -path "*${datadir_basenm}*" -name "${datdir_idfile}" -print0 2>/dev/null )
 
     local data_dir XX
     data_dir=$(
