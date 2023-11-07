@@ -599,7 +599,7 @@ function reqd_user_files(){ als_function_boundary_in
   #+    access by authorized user'
   #: "Data directory must be readable via ACL"
 
-  : "Data directory must already exist and verification info must be correct"
+  : "Data directory must already exist"
   local ZZ
   ZZ=$( sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" |
     awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' )
@@ -607,7 +607,10 @@ function reqd_user_files(){ als_function_boundary_in
   if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
   then
     die "Data directory is missing or is a symlink"
-  elif ! [[ -f "${data_dir}/${datdir_idfile}" ]] || [[ -L "${data_dir}/${datdir_idfile}" ]]
+  fi
+  
+  : "Data directory verification info must be correct"
+  if ! [[ -f "${data_dir}/${datdir_idfile}" ]] || [[ -L "${data_dir}/${datdir_idfile}" ]]
   then
     die "Data directory ID keyfile is missing"
   elif ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]
