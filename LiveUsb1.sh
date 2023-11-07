@@ -725,6 +725,11 @@ function rsync_install_if_missing(){ als_function_boundary_in
   ## Bug, variable $data_dir is defined in a different function, reqd_user_files()
   if [[ -z "${data_dir}" ]]
   then
+    local unset_local_var data_dir
+    local -a poss_dat_dirs
+    unset_local_var=yes
+    
+    readarray -d "" -t poss_dat_dirs < <( find /run/media -type d -name skel-LiveUsb -print0 )
     data_dir=""
   fi
 
@@ -733,6 +738,10 @@ function rsync_install_if_missing(){ als_function_boundary_in
     sudo -- rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || die "${fn_target_dir}"
   fi
   unset fn_source_var fn_target_dir
+
+  ## Unset a local variable defined and assigned in only this function, and not any variables by the same 
+  #+  name from any other scope
+  [[ ${unset_local_var} = "yes" ]] && unset unset_local_var data_dir
 }
 
 : "Define setup_bashrc()"
