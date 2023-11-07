@@ -669,11 +669,11 @@ function reqd_user_files(){ als_function_boundary_in
 
     :;: "For each conf file or dir"
     local BB
+
+    : "If the target conf file/dir does not exist"
     for BB in "${!QQ[@]}"
     do
       : '    Loop A:1 - open \\\ '
-
-      : "If the target conf file/dir does not exist"
       if ! [[ -e ${QQ[BB]} ]]
       then
 
