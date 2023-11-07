@@ -2201,7 +2201,7 @@ setup_vars
 :;: "Certain files must have been installed from off-disk"
 reqd_user_files
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Network"
