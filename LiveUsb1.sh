@@ -704,7 +704,7 @@ function reqd_user_files(){ als_function_boundary_in
 function rsync_install_if_missing(){ als_function_boundary_in
   #set -x # []
 
-  local fn_target_dir fn_umask fn_source_var
+  local fn_target_dir fn_source_var
   fn_source_var="$1"
   fn_target_dir="$2"
 
