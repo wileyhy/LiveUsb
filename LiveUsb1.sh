@@ -605,8 +605,22 @@ function reqd_user_files(){ als_function_boundary_in
     die "Data directory is missing or is a symlink"
   fi
 
-  : $'Data directory\x27s \x24datdir_idfile must exist and must have the correct SHA256 hash'
-  "${data_dir}/${datdir_idfile}"
+  : $'Data directory\x27s \x24datdir_idfile must exist'
+  if ! [[ -f "${data_dir}/${datdir_idfile}" ]]
+  then
+    die "Data directory ID keyfile is missing"
+  fi
+
+  : $'Data directory\x27s \x24datdir_idfile must have the correct SHA256 hash'
+  local ZZ
+  ZZ=$( sha256sum -b "${data_dir}/${datdir_idfile}" | 
+    awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' )
+
+  if ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]
+  then
+    die "Data directory ID keyfile hash is wrong"
+  fi
+  unset ZZ
   
   : "Capture previous umask and set a new one"
   local prev_umask
