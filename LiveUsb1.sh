@@ -1227,6 +1227,9 @@ function setup_dnf(){ als_function_boundary_in
     touch "${hash_f}"
   fi
 
+  ## Make sure the file is writeable
+  [[ -w "${hash_f}" ]] || chmod o+w "${hash_f}"
+
   ## State: the file exists and is writeable
 
   ## Write ${hash..B} to disk, and make it RO and immutable
