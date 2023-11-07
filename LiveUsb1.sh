@@ -496,7 +496,7 @@ function must_be_root(){ als_function_boundary_in
 : "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
 function pause_to_check(){ als_function_boundary_in
-  #set - # []
+  set - # []
   local -I EC=101 LN="$1"
 
   #shift
