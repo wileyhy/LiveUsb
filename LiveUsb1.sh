@@ -1228,7 +1228,7 @@ function setup_dnf(){ als_function_boundary_in
   fi
 
   ## Make sure the file is writeable
-  [[ -w "${hash_f}" ]] || chmod o+w "${hash_f}"
+  [[ -w "${hash_f}" ]] || chmod u+w "${hash_f}"
 
   ## State: the file exists and is writeable
 
