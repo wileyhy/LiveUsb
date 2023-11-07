@@ -538,8 +538,6 @@ alias pause2ck='pause_to_check "${nL}"'
 function reqd_user_files(){ als_function_boundary_in
   #set -x # []
 
-  ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
-  #+  effect the local variable
   ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
   #+  `local lsblk_out \n lsblk_out=""` the assignment doesn\t need a preceding `local`
   ## Note, I\m using an array with $lsblk_out so I can work around `set -u` by using a ":=" PE, and so that
@@ -648,6 +646,8 @@ function reqd_user_files(){ als_function_boundary_in
 
   :;: "For each array of conf files and/or directories"
   local AA
+  ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
+  #+  effect the local variable
   #local -n QQ
   ## It isn\t strictly necessary to declare QQ as a nameref here, since unsetting QQ (see below) removes the
   #+  nameref attribute, but I intend to use QQ as a nameref, so declaring QQ without a nameref attribute
