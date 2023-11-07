@@ -718,7 +718,7 @@ function reqd_user_files(){ als_function_boundary_in
       fi
       : "    Loop A:1 - shut /// " ;:;:
     done
-    :;: "Loops A:1 - complete === " ;:
+    : "Loops A:1 - complete === " ;:
 
     unset BB
     unset -n QQ
