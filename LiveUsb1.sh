@@ -926,7 +926,7 @@ function setup_dnf(){ als_function_boundary_in
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
 
-    : "Beginning section on DNF" # <>
+    :;: "Beginning section on DNF" ;: # <>
 
   ## Note, CUPS cannot be safely removed; too many dependencies
   ## Note, For some unknown reason, even when  dnf  doesn\t change any programs,  dnf
@@ -939,6 +939,22 @@ function setup_dnf(){ als_function_boundary_in
   #+  apply to the entire block
 
   hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
+
+  ## If record of previous hash...B exists, check it
+  local hash_f
+  hash_f="${tmp_dir}/setup_dnf__hash_of_installed_pkgs_B"
+
+  if [[ -f ${hash_f} ]]
+  then
+    source "${hash_f}"
+
+    ## If the old hash...B matches the new hash...A, then return
+    if ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]]
+    then
+      return
+    fi
+  fi
+  unset hash_f
 
   ## Removals for disk space
   pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
@@ -1179,6 +1195,9 @@ function setup_dnf(){ als_function_boundary_in
     #EC=101 LN="${nL}" exit # <>
 
   hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
+
+  ## Write ${hash...B} to disk
+  declare -p hash_of_installed_pkgs_B > "${tmp_dir}/setup_dnf__hash_of_installed_pkgs_B"
 
   ## TODO: change temp-vars (II, XX, etc) to fully named vars
 
