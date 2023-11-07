@@ -538,6 +538,8 @@ alias pause2ck='pause_to_check "${nL}"'
 function reqd_user_files(){ als_function_boundary_in
   #set -x # []
 
+  ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
+  #+  effect the local variable
   ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
   #+  `local lsblk_out \n lsblk_out=""` the assignment doesn\t need a preceding `local`
   ## Note, I\m using an array with $lsblk_out so I can work around `set -u` by using a ":=" PE, and so that
@@ -646,9 +648,7 @@ function reqd_user_files(){ als_function_boundary_in
 
   :;: "For each array of conf files and/or directories"
   local AA
-  ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
-  #+  effect the local variable
-  #local -n QQ
+  local -n QQ
   ## It isn\t strictly necessary to declare QQ as a nameref here, since unsetting QQ (see below) removes the
   #+  nameref attribute, but I intend to use QQ as a nameref, so declaring QQ without a nameref attribute
   #+  would be confusing
@@ -657,28 +657,29 @@ function reqd_user_files(){ als_function_boundary_in
   do
     :;: 'Loop A - open \\\ ' ;:
 
-    #: "Vars"
+    : "Vars"
     ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
     #+  directly, `foo=bar`, then on the second loop `local -p QQ` prints the former value of QQ. Perhaps
     #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
     ## Note, remember, namerefs can only be unset with the -n flag to the `unset` builtin
-    #local -n QQ
-    #local -n QQ="${AA}"   ## good code
+    #unset -n QQ
+    local -n QQ
+    local -n QQ="${AA}"   ## good code
     #QQ="${AA}"           ## baaad code
 
     :;: "For each conf file or dir"
     local BB
-    for BB in "${!AA[@]}"
+    for BB in "${!QQ[@]}"
     do
       :;: 'Loop A:1 - open \\\ ' ;:
 
       :;: "If the target conf file/dir does not exist"
-      if ! [[ -e ${AA[BB]} ]]
+      if ! [[ -e ${QQ[BB]} ]]
       then
 
         : "Vars"
         local source_file
-        source_file="${data_dir}/${AA[BB]#~/}"
+        source_file="${data_dir}/${QQ[BB]#~/}"
 
         :;: "If the source conf file/dir does not exist, then find it"
         if ! [[ -e ${source_file} ]]
@@ -706,12 +707,12 @@ function reqd_user_files(){ als_function_boundary_in
           :;: "If the source conf file/dir still does not exist, then throw an error"
           if ! [[ -e "${source_file}" ]]
           then
-            die "${AA[BB]}" "${source_file}"
+            die "${QQ[BB]}" "${source_file}"
           fi
         fi
 
         local dest_dir
-        dest_dir="${AA[BB]%/*}"
+        dest_dir="${QQ[BB]%/*}"
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
         unset source_file dest_dir
       fi
@@ -720,6 +721,7 @@ function reqd_user_files(){ als_function_boundary_in
     :;: "Loops A:1 - complete === " ;:
 
     unset BB
+    unset -n QQ
     :;: "Loop A - shut /// " ;:
   done
 
