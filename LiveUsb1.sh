@@ -950,8 +950,7 @@ function setup_dnf(){ als_function_boundary_in
   then
 
     ## then read it in
-    #source "${hash_f}"
-    . "${hash_f}"
+    read -r hash_of_installed_pkgs_B_prev < "${hash_f}"
 
     ## If the old hash...B matches the new hash...A, then return from this function 
     if [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B_prev}" ]]
@@ -1234,7 +1233,7 @@ function setup_dnf(){ als_function_boundary_in
   ## State: the file exists and is writeable
 
   ## Write ${hash..B} to disk, and make it RO and immutable
-  declare -p hash_of_installed_pkgs_B_prev | tee "${hash_f}"
+  printf '%s' "${hash_of_installed_pkgs_B_prev}" | tee "${hash_f}"
   chmod 400 "${verb__[@]}" "${hash_f}"
   sudo chattr +i "${hash_f}"
 
