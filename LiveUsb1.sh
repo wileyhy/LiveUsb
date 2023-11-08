@@ -90,7 +90,13 @@ shopt -s expand_aliases
   user_github_gpg_key="E287D0CF528591CE"
   readonly user_real_name user_github_email_address user_github_gpg_key
   :
-  list_of_minimum_reqd_rpms=( [0]="ShellCheck" [1]="firewall-config" [2]="gh" [3]="git" [4]="vim-enhanced" )
+  list_of_minimum_reqd_rpms=( 
+    [0]="ShellCheck" 
+    [1]="firewall-config" 
+    [2]="geany" 
+    [3]="gh" 
+    [4]="git" 
+    [5]="vim-enhanced" )
   readonly list_of_minimum_reqd_rpms
   :
   : "Parameters regarding required files"
