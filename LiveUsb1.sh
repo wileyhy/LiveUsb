@@ -16,10 +16,32 @@
 ## Note, written from within a Fedora instance, see hardcoded /run/media/root
 ## Note, style, function definition syntax, "(){ :" makes plain xtrace easier to read
 ## Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas "[[ ! -e" does, and yet, for `grep`.....
-## Note, `find`, `stat` and `[[` (and `ls`) don\t effect ext4 timestamps, as tested, but idempotent `chown` 
-#+  and `chmod` do, and of course `touch` does; if there\s no change in the file, `rsync` doesn\t, but if 
-#+  the file changes, it does. Also, "btime" on ext4 still isn\t consistent. `grep` has no effect on times;
-#+  `cp -a` effects "ctimes" even if file contents do not change.
+## Note, timestamps, `find`, `stat` and `[[` (and `ls`) don\t effect ext4 timestamps, as tested, but 
+#+  idempotent `chown` and `chmod` do, and of course `touch` does; if there\s no change in the file, 
+#+  `rsync` doesn\t, but if the file changes, it does. Also, "btime" on ext4 still isn\t consistent. 
+#+  `grep` has no effect on times; `cp -a` effects "ctimes" even if file contents do not change.
+
+## Bug? `command -p kill "$AA"` executes the bash builtin, judging by the output of `command -p kill`
+#+  without any operands. The output of `$( type -P kill )"` without operands is the same as the output
+#+  of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points.
+#+    `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what
+#+  is intended is, "...suppressing shell function lookup, but still allowing builtins to be executed,"
+#+  and possibly also aliases and keywords, though I haven\t tested those. The description of the "-p"
+#+  option is particularly misleading: "use a default value for PATH that is guaranteed to find all of
+#+  the standard utilities." That "guarantee" sounds as if use of the "-p" option "shall" (using the
+#+  POSIX defition of the word) result in a binary utility being used, when actually that is not the 
+#+  case.
+#+    Binary `kill` has a few options not available with the builtin, such as "--timeout", which can be
+#+  used to avoid writing an extra for loop...
+#+
+#+      sudo -- "$( type -P kill )" --verbose \
+#+          --timeout 1000 HUP \
+#+          --timeout 1000 USR1 \
+#+          --timeout 1000 TERM \
+#+          --timeout 1000 KILL -- "$WW"
+#+
+#+    Otherwise, it would be useful, IMO, if `kill --help` showed the help file for /bin/kill, since
+#+  using that syntax most likely indicates that intention  :-\
 
 ## TODO, add colors to xtrace comments
 ## TODO, systed services to disable: bluetooth, cups, [ systemd-resolved ? ]
@@ -1720,50 +1742,47 @@ function setup_network(){ als_function_boundary_in
 
 : "Define setup_ssh()"
 function setup_ssh(){ als_function_boundary_in
-  # set -
+  # set - ## []
 
-  ## Bug - security, these #chown# commands should operate on the files while they are still in skel_LiveUsb
-  #+  see also similar code in setup_gpg(), possibly elsewhere also  :-\
+  ## Bug? hardcoded filenames? ...yes, I know it#s mis-spelled.
 
-  ## Bug, chown changes ctime on every execution, whether or not the ownership changes
+  local ssh_usr_conf_dir ssh_user_conf_file
+  ssh_usr_conf_dir=~/.ssh/
+  ssh_user_conf_file=~/.ssh/config
 
+  :;: "Make sure the SSH config directory and file for USER exist"
+  [[ -d ${ssh_usr_conf_dir} ]] || mkdir -m 0700 "${ssh_usr_conf_dir}" || die
+  [[ -f ${ssh_user_conf_file} ]] || write_ssh_conf || die
+  
     pause2ck # <>
 
-  :;: $'Make sure the SSH config dir for USER exists and has correct DAC\x60s'
-  local ssh_usr_conf_dir
-  ssh_usr_conf_dir=~/.ssh/
+  ## TODO, _rm_ should be an alias
+  ## TODO, all aliases should be prefixed and suffixed with underscores, while functions should
+  #+  include at least one underscore
 
-  if [[ -d ${ssh_usr_conf_dir} ]]
+  :;: $'Make sure the SSH config file for USER is correct, and write it if it is missing or wrong'
+  if ! grep "ForwardAgent yes" "${qui__[@]}" "${ssh_user_conf_file}"
   then
+    "$( type -P rm )" --force --one-file-system --preserve-root=all "${verb__[@]}" "${ssh_user_conf_file}"
+    write_ssh_conf
+  fi
+  unset -f write_ssh_conf
+
+  ## Bug, security, these #chown# commands should operate on the files while they are still in skel_LiveUsb
+  #+  see also similar code in setup_gpg(), possibly elsewhere also  :-\
+
+  ## Bug, timestamps, chown changes ctime on every execution, whether or not the ownership changes
+
+  :;: $'Make sure the SSH config directories and files for USER have correct DAC\x60s'
+  {
     sudo -- \
       find -- "${ssh_usr_conf_dir}" -xdev  \(  \! -uid "${login_uid}"  -o  \! -gid "${login_gid}"  \) \
         -execdir  chown -- "${login_uid}:${login_gid}" "${verb__[@]}" \{\} \;  ||
           die
     find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir chmod 700 "${verb__[@]}" \{\} \; #
     find -- "${ssh_usr_conf_dir}" -xdev -type f -execdir chmod 600 "${verb__[@]}" \{\} \; #
-  else
-    die
-  fi
-  unset ssh_usr_conf_dir
-
-    pause2ck # <>
-
-  :;: $'Make sure the SSH config file for USER exists'
-  local ssh_user_conf_file
-  ssh_user_conf_file=~/.ssh/config
-
-  if [[ -f ${ssh_user_conf_file} ]]
-  then
-    if ! grep "ForwardAgent yes" "${qui__[@]}" "${ssh_user_conf_file}"
-    then
-      "$( type -P rm )" --force --one-file-system --preserve-root=all "${verb__[@]}" "${ssh_user_conf_file}"
-      write_ssh_conf
-    fi
-  else
-    write_ssh_conf
-  fi
-  unset ssh_user_conf_file
-  unset -f write_ssh_conf
+  }
+  unset ssh_usr_conf_dir ssh_user_conf_file
 
   ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
@@ -1772,119 +1791,64 @@ function setup_ssh(){ als_function_boundary_in
 
     pause2ck # <>
 
+  :;: "Get the PID of any running SSH Agents -- there may be more than one"
+  local -a ssh_agent_pids
+  readarray -t ssh_agent_pids < <( ps h -C 'ssh-agent -s' -o pid | tr -d ' ' )
+
   : "Make sure ssh daemon is running (?)"
-  if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]]
+  if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]] || [[ -z ${ssh_agent_pids[@]:-} ]]
   then
-
-    :;: "Get the PID of any running SSH Agents -- there may be more than one"
-    local -a ssh_agent_pids
-    readarray -t ssh_agent_pids < <( ps h -C 'ssh-agent -s' -o pid | tr -d ' ' )
-
-    if [[ -z ${ssh_agent_pids[@]} ]]
-    then
-      :;: $'If there aren\x60t any SSH Agents running, then start one'
-      ssh-agent -s
-
-      :;: "Try again to get the PID of the SSH Agent"
-      local awk_o
-      awk_o=$( awk '$0 ~ /ssh-agent/ && $0 !~ /exec -l/ && $0 !~ /grep / && $0 !~ /man / { print $2 }' <<< "${ps_o}" )
-      readarray -t ssh_agent_pids <<< "${awk_o[@]}"
-      unset awk_o
-    else
-
-        pause2ck # <>
-
-      case "${#ssh_agent_pids[@]}" in
-        1 ) 
-            if [[ -z ${SSH_AGENT_PID:-} ]]
-            then
-              SSH_AGENT_PID="${ssh_agent_pids[*]}"
-
-                declare -p SSH_AGENT_PID
-            fi
-          ;; #
-        * )
-            :;: "If more than one ssh-agent is running, then keep the first and kill the rest"
-            local II
-            for II in "${!ssh_agent_pids[@]}"
-            do
-              [[ $II = 0 ]] && continue
-              "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[II]}"
-              printf '<%s>\n' "$II"
-            done
-            unset II
-          ;; #
-      esac
-    fi
-
-    ## Bug? `command -p kill "$AA"` executes the bash builtin, judging by the output of `command -p kill`
-    #+  without any operands. The output of `$( type -P kill )"` without operands is the same as the output
-    #+  of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points.
-    #+    `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what
-    #+  is intended is, "...suppressing shell function lookup, but still allowing builtins to be executed,"
-    #+  and possibly also aliases and keywords, though I haven\t tested those. The description of the "-p"
-    #+  option is particularly misleading: "use a default value for PATH that is guaranteed to find all of
-    #+  the standard utilities." That "guarantee" sounds as if use of the "-p" option "shall" (using the
-    #+  POSIX defition of the word) result in a binary utility being used, when actually that is not the 
-    #+  case.
-    #+    Binary `kill` has a few options not available with the builtin, such as "--timeout", which can be
-    #+  used to avoid writing an extra for loop...
-    #+
-    #+      sudo -- "$( type -P kill )" --verbose \
-    #+          --timeout 1000 HUP \
-    #+          --timeout 1000 USR1 \
-    #+          --timeout 1000 TERM \
-    #+          --timeout 1000 KILL -- "$WW"
-    #+
-    #+    Otherwise, it would be useful, IMO, if `kill --help` showed the help file for /bin/kill, since
-    #+  using that syntax most likely indicates that intention  :-\
-
-    if [[ ${#ssh_agent_pids[@]} -gt 0 ]]
-    then
-      case "${#ssh_agent_pids[@]}" in
-
-        ## Bug, the branches of this if-fi block are either kill the current agent, or kill the current agent
-
-        1 )
-            if [[ -n ${SSH_AGENT_PID:-} ]]
-            then
-              : okay
-
-                echo SSH Agent exists
-                declare -p SSH_AGENT_PID
-
-            else
-              : warning: SSH_AGENT_PID does not exist
-            fi
-          ;; #
-        * )
-            #for VV in "${ssh_agent_pids[@]}"
-            #do
-              #"$( type -P kill )" "${verb__[@]}" "${VV}"
-            #done
-            #unset VV
-
-            die "More than one ssh-agent is running -- ${ssh_agent_pids[*]}"
-
-            ## Note:  ssh-agent -s  is "generate Bourne shell commands on stdout."
-            ssh_agent_o=$( ssh-agent -s )
-            eval "${ssh_agent_o}"
-          ;; #
-      esac
-    fi
-
-    ## Bug? hardcoded filename
-
+    :;: $'If there aren\x60t any SSH Agents running, then start one'
     ## https://stackoverflow.com/questions/10032461/git-keeps-asking-me-for-my-ssh-key-passphrase
-    ssh_agent_o=$( ssh-agent -s )
-    eval "${ssh_agent_o}"
-    
-    ## Note:  ssh-add  and  ssh  don\t have long options.  ssh-add -L  is "list;"  ssh -T  is "disable
-    #+  pseudo-terminal allocation."
-    ssh-add -v
-    ssh-add -L -v
-    #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
+    local HH
+    HH=$( ssh-agent -s )
+    eval "${HH}"
+    unset HH
+
+    :;: "...and try again to get the PID of the SSH Agent"
+    readarray -t ssh_agent_pids < <( ps h -C 'ssh-agent -s' -o pid | tr -d ' ' )
   fi
+
+    pause2ck # <>
+
+  case "${#ssh_agent_pids[@]}" in
+    0 )
+        die "ssh-agent failed to start"
+      ;; #
+    1 ) 
+        if [[ -z ${SSH_AGENT_PID:-} ]]
+        then
+          SSH_AGENT_PID="${ssh_agent_pids[*]}"
+
+            declare -p SSH_AGENT_PID ## <>
+        fi
+      ;; #
+    * )
+        ## TODO, _kill_ should be an alias
+      
+        :;: "If more than one ssh-agent is running, then keep the first and kill the rest"
+        local II
+        for II in "${!ssh_agent_pids[@]}"
+        do
+          [[ $II = 0 ]] && continue
+          "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[II]}"
+          printf '<%s>\n' "$II"
+        done
+        unset II
+      ;; #
+  esac
+
+  ## TODO, review these commands for necessity
+  ## Note, ssh-add  and  ssh  don\t have long options.  
+
+  :;: "?"
+  ssh-add -v
+
+  ## Note,  ssh-add -L  is "list;"  
+  ssh-add -L -v
+  
+  ## Note,  ssh -T  is "disable pseudo-terminal allocation."
+  #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
 }
 
 : "Define setup_temp_dirs()"
@@ -2188,6 +2152,8 @@ function write_bashrc_strings(){ als_function_boundary_in
 
 function write_ssh_conf(){ als_function_boundary_in
   #set - # []
+
+  ## Bug? $ssh_user_conf_file defined in a different function, setup_ssh()
 
   cat <<- \EOF > "${ssh_user_conf_file}"
 	Host github.com
