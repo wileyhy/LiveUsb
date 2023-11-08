@@ -1,7 +1,5 @@
-#!/bin/bash -xv
+#!/bin/bash
 ## #!/bin/env -iS bash
-
-:; exit # <>
 
 ## Note: ...undocumented feature??
 #+    Use `env -i` or else the script\s execution environment will inherit any exported anything,
@@ -9,7 +7,8 @@
 #+  which might be intended to shadow any builtins or commands or to supplant any of the aliases which some 
 #+  of the various Linux distributions often define and provide for users\ convenience.  These exported 
 #+  functions which are received from the caller\s environment get printed above the script\s shebang in 
-#+  xtrace when xtrace and vebose are both enabled on the shebang line.
+#+  xtrace when xtrace and vebose are both enabled on the shebang line. ...but exported variables do not 
+#+  print. 
 #+    ...also, using `env` messes up vim\s default bash-colorizations
 
 ## LiveUsb1
