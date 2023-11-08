@@ -1,5 +1,6 @@
 #!/bin/bash
-## #!/bin/env -iS bash
+## LiveUsb1
+##    #!/bin/env -iS bash
 
 ## Note: ...undocumented feature??
 #+    Use `env -i` or else the script\s execution environment will inherit any exported anything,
@@ -10,9 +11,6 @@
 #+  xtrace when xtrace and vebose are both enabled on the shebang line. ...but exported variables do not 
 #+  print. 
 #+    ...also, using `env` messes up vim\s default bash-colorizations
-
-## LiveUsb1
-
 ## Note, written from within a Fedora instance, see hardcoded /run/media/root
 ## Note, style, function definition syntax, "(){ :" makes plain xtrace easier to read
 ## Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas "[[ ! -e" does, and yet, for `grep`.....
