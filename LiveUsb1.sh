@@ -269,6 +269,8 @@ function error_and_exit(){ als_function_boundary_in
 
   printf '%s, Error, line %d, %s\n' "${scr_nm}" "${loc_lineno}" "$*" >&2
 
+  [[ ${loc_exit_code} = 0 ]] && loc_exit_code=99
+
   LN="${loc_lineno}" builtin exit "${loc_exit_code}"
 }
 
