@@ -1798,7 +1798,15 @@ function setup_ssh(){ als_function_boundary_in
             fi
           ;; #
         * )
-            die "More than one ssh-agent is running -- ${ssh_agent_pids[*]}"
+            :;: "If more than one ssh-agent is running, then keep the first and kill the rest"
+            local II
+            for II in "${!ssh_agent_pids[@]}"
+            do
+              [[ $II = 0 ]] && continue
+              kill "${ssh_agent_pids[II]}"
+              printf '<%s>\n' "$II"
+            done
+            unset II
           ;; #
       esac
     fi
@@ -1811,7 +1819,8 @@ function setup_ssh(){ als_function_boundary_in
     #+  and possibly also aliases and keywords, though I haven\t tested those. The description of the "-p"
     #+  option is particularly misleading: "use a default value for PATH that is guaranteed to find all of
     #+  the standard utilities." That "guarantee" sounds as if use of the "-p" option "shall" (using the
-    #+  POSIX defition of the word) result in a binary utility being used, when actually that is not the case.
+    #+  POSIX defition of the word) result in a binary utility being used, when actually that is not the 
+    #+  case.
     #+    Binary `kill` has a few options not available with the builtin, such as "--timeout", which can be
     #+  used to avoid writing an extra for loop...
     #+
