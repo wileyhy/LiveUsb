@@ -1803,7 +1803,7 @@ function setup_ssh(){ als_function_boundary_in
             for II in "${!ssh_agent_pids[@]}"
             do
               [[ $II = 0 ]] && continue
-              kill "${ssh_agent_pids[II]}"
+              "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[II]}"
               printf '<%s>\n' "$II"
             done
             unset II
