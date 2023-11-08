@@ -1,12 +1,13 @@
-#!/bin/bash
+#!/bin/bash -vx
 ## #!/bin/env -iS bash
 
 ## Note: ...undocumented feature??
 #+    Use `env -i` or else the script\s execution environment will inherit any exported anything,
 #+  including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`)
-#+  which might be intended to supercede any of the aliases which some Linux distributions often define and
-#+  provide for users\ convenience.  These exported functions which are received from the caller\s
-#+  environment get printed above the script\s shebang in xtrace when xtrace and vebose are both enabled on the shebang line.
+#+  which might be intended to shadow any builtins or commands or to supplant any of the aliases which some 
+#+  of the various Linux distributions often define and provide for users\ convenience.  These exported 
+#+  functions which are received from the caller\s environment get printed above the script\s shebang in 
+#+  xtrace when xtrace and vebose are both enabled on the shebang line.
 #+    ...also, using `env` messes up vim\s default bash-colorizations
 
 ## LiveUsb1
