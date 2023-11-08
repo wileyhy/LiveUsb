@@ -3,6 +3,7 @@
 ##    #!/bin/env -iS bash
 
 ## Note, idempotent script
+## Note, the symbol "<>" marks code as for debugging purpoeses only
 ## Note, ...undocumented feature??
 #+    Use `env -i` or else the script\s execution environment will inherit any exported anything,
 #+  including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`)
@@ -2245,7 +2246,7 @@ setup_time
 :;: "Temporary directory"
 setup_temp_dirs
 
-  EC=101 LN="${nL}" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "Minimum necessary rpms"
