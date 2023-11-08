@@ -1754,7 +1754,7 @@ function setup_ssh(){ als_function_boundary_in
   [[ -d ${ssh_usr_conf_dir} ]] || mkdir -m 0700 "${ssh_usr_conf_dir}" || die
   [[ -f ${ssh_user_conf_file} ]] || write_ssh_conf || die
   
-    pause2ck # <>
+    #pause2ck # <>
 
   ## TODO, _rm_ should be an alias
   ## TODO, all aliases should be prefixed and suffixed with underscores, while functions should
@@ -1789,7 +1789,7 @@ function setup_ssh(){ als_function_boundary_in
     : "${SSH_AUTH_SOCK:=} "${SSH_AGENT_PID:=} # <<>>
     declare -p SSH_AUTH_SOCK SSH_AGENT_PID # <>
 
-    pause2ck # <>
+    #pause2ck # <>
 
   :;: "Get the PID of any running SSH Agents -- there may be more than one"
   local -a ssh_agent_pids
@@ -1809,7 +1809,7 @@ function setup_ssh(){ als_function_boundary_in
     readarray -t ssh_agent_pids < <( ps h -C 'ssh-agent -s' -o pid | tr -d ' ' )
   fi
 
-    pause2ck # <>
+    #pause2ck # <>
 
   case "${#ssh_agent_pids[@]}" in
     0 )
@@ -2295,7 +2295,7 @@ unset BB
 :;: "SSH"
 setup_ssh
 
-  EC=101 LN="${nL}" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 :;: "GPG"
