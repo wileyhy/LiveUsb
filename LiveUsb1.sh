@@ -1427,9 +1427,6 @@ function setup_dnf(){ als_function_boundary_in
 function setup_gh_cli(){ als_function_boundary_in
   #set -x # []
 
-  :;: "GH -- Use GitHub CLI as a credential helper"
-  gh auth setup-git --hostname github.com
-
   :;: "GH -- set config key-value pairs"
   local -A github_configs
   local gh_config_list_out
@@ -1480,6 +1477,9 @@ function setup_gh_cli(){ als_function_boundary_in
     fi
   done
   unset QQ
+
+  :;: "GH -- Use GitHub CLI as a credential helper"
+  gh auth setup-git --hostname github.com
 }
 
 : "Define setup_git()"
