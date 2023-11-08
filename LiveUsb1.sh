@@ -2,7 +2,8 @@
 ## LiveUsb1
 ##    #!/bin/env -iS bash
 
-## Note: ...undocumented feature??
+## Note, idempotent script
+## Note, ...undocumented feature??
 #+    Use `env -i` or else the script\s execution environment will inherit any exported anything,
 #+  including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`)
 #+  which might be intended to shadow any builtins or commands or to supplant any of the aliases which some 
@@ -14,13 +15,14 @@
 ## Note, written from within a Fedora instance, see hardcoded /run/media/root
 ## Note, style, function definition syntax, "(){ :" makes plain xtrace easier to read
 ## Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas "[[ ! -e" does, and yet, for `grep`.....
-## Note, idempotent script
-## Note, find, stat and [[ (and ls) don\t effect ext4 timestamps, as tested, but idempotent chown and chmod
-#+  do, and of course touch does; if there\s no change in the file, rsync doesn\t, but if the file changes,
-#+  it does. Also, btime on ext4 still isn\t consistent. grep has no effect on times. cp -a effects ctimes
-#+  even if file contents do not change.
-## TODO: add colors to xtrace comments
-## Note, systed services to disable: bluetooth, cups, [ systemd-resolved ? ]; services to possibly enable: sshd, sssd
+## Note, `find`, `stat` and `[[` (and `ls`) don\t effect ext4 timestamps, as tested, but idempotent `chown` 
+#+  and `chmod` do, and of course `touch` does; if there\s no change in the file, `rsync` doesn\t, but if 
+#+  the file changes, it does. Also, "btime" on ext4 still isn\t consistent. `grep` has no effect on times;
+#+  `cp -a` effects "ctimes" even if file contents do not change.
+
+## TODO, add colors to xtrace comments
+## TODO, systed services to disable: bluetooth, cups, [ systemd-resolved ? ]
+## TODO, systed services to possibly enable: sshd, sssd
 
 # <> Debugging
 set -x # <>
