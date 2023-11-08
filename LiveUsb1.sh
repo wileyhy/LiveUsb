@@ -1845,7 +1845,7 @@ function setup_ssh(){ als_function_boundary_in
   #ssh-add -v
 
   ## Note,  ssh-add -L  is "list;"  
-  ssh-add -L -v
+  #ssh-add -L -v
   
   ## Note,  ssh -T  is "disable pseudo-terminal allocation."
   #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
