@@ -1,4 +1,4 @@
-#!/bin/bash -vx
+#!/bin/bash -xv
 ## #!/bin/env -iS bash
 
 :; exit # <>
