@@ -1842,7 +1842,7 @@ function setup_ssh(){ als_function_boundary_in
   ## Note, ssh-add  and  ssh  don\t have long options.  
 
   :;: "?"
-  ssh-add -v
+  #ssh-add -v
 
   ## Note,  ssh-add -L  is "list;"  
   ssh-add -L -v
