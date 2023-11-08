@@ -1,6 +1,8 @@
 #!/bin/bash -vx
 ## #!/bin/env -iS bash
 
+:; exit # <>
+
 ## Note: ...undocumented feature??
 #+    Use `env -i` or else the script\s execution environment will inherit any exported anything,
 #+  including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`)
