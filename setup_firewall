@@ -18,8 +18,7 @@
   ## Exit codes are very useful with `firewall-cmd`, so...
 
   ## Panic s/b off
-  #+   --panic-off 
-  --query-panic        Query whether panic mode is enabled
+  firewall-cmd --query-panic && firewall-cmd --panic-off 
 
   ## Create an alias with a timeout option for all commands
   #+    --timeout=<timeval>  Enable an option for timeval time, where timeval is
@@ -29,72 +28,72 @@
 
   ## Get stat info
   #+  firewall-cmd --state
-  --list-all           List everything added for or enabled [P] [Z] [O]
+  --list-all
 
   #+    --set-target
-  --get-target         Get the target [P only] [Z] [O]
-  --set-target=<target>
+  --get-target
+  --set-target
 
   #+    --set-default-zone=drop
-  --load-zone-defaults=<zone>
+  --load-zone-defaults
 
-  --info-zone=<zone>   Print information about a zone
-  --get-default-zone   Print default zone for connections and interfaces
-  --set-default-zone=<zone>
+  --info-zone
+  --get-default-zone
+  --set-default-zone
 
   #+    --add-interface=
-  --add-interface=<interface>
-  --change-interface=<interface>
-  --get-zone-of-interface=<interface>
-  --list-interfaces    List interfaces that are bound to a zone [P] [Z]
-  --query-interface=<interface>
-  --remove-interface=<interface>
+  --add-interface
+  --change-interface
+  --get-zone-of-interface
+  --list-interfaces
+  --query-interface
+  --remove-interface
 
   #+    --add-source=
-  --add-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
-  --change-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
-  --get-zone-of-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
-  --list-sources       List sources that are bound to a zone [P] [Z]
-  --query-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
-  --remove-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
+  --add-source
+  --change-source
+  --get-zone-of-source
+  --list-sources
+  --query-source
+  --remove-source
 
   #+    --remove-forward
-  --add-forward        Enable forwarding of packets between interfaces and
-  --query-forward      Return whether forwarding of packets between interfaces
-  --remove-forward     Disable forwarding of packets between interfaces and
+  --add-forward
+  --query-forward
+  --remove-forward
 
   #+    --log-denied=yes
-  --get-log-denied     Print the log denied value
-  --set-log-denied=<value>
+  --get-log-denied
+  --set-log-denied
 
   #+    --remove-masquerade
-  --add-masquerade     Enable IPv4 masquerade [P] [Z] [O] [T]
-  --query-masquerade   Return whether IPv4 masquerading has been enabled [P] [Z] [O]
-  --remove-masquerade  Disable IPv4 masquerade [P] [Z] [O]
+  --add-masquerade
+  --query-masquerade
+  --remove-masquerade
 
   #+    --add-icmp-block
-  --add-icmp-block=<icmptype>
-  --list-icmp-blocks   List Internet ICMP type blocks added [P] [Z] [O]
-  --query-icmp-block=<icmptype>
-  --remove-icmp-block=<icmptype>
+  --add-icmp-block
+  --list-icmp-blocks
+  --query-icmp-block
+  --remove-icmp-block
 
   #+    --list-lockdown-whitelist-*
-  --add-lockdown-whitelist-command=<command>
-  --add-lockdown-whitelist-context=<context>
-  --add-lockdown-whitelist-uid=<uid>
-  --add-lockdown-whitelist-user=<user>
+  --add-lockdown-whitelist-command
+  --add-lockdown-whitelist-context
+  --add-lockdown-whitelist-uid
+  --add-lockdown-whitelist-user
   --list-lockdown-whitelist-commands
   --list-lockdown-whitelist-contexts
   --list-lockdown-whitelist-uids
   --list-lockdown-whitelist-users
-  --query-lockdown-whitelist-command=<command>
-  --query-lockdown-whitelist-context=<context>
-  --query-lockdown-whitelist-uid=<uid>
-  --query-lockdown-whitelist-user=<user>
-  --remove-lockdown-whitelist-command=<command>
-  --remove-lockdown-whitelist-context=<context>
-  --remove-lockdown-whitelist-uid=<uid>
-  --remove-lockdown-whitelist-user=<user>
+  --query-lockdown-whitelist-command
+  --query-lockdown-whitelist-context
+  --query-lockdown-whitelist-uid
+  --query-lockdown-whitelist-user
+  --remove-lockdown-whitelist-command
+  --remove-lockdown-whitelist-context
+  --remove-lockdown-whitelist-uid
+  --remove-lockdown-whitelist-user
 
   #+    --lockdown-on
   --lockdown-off       Disable lockdown.
