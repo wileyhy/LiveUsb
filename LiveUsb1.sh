@@ -2055,10 +2055,8 @@ function trap_exit(){ als_function_boundary_in
   trap - EXIT
 
   : "Remove temporary directory, if one exists"
-  if [[ -n ${tmp_dir:=} ]] && [[ -d ${tmp_dir} ]]
-  then
+  [[ -d ${tmp_dir} ]] &&
     "$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
-  fi
 
   builtin exit "${loc_exit_code}"
 }
