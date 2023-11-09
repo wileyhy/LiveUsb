@@ -2,20 +2,34 @@
 # setup_firewall()
 
   ## Checklist
+
+  ## Get the lockdown program, and a spare rpm
   #+  dnf -y install firewall-config
   #+  dnf -y --downloadonly --downloaddir=/root reinstall firewall-config
+  
+  ## Can the lockdown program run?
   #+  firewall-config
+  
+  ## Are the necc services running
+  #+  - requires, systemd is running properly
   #+  systemctl is-active NetworkManager.service
   #+  systemctl is-active firewalld.service
-  #+  firewall-cmd --state
-  --reset-to-defaults
-  --timeout=<timeval>  Enable an option for timeval time, where timeval is
-  --list-all           List everything added for or enabled [P] [Z] [O]
-  --list-all-policies  List everything added for or enabled in all policies
-  --list-all-zones     List everything added for or enabled in all zones [P]
+  
+  ## Exit codes are very useful with `firewall-cmd`, so...
 
+  ## Panic s/b off
   #+   --panic-off 
   --query-panic        Query whether panic mode is enabled
+
+  ## Create an alias with a timeout option for all commands
+  #+    --timeout=<timeval>  Enable an option for timeval time, where timeval is
+
+  ## Reset the firewall to begin
+  #+    --reset-to-defaults
+
+  ## Get stat info
+  #+  firewall-cmd --state
+  --list-all           List everything added for or enabled [P] [Z] [O]
 
   #+    --set-target
   --get-target         Get the target [P only] [Z] [O]
@@ -92,7 +106,6 @@
   #+    --complete-reload
   #+    --reload
   --runtime-to-permanent
-
   #+    --get-active-zones
   #+    --get-active-policies
   #+  
