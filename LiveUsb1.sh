@@ -43,6 +43,7 @@
 #+    Otherwise, it would be useful, IMO, if `kill --help` showed the help file for /bin/kill, since
 #+  using that syntax most likely indicates that intention  :-\
 
+## TODO, lock file, bc ^z
 ## TODO, add colors to xtrace comments
 ## TODO, systed services to disable: bluetooth, cups, [ systemd-resolved ? ]
 ## TODO, systed services to possibly enable: sshd, sssd
@@ -682,8 +683,8 @@ function reqd_user_files(){ als_function_boundary_in
   :;: "For each array of conf files and/or directories"
   local AA
   local -n QQ
-  ## It isn\t strictly necessary to declare QQ as a nameref here, since unsetting QQ (see below) removes the
-  #+  nameref attribute, but I intend to use QQ as a nameref, so declaring QQ without a nameref attribute
+  ## Note, It isn\t strictly necessary to declare QQ as a nameref here, since unsetting QQ (see below) removes
+  #+  the nameref attribute, but I intend to use QQ as a nameref, so declaring QQ without a nameref attribute
   #+  would be confusing
 
   for AA in "${arrays_of_conf_files[@]}"
@@ -794,6 +795,7 @@ function rsync_install_if_missing(){ als_function_boundary_in
   fi
 
   ## Bug, variable $data_dir is defined in a different function, reqd_user_files()
+
   if [[ -z "${data_dir}" ]]
   then
     local unset_local_var_rand5791
@@ -819,9 +821,9 @@ function rsync_install_if_missing(){ als_function_boundary_in
     rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || die "${fn_target_dir}"
   fi
 
-  ## Unset a local variable defined and assigned in only this function, and not any variables by the same 
-  #+  name from any other scope
-  [[ ${unset_local_var_rand5791} = "yes" ]] && unset unset_local_var_rand5791 data_dir
+  : "Unset a local variable defined and assigned in only this function, and not any variables by the same name..."
+  #+  from any other scope
+  [[ ${unset_local_var_rand5791:=} = "yes" ]] && unset unset_local_var_rand5791 data_dir
   
   unset fn_source_var fn_target_dir
 }
@@ -841,7 +843,7 @@ function setup_bashrc(){ als_function_boundary_in
       die "${WW}"
     fi
 
-    ## Bug: chmod changes the ctime, even with no change of DAC\s
+    ## Bug, chmod changes the ctime, even with no change of DAC\s
 
     : "  bashrc -- ...of the array files_for_use_with_bash"
     if ! sudo -- [ -e "${WW}.orig" ]
@@ -849,7 +851,7 @@ function setup_bashrc(){ als_function_boundary_in
       sudo -- rsync --archive --checksum "${verb__[@]}" "${WW}" "${WW}.orig"
       sudo -- chmod 400 "${verb__[@]}" "${WW}.orig"
 
-      ## Adding attr changes ctime once; removing attr changes ctime every time
+      ## Bug, Adding attr changes ctime once; removing attr changes ctime every time
       sudo -- chattr +i -- "${WW}.orig"
     fi
 
@@ -888,6 +890,7 @@ function setup_bashrc(){ als_function_boundary_in
   declare -a PROMPT_COMMAND
   
   ## Bug? shouldn't this array $PROMPT_COMMAND have as value index 0 the variable $prompt_cmd_0 ?
+
   #PROMPT_COMMAND=([0]="printf \"%b\" \"\${prompt_colors_reset}\"")
   PROMPT_COMMAND=( [0]="${prompt_cmd_0}" )
 
@@ -906,7 +909,7 @@ function setup_bashrc(){ als_function_boundary_in
   #+  turn must be defined prior to defining these arrays
 
   :;: "  bashrc -- Define lists of parameters to be appended into bashrc"
-  ## Note, there are multiple lists for variables due to layers of dependencies. Later in the process,
+  ## Note, there are multiple lists for variables due to layers of dependencies. Later in this procedure,
   #+  each of these groups is relayed using associative arrays, which do not reliably maintain their internal
   #+  ordering, so, some consistent ordering must be imposed here.
   declare -a vars_for_bashrc_1=([0]="BROWSER" [1]="EDITOR" [2]="PS0" [3]="prompt_colors_reset")
@@ -1020,6 +1023,8 @@ function setup_dnf(){ als_function_boundary_in
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
 
+  ## TODO, a --bugfix dnf command
+
     :;: "Beginning section on DNF" ;: # <>
 
   ## Note, CUPS cannot be safely removed; too many dependencies
@@ -1034,32 +1039,32 @@ function setup_dnf(){ als_function_boundary_in
 
   hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
-  ## Define filename for record of previous hash..B
+  : "Define filename for record of previous hash..B"
   local hash_f hash_of_installed_pkgs_B_prev
   hash_f=/tmp/setup_dnf__hash_of_installed_pkgs_B_prev
   hash_of_installed_pkgs_B_prev=""
 
-  ## If the record already exists, 
+  : "If the record already exists..."
   if [[ -f ${hash_f} ]]
   then
 
-    ## then read it in
+    : "...then read it in"
     read -r hash_of_installed_pkgs_B_prev < "${hash_f}"
 
-    ## If the old hash...B matches the new hash...A, then return from this function 
+    : "If the old hash...B matches the new hash...A, then return from this function"
     if [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B_prev}" ]]
     then
       return
     fi
   fi
 
-  ## Removals for disk space
+  : "Removals for disk space"
   pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
 
-  ## Removals for security
+  : "Removals for security"
   #pkg_nms_for_removal+=( blueman bluez )
 
-  ## Bug: xfce4-terminal -- hardcoded WM
+  ## Bug? xfce4-terminal -- hardcoded WM? ...can be used w/o XFCE....
 
   # shellcheck disable=SC2206
   {
@@ -1081,7 +1086,6 @@ function setup_dnf(){ als_function_boundary_in
       addl_pkgs+=( ${for_critical_M:=}    dnf{,-data,-plugins-core} python3-dnf{,-plugins-core} {python3-,}libdnf )
     # addl_pkgs+=( ${for_critical_N:=}    audit{,-libs} python3-audit )
       addl_pkgs+=( ${for_critical_O:=}    sysstat )
-
     # addl_pkgs+=( ${for_careful_A:=}     systemd )
     # addl_pkgs+=( ${for_careful_B:=}     sssd{,-{ad,client,common{,-pac},ipa,kcm,krb5{,-common},ldap,nfs-idmap,proxy}} )
     # addl_pkgs+=( ${for_db_ish:=}        libreoffice-calc )
@@ -1142,18 +1146,18 @@ function setup_dnf(){ als_function_boundary_in
   #+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest
   #+  one by one
 
-  ## Run this loop until `dnf --security upgrade` returns 0, or 0 upgradable, rpms
+  : $'Run this loop until \x60dnf --security upgrade\x60 returns 0, or 0 upgradable, rpms'
   while true
   do
 
-    ## Get full list of rpms to upgrade, in an array; exit on non-zero
+    : "Get full list of rpms to upgrade, in an array; exit on non-zero"
     readarray -d "" -t pkgs_for_upgrade < <(
       sudo -- dnf --assumeno --security upgrade 2>/dev/null |
         awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' |
         grep -vE ^replacing$
       )
 
-    ## remove all  kernel  and  firmware  rpms from $pkgs_for_upgrade array
+    : $'remove all  kernel  and  firmware  rpms from array \x24pkgs_for_upgrade array'
     for HH in "${!pkgs_for_upgrade[@]}"
     do
       if [[ ${pkgs_for_upgrade[HH]} =~ kernel|firmware ]]
@@ -1164,13 +1168,13 @@ function setup_dnf(){ als_function_boundary_in
     done
     unset HH
 
-    ## If count of upgradeable rpms is 0, then break loop
+    : "If count of upgradeable rpms is 0, then break loop"
     if [[ ${#pkgs_for_upgrade[@]} -eq 0 ]]
     then
       break
     fi
 
-    ## Upgrade the RPM\s one at a time
+    : "Upgrade the RPM\s one at a time"
     for II in "${!pkgs_for_upgrade[@]}"
     do
       if sudo -- dnf --assumeyes --security upgrade -- "${pkgs_for_upgrade[II]}"
@@ -1183,16 +1187,16 @@ function setup_dnf(){ als_function_boundary_in
     done
     unset II
 
-    ## Run `dnf needs-restarting`, collecting PID/commandline pairs
+    : $'Run \x60dnf needs-restarting\x60, collecting PID/commandline pairs'
     #a_pids=()
     get_pids_for_restarting
 
       declare -p a_pids
       #exit 101
 
-    ## Send signals to "needs-restarting" PID\s, one at a time, with pauses and descriptions between each
-    #+  one, so I can see which signal/process combinations cause any problems. This would be a great job
-    #+  for logging.
+    : "Send signals to "needs-restarting" PID\s, one at a time..."
+    #+  with pauses and descriptions between each one, so I can see which signal/process combinations cause
+    #+  any problems. This would be a great job for logging.
 
   done
 
@@ -1236,38 +1240,72 @@ function setup_dnf(){ als_function_boundary_in
       #a_pids=()
       get_pids_for_restarting
 
+      ## BUG, killing NetworkManager or firewalld stops the systemd service process, and neither restart
+      #+  automatically
+
+      ## Question, how is it possible to know from `ps aux` output whether a process was started by a 
+      #+  systemd service?  ...grepping /usr/lib/systemd/system for the cmdline?
+      #
+      #{ for XX in /proc/[0-9]*/cmdline; do if [[ -n $XX ]]; then readarray -d "" -t array_cmdln < <( cat "$XX" ); string_cmdln="${array_cmdln[@]}"; if [[ -z ${array_cmdln[*]} ]] || [[ -z $string_cmdln ]]; then continue; fi; if grep -rilqe "$string_cmdln" /usr/lib/systemd/system; then printf 'yes\t'; else printf 'no\t'; fi; printf '%s\n' "${string_cmdln}"; fi; done; } | head -n20
+
       if [[ -n ${a_pids[*]:0:1} ]]
       then
 
-        for WW in "${a_pids[@]}"
+        for WW in "${!a_pids[@]}"
         do
-            echo '"${WW}":' "${WW}" # <>
+            : '"${a_pids[WW]}":' "${a_pids[WW]}" # <>
 
-          ps aux | awk --assign 'CC=${WW}' '$2 ~ CC { print }'
+          ps aux | awk --assign 'CC=${a_pids[WW]}' '$2 ~ CC { print }'
 
             #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?" # <>
 
-          ## Remove zombie processes, which have zero length "/proc/[pid]/cmdline" files
 
-          ## Ensure a process is still running before trying to kill it
+          : "Ensure a process is still running before trying to kill it"
+
           ## Note, some strings from /proc/[pid]/cmdline include "[]" brackets; `pgrep -f` parses these as
           #+  ERE's and cannot parse fixed strings, so a Parameter Expansion is necessary in order to render
-          #+  any opening bracket "[" as non-special for ERE syntax
-          local EE
+          #+  any opening bracket "[" as non-special for ERE syntax.
+          ## Note, subprocesses, killing a daemon, for example, avahi, might also kill some other processes
+          #+  which were avahi's child processes, so when the for loop, looping through PID\s to be restarted,
+          #+  gets to those child processes, then those child processes are no longer active, and 
+          #+  "/proc/${a_pids[WW]}/cmdline" would not exist.
           sleep 1
-          readarray -d '' -t EE < <( cat "/proc/${WW}/cmdline" )
-          EE="${EE[@]//\[/\\[}"
-          pgrep -f "${EE[*]}" >/dev/null || continue
-          unset EE
 
-          ## Kill a particular process
-          sudo -- "$(type -P kill)" --verbose \
+          : "Most existing processes have some commandline information available"
+          if [[ -f /proc/${a_pids[WW]}/cmdline ]]
+          then
+              local -a array_of_PIDs_cmdline
+              local string_of_PIDs_cmdline
+              
+              readarray -d '' -t array_of_PIDs_cmdline < <( cat "/proc/${a_pids[WW]}/cmdline" )
+
+              : $'Skip zombie processes, which have zero length \x22/proc/[pid]/cmdline\x22 files'
+              if [[ -z ${array_of_PIDs_cmdline[*]} ]]
+              then
+                unset "a_pids[WW]" array_of_PIDs_cmdline
+                continue
+              fi
+
+              : "If the commandline cannot be found in ps output, then move on to the next loop"
+              string_of_PIDs_cmdline=( "${array_of_PIDs_cmdline[@]//\[/\\[}" )
+
+              if ! pgrep -f "${string_of_PIDs_cmdline[*]}" >/dev/null
+              then
+                unset "a_pids[WW]" string_of_PIDs_cmdline
+                continue
+              fi
+
+              unset string_of_PIDs_cmdline array_of_PIDs_cmdline
+          fi
+
+          : "Kill a particular process"
+          sudo -- "$(type -P kill)" \
             --timeout 1000 HUP \
             --timeout 1000 USR1 \
             --timeout 1000 TERM \
-            --timeout 1000 KILL -- "${WW}"
+            --timeout 1000 KILL "${verb__[@]}"  "${a_pids[WW]}"
           sleep 3
-          ps aux | awk --assign 'DD=${WW}' '$2 ~ DD { print }'
+          ps aux | awk --assign 'DD=${a_pids[WW]}' '$2 ~ DD { print }'
 
             #pause_to_check "${nL}" "Now do you need to manually restart anything?" # <>
 
@@ -1291,42 +1329,42 @@ function setup_dnf(){ als_function_boundary_in
 
     #EC=101 LN="${nL}" exit # <>
 
-  ## Get new hash of installed packages, ie, ${hash..B}
+  : $'Get new hash of installed packages, ie, \x24{hash..B}'
   hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
 
-  ## Write ${hash..B} to disk
+  : $'Write \x24{hash..B} to disk'
 
   local hash_of_installed_pkgs_B_prev
   hash_of_installed_pkgs_B_prev="${hash_of_installed_pkgs_B}"
   
-  ## If the target file exists
+  : "If the target file exists"
   if [[ -f ${hash_f} ]]
   then
 
-    ## If the target file is immutable
+    : "If the target file is immutable"
     local has_immutable
     has_immutable=$( lsattr -l "${hash_f}" | awk '$1 ~ /i/ { printf "Yes" }' )
     
     if [[ ${has_immutable} = "Yes" ]] 
     then
 
-      ## ...then remove the immutable flag
+      : "...then remove the immutable flag"
       sudo chattr -i "${hash_f}"
     fi
     
-  ## if the target file does not exist
+  : "if the target file does not exist"
   else
     
-    ## then create it
+    : "then create it"
     touch "${hash_f}"
   fi
 
-  ## Make sure the file is writeable
+  : "Make sure the file is writeable"
   [[ -w "${hash_f}" ]] || chmod u+w "${hash_f}"
 
-  ## State: the file exists and is writeable
+  :;: "State: the file exists and is writeable";:
 
-  ## Write ${hash..B} to disk, and make it RO and immutable
+  : $'Write \x24{hash..B} to disk, and make it RO and immutable'
   printf '%s\n' "${hash_of_installed_pkgs_B_prev}" | tee "${hash_f}"
   chmod 400 "${verb__[@]}" "${hash_f}"
   sudo chattr +i "${hash_f}"
@@ -1637,7 +1675,7 @@ function setup_git(){ als_function_boundary_in
   done
   unset HH
 
-  ## Clean up after section "Git"
+  : "Clean up after section, Git"
   unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys
 }
 
@@ -1735,7 +1773,7 @@ function setup_network(){ als_function_boundary_in
     fi
   fi
 
-  ## Clean up from Network
+  : "Clean up from Network"
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
 }
@@ -1799,7 +1837,7 @@ function setup_ssh(){ als_function_boundary_in
   if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]] || [[ -z ${ssh_agent_pids[@]:-} ]]
   then
     :;: $'If there aren\x60t any SSH Agents running, then start one'
-    ## https://stackoverflow.com/questions/10032461/git-keeps-asking-me-for-my-ssh-key-passphrase
+    ## Note, https://stackoverflow.com/questions/10032461/git-keeps-asking-me-for-my-ssh-key-passphrase
     local HH
     HH=$( ssh-agent -s )
     eval "${HH}"
@@ -1907,7 +1945,7 @@ function setup_vars(){ als_function_boundary_in
 
   :;: "Vars... Error handling, variables and functions"
   ## Note, variable assignments, backslash escape bc  sed -i
-  # shellcheck disable=SC1001
+  ## shellcheck disable=SC1001
   local -gnx nL=L\INENO
 
   :;: "Vars... PATH"
@@ -1930,8 +1968,9 @@ function setup_vars(){ als_function_boundary_in
   saved_SUDO_UID=$( sudo printenv SUDO_UID )
   saved_SUDO_GID=$( sudo printenv SUDO_GID )
 
-  # shellcheck disable=SC2034
-  local -g BASHRCSOURCED USER_LS_COLORS ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
+  ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
+  ## shellcheck disable=SC2034
+  local -g BASHRCSOURCED USER_LS_COLORS
 }
 
 : "Define setup_vim()"
@@ -2055,7 +2094,7 @@ function trap_exit(){ als_function_boundary_in
   trap - EXIT
 
   : "Remove temporary directory, if one exists"
-  [[ -d ${tmp_dir} ]] &&
+  [[ -d ${tmp_dir:=} ]] &&
     "$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
 
   builtin exit "${loc_exit_code}"

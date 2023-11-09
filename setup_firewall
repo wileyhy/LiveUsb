@@ -109,6 +109,9 @@
   #+    --get-active-policies
   #+  
 
+## Note, setting log-denied must happen early or it will unset the interfaces and sources.
+firewall-cmd --reset-to-defaults; firewall-cmd --check-config;  firewall-cmd --set-log-denied=unicast; firewall-cmd --set-default-zone=drop; firewall-cmd --zone=drop --add-interface=wlo1; firewall-cmd --zone=drop --add-source=46:42:ae:1f:ab:88; firewall-cmd --zone=drop --add-source=20:79:18:b0:59:1e; firewall-cmd --remove-forward; firewall-cmd --remove-lockdown-whitelist-context=system_u:system_r:NetworkManager_t:s0; firewall-cmd --remove-lockdown-whitelist-context=system_u:system_r:virtd_t:s0-s0:c0.c1023; firewall-cmd --remove-lockdown-whitelist-uid=0; firewall-cmd --list-all;  firewall-cmd --get-log-denied;
+
 shopt -s expand_aliases
 
 declare -nx nL=L\INENO
