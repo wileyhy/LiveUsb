@@ -1,6 +1,102 @@
 #!/bin/bash -Ceux
 # setup_firewall()
 
+  ## Checklist
+  #+  dnf -y install firewall-config
+  #+  dnf -y --downloadonly --downloaddir=/root reinstall firewall-config
+  #+  firewall-config
+  #+  systemctl is-active NetworkManager.service
+  #+  systemctl is-active firewalld.service
+  #+  firewall-cmd --state
+  --reset-to-defaults
+  --timeout=<timeval>  Enable an option for timeval time, where timeval is
+  --list-all           List everything added for or enabled [P] [Z] [O]
+  --list-all-policies  List everything added for or enabled in all policies
+  --list-all-zones     List everything added for or enabled in all zones [P]
+
+  #+   --panic-off 
+  --query-panic        Query whether panic mode is enabled
+
+  #+    --set-target
+  --get-target         Get the target [P only] [Z] [O]
+  --set-target=<target>
+
+  #+    --set-default-zone=drop
+  --load-zone-defaults=<zone>
+
+  --info-zone=<zone>   Print information about a zone
+  --get-default-zone   Print default zone for connections and interfaces
+  --set-default-zone=<zone>
+
+  #+    --add-interface=
+  --add-interface=<interface>
+  --change-interface=<interface>
+  --get-zone-of-interface=<interface>
+  --list-interfaces    List interfaces that are bound to a zone [P] [Z]
+  --query-interface=<interface>
+  --remove-interface=<interface>
+
+  #+    --add-source=
+  --add-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
+  --change-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
+  --get-zone-of-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
+  --list-sources       List sources that are bound to a zone [P] [Z]
+  --query-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
+  --remove-source=<source>[/<mask>]|<MAC>|ipset:<ipset>
+
+  #+    --remove-forward
+  --add-forward        Enable forwarding of packets between interfaces and
+  --query-forward      Return whether forwarding of packets between interfaces
+  --remove-forward     Disable forwarding of packets between interfaces and
+
+  #+    --log-denied=yes
+  --get-log-denied     Print the log denied value
+  --set-log-denied=<value>
+
+  #+    --remove-masquerade
+  --add-masquerade     Enable IPv4 masquerade [P] [Z] [O] [T]
+  --query-masquerade   Return whether IPv4 masquerading has been enabled [P] [Z] [O]
+  --remove-masquerade  Disable IPv4 masquerade [P] [Z] [O]
+
+  #+    --add-icmp-block
+  --add-icmp-block=<icmptype>
+  --list-icmp-blocks   List Internet ICMP type blocks added [P] [Z] [O]
+  --query-icmp-block=<icmptype>
+  --remove-icmp-block=<icmptype>
+
+  #+    --list-lockdown-whitelist-*
+  --add-lockdown-whitelist-command=<command>
+  --add-lockdown-whitelist-context=<context>
+  --add-lockdown-whitelist-uid=<uid>
+  --add-lockdown-whitelist-user=<user>
+  --list-lockdown-whitelist-commands
+  --list-lockdown-whitelist-contexts
+  --list-lockdown-whitelist-uids
+  --list-lockdown-whitelist-users
+  --query-lockdown-whitelist-command=<command>
+  --query-lockdown-whitelist-context=<context>
+  --query-lockdown-whitelist-uid=<uid>
+  --query-lockdown-whitelist-user=<user>
+  --remove-lockdown-whitelist-command=<command>
+  --remove-lockdown-whitelist-context=<context>
+  --remove-lockdown-whitelist-uid=<uid>
+  --remove-lockdown-whitelist-user=<user>
+
+  #+    --lockdown-on
+  --lockdown-off       Disable lockdown.
+  --lockdown-on        Enable lockdown.
+  --query-lockdown     Query whether lockdown is enabled
+
+
+  #+    --check-config
+  #+    --complete-reload
+  #+    --reload
+  --runtime-to-permanent
+
+  #+    --get-active-zones
+  #+    --get-active-policies
+  #+  
+
 shopt -s expand_aliases
 
 declare -nx nL=L\INENO
@@ -67,7 +163,7 @@ readonly default_lockdown_whitelist_cmd list_rpms log_deny svc target_def_zn
 if ping -c1 8.8.8.8 2>/dev/null 1>&2
 then
   sudo -- dnf -y install "${list_rpms[@]}" || die
-  sudo -- dnf -y upgrade "*firewall*"
+  sudo -- dnf -y upgrade "*firewall*" || die
 fi
 
 ## Need running service
@@ -116,7 +212,7 @@ do
 		## ...on the third attempt, error out.
 		elif [[ -n ${ZZ} ]]
 		then
-			die Firewall is down
+			die "Firewall is down"
 		fi
   else 
     break
@@ -132,7 +228,7 @@ then
 
 	if ! [[ "$( firewall-cmd --get-default-zone )" = "${target_def_zn}" ]]
 	then	
-		die Firewall zone failed to apply
+		die "Firewall zone failed to apply"
 	fi
 fi
 
@@ -255,9 +351,14 @@ firewall-cmd --zone="${target_def_zn}" --remove-forward
 
 
 ## Log denied
-if ! [[ "$( firewall-cmd --get-log-denied )" = "${log_deny}" ]]
+if   ! [[ "$( firewall-cmd --get-log-denied )" = "${log_deny}" ]]
 then
-  firewall-cmd --set-log-denied="${log_deny}"
+              firewall-cmd --set-log-denied="${log_deny}"
+
+  if ! [[ "$( firewall-cmd --get-log-denied )" = "${log_deny}" ]]
+  then
+    die
+  fi
 fi
 
 
