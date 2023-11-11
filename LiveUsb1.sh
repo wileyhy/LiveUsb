@@ -1974,8 +1974,8 @@ function setup_vars(){ als_function_boundary_in
   ## Note, sudo(1), "SUDO_UID: Set to the user-ID of the user who invoked sudo."
   if [[ -z ${login_uid:=} ]]; then login_uid=$( id -u "$( logname )" ); fi
   if [[ -z ${login_gid:=} ]]; then login_gid=$( id -g "$( logname )" ); fi
-  saved_SUDO_UID=$( sudo printenv SUDO_UID )
-  saved_SUDO_GID=$( sudo printenv SUDO_GID )
+  #saved_SUDO_UID=$( sudo printenv SUDO_UID )
+  #saved_SUDO_GID=$( sudo printenv SUDO_GID )
 
   ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
   # shellcheck disable=SC2034
