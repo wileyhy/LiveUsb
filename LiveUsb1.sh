@@ -884,6 +884,7 @@ function setup_bashrc(){ als_function_boundary_in
 
   :;: "  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 1 --"
   pc_regx="not found"$
+  # shellcheck disable=SC2034
   prompt_colors_reset=$( tput sgr0 )
 
   ## TODO, append some additional definitions into bashrc
