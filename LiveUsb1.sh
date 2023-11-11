@@ -893,6 +893,7 @@ function setup_bashrc(){ als_function_boundary_in
   #+    export TMOUT=15
 
   : "  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 2 --"
+  # shellcheck disable=SC2016
   prompt_cmd_0='printf "%b" "${prompt_colors_reset}"'
 
   : "  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 3 --"
