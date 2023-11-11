@@ -961,7 +961,7 @@ function setup_bashrc(){ als_function_boundary_in
   :;: "  bashrc -- Test for any missing parameters"
   if (( ${#missing_vars_and_fns[@]} > 0 ))
   then
-    die, "${missing_vars_and_fns[@]}"
+    die "${missing_vars_and_fns[@]}"
   fi
 
   :;: "  bashrc -- Create Associative arrays of required parameters"
