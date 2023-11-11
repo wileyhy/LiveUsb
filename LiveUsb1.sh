@@ -1954,7 +1954,7 @@ function setup_vars(){ als_function_boundary_in
 
   :;: "Vars... Error handling, variables and functions"
   ## Note, variable assignments, backslash escape bc  sed -i
-  ## shellcheck disable=SC1001
+  # shellcheck disable=SC1001
   local -gnx nL=L\INENO
 
   :;: "Vars... PATH"
