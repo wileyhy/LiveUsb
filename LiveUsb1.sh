@@ -1840,7 +1840,7 @@ function setup_ssh(){ als_function_boundary_in
   readarray -t ssh_agent_pids < <( ps h -C 'ssh-agent -s' -o pid | tr -d ' ' )
 
   : "Make sure ssh daemon is running (?)"
-  if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]] || [[ -z ${ssh_agent_pids[@]:-} ]]
+  if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]] || [[ -z ${ssh_agent_pids[*]:-} ]]
   then
     :;: $'If there aren\x60t any SSH Agents running, then start one'
     ## Note, https://stackoverflow.com/questions/10032461/git-keeps-asking-me-for-my-ssh-key-passphrase
