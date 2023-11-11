@@ -910,9 +910,12 @@ function setup_bashrc(){ als_function_boundary_in
   fi
 
   : "  bashrc -- Other parameters"
-  PS1="[\\u@\\h]\\\$ "
-  BROWSER=$( command -v firefox )
-  EDITOR=$( command -v vim vi nano | head --lines=1 )
+  # shellcheck disable=SC2034
+  {
+    PS1="[\\u@\\h]\\\$ "
+    BROWSER=$( command -v firefox )
+    EDITOR=$( command -v vim vi nano | head --lines=1 )
+  }
 
   :;: "  bashrc -- Append user variables and functions into .bashrc."
   ## Note, these arrays include some command substitutions which depend on some function definitions, which in
