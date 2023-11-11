@@ -1444,7 +1444,7 @@ function setup_dnf(){ als_function_boundary_in
               sleep 1
 
               :;: "...and if the PID in question no longer exists then unset the current array index number"
-              if [[ -n "$( ps --no-headers --quick-pid "${ZZ}" | grep -v defunct )" ]]
+              if ps --no-headers --quick-pid "${ZZ}" | grep -qv defunct 
               then
                 is_pid_a_zombie=$( ps aux | awk --assign "EE=${ZZ}" '$2 ~ EE { print $8 }' )
 
