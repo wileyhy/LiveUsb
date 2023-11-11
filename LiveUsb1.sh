@@ -1203,7 +1203,7 @@ function setup_dnf(){ als_function_boundary_in
       declare -p a_pids
       #exit 101
 
-    : "Send signals to "needs-restarting" PID\s, one at a time..."
+    : $'Send signals to "needs-restarting" PID\x27s, one at a time...'
     #+  with pauses and descriptions between each one, so I can see which signal/process combinations cause
     #+  any problems. This would be a great job for logging.
 
