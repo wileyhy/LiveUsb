@@ -1482,7 +1482,8 @@ function setup_gh_cli(){ als_function_boundary_in
 
   for KK in "${!github_configs[@]}"
   do
-    if ! [[ ${gh_config_list_out} =~ "${KK}=${github_configs[$KK]}" ]]
+    ## Note, "SC2076 (warning): Remove quotes from right-hand side of =~ to match as a regex rather than literally."
+    if ! [[ ${gh_config_list_out} =~ ${KK}=${github_configs[$KK]} ]]
     then
       gh config set "${KK}" "${github_configs[$KK]}"
     fi
