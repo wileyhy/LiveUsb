@@ -663,16 +663,16 @@ function reqd_user_files(){ als_function_boundary_in
   fi
 
   : "Directories from mount-username directory to mount point must be readable via ACL, but not writeable"
-  sudo -- setfacl --modify=u:${LOGNAME}:rx -- "${mount_pt%/*}"
+  sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${mount_pt%/*}"
   sudo -- setfacl --remove-all --remove-default -- "${mount_pt}" 
-  sudo -- setfacl --modify=u:${LOGNAME}:rx -- "${mount_pt}"
+  sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${mount_pt}"
   
   : "Data directory must already exist"
   if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]; then die; fi
   
   : "Data directory must be readable via ACL, but not writeable"
   sudo -- setfacl --remove-all --remove-default --recursive --physical -- "${data_dir}" 
-  sudo -- setfacl --modify=u:${LOGNAME}:rx -- "${data_dir}"
+  sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${data_dir}"
   sudo -- find "${data_dir}" -type d -execdir setfacl --modify="u:${LOGNAME}:rx" --recursive --physical '{}' \;
   sudo -- find "${data_dir}" -type f -execdir setfacl --modify="u:${LOGNAME}:r" '{}' \;
 
