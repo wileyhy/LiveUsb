@@ -2085,7 +2085,6 @@ function trap_err(){ als_function_boundary_in
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
   declare -p LC_ALL LINENO PATH PIPESTATUS PPID PWD SHELL SHELLOPTS SHLVL UID
-  declare -p err_trap_hyphn err_trap_ec err_trap_undersc
 }
 
 ## Bug, these var assignments $loc_exit_code and $lineno only fail when they\re on line number >=2
