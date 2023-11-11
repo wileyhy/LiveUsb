@@ -2044,7 +2044,7 @@ function setup_vim(){ als_function_boundary_in
     : "Write the root file"
     sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || die
 
-    : "Copy the root file to "~"${USER}"$' and repair DAC\x60s on '"${USER}"$'\x60s copy'
+    : "Copy the root file to ${HOME}"$' and repair DAC\x60s on '"${USER}"$'\x60s copy'
     sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc || die
     sudo -- chown "${UID}:${UID}" -- ~/.vimrc
     chmod 0400 -- ~/.vimrc
