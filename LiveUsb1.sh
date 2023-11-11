@@ -1978,7 +1978,7 @@ function setup_vars(){ als_function_boundary_in
   saved_SUDO_GID=$( sudo printenv SUDO_GID )
 
   ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
-  ## shellcheck disable=SC2034
+  # shellcheck disable=SC2034
   local -g BASHRCSOURCED USER_LS_COLORS
 }
 
