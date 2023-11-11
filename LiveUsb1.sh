@@ -266,7 +266,7 @@ function enable_git_debug_settings(){ als_function_boundary_in
   #set -x # []
 
   :;: "Variables -- Global git debug settings"
-  ## shellcheck disable=SC2034
+  # shellcheck disable=SC2034
   {
     GIT_TRACE=true
     GIT_CURL_VERBOSE=true
