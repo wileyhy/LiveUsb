@@ -266,15 +266,18 @@ function enable_git_debug_settings(){ als_function_boundary_in
   #set -x # []
 
   :;: "Variables -- Global git debug settings"
-  GIT_TRACE=true
-  GIT_CURL_VERBOSE=true
-  GIT_SSH_COMMAND="ssh -vvv"
-  GIT_TRACE_PACK_ACCESS=true
-  GIT_TRACE_PACKET=true
-  GIT_TRACE_PACKFILE=true
-  GIT_TRACE_PERFORMANCE=true
-  GIT_TRACE_SETUP=true
-  GIT_TRACE_SHALLOW=true
+  ## shellcheck disable=SC2034
+  {
+    GIT_TRACE=true
+    GIT_CURL_VERBOSE=true
+    GIT_SSH_COMMAND="ssh -vvv"
+    GIT_TRACE_PACK_ACCESS=true
+    GIT_TRACE_PACKET=true
+    GIT_TRACE_PACKFILE=true
+    GIT_TRACE_PERFORMANCE=true
+    GIT_TRACE_SETUP=true
+    GIT_TRACE_SHALLOW=true
+  }
   [[ -f ~/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat -n
 }
 
