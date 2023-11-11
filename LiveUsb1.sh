@@ -1266,7 +1266,7 @@ function setup_dnf(){ als_function_boundary_in
 
         for WW in "${!a_pids[@]}"
         do
-            : '"${a_pids[WW]}":' "${a_pids[WW]}" # <>
+            : $'\x22${a_pids[WW]}\x22:' "${a_pids[WW]}" # <>
 
           ps aux | awk --assign 'CC=${a_pids[WW]}' '$2 ~ CC { print }'
 
