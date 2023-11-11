@@ -1542,9 +1542,9 @@ function setup_git(){ als_function_boundary_in
   #+ destination file.
 
   :;: "Git -- parameters, dependency level 1"
-  local git_conf_global_f git_config_sys_conf_file git_ignr git_mesg
+  local git_conf_global_f git_system_conf_file git_ignr git_mesg
   git_conf_global_f=~/.gitconfig
-  git_config_sys_conf_file=/etc/gitconfig
+  git_system_conf_file=/etc/gitconfig
   git_ignr=~/.gitignore
   git_mesg=~/.gitmessage
 
@@ -1686,7 +1686,7 @@ function setup_git(){ als_function_boundary_in
   unset HH
 
   : "Clean up after section, Git"
-  unset git_files_a git_config_sys_conf_file git_conf_global_f git_mesg git_ignr git_keys
+  unset git_files_a git_system_conf_file git_conf_global_f git_mesg git_ignr git_keys
 }
 
 : "Define setup_gpg()"
