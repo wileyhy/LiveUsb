@@ -435,7 +435,7 @@ function increase_disk_space(){ als_function_boundary_in
     do
       HH=0
       II=0
-      JJ="${Aa_fsos5[$AA]#.}"
+      JJ="${Aa_fsos5[${AA}]#.}"
       printf '%s,   File %d, \n' "${scr_nm}" $(( ++II ))
 
       while true
@@ -465,7 +465,7 @@ function increase_disk_space(){ als_function_boundary_in
 
                   if sudo -- "$( type -P rm )" --interactive --one-file-system --preserve-root=all "${verb__[@]}" "${JJ}"
                   then
-                    unset "Aa_fsos5[$AA]"
+                    unset "Aa_fsos5[${AA}]"
                     break 1
                   else
                     die "Unknown error"
@@ -473,7 +473,7 @@ function increase_disk_space(){ als_function_boundary_in
                 ;; #
             n | f )  
                   printf '  Keeping this file. \n'
-                  unset "Aa_fsos5[$AA]"
+                  unset "Aa_fsos5[${AA}]"
                   break 1
                 ;; #
             * )   HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit\s off
@@ -484,7 +484,7 @@ function increase_disk_space(){ als_function_boundary_in
 
                   else
                     printf '  Keeping this file. \n'
-                    unset "Aa_fsos5[$AA]"
+                    unset "Aa_fsos5[${AA}]"
                     break 1
                   fi
                 ;; #
@@ -559,7 +559,7 @@ function pause_to_check(){ als_function_boundary_in
     builtin exit
   fi
 
-  case $reply in
+  case "${reply}" in
     Y* | y* | $'\n' | \  )
       printf '\nOkay\n\n' >&2
       ;; #
@@ -821,7 +821,7 @@ function rsync_install_if_missing(){ als_function_boundary_in
       do 
         sha256sum -b "${XX}"
       done | 
-        awk -F'*' --assign "av_XX=$data_dir_id_sha256" '$1 ~ av_XX { print $2 }' 
+        awk -F'*' --assign "av_XX=${data_dir_id_sha256}" '$1 ~ av_XX { print $2 }' 
       )
     unset XX poss_dat_dirs
   fi
@@ -1017,7 +1017,7 @@ function setup_bashrc(){ als_function_boundary_in
   local KK
   for KK in "${!bashrc_Assoc_arrays[@]}"
   do
-    write_bashrc_strings "${bashrc_Assoc_arrays[$KK]}"
+    write_bashrc_strings "${bashrc_Assoc_arrays[${KK}]}"
   done
   unset KK
 
@@ -1421,7 +1421,7 @@ function setup_dnf(){ als_function_boundary_in
           for AA in HUP USR1 TERM KILL
           do
 
-              : "To kill PID $ZZ with signal ${AA}" # <>
+              : "To kill PID ${ZZ} with signal ${AA}" # <>
               #pause_to_check "${nL}" # <>
 
             #sleep 1
@@ -1489,7 +1489,7 @@ function setup_gh_cli(){ als_function_boundary_in
   for KK in "${!github_configs[@]}"
   do
     ## Note, "SC2076 (warning): Remove quotes from right-hand side of =~ to match as a regex rather than literally."
-    if ! [[ ${gh_config_list_out} =~ ${KK}=${github_configs[$KK]} ]]
+    if ! [[ ${gh_config_list_out} =~ ${KK}=${github_configs[${KK}]} ]]
     then
       gh config set "${KK}" "${github_configs[$KK]}"
     fi
@@ -1630,11 +1630,11 @@ function setup_git(){ als_function_boundary_in
   do
     :;: '  Loop C - open \\\ ' ;:
 
-      : "BB:$BB" # <>
+      : "BB:${BB}" # <>
 
-    if ! grep -e "${BB#*.} = ${git_keys[$BB]}" "${qui__[@]}" "${git_conf_global_f}"
+    if ! grep -e "${BB#*.} = ${git_keys[${BB}]}" "${qui__[@]}" "${git_conf_global_f}"
     then
-      git config --global "${BB}" "${git_keys[$BB]}"
+      git config --global "${BB}" "${git_keys[${BB}]}"
     fi
     :;: "  Loop C - shut /// " ;:
   done
@@ -1753,7 +1753,7 @@ function setup_network(){ als_function_boundary_in
 
   if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
   then
-    printf '\n%s, Attempting to connect to the internet... \n\n' "$scr_nm"
+    printf '\n%s, Attempting to connect to the internet... \n\n' "${scr_nm}"
 
     : "Try to get NetworkManager up and running"
     sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
@@ -1785,9 +1785,9 @@ function setup_network(){ als_function_boundary_in
 
     if ! test_dns "${dns_srv_1}" || ! test_dns "${dns_srv_A}"
     then
-      printf '\n%s, Network, Giving up, exiting.\n\n' "$scr_nm"
+      printf '\n%s, Network, Giving up, exiting.\n\n' "${scr_nm}"
     else
-      printf '\n%s, Network, Success!\n\n' "$scr_nm"
+      printf '\n%s, Network, Success!\n\n' "${scr_nm}"
     fi
   fi
 
@@ -1886,9 +1886,9 @@ function setup_ssh(){ als_function_boundary_in
         local II
         for II in "${!ssh_agent_pids[@]}"
         do
-          [[ $II = 0 ]] && continue
+          [[ ${II} = 0 ]] && continue
           "$( type -P kill )" "${verb__[@]}" "${ssh_agent_pids[II]}"
-          printf '<%s>\n' "$II"
+          printf '<%s>\n' "${II}"
         done
         unset II
       ;; #
@@ -2141,7 +2141,7 @@ function write_bashrc_strings(){ als_function_boundary_in
     :;: 'Loop D - open \\\ ' ;:
 
     unset -n fn_nameref
-    local -n fn_nameref="$JJ"
+    local -n fn_nameref="${JJ}"
 
     :;: "For each .bashrc" ;:
     for file_x in "${files_for_use_with_bash[@]}"
