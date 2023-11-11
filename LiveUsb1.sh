@@ -1491,7 +1491,7 @@ function setup_gh_cli(){ als_function_boundary_in
     ## Note, "SC2076 (warning): Remove quotes from right-hand side of =~ to match as a regex rather than literally."
     if ! [[ ${gh_config_list_out} =~ ${KK}=${github_configs[${KK}]} ]]
     then
-      gh config set "${KK}" "${github_configs[$KK]}"
+      gh config set "${KK}" "${github_configs[${KK}]}"
     fi
   done
   unset KK
