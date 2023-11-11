@@ -50,6 +50,7 @@
 
 # <> Debugging
 set -x # <>
+# shellcheck disable=SC1001
 declare -nx nL=L\INENO ## <> Note, this assignment is repeated here; originally it\s located in setup_vars()
 set -a # <>
 set -C # <>
