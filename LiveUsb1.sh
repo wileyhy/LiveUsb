@@ -1589,7 +1589,7 @@ function setup_git(){ als_function_boundary_in
 
   for ZZ in "${!git_files_a[@]}"
   do
-    if [[ ${git_files_a[ZZ]} =~ "${git_regexp}" ]]
+    if [[ ${git_files_a[ZZ]} =~ ${git_regexp} ]]
     then
       unset "git_files_a[ZZ]"
     fi
