@@ -59,20 +59,22 @@ set -T # <>
 set -e # <>
 set -o pipefail # <>
 
-#function set()
+function set()
+{ 
+  :
+  builtin set "$@"
+  declare -ag qui__=() verb__=()
+  if [[ -o xtrace ]]
+  then
+    qui__=( [0]="--" )
+    verb__=( [0]="--verbose" [1]="--" )
+  else
+    qui__=( [0]="--quiet" [1]="--" )
+    verb__=( [0]="--" )
+  fi
+  export qui__ verb__
+}
 
-:
-declare -a qui__ verb__
-if [[ -o xtrace ]]
-then
-  qui__=( [0]="--" )
-  verb__=( [0]="--verbose" [1]="--" )
-else
-  qui__=( [0]="--quiet" [1]="--" )
-  verb__=( [0]="--" )
-fi
-export qui__ verb__
-:
 umask 077
 hash -r
 shopt -s expand_aliases
