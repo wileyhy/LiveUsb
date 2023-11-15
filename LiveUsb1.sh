@@ -248,7 +248,7 @@ function clone_repo(){ als_function_boundary_in
   [[ ${PWD} = "${dev_d1}" ]] || die
 
   local hash_of_read_me_file
-  hash_of_read_me_file=$( sha256sum "./${scr_repo_nm}/README.md" | cut -d" " -f1 )
+  hash_of_read_me_file=$( sha256sum "${dev_d1}/${scr_repo_nm}/README.md" | cut -d" " -f1 )
 
   if ! [[ -d ./${scr_repo_nm} ]] || ! [[ -f ./${scr_repo_nm}/README.md ]] ||
       ! [[ ${hash_of_read_me_file} = "${sha256_of_repo_readme}" ]]
