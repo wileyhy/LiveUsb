@@ -247,15 +247,11 @@ function clone_repo(){ als_function_boundary_in
 
   [[ ${PWD} = "${dev_d1}" ]] || die
 
-  local hash_of_read_me_file
-  hash_of_read_me_file=$( sha256sum "${dev_d1}/${scr_repo_nm}/README.md" | cut -d" " -f1 )
-
   if ! [[ -d ./${scr_repo_nm} ]] || ! [[ -f ./${scr_repo_nm}/README.md ]] ||
-      ! [[ ${hash_of_read_me_file} = "${sha256_of_repo_readme}" ]]
+      ! [[ $( sha256sum "${dev_d1}/${scr_repo_nm}/README.md" | cut -d" " -f1 ) = "${sha256_of_repo_readme}" ]]
   then
     git clone --origin github "https://github.com/wileyhy/${scr_repo_nm}" || die
   fi
-  unset hash_of_read_me_file
 }
 
 : "Define \"die\" alias to function error_and_exit()"
