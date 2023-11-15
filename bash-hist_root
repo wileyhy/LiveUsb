@@ -1,0 +1,315 @@
+    1  passwd
+    2  firewall-cmd --state
+    3  firewall-cmd --list-all
+    4  firewall-cmd --get-default-zone 
+    5  firewall-cmd --zet-default-zone=drop
+    6  firewall-cmd --set-default-zone=drop
+    7  firewall-cmd --get-default-zone 
+    8  firewall-cmd --list-all
+    9  ip a
+   10  firewall-cmd --zone=drop --list-interfaces 
+   11  firewall-cmd --zone=drop --add-interface=wlo1
+   12  firewall-cmd --list-all
+   13  ip a
+   14  firewall-cmd --zone=drop --list-sources
+   15  firewall-cmd --zone=drop --add-source=b2:2b:9a:84:25:f8
+   16  firewall-cmd --zone=drop --add-source=20:79:18:b0:59:1e
+   17  firewall-cmd --zone=drop --list-sources
+   18  firewall-cmd --list-all
+   19  firewall-cmd --remove-forward
+   20  firewall-cmd --list-all
+   21  firewall-cmd --get-log-denied 
+   22  firewall-cmd --set-log-denied=unicast 
+   23  firewall-cmd --list-all
+   24  firewall-cmd --zone=drop --add-source=20:79:18:b0:59:1e
+   25  firewall-cmd --zone=drop --add-source=b2:2b:9a:84:25:f8
+   26  firewall-cmd --zone=drop --add-interface=wlo1
+   27  firewall-cmd --remove-forward
+   28  firewall-cmd --list-all
+   29  firewall-cmd --runtime-to-permanent 
+   30  firewall-cmd --help | grep white
+   31  firewall-cmd --list-lockdown-whitelist-commands 
+   32  firewall-cmd --list-lockdown-whitelist-contexts 
+   33  firewall-cmd --remove-lockdown-whitelist-context=system_u:system_r:NetworkManager_t:s0
+   34  firewall-cmd --remove-lockdown-whitelist-context=system_u:system_r:virtd_t:s0-s0:c0.c1023
+   35  firewall-cmd --list-lockdown-whitelist-contexts 
+   36  firewall-cmd --list-lockdown-whitelist-uids 
+   37  firewall-cmd --remove-lockdown-whitelist-uid=0
+   38  firewall-cmd --list-lockdown-whitelist-uids 
+   39  firewall-cmd --list-lockdown-whitelist-users 
+   40  firewall-cmd --list-all
+   41  firewall-cmd --runtime-to-permanent 
+   42  firewall-cmd --lockdown-on
+   43  history > /home/liveuser/firewall
+   44  ls /home/liveuser/firewall
+   45  ls -l /home/liveuser/firewall
+   46  firewall-cmd --state
+   47  firewall-cmd --get-default-zone 
+   48  systemctl status
+   49  systemctl status firewalld.service 
+   50  journalctl --facility=help
+   51  journalctl --facility=auth
+   52  journalctl --facility=help
+   53  journalctl -p0
+   54  journalctl -p1
+   55  journalctl -p2
+   56  journalctl -p3
+   57  journalctl -p3 | sort -nr
+   58  journalctl -p3 | sort -n
+   59  cat /proc/version
+   60  ls /etc/profile.d
+   61  . /etc/profile.d/bash-color-prompt.sh 
+   62  journalctl -p3 | sort -n
+   63  date
+   64  timedatectl
+   65  dnf -y install vim-enhanced
+   66  dnf --assumeno --security upgrade
+   67  dnf -y --security upgrade
+   68  dnf --assumeno --bugfix upgrade
+   69  dnf -y --bugfix upgrade
+   70  du -h
+   71  df -h
+   72  fg
+   73  df -h
+   74  dnf needs-restarting
+   75  ps axfj | less -RNS
+   76  ps axfj | grep sudo
+   77  tty
+   78  ps axfj | grep sudo
+   79  dnf needs-restarting
+   80  dnf -y install firewall-cmd
+   81  dnf -y install /usr/bin/firewall-cmd
+   82  dnf -y install firewall-config
+   83  firewall-cmd --timeout=5s --list-all
+   84  firewall-config
+   85  firewall-cmd --list-all
+   86  firewall-cmd --reset-to-defaults
+   87  firewall-cmd --list-all
+   88  firewall-cmd --load-zone-defaults
+   89  firewall-cmd --load-zone-defaults=drop
+   90  firewall-cmd --permanent --load-zone-defaults=drop
+   91  firewall-cmd --permanent --load-zone-defaults=public
+   92  firewall-cmd --list-all
+   93  firewall-cmd --reset-to-defaults
+   94  firewall-cmd --list-all
+   95  firewall-cmd --state
+   96  systemctl is-active NetworkManager.service
+   97  systemctl is-active firewalld.service 
+   98  firewall-cmd --query-panic && firewall-cmd --panic-off
+   99  firewall-cmd --list-all
+  100  firewall-cmd --help | grep -i polic
+  101  firewall-cmd --get-policies
+  102  firewall-cmd --get-zones
+  103  firewall-cmd --info-zone=drop
+  104  nmcli 
+  105  nmcli g
+  106  nmcli g help
+  107  nmcli help
+  108  nmcli n help
+  109  nmcli n off
+  110  nmcli n on
+  111  nmcli n off
+  112  nmcli r help
+  113  nmcli r wifi off
+  114  echo $?
+  115  nmcli r wifi off
+  116  echo $?
+  117  nmcli help
+  118  nmcli c help
+  119  nmcli r wifi on
+  120  nmcli n on
+  121  nmcli c down
+  122  nmcli c 
+  123  nmcli c wlo1
+  124  nmcli c help
+  125  nmcli c show --active
+  126  nmcli c help
+  127  nmcli c show wlo1
+  128  nmcli c show --active wlo1
+  129  nmcli c show
+  130  nmcli c show --active
+  131  nmcli c show --active --terse
+  132  nmcli --terse c show --active
+  133  nmcli --terse c show --active | grep -vEe ^'lo'
+  134  nmcli --terse c show --active | ^lo
+  135  NetworkManager --no-daemon --debug --state-file -print-config 2>&1 | awk '$1 ~ /error/'
+  136  NetworkManager --no-daemon --debug --state-file -print-config 2>&1 | awk '$1 ~ /warn/'
+  137  NetworkManager --no-daemon --debug --state-file -print-config 2>&1 
+  138  date -d="@1699820071"
+  139  date --date="@1699820071"
+  140  firewall-cmd --state
+  141  firewall-cmd --list-all
+  142  dnf needs-restarting
+  143  reset; dnf needs-restarting
+  144  { { sleep 3; for II in 2892 8662 2759 2577 2508 2439 2403 2393; do ps_o=$( ps aux ); printf '\n%s\n' "$( grep -Ee "\<${II}\>" <<< "${ps_o}" )"; /bin/kill -s HUP "${II}"; sleep 2; done; } | tee -a /root/hup-out; } & disown
+  145  ls
+  146  ll
+  147  file ./-print-config 
+  148  less ./-print-config 
+  149  history | grep print
+  150  NetworkManager --no-daemon --debug --state-file -print-config 2>&1 
+  151  less ./-print-config 
+  152  rm -f ./-print-config 
+  153  NetworkManager --no-daemon --debug --state-file --print-config 2>&1 
+  154  less ./-print-config 
+  155  ls
+  156  less ./--print-config 
+  157  rm -f ./--print-config 
+  158  ls
+  159  vim ./hup-out 
+  160  history | grep hup-
+  161  vim ./hup-out 
+  162  { { sleep 3; sig=HUP; for II in 2892 8662 2759 2577 2508 2439 2403 2393; do ps_o=$( ps aux ); printf '\n%s\n' "$( grep -Ee "\<${II}\>" <<< "${ps_o}" )"; if /bin/kill -s "${sig}" "${II}"; then echo "kill ${sig} succeeded"; else "echo kill ${sig} failed"; fi; sleep 2; done; } | tee -a /root/hup-out; } & disown
+  163  { { sleep 3; sig=HUP; for II in 2892 8662 2759 2577 2508 2439 2403 2393; do ps_o=$( ps aux | grep -Ee "\<${II}\>" ); [[ -z ${ps_o} ]] && continue; printf '\n%s\n' "${ps_o}"; if /bin/kill -s "${sig}" "${II}"; then echo "kill ${sig} succeeded"; else echo "kill ${sig} failed"; fi; sleep 2; done; } | tee -a /root/hup-out; } & disown
+  164  set -x; { { sleep 3; sig=HUP; for II in 2892 ; do ps_o=$( ps aux | grep -Ee "\<${II}\>" ); [[ -z ${ps_o} ]] && continue; printf '\n%s\n' "${ps_o}"; if /bin/kill -s "${sig}" "${II}"; then echo "kill ${sig} succeeded"; else echo "kill ${sig} failed"; fi; sleep 2; done; } | tee -a /root/hup-out; } & disown; set -
+  165  set -x; { { sleep 3; sig=HUP; for II in 2892 ; do ps_o=$( ps -p "${II}" -o user,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,cmd ); [[ -z ${ps_o} ]] && continue; printf '\n%s\n' "${ps_o}"; if /bin/kill -s "${sig}" "${II}"; then echo "kill ${sig} succeeded"; else echo "kill ${sig} failed"; fi; sleep 2; done; } | tee -a /root/hup-out; } & disown; set -
+  166  set -x; { { sleep 3; sig=HUP; for II in 2892 ; do ps_o=$( ps h -p "${II}" -o user,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,cmd ); [[ -z ${ps_o} ]] && continue; printf '\n%s\n' "${ps_o}"; if /bin/kill -s "${sig}" "${II}"; then echo "kill ${sig} succeeded"; else echo "kill ${sig} failed"; fi; sleep 2; done; } | tee -a /root/hup-out; } & disown; set -
+  167  set -x; { { sleep 3; sig=HUP; for II in 2892 ; do ps_o=$( ps h -p "${II}" -o user,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,cmd ); [[ -z ${ps_o} ]] && continue; printf '\n%s\n' "${ps_o}"; if /bin/kill -s "${sig}" "${II}"; then echo "kill ${sig} succeeded"; else echo "kill ${sig} failed"; fi; sleep 2; done; } | tee -a /root/hup-out; } & disown; set -; wait -f; echo 
+  168  tty
+  169  echo > $(tty)
+  170  echo foo >/dev/pts/2
+  171  printf '\nfoo\n' > /dev/pts/2
+  172  printf '\nKnock, knock...' > /dev/pts/2
+  173  reset /dev/pts/2
+  174  reset; dnf needs-restarting
+  175  #set -x; { { sleep 3; sig=HUP; for II in ; do ps_o=$( ps h -p "${II}" -o user,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,cmd ); [[ -z ${ps_o} ]] && continue; printf '\n%s\n' "${ps_o}"; if /bin/kill -s "${sig}" "${II}"; then echo "kill ${sig} succeeded"; else echo "kill ${sig} failed"; fi; sleep 2; done; } | tee -a /root/hup-out; } & disown; set -; wait -f; echo 
+  176  history > /run/media/liveuser/Brandywine/brandywine_bridge/2023-11-12_LiveUsb-wk/LiveUsb/root-bash-hist
+
+
+Mon Nov 13 11:28:11 AM PST 2023
+
+    1  passwd
+    2  ip a
+    3  firewall-cmd --state
+    4  firewall-cmd --list-all
+    5  systemctl status firewalld.service 
+    6  systemctl status NetworkManager.service 
+    7  systemctl status 
+    8  journalctl -p0
+    9  journalctl -p1
+   10  journalctl -p2
+   11  journalctl -p3
+   12  ls /usr/bin/setfont
+   13  file /usr/bin/setfont
+   14  grep -ril setfont /usr/lib/systemd
+   15  vi /usr/lib/systemd/systemd-vconsole-setup
+   16  file /usr/lib/systemd/systemd-vconsole-setup
+   17  systemctl list-unit-files | grep -i vconsole
+   18  systemctl status systemd-vconsole-setup.service
+   19  systemctl try-reload-or-restart systemd-vconsole-setup.service
+   20  systemctl status systemd-vconsole-setup.service
+   21  journalctl -p3
+   22  journalctl --help | grep -i utc
+   23  journalctl --utc -p3
+   24  setfont ; echo $?
+   25  setfont --help
+   26  man setfont 
+   27  journalctl --utc -p3
+   28  journalctl --utc -p2
+   29  journalctl --utc -p3
+   30  systemctl list-unit-files | grep -i blue
+   31  systemctl status bluetooth.service
+   32  systemctl disable bluetooth.service
+   33  systemctl mask bluetooth.service
+   34  systemctl stop bluetooth.service
+   35  systemctl daemon-reload 
+   36  journalctl --utc -p3
+   37  systemctl list-unit-files | grep -i blue
+   38  systemctl list-unit-files | grep -i blu
+   39  systemctl mask bluetooth.target 
+   40  systemctl stop bluetooth.target 
+   41  systemctl status 
+   42  systemctl list-unit-files | grep -i blu
+   43  history 15
+   44  history 20
+   45  history 20 > setup_systemctl__disable-bluetooth
+   46  journalctl --utc -p3
+   47  ps aux | grep aux
+   48  ps aux | grep blu
+   49  systemctl list-unit-files | grep -ie blu -e obex
+   50  pgrep obexd
+   51  pkill obexd
+   52  pgrep obexd
+   53  ps aux | grep blu
+   54  ps aux | grep -ie blu -e obex
+   55  history 20 >> setup_systemctl__disable-bluetooth
+   56  journalctl --utc -p3
+   57  ls /var/lib/alsa/asound.state
+   58  ls /var/lib/alsa
+   59  ls /var/lib/alsa/asound.state
+   60  systemctl list-unit-files | grep -ie alsa
+   61  systemctl status alsa-state.service 
+   62  systemctl try-reload-or-restart alsa-state.service 
+   63  systemctl status alsa-state.service 
+   64  journalctl --utc -p3
+   65  history 20 
+   66  history 15
+   67  history 15 >> setup_systemctl__fix_alsa
+   68  journalctl --utc -p3
+   69  journalctl --utc -priority=4..4
+   70  journalctl --utc --priority=4..4
+   71  lscpu --help
+   72  lscpu -aye --output-all | grep -i  ARCH_CAP_MDS_NO
+   73  lscpu -aye --output-all | grep -i  ARCH_CAP_MDS
+   74  lscpu -aye --output-all | grep -i  ARCH_CAP
+   75  lscpu -aye --output-all | grep -i  ARCH
+   76  lscpu -aye --output-all | wc
+   77  lscpu -aye --output-all 
+   78  mandb
+   79  ls /sys/devices/system/cpu/vulnerabilities/mds
+   80  ll /sys/devices/system/cpu/vulnerabilities/mds
+   81  vi /sys/devices/system/cpu/vulnerabilities/mds
+   82  cat /sys/devices/system/cpu/smt/active
+   83  cat /sys/devices/system/cpu/smt/control
+   84  cat /sys/devices/system/cpu/smt/active
+   85  ls /sys/devices/system/cpu/vulnerabilities
+   86  echo off | sudo tee /sys/devices/system/cpu/smt/control
+   87  cat /sys/devices/system/cpu/smt/active
+   88  cat /sys/devices/system/cpu/vulnerabilities/mds
+   89  history 30
+   90  # https://serverfault.com/questions/235825/disable-hyperthreading-from-within-linux-no-access-to-bios
+   91  # https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-devices-system-cpu
+   92  # https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/mds.html
+   93  history 30
+   94  history 15
+   95  history 20
+   96  history 20 > cpu_vulns__mds
+   97  cat /sys/devices/system/cpu/vulnerabilities/mds
+   98  for FF in /sys/devices/system/cpu/vulnerabilities/*; do printf '\n## %s\n' "$FF"; cat "$FF"; done
+   99  sysctl -a | grep -ie avx -e gather
+  100  sysctl -a | grep -ie avx -e gather -e gds
+  101  sysctl -a | grep -ie avx -e gather -e gds -e xsave -e ymm
+  102  cat /sys/devices/system/cpu/vulnerabilities/gather_data_sampling
+  103  mkdir -m 0700 dnf.d; dnf --assumeno --security --bugfix upgrade | tee ~/dnf.d/upgrade-n-sec-bgfx
+  104  grep -ni micro ~/dnf.d/upgrade-n-sec-bgfx
+  105  rpm -qa | grep micro
+  106  rpm -ql microcode_ctl | grep bin
+  107  rpm -ql microcode_ctl 
+  108  vi /usr/share/doc/microcode_ctl/README
+  109  # https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/gather_data_sampling.html
+  110  dmesg | grep microcode
+  111  man -k microcode
+  112  man -K microcode
+  113  dnf upgrade microcode_ctl 
+  114  dnf -n upgrade *kernel*
+  115  dnf --assumno upgrade *kernel*
+  116  dnf --assumeno upgrade *kernel*
+  117  dnf -y upgrade *kernel*
+  118  dnf needs-restarting 
+  119  echo $?
+  120  dnf upgrade microcode_ctl 
+  121  rpm -ql microcode_ctl 
+  122  uname -r
+  123  ls /boot
+  124  cat /proc/cpuinfo
+  125  rpm -ql microcode_ctl | grep -i f0
+  126  cat /proc/cpuinfo | grep -i micro
+  127  history | grep grep
+  128  cat /proc/cpuinfo | grep --color=always -ie avx -e gather -e gds -e xsave -e ymm
+  129  cat /sys/devices/system/cpu/vulnerabilities/gather_data_sampling
+  130  gnome-disks
+  131  cat /sys/devices/system/cpu/vulnerabilities/mds
+  132  echo on | sudo tee /sys/devices/system/cpu/smt/control
+  133  gnome-disks
+  134  dnf needs-restarting 
+  135  { printf '\n\n%s\n\n' "$(date)" ; history; } | tee -a /run/media/liveuser/Brandywine/brandywine_bridge/2023-11-12_LiveUsb-wk/LiveUsb/bash-hist_root 

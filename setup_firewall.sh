@@ -3,111 +3,279 @@
 
   ## Checklist
 
-  ## Get the lockdown program, and a spare rpm
-  #+  dnf -y install firewall-config
-  #+  dnf -y --downloadonly --downloaddir=/root reinstall firewall-config
-  
-  ## Can the lockdown program run?
-  #+  firewall-config
-  
-  ## Are the necc services running
-  #+  - requires, systemd is running properly
-  #+  systemctl is-active NetworkManager.service
-  #+  systemctl is-active firewalld.service
-  
-  ## Exit codes are very useful with `firewall-cmd`, so...
+## Aliases
+## Note, Creating an alias with a timeout option for all commands? ...is not allowed with firewall-cmd
+declare -nx nL=L\INENO
+shopt -s expand_aliases
+alias firewall-cmd='LN="${nL}"; firewall-cmd'
 
+
+## Exit codes are very useful with `firewall-cmd`, so...
+g_ro_firewall_command_error_codes=(
+  [1]="QUERY_FAIL" [2]="WRONG_CLI_OPTION" [11]="ALREADY_ENABLED" [12]="NOT_ENABLED" [13]="COMMAND_FAILED"
+  [14]="NO_IPV6_NAT" [15]="PANIC_MODE" [16]="ZONE_ALREADY_SET" [17]="UNKNOWN_INTERFACE"
+  [18]="ZONE_CONFLICT" [19]="BUILTIN_CHAIN" [20]="EBTABLES_NO_REJECT" [21]="NOT_OVERLOADABLE"
+  [22]="NO_DEFAULTS" [23]="BUILTIN_ZONE" [24]="BUILTIN_SERVICE" [25]="BUILTIN_ICMPTYPE"
+  [26]="NAME_CONFLICT" [27]="NAME_MISMATCH" [28]="PARSE_ERROR" [29]="ACCESS_DENIED" [30]="UNKNOWN_SOURCE"
+  [31]="RT_TO_PERM_FAILED" [32]="IPSET_WITH_TIMEOUT" [33]="BUILTIN_IPSET" [34]="ALREADY_SET"
+  [35]="MISSING_IMPORT" [36]="DBUS_ERROR" [37]="BUILTIN_HELPER" [38]="NOT_APPLIED" [100]="INVALID_ACTION"
+  [101]="INVALID_SERVICE" [102]="INVALID_PORT" [103]="INVALID_PROTOCOL" [104]="INVALID_INTERFACE"
+  [105]="INVALID_ADDR" [106]="INVALID_FORWARD" [107]="INVALID_ICMPTYPE" [108]="INVALID_TABLE"
+  [109]="INVALID_CHAIN" [110]="INVALID_TARGET" [111]="INVALID_IPV" [112]="INVALID_ZONE"
+  [113]="INVALID_PROPERTY" [114]="INVALID_VALUE" [115]="INVALID_OBJECT" [116]="INVALID_NAME"
+  [117]="INVALID_FILENAME" [118]="INVALID_DIRECTORY" [119]="INVALID_TYPE" [120]="INVALID_SETTING"
+  [121]="INVALID_DESTINATION" [122]="INVALID_RULE" [123]="INVALID_LIMIT" [124]="INVALID_FAMILY"
+  [125]="INVALID_LOG_LEVEL" [126]="INVALID_AUDIT_TYPE" [127]="INVALID_MARK" [128]="INVALID_CONTEXT"
+  [129]="INVALID_COMMAND" [130]="INVALID_USER" [131]="INVALID_UID" [132]="INVALID_MODULE"
+  [133]="INVALID_PASSTHROUGH" [133]="INVALID_PASSTHROUGH" [134]="INVALID_MAC" [135]="INVALID_IPSET"
+  [136]="INVALID_ENTRY" [137]="INVALID_OPTION" [138]="INVALID_HELPER" [139]="INVALID_PRIORITY"
+  [140]="INVALID_POLICY" [141]="INVALID_LOG_PREFIX" [142]="INVALID_NFLOG_GROUP" [143]="INVALID_NFLOG_QUEUE"
+  [200]="MISSING_TABLE" [201]="MISSING_CHAIN" [202]="MISSING_PORT" [203]="MISSING_PROTOCOL"
+  [204]="MISSING_ADDR" [205]="MISSING_NAME" [206]="MISSING_SETTING" [207]="MISSING_FAMILY"
+  [251]="RUNNING_BUT_FAILED" [252]="NOT_RUNNING" [253]="NOT_AUTHORIZED" [254]="UNKNOWN_ERROR"
+)
+readonly -a g_ro_firewall_command_error_codes
+
+
+## Functions
+:;: "Define fn_fwcmd_exit()";:
+fn_fwcmd_exit(){
+  local - l_exit_code="$?" l_lineno="${LN:="${nL}"}" l_prev_cmd="$BASH_COMMAND"
+  #set - ## []
+ 
+  if ! [[ ${l_prev_cmd} =~ firewall-cmd ]]
+  then
+    printf 'bash, EXIT trap, previous command, <%s>\n' "$l_prev_cmd"
+    return "${l_exit_code}"
+  fi
+
+  if [[ ${l_exit_code} = 0 ]]
+  then
+    return 0
+  elif 
+    local l_regexp
+    l_regexp='\<'"${l_exit_code}"'\>'
+    [[ "${!g_ro_firewall_command_error_codes[@]}" =~ $l_regexp ]]
+  then
+    printf 'Error, firewall-cmd, Line %s, %s\n' "${l_lineno}" "${g_ro_firewall_command_error_codes[l_exit_code]}"
+  fi
+}
+
+## Traps
+trap fn_fwcmd_exit EXIT
+
+
+  #bash -c 'exit 11' ## <>
+  #firewall-cmd --permannt --set-default-zone=drop; echo $? ## <>
+  #exit 101 ## <>
+
+
+#### Network connectivity should be disconnected, radio should be off, etc
+
+## Is NetworkManager running?
+systemctl is-active NetworkManager.service
+  #+  "active"
+nmcli -t -f RUNNING general
+  #+  "running"
+
+
+## Get data
+readarray -d "" -t relevant_cnctns < <(
+  nmcli --terse connection show --active |
+    awk -F":" '$1 !~ /\<lo\>/  { printf "%s\0", $1 }' |
+    sort -z )
+
+readarray -d "" -t relevant_dvcs < <(
+  nmcli --terse device |
+    awk -F":" '$1 !~ /\<lo\>/  { printf "%s\0", $1 }' |
+    sort -z )
+
+readarray -d "" -t relevant_intrfcs < <( 
+  ip a | 
+    awk -F": " '$1 ~ /[0-9]{1,2}/ && $2 ~ /[[:alnum:]]/ && $2 !~ /\<lo\>/  { printf "%s\0", $2 }' | 
+    sort -z )
+
+readarray -d "" -t relevant_srcs < <( 
+  ip a | 
+    grep -zoEe '\<([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})\>' | 
+    grep -zve '00:00:' -e 'ff:ff:' )
+
+
+## Connections off
+for AA in "${relevant_cnctns[@]}"
+do
+  nmcli connection down "${AA}"
+done
+unset AA
+
+
+## Radios off
+nmcli radio all off
+
+
+## Devices off
+for BB in "${relevant_dvcs[@]}"
+do
+  nmcli device disconnect "${BB}"
+done
+unset BB
+
+
+## Networking off
+nmcli networking off
+
+systemctl try-reload-or-restart NetworkManager.service
+
+## Block all interfaces at the software level
+rfkill block all
+
+
+## Configure devices
+for CC in "${relevant_dvcs[@]}"
+do
+  nmcli device set ifname "${CC}" autoconnect no
+
+  ## What exactly does "managed" mean in this case?
+  #nmcli device set ifname "${CC}" managed yes
+done
+unset CC
+
+
+## Networking on
+
+
+## Is FirewallD running?
+systemctl is-active firewalld.service
+#+  "active"
+
+
+
+## Variables
+readarray -d "" -t all_zones < <( firewall-cmd --get-zones | tr ' \n' '\0' )
+readarray -d "" -t all_policies < <( firewall-cmd --get-policies | tr ' \n' '\0' )
+all_zns_and_plcys_target=DROP
+default_zn=drop
+def_zn_target=DROP
+log_deny=unicast
+readarray -d "" -t lockdn_cmds < <( firewall-cmd --list-lockdown-whitelist-commands | tr ' \n' '\0' )
+readarray -d "" -t lockdn_cntxts < <( firewall-cmd --list-lockdown-whitelist-contexts | tr ' \n' '\0' )
+readarray -d "" -t lockdn_uids < <( firewall-cmd --list-lockdown-whitelist-uids | tr ' \n' '\0' )
+readarray -d "" -t lockdn_usrs < <( firewall-cmd --list-lockdown-whitelist-users | tr ' \n' '\0' )
+
+  declare -p all_zones all_policies all_zns_and_plcys_target default_zn def_zn_target relevant_intrfcs \
+    relevant_srcs log_deny lockdn_cmds lockdn_cntxts lockdn_uids lockdn_usrs
+  exit 101
+
+
+
+  ## Is the firewall running, according to the firewall itself?  
+firewall-cmd --state
+  #+  "running"
+  
   ## Panic s/b off
-  firewall-cmd --query-panic && firewall-cmd --panic-off 
+firewall-cmd --query-panic && firewall-cmd --panic-off 
 
-  ## Create an alias with a timeout option for all commands
-  #+    --timeout=<timeval>  Enable an option for timeval time, where timeval is
+  ## Get the "verbose state," as I call it
+firewall-cmd --list-all
+  #+  $'public (default, active)\n...'
 
   ## Reset the firewall to begin
-  #+    --reset-to-defaults
+firewall-cmd --reset-to-defaults
+#firewall-cmd --load-zone-defaults ## Not a useful command for this particular purpose
+firewall-cmd --list-all
 
-  ## Get stat info
-  #+  firewall-cmd --state
-  --list-all
+  ## Get "verbose state," again
+firewall-cmd --list-all
+  #+  $'public (default, active)\n...'
 
-  #+    --set-target
-  --get-target
-  --set-target
+  ##  Set all possible targets to DROP
+  #+    --permanent --set-target --zone
+firewall-cmd --permanent --get-zones
+  #+  "FedoraServer FedoraWorkstation block dmz drop ..."
+firewall-cmd --permanent --get-target --zone=
+firewall-cmd --permanent --set-target --zone=
 
-  #+    --set-default-zone=drop
-  --load-zone-defaults
+  #+    --permanent --set-target --policy
+firewall-cmd --permanent --get-policies
+  #+  "allow-host-ipv6 libvirt-routed-in libvirt-routed-out libvirt-to-host"
+firewall-cmd --permanent --get-target --policy=
+firewall-cmd --permanent --set-target --policy=
 
-  --info-zone
-  --get-default-zone
-  --set-default-zone
+  ##    --set-default-zone
+firewall-cmd --info-zone
+  #+  $'drop\n  target: DROP\n  ...'
 
-  #+    --add-interface=
-  --add-interface
-  --change-interface
-  --get-zone-of-interface
-  --list-interfaces
-  --query-interface
-  --remove-interface
+firewall-cmd --get-default-zone
+firewall-cmd --set-default-zone
 
-  #+    --add-source=
-  --add-source
-  --change-source
-  --get-zone-of-source
-  --list-sources
-  --query-source
-  --remove-source
+  ##    --add-interface=
+firewall-cmd --list-interfaces
 
-  #+    --remove-forward
-  --add-forward
-  --query-forward
-  --remove-forward
+firewall-cmd --add-interface
+firewall-cmd --change-interface
+firewall-cmd --get-zone-of-interface
+firewall-cmd --query-interface
+firewall-cmd --remove-interface
 
-  #+    --log-denied=yes
-  --get-log-denied
-  --set-log-denied
+  ##    --add-source=
+firewall-cmd --add-source
+firewall-cmd --change-source
+firewall-cmd --get-zone-of-source
+firewall-cmd --list-sources
+firewall-cmd --query-source
+firewall-cmd --remove-source
 
-  #+    --remove-masquerade
-  --add-masquerade
-  --query-masquerade
-  --remove-masquerade
+  ##    --remove-forward
+firewall-cmd --add-forward
+firewall-cmd --query-forward
+firewall-cmd --remove-forward
 
-  #+    --add-icmp-block
-  --add-icmp-block
-  --list-icmp-blocks
-  --query-icmp-block
-  --remove-icmp-block
+  ##    --log-denied
+firewall-cmd --get-log-denied
+firewall-cmd --set-log-denied
 
-  #+    --list-lockdown-whitelist-*
-  --add-lockdown-whitelist-command
-  --add-lockdown-whitelist-context
-  --add-lockdown-whitelist-uid
-  --add-lockdown-whitelist-user
-  --list-lockdown-whitelist-commands
-  --list-lockdown-whitelist-contexts
-  --list-lockdown-whitelist-uids
-  --list-lockdown-whitelist-users
-  --query-lockdown-whitelist-command
-  --query-lockdown-whitelist-context
-  --query-lockdown-whitelist-uid
-  --query-lockdown-whitelist-user
-  --remove-lockdown-whitelist-command
-  --remove-lockdown-whitelist-context
-  --remove-lockdown-whitelist-uid
-  --remove-lockdown-whitelist-user
+  ##    --remove-masquerade
+firewall-cmd --add-masquerade
+firewall-cmd --query-masquerade
+firewall-cmd --remove-masquerade
 
-  #+    --lockdown-on
-  --lockdown-off       Disable lockdown.
-  --lockdown-on        Enable lockdown.
-  --query-lockdown     Query whether lockdown is enabled
+  ##    --add-icmp-block
+  #+  firewall-cmd --add-icmp-block
+  #+  firewall-cmd --list-icmp-blocks
+  #+  firewall-cmd --query-icmp-block
+  #+  firewall-cmd --remove-icmp-block
+
+  ##    --list-lockdown-whitelist-*
+firewall-cmd --list-lockdown-whitelist-commands
+firewall-cmd --list-lockdown-whitelist-contexts
+firewall-cmd --list-lockdown-whitelist-uids
+firewall-cmd --list-lockdown-whitelist-users
+firewall-cmd --remove-lockdown-whitelist-command
+firewall-cmd --remove-lockdown-whitelist-context
+firewall-cmd --remove-lockdown-whitelist-uid
+firewall-cmd --remove-lockdown-whitelist-user
+
+  ##    --lockdown-on
+firewall-cmd --lockdown-off
+firewall-cmd --lockdown-on
+firewall-cmd --query-lockdown
+
+  ## Get the lockdown program, and a spare rpm
+firewall-cmd --list-lockdown-whitelist-commands
+dnf -y install firewall-config
+dnf -y --downloadonly --downloaddir=/root reinstall firewall-config
+  ## Can the lockdown program run?
+firewall-config
+  
+
+firewall-cmd --check-config
+firewall-cmd --complete-reload
+firewall-cmd --reload
+firewall-cmd --runtime-to-permanent
+firewall-cmd --get-active-zones
+firewall-cmd --get-active-policies
 
 
-  #+    --check-config
-  #+    --complete-reload
-  #+    --reload
-  --runtime-to-permanent
-  #+    --get-active-zones
-  #+    --get-active-policies
-  #+  
 
 ## Note, setting log-denied must happen early or it will unset the interfaces and sources.
 firewall-cmd --reset-to-defaults; firewall-cmd --check-config;  firewall-cmd --set-log-denied=unicast; firewall-cmd --set-default-zone=drop; firewall-cmd --zone=drop --add-interface=wlo1; firewall-cmd --zone=drop --add-source=46:42:ae:1f:ab:88; firewall-cmd --zone=drop --add-source=20:79:18:b0:59:1e; firewall-cmd --remove-forward; firewall-cmd --remove-lockdown-whitelist-context=system_u:system_r:NetworkManager_t:s0; firewall-cmd --remove-lockdown-whitelist-context=system_u:system_r:virtd_t:s0-s0:c0.c1023; firewall-cmd --remove-lockdown-whitelist-uid=0; firewall-cmd --list-all;  firewall-cmd --get-log-denied;

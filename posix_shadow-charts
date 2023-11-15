@@ -4,7 +4,7 @@
 ## Environment
 ## Note, IFS, This string should be "space, tab, newline." Vim might 
 #+  try to substitute spaces for the tab.
-IFS='   
+IFS=' 	
 ' 
 LC_ALL="C"
 PATH="/usr/bin:/usr/sbin"
