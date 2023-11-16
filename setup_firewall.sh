@@ -130,13 +130,30 @@ cat <<- \EOF | sudo tee -a "${tmp_f}"
 EOF
 
 sudo chattr +i -a "${tmp_f}"
-if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]; then rm -f "${tmp_f}"; fi
+sudo chattr +a "/etc/systemd/system/${custom_svc_file_nm}"
 
-sudo rsync -c --chmod 0644 "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
+if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]
+then 
+  sudo chattr -ai "${tmp_f}"
+  rm -f -- "${tmp_f}"
+  exit "${LINENO}"
+fi
 
-if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]; then rm -f "${tmp_f}"; fi
+sudo cat "${tmp_f}" | tee -a "/etc/systemd/system/${custom_svc_file_nm}"
 
-sudo sha256sum "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
+if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]
+then 
+  sudo chattr -ai "${tmp_f}"
+  sudo rm -f -- "${tmp_f}"
+  exit "${LINENO}"
+fi
+
+sudo chattr +i -a "/etc/systemd/system/${custom_svc_file_nm}"
+sudo chattr -ai "${tmp_f}"
+sudo rm -f -- "${tmp_f}"
+
+read -d'\0' -r XX YY < <( sha256sum AA BB | awk '{ printf "%s ", $1 }' )
+[[ ${XX} = "${YY}" ]] || exit "${LINENO}"
 
 sudo chattr -i "${tmp_f}"
 sudo dd if=/dev/zero of="${tmp_f}" bs=1 count=$( stat -c%s "${tmp_f}" ) status=progress
