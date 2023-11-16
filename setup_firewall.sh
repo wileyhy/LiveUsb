@@ -152,7 +152,7 @@ sudo chattr +i -a "/etc/systemd/system/${custom_svc_file_nm}"
 sudo chattr -ai "${tmp_f}"
 sudo rm -f -- "${tmp_f}"
 
-read -d'\0' -r XX YY < <( sha256sum AA BB | awk '{ printf "%s ", $1 }' )
+read -r XX YY < <( sha256sum AA BB | awk '{ printf "%s ", $1 }' )
 [[ ${XX} = "${YY}" ]] || exit "${LINENO}"
 
 sudo chattr -i "${tmp_f}"
