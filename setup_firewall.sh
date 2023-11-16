@@ -79,6 +79,101 @@ nmcli -t -f RUNNING general
   #+  "running"
 
 
+
+custom_svc_file_nm=stop-network-manager.service
+tmp_f="/tmp/${custom_svc_file_nm}"
+tmp_time=$( date '+%Y-%m-%d %H:%M:%S.%N' )
+
+for FF in "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
+do
+	if [[ -e ${FF} ]]
+	then
+		sudo chattr -ai "${FF}"
+		sudo rm -f "${FF}"
+	fi
+done
+
+while true
+do
+	## -t [[CC]YY]MMDDhhmm[.ss] ; -d 2023-11-16 08:57:28.758708646 -0800
+	touch -d "${tmp_time}" "${tmp_f}"
+	chmod 0200 "${tmp_f}"
+	( set +C; printf '\0' > "${tmp_f}" )
+	stat_of_file_t=$( stat -c%x "${tmp_f}" )
+	stat_of_file_t="${stat_of_file_t% *}"
+	if 
+		[[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]] ||
+		! [[ ${stat_of_file_t} = "${tmp_time}" ]]
+	then 
+		red_flag=b
+		rm -f "${tmp_f}"
+		if [[ ${red_flag} =~ "bbb" ]]
+		then 
+			echo Breach
+			exit "${LINENO}"
+		continue
+		fi
+	fi
+	break
+done
+
+sudo chown 0:0 "${tmp_f}"
+sudo chattr +a "${tmp_f}"
+
+cat <<- \EOF >> "${tmp_f}"
+	[Unit]
+	Description=Stop NetworkManager
+
+	[Service]
+	Type=oneshot
+	ExecStart=/bin/systemctl stop NetworkManager
+
+EOF
+
+sudo chattr +i -a "${tmp_f}"
+if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]; then rm -f "${tmp_f}"; fi
+
+sudo rsync -c --chmod 0644 "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
+
+chattr +i "/etc/systemd/system/${custom_svc_file_nm}"
+if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]; then rm -f "${tmp_f}"; fi
+
+sha256sum "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
+
+chattr -i "${tmp_f}"
+srm -f "${tmp_f}"
+
+
+
+## Lockdown the firewall from the systemd side
+svc_nm=firewalld.service; 
+svc_file=$( systemctl status "${svc_nm}" | grep -oEe "/[a-z/]*/${svc_nm}" )
+svc_options=( 
+	[0]="\[Service\]" [1]="\[Service\]" [2]="\[Unit\]" [3]="\[Unit\]"
+		[4]="\[Unit\]" [5]="\[Unit\]" 
+	[6]="\[Unit\]"
+	)
+keys=(
+	[0]="KillMode" [1]="RefuseManualStop" [2]="Restart" [3]="RestartSec"
+		[4]="StartLimitIntervalSec" [5]="StartLimitBurst" 
+	[6]="OnFailure"
+	)
+values=(
+	[0]="none" [1]="yes" [2]="always" [3]="1us"
+		[4]="30" [5]="10"
+	[6]="stop-network-manager.service"
+	)
+
+for II in "${!svc_options[@]}"
+do
+	if ! grep "${svc_option[$II]}" /usr/lib/systemd/system/NetworkManager.service	then
+		sudo sed "/${svc_option[$II]}/a ${keys[$II]}=${values[$II]}" "${svc_file}"
+	fi
+done
+
+exit
+
+
 ## Get data
 readarray -d "" -t relevant_cnctns < <(
   nmcli --terse connection show --active |

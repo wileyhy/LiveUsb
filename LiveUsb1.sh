@@ -59,23 +59,6 @@ set -T # <>
 set -e # <>
 set -o pipefail # <>
 
-function set()
-{ 
-  :
-  builtin set "$@"
-  declare -ag qui__=() verb__=()
-  if [[ -o xtrace ]]
-  then
-    qui__=( [0]="--" )
-    verb__=( [0]="--verbose" [1]="--" )
-  else
-    qui__=( [0]="--quiet" [1]="--" )
-    verb__=( [0]="--" )
-  fi
-  export qui__ verb__
-}
-
-umask 077
 hash -r
 shopt -s expand_aliases
 
@@ -176,8 +159,27 @@ shopt -s expand_aliases
 :
 : "Write to TTY"
 printf '  %s - Executing %s \n' "${script_start_time}" "$0"
+umask 077
 
 ##  FUNCTION DEFINITIONS, BEGIN ##
+
+function set(){ _als_function_boundary_in_
+  builtin set "$@"
+  local -
+  builtin set +x
+  declare -ag qui__=() verb__=()
+  if [[ -o xtrace ]]
+  then
+    qui__=( [0]="--" )
+    verb__=( [0]="--verbose" [1]="--" )
+  else
+    qui__=( [0]="--quiet" [1]="--" )
+    verb__=( [0]="--" )
+  fi
+  export qui__ verb__
+  _als_function_boundary_out_1_
+}
+
 :
 : "Functions and Aliases TOC..."    ## Conf files?
   ## functions_this_script=(
@@ -220,7 +222,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 # shellcheck disable=SC2317
 #function __vte_osc7(){
   #local - cmd urlencode_o
-  #set - # []
+  #builtin set - # []
   #cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
   #[[ -n ${cmd} ]] || return
   #urlencode_o=$( "${cmd}" )
@@ -232,7 +234,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 # shellcheck disable=SC2317
 #function __vte_prompt_command(){
     #local - fn_pwd
-    #set - # []
+    #builtin set - # []
     #fn_pwd=~
     #if ! [[ ${PWD} = ~ ]]; then
         #fn_pwd="${fn_pwd//[[:cntrl:]]}"
@@ -245,7 +247,7 @@ printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 
 : "Define clone_repo()"
 function clone_repo(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   [[ ${PWD} = "${dev_d1}" ]] || _die_
 
@@ -262,7 +264,7 @@ alias _die_='error_and_exit "${nL}"'
 
 : "Define enable_git_debug_settings()"
 function enable_git_debug_settings(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   :;: "Variables -- Global git debug settings"
   # shellcheck disable=SC2034
@@ -282,7 +284,7 @@ function enable_git_debug_settings(){ _als_function_boundary_in_
 
 : "Define error_and_exit()"
 function error_and_exit(){ _als_function_boundary_in_
-  set -x # []
+  builtin set -x # []
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] && return 1
@@ -307,7 +309,7 @@ function error_and_exit(){ _als_function_boundary_in_
 
 : "Define get_pids_for_restarting()"
 function get_pids_for_restarting(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   # shellcheck disable=SC2034
   local dnf_o
@@ -373,7 +375,7 @@ function gh_auth_login_command(){ _als_function_boundary_in_
 
 : "Define increase_disk_space()"
 function increase_disk_space(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
   ## Note, for $dirs1 , find  syntax based on Mascheck\s
@@ -498,7 +500,7 @@ function increase_disk_space(){ _als_function_boundary_in_
 
 : "Define min_necc_packages()"
 function min_necc_packages(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   local XX
 
@@ -526,7 +528,7 @@ function min_necc_packages(){ _als_function_boundary_in_
 
 : "Define must_be_root()"
 function must_be_root(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   if (( UID == 0 ))
   then
@@ -541,7 +543,7 @@ function must_be_root(){ _als_function_boundary_in_
 : "Define pause_to_check()"
 ## Usage,   pause_to_check "${nL}"
 function pause_to_check(){ _als_function_boundary_in_
-  set - # []
+  builtin set - # []
   local -I EC=101 LN="$1"
 
   #shift
@@ -578,7 +580,7 @@ alias _pause2ck_='pause_to_check "${nL}"'
 
 : "Define reqd_user_files()"
 function reqd_user_files(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
   #+  effect the local variable
@@ -781,7 +783,7 @@ function reqd_user_files(){ _als_function_boundary_in_
 
 : "Define rsync_install_if_missing()"
 function rsync_install_if_missing(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   local fn_target_dir fn_source_var
   fn_source_var="$1"
@@ -838,7 +840,7 @@ function rsync_install_if_missing(){ _als_function_boundary_in_
 
 : "Define setup_bashrc()"
 function setup_bashrc(){ _als_function_boundary_in_
-  set -x # []
+  builtin set -x # []
 
   :;: "  bashrc -- Do some backups"
   files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
@@ -1031,7 +1033,7 @@ function setup_bashrc(){ _als_function_boundary_in_
 
 : "Define setup_dnf()"
 function setup_dnf(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
@@ -1287,7 +1289,7 @@ function setup_dnf(){ _als_function_boundary_in_
           sleep 1
 
           : "Most existing processes have some commandline information available"
-          if [[ -f /proc/${a_pids[WW]}/cmdline ]]
+          if [[ -s /proc/${a_pids[WW]}/cmdline ]]
           then
               local -a array_of_PIDs_cmdline
               local string_of_PIDs_cmdline
@@ -1479,7 +1481,7 @@ function setup_dnf(){ _als_function_boundary_in_
 
 : "Define setup_gh_cli()"
 function setup_gh_cli(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   :;: "GH -- set config key-value pairs"
   local -A github_configs
@@ -1539,7 +1541,7 @@ function setup_gh_cli(){ _als_function_boundary_in_
 
 : "Define setup_git()"
 function setup_git(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   ## Note: git ui colors: normal black red green yellow blue magenta cyan white
   #+  git ui attributes: bold dim ul (underline blink reverse)
@@ -1700,7 +1702,7 @@ function setup_git(){ _als_function_boundary_in_
 
 : "Define setup_gpg()"
 function setup_gpg(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   :;: "If any files in ~/.gnupg are not owned by either USER or root, then error out and exit"
   local -a problem_files
@@ -1746,7 +1748,7 @@ function setup_gpg(){ _als_function_boundary_in_
 
 : "Define setup_network()"
 function setup_network(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   dns_srv_1=8.8.8.8
   dns_srv_A=75.75.75.75
@@ -1799,7 +1801,7 @@ function setup_network(){ _als_function_boundary_in_
 
 : "Define setup_ssh()"
 function setup_ssh(){ _als_function_boundary_in_
-  # set - ## []
+  #builtin set - ## []
 
   ## Bug? hardcoded filenames? ...yes, I know it#s mis-spelled.
 
@@ -1910,7 +1912,7 @@ function setup_ssh(){ _als_function_boundary_in_
 
 : "Define setup_temp_dirs()"
 function setup_temp_dirs(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   tmp_dir=$( TMPDIR="" mktemp --directory --suffix=-LiveUsb 2>&1 || _die_ )
   [[ -d ${tmp_dir} ]] || _die_
@@ -1919,7 +1921,7 @@ function setup_temp_dirs(){ _als_function_boundary_in_
 
 #: "setup_systemd()"
 #function setup_systemd(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 #
   ### Note, services to disable and mask
   ##+  ModemManager.service
@@ -1942,7 +1944,7 @@ function setup_temp_dirs(){ _als_function_boundary_in_
 
 : "Define setup_time()"
 function setup_time(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
@@ -1952,7 +1954,7 @@ function setup_time(){ _als_function_boundary_in_
 
 : "Define setup_git_user_dirs()"
 function setup_git_user_dirs(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
   #+   popd
@@ -1980,7 +1982,7 @@ function setup_git_user_dirs(){ _als_function_boundary_in_
 
 : "Define setup_vars()"
 function setup_vars(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   :;: "Vars, dirs, etc"
   ## Bug, only way to export namerefs?  `declare -nx nL=...`
@@ -2017,7 +2019,7 @@ function setup_vars(){ _als_function_boundary_in_
 
 : "Define setup_vim()"
 function setup_vim(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   : "Heredoc of vim-conf-text"
   cat <<- \EOF | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
@@ -2093,7 +2095,7 @@ function setup_vim(){ _als_function_boundary_in_
 
 : "Define test_dns()"
 function test_dns(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   return "$?"
@@ -2101,7 +2103,7 @@ function test_dns(){ _als_function_boundary_in_
 
 : "Define test_os()"
 function test_os(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   local kern_rel
   kern_rel=$( uname --kernel-release )
@@ -2116,7 +2118,7 @@ function test_os(){ _als_function_boundary_in_
 
 : "Define trap_err()"
 function trap_err(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
@@ -2130,7 +2132,7 @@ function trap_err(){ _als_function_boundary_in_
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
 function trap_exit(){ _als_function_boundary_in_
-  set -x # []
+  builtin set -x # []
 
   trap - EXIT
 
@@ -2144,13 +2146,13 @@ function trap_exit(){ _als_function_boundary_in_
 : "Define trap_return()"
 function trap_return(){
   local -
-  set -x # []
+  builtin set -x # []
   _als_function_boundary_out_1_
 }
 
 : "Define write_bashrc_strings()"
 function write_bashrc_strings(){ _als_function_boundary_in_
-  #set -x # []
+  #builtin set -x # []
 
   :;: "Certain parameters must be defined and have non-zero values"
   (( ${#files_for_use_with_bash[@]} == 0 )) && _die_
@@ -2229,7 +2231,7 @@ function write_bashrc_strings(){ _als_function_boundary_in_
 #+  uniform with each other, since the purpose of each section is the same in each case.
 
 function write_ssh_conf(){ _als_function_boundary_in_
-  #set - # []
+  #builtin set - # []
 
   ## Bug? $ssh_user_conf_file defined in a different function, setup_ssh()
 
@@ -2280,7 +2282,7 @@ setup_vars
   #EC=101 LN="${nL}" exit # <>
   #set -x
   #_die_ testing
-  false
+  #false
 
 #:;: "<Logs>"
 #set -x
@@ -2333,7 +2335,7 @@ setup_bashrc
 :;: "Increase disk space"
 increase_disk_space
 
-  EC=101 LN="${nL}" exit # <>
+  #EC=101 LN="${nL}" exit # <>
   set -x
 
 #:;: "<Logs>"
