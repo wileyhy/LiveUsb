@@ -95,7 +95,6 @@ done
 
 while true
 do
-	## -t [[CC]YY]MMDDhhmm[.ss] ; -d 2023-11-16 08:57:28.758708646 -0800
 	touch -d "${tmp_time}" "${tmp_f}"
 	chmod 0200 "${tmp_f}"
 	( set +C; printf '\0' > "${tmp_f}" )
@@ -109,7 +108,7 @@ do
 		rm -f "${tmp_f}"
 		if [[ ${red_flag} =~ "bbb" ]]
 		then 
-			echo Breach
+			echo Emergency
 			exit "${LINENO}"
 		continue
 		fi
@@ -120,7 +119,7 @@ done
 sudo chown 0:0 "${tmp_f}"
 sudo chattr +a "${tmp_f}"
 
-cat <<- \EOF >> "${tmp_f}"
+cat <<- \EOF | sudo tee -a "${tmp_f}"
 	[Unit]
 	Description=Stop NetworkManager
 
@@ -142,7 +141,6 @@ sha256sum "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
 
 chattr -i "${tmp_f}"
 srm -f "${tmp_f}"
-
 
 
 ## Lockdown the firewall from the systemd side
