@@ -136,10 +136,10 @@ sudo rsync -c --chmod 0644 "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}
 
 if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]; then rm -f "${tmp_f}"; fi
 
-sha256sum "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
+sudo sha256sum "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
 
-chattr -i "${tmp_f}"
-srm -f "${tmp_f}"
+sudo chattr -i "${tmp_f}"
+sudo srm -f "${tmp_f}"
 
 
 ## Lockdown the firewall from the systemd side
