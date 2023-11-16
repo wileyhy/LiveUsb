@@ -81,7 +81,7 @@ nmcli -t -f RUNNING general
 
 
 custom_svc_file_nm=stop-network-manager.service
-tmp_f="/tmp/${custom_svc_file_nm}"
+tmp_f="/tmp/${custom_svc_file_nm}" readonly tmp_f
 tmp_time=$( date '+%Y-%m-%d %H:%M:%S.%N' )
 
 for FF in "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
@@ -139,8 +139,10 @@ if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]; then rm -f "${tmp_f}"; fi
 sudo sha256sum "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
 
 sudo chattr -i "${tmp_f}"
-sudo srm -f "${tmp_f}"
+sudo dd if=/dev/zero of="${tmp_f}" bs=1 count=$( stat -c%s "${tmp_f}" ) status=progress
+sudo rm -f "${tmp_f}"
 
+exit 101
 
 ## Lockdown the firewall from the systemd side
 svc_nm=firewalld.service; 
