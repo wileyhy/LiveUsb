@@ -134,7 +134,6 @@ if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]; then rm -f "${tmp_f}"; fi
 
 sudo rsync -c --chmod 0644 "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
 
-chattr +i "/etc/systemd/system/${custom_svc_file_nm}"
 if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]; then rm -f "${tmp_f}"; fi
 
 sha256sum "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
