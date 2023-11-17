@@ -85,6 +85,7 @@ shopt -s expand_aliases
   data_dir_id_sha256="7542c27ad7c381b059009e2b321155b8ea498cf77daaba8c6d186d6a0e356280"
   readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
   :
+  ampersand="" readonly ampersand
   fn_bndry_sh=" ~~~ ~~~ ~~~ "
   fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
   readonly fn_bndry_sh fn_bndry_lo
