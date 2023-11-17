@@ -2287,6 +2287,8 @@ must_be_root
 :;: "Define trap on RETURN"
 trap trap_return RETURN
 
+  EC=101 LN="${nL}" exit # <>
+
 :;: "Define trap on ERR"
 trap trap_err ERR
 
