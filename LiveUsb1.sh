@@ -176,7 +176,7 @@ function set(){
   builtin set -x
   
   #_als_function_set_boundary_in_2_
-  local loc_hyphn="${loc_hyphn:-}" loc_lineno="${LN:-"${nL:-"${1}"}"}"  
+  local loc_hyphn="${loc_hyphn:-"${-}"}" loc_lineno="${LN:-"${nL:-"${1}"}"}"  
 
   local -aIg qui__ verb__
   qui__=() verb__=()
