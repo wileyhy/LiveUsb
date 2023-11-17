@@ -178,6 +178,8 @@ function set(){
   #_als_function_set_boundary_in_2_
   local loc_hyphn="${loc_hyphn:-"${-}"}" loc_lineno="${LN:-"${nL:-"${1}"}"}"  
 
+    declare -p glo_hyphn loc_hyphn
+
   local -aIg qui__ verb__
   qui__=() verb__=()
   if [[ -o xtrace ]]
