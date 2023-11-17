@@ -163,6 +163,7 @@ umask 077
 
 ##  FUNCTION DEFINITIONS, BEGIN ##
 
+: "Define set()"
 function set(){ _als_function_boundary_in_
   builtin set "$@"
   #local -
