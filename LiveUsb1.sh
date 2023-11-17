@@ -2288,6 +2288,7 @@ must_be_root
 :;: "Define trap on RETURN"
 trap trap_return RETURN
 
+  declare -p qui__ verb__
   EC=101 LN="${nL}" exit # <>
 
 :;: "Define trap on ERR"
