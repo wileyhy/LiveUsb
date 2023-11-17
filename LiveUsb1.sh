@@ -563,8 +563,6 @@ function must_be_root(){ _als_function_boundary_in_
   else
     sudo --validate || _die_
   fi
-
-  _als_function_boundary_out_0_
 }
 
 : "Define pause_to_check()"
