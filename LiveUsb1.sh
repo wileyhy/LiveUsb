@@ -176,18 +176,13 @@ function trap_return(){
 trap trap_return RETURN
 
 : "Define set()"
-alias _als_function_set_boundary_in_1_='local -I fn_lvl _="${fn_bndry_lo}"'
-alias _als_function_set_boundary_in_2_='local _="${fn_bndry_lo} ${fn_bndry_sh} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" loc_hyphn="$-" loc_exit_code="${EC:-$?}" loc_lineno="${LN:-"${nL:-"${1}"}"}"'
-
 function set(){ 
-  #_als_function_set_boundary_in_1_
   local -Ig fn_lvl _="${fn_bndry_lo} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" glo_hyphn="$-" loc_exit_code="${EC:-$?}" loc_lineno="${LN:-"${nL:-"${1}"}"}"
 
   builtin set "$@"
   local -
   builtin set -x
   
-  #_als_function_set_boundary_in_2_
   local loc_hyphn="${loc_hyphn:-"${-}"}" 
 
     declare -p glo_hyphn loc_hyphn
