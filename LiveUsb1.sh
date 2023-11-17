@@ -2319,6 +2319,7 @@ reqd_user_files
 
   #EC=101 LN="${nL}" exit # <>
   set -x
+  EC=101 LN="${nL}" exit # <>
 
 :;: "Network"
 setup_network
