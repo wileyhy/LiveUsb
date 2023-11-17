@@ -161,7 +161,19 @@ shopt -s expand_aliases
 printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 umask 077
 
-##  FUNCTION DEFINITIONS, BEGIN ##
+##  CRITICAL FUNCTIONS 
+
+: "Define trap_return()"
+function trap_return(){
+  local -
+  builtin set -x # []
+  _als_function_boundary_out_1_
+}
+  #alias _als_function_boundary_out_0_='true "${fn_bndry_lo} ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
+  #alias _als_function_boundary_out_1_='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
+
+:;: "Define trap on RETURN"
+trap trap_return RETURN
 
 : "Define set()"
 alias _als_function_set_boundary_in_1_='local -I fn_lvl _="${fn_bndry_lo}"'
@@ -192,6 +204,8 @@ function set(){
   fi
   export qui__ verb__
 }
+
+##  REGULAR FUNCTION DEFINITIONS, BEGIN ##
 
 :
 : "Functions and Aliases TOC..."    ## Conf files?
@@ -2180,15 +2194,6 @@ function trap_exit(){ _als_function_boundary_in_
   builtin exit "${loc_exit_code}"
 }
 
-: "Define trap_return()"
-function trap_return(){
-  local -
-  builtin set -x # []
-  _als_function_boundary_out_1_
-}
-  #alias _als_function_boundary_out_0_='true "${fn_bndry_lo} ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
-  #alias _als_function_boundary_out_1_='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
-
 : "Define write_bashrc_strings()"
 function write_bashrc_strings(){ _als_function_boundary_in_
   #builtin set -x # []
@@ -2296,9 +2301,6 @@ must_be_root
 # EXIT -- for exiting
 # HUP USR1 TERM KILL -- for restarting processes
 # INT QUIT USR2 -- for stopping logging
-
-:;: "Define trap on RETURN"
-trap trap_return RETURN
 
   echo foo
   set +x
