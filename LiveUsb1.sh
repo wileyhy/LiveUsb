@@ -177,9 +177,14 @@ trap trap_return RETURN
 
 : "Define set()"
 function set(){ 
+  ## The global variable $fn_lvl is pulled in from the global scope and is set to effect the global
+  #+  scope as well
   local -Ig fn_lvl _="${fn_bndry_lo} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" glo_hyphn="$-" loc_exit_code="${EC:-$?}" loc_lineno="${LN:-"${nL:-"${1}"}"}"
 
+  ## This `set` effects global scope
   builtin set "$@"
+
+  ## This `set` effects local scope
   local -
   builtin set -x
   
