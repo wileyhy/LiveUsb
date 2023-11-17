@@ -165,7 +165,7 @@ umask 077
 
 function set(){ _als_function_boundary_in_
   builtin set "$@"
-  local -
+  #local -
   #builtin set +x
   declare -ag qui__=() verb__=()
   if [[ -o xtrace ]]
