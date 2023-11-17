@@ -177,7 +177,7 @@ function set(){ _als_function_boundary_in_
     verb__=( [0]="--" )
   fi
   export qui__ verb__
-  _als_function_boundary_out_1_
+  _als_function_boundary_out_0_
 }
 
 :
@@ -1272,7 +1272,7 @@ function setup_dnf(){ _als_function_boundary_in_
         do
             : $'\x22${a_pids[WW]}\x22:' "${a_pids[WW]}" # <>
 
-          ps aux | awk --assign 'CC=${a_pids[WW]}' '$2 ~ CC { print }'
+          ps aux | awk --assign "CC=${a_pids[WW]}" '$2 ~ CC { print }'
 
             #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?" # <>
 
@@ -1289,11 +1289,22 @@ function setup_dnf(){ _als_function_boundary_in_
           sleep 1
 
           : "Most existing processes have some commandline information available"
-          if [[ -s /proc/${a_pids[WW]}/cmdline ]]
+          :
+          : "If the /proc/PID/cmdline FSO exists and is a file, then..."
+          if [[ -f /proc/${a_pids[WW]}/cmdline ]] 
           then
+            ## Note, these files are in _PROC_! Of course they have a zero filesize!!
+
+            ## Bug, the `[[` keyword cannot accept a leading or internal "2>/dev/null", though `test` 
+            #+  and `[` can. 
+
+            : "If the /proc/PID/cmdline FSO also has a size greater than zero..."
+            if [[ -n "$( tr -d '\0' < /proc/${a_pids[WW]}/cmdline )" ]]
+            then
               local -a array_of_PIDs_cmdline
               local string_of_PIDs_cmdline
-              
+
+              : "Load the cmdline into an array"
               readarray -d '' -t array_of_PIDs_cmdline < <( cat "/proc/${a_pids[WW]}/cmdline" )
 
               : $'Skip zombie processes, which have zero length \x22/proc/[pid]/cmdline\x22 files'
@@ -1311,8 +1322,21 @@ function setup_dnf(){ _als_function_boundary_in_
                 unset "a_pids[WW]" string_of_PIDs_cmdline
                 continue
               fi
-
+ 
+              if ! ps hp "${a_pids[WW]}" >/dev/null
+              then
+                unset "a_pids[WW]" string_of_PIDs_cmdline
+                continue
+              fi
               unset string_of_PIDs_cmdline array_of_PIDs_cmdline
+            else
+              unset "a_pids[WW]" string_of_PIDs_cmdline
+              continue
+            fi
+          else
+            "If the /proc/PID/cmdline FSO does not exist, then begin the next loop"
+            unset "a_pids[WW]" string_of_PIDs_cmdline
+            continue
           fi
 
           : "Kill a particular process"
@@ -1323,7 +1347,7 @@ function setup_dnf(){ _als_function_boundary_in_
             --timeout 1000 TERM \
             --timeout 1000 KILL "${verb__[@]}"  "${a_pids[WW]}"
           sleep 3
-          ps aux | awk --assign 'DD=${a_pids[WW]}' '$2 ~ DD { print }'
+          ps aux | awk --assign "DD=${a_pids[WW]}" '$2 ~ DD { print }'
 
             #pause_to_check "${nL}" "Now do you need to manually restart anything?" # <>
 

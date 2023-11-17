@@ -81,25 +81,51 @@ nmcli -t -f RUNNING general
 
 
 custom_svc_file_nm=stop-network-manager.service
+custm_svc_f="/etc/systemd/system/${custom_svc_file_nm}"
 tmp_f="/tmp/${custom_svc_file_nm}" readonly tmp_f
 tmp_time=$( date '+%Y-%m-%d %H:%M:%S.%N' )
 
-for FF in "${tmp_f}" "/etc/systemd/system/${custom_svc_file_nm}"
+for FF in "${tmp_f}" "${custm_svc_f}"
 do
 	if [[ -e ${FF} ]]
 	then
 		sudo chattr -ai "${FF}"
-		sudo rm -f "${FF}"
+		sudo rm -fv "${FF}"
 	fi
 done
 
 while true
-do
+do	
+	## Note these times are all observed from an F39 instance in which "relatime" is the kernel's 
+	#+	default mount option. 
+
+	## "relatime": `touch -d` writes atime and mtime as $tmp_time, but ctime and btime are 15/1,000's of a second 
+	#+	later and match each other; none of the x4 timestamps reflect the execution time of `stat`.
+	date '+%Y-%m-%d %H:%M:%S.%N'
 	touch -d "${tmp_time}" "${tmp_f}"
+	sleep 1.5
+	date '+%Y-%m-%d %H:%M:%S.%N'
+	stat "${tmp_f}"
+	
+	## "relatime": `chmod` only changes the ctime; a-, m- and b-times remain the same
+	date '+%Y-%m-%d %H:%M:%S.%N'
 	chmod 0200 "${tmp_f}"
+	sleep 1.5
+	date '+%Y-%m-%d %H:%M:%S.%N'
+	stat "${tmp_f}"
+
+	## "relatime": `printf` alters mtime and ctime to the same time, but atime and btime both remain unchanged, 
+	#+	and remain as they were initially
+	date '+%Y-%m-%d %H:%M:%S.%N'
 	( set +C; printf '\0' > "${tmp_f}" )
-	stat_of_file_t=$( stat -c%x "${tmp_f}" )
-	stat_of_file_t="${stat_of_file_t% *}"
+	sleep 1.5
+	date '+%Y-%m-%d %H:%M:%S.%N'
+	stat "${tmp_f}"
+	
+	## "relatime": again, running `stat` has zero effect on any of the x4 timestamps
+	stat_of_file_t=$( stat -c%x "${tmp_f}" ); stat_of_file_t="${stat_of_file_t% *}"
+	stat "${tmp_f}"
+	
 	if 
 		[[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]] ||
 		! [[ ${stat_of_file_t} = "${tmp_time}" ]]
@@ -116,9 +142,15 @@ do
 	break
 done
 
+## "relatime": `chown` only changes ctime
 sudo chown 0:0 "${tmp_f}"
-sudo chattr +a "${tmp_f}"
+stat "${tmp_f}"
 
+## "relatime": `chattr` also only changes ctime
+sudo chattr +a "${tmp_f}"
+stat "${tmp_f}"
+
+## "relatime": `tee -a` changes the mtime and ctime to the same value, and leaves atime and btime untouched.
 cat <<- \EOF | sudo tee -a "${tmp_f}"
 	[Unit]
 	Description=Stop NetworkManager
@@ -129,34 +161,65 @@ cat <<- \EOF | sudo tee -a "${tmp_f}"
 
 EOF
 
+## "relatime": again, `chattr` only changes the ctime
 sudo chattr +i -a "${tmp_f}"
-sudo chattr +a "/etc/systemd/system/${custom_svc_file_nm}"
+
+## "relatime": `lsattr` doesn't changes any timestamps
+lsattr "${tmp_f}"
+
+## "relatime": ..and `ls` also doesn't change any timestamps
+ls -alhFi "${tmp_f}"
 
 if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]
 then 
-  sudo chattr -ai "${tmp_f}"
-  rm -f -- "${tmp_f}"
+  #sudo chattr -ai "${tmp_f}"
+  #rm -f -- "${tmp_f}"
   exit "${LINENO}"
 fi
 
-sudo cat "${tmp_f}" | tee -a "/etc/systemd/system/${custom_svc_file_nm}"
+sudo touch -d "${tmp_time}" "${custm_svc_f}"
+stat "${custm_svc_f}"
+sudo chattr +a "${custm_svc_f}"
+
+sudo cat "${tmp_f}" | tee -a "${custm_svc_f}"
 
 if [[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]]
 then 
-  sudo chattr -ai "${tmp_f}"
-  sudo rm -f -- "${tmp_f}"
+  #sudo chattr -ai "${tmp_f}"
+  #sudo rm -f -- "${tmp_f}"
   exit "${LINENO}"
 fi
 
-sudo chattr +i -a "/etc/systemd/system/${custom_svc_file_nm}"
+sudo chattr +i -a "${custm_svc_f}"
 sudo chattr -ai "${tmp_f}"
 sudo rm -f -- "${tmp_f}"
 
+## "relatime": `sha256sum` changes the atime only. `md5sum` and `sha1sum` follow the same pattern.
 read -r XX YY < <( sha256sum AA BB | awk '{ printf "%s ", $1 }' )
 [[ ${XX} = "${YY}" ]] || exit "${LINENO}"
 
+## "relatime": An attempt to write to this file with `dd` was prevented by `chattr` and as a result none of the 
+#+	four timestamps were altered
+sudo dd if=/dev/zero of="${tmp_f}" bs=1 count=$( stat -c%s "${tmp_f}" ) status=progress
+
+## "relatime": without immutability, however, `dd` alters mtime and ctime, while leaving atime and btime untouched.
 sudo chattr -i "${tmp_f}"
 sudo dd if=/dev/zero of="${tmp_f}" bs=1 count=$( stat -c%s "${tmp_f}" ) status=progress
+
+## "relatime": `cat` alters only the atime
+cat "${tmp_f}"
+
+## "relatime": an input redirection also alters only the atime
+cat < "${tmp_f}"
+
+## Chaning the `mount` options to include "noatime" effects none of the four file timestamps, as expected
+mount -o remount,noatime /
+
+## "noatime": `cat` with the "noatime" mount option, however, does not alter any timestamps
+cat "${tmp_f}"
+
+
+
 sudo rm -f "${tmp_f}"
 
 exit 101
