@@ -2300,12 +2300,12 @@ must_be_root
 # HUP USR1 TERM KILL -- for restarting processes
 # INT QUIT USR2 -- for stopping logging
 
-  echo foo
-  set +x
-  echo bar
-  set -x
-  declare -p qui__ verb__
-  EC=101 LN="${nL}" exit # <>
+  #echo foo
+  #set +x
+  #echo bar
+  #set -x
+  #declare -p qui__ verb__
+  #EC=101 LN="${nL}" exit # <>
 
 :;: "Define trap on ERR"
 trap trap_err ERR
@@ -2341,7 +2341,6 @@ reqd_user_files
 
   #EC=101 LN="${nL}" exit # <>
   set -x
-  EC=101 LN="${nL}" exit # <>
 
 :;: "Network"
 setup_network
