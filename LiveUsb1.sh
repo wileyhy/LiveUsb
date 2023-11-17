@@ -167,7 +167,7 @@ umask 077
 
 : "Define set()"
 function set(){ _als_function_set_boundary_in_
-  builtin set "$@"
+  builtin set "${ampersand}" "$@"
   #local -
   #builtin set +x
   local -aIg qui__ verb__
