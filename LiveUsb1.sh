@@ -169,7 +169,8 @@ function set(){ _als_function_set_boundary_in_
   builtin set "$@"
   #local -
   #builtin set +x
-  declare -ag qui__=() verb__=()
+  local -ag qui__ verb__
+  qui__=() verb__=()
   if [[ -o xtrace ]]
   then
     qui__=( [0]="--" )
