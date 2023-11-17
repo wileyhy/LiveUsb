@@ -2288,6 +2288,10 @@ must_be_root
 :;: "Define trap on RETURN"
 trap trap_return RETURN
 
+  echo foo
+  set +x
+  echo bar
+  set -x
   declare -p qui__ verb__
   EC=101 LN="${nL}" exit # <>
 
