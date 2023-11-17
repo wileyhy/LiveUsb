@@ -85,7 +85,6 @@ shopt -s expand_aliases
   data_dir_id_sha256="7542c27ad7c381b059009e2b321155b8ea498cf77daaba8c6d186d6a0e356280"
   readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
   :
-  ampersand="" readonly ampersand
   fn_bndry_sh=" ~~~ ~~~ ~~~ "
   fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
   readonly fn_bndry_sh fn_bndry_lo
@@ -167,7 +166,7 @@ umask 077
 
 : "Define set()"
 function set(){ _als_function_set_boundary_in_
-  builtin set "${ampersand}" "$@"
+  builtin set "$@"
   #local -
   #builtin set +x
   local -aIg qui__ verb__
