@@ -191,8 +191,12 @@ function set(){
     verb__=( [0]="--" )
   fi
   export qui__ verb__
-  _als_function_boundary_out_0_
+
+  #_als_function_boundary_out_0_
+  true "${fn_bndry_lo} ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"
 }
+  #alias _als_function_boundary_out_0_='true "${fn_bndry_lo} ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
+  #alias _als_function_boundary_out_1_='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
 
 :
 : "Functions and Aliases TOC..."    ## Conf files?
