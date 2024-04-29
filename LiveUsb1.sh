@@ -3,7 +3,7 @@
 ##    #!/bin/env -iS bash
 
 ## Note, idempotent script
-## Note, the symbol "<>" marks code as for debugging purpoeses only
+## Note, the symbol "<>" marks code as for deburging purpoeses only
 ## Note, ...undocumented feature??
 #+    Use `env -i` or else the script\s execution environment will inherit any exported anything,
 #+  including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`)
@@ -13,7 +13,6 @@
 #+  xtrace when xtrace and vebose are both enabled on the shebang line. ...but exported variables do not 
 #+  print. 
 #+    ...also, using `env` messes up vim\s default bash-colorizations
-## Note, written from within a Fedora instance, see hardcoded /run/media/root
 ## Note, style, function definition syntax, "(){ :" makes plain xtrace easier to read
 ## Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas "[[ ! -e" does, and yet, for `grep`.....
 ## Note, timestamps, `find`, `stat` and `[[` (and `ls`) don\t effect ext4 timestamps, as tested, but 
@@ -21,9 +20,9 @@
 #+  `rsync` doesn\t, but if the file changes, it does. Also, "btime" on ext4 still isn\t consistent. 
 #+  `grep` has no effect on times; `cp -a` effects "ctimes" even if file contents do not change.
 
-## Bug? `command -p kill "$AA"` executes the bash builtin, judging by the output of `command -p kill`
-#+  without any operands. The output of `$( type -P kill )"` without operands is the same as the output
-#+  of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points.
+## Reportable burg. `command -p kill "$AA"` executes the bash builtin, judging by the output of `command
+#+  -p kill` without any operands. The output of `$( type -P kill )"` without operands is the same as the
+#+  output of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points.
 #+    `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what
 #+  is intended is, "...suppressing shell function lookup, but still allowing builtins to be executed,"
 #+  and possibly also aliases and keywords, though I haven\t tested those. The description of the "-p"
@@ -48,7 +47,7 @@
 ## TODO, systemd services to disable: bluetooth, cups, [ systemd-resolved ? ]
 ## TODO, systemd services to possibly enable: sshd, sssd
 
-# <> Debugging
+# <> Deburging
 set -x # <>
 # shellcheck disable=SC1001
 declare -nx nL=L\INENO ## <> Note, this assignment is repeated here; originally it\s located in setup_vars()
@@ -81,7 +80,7 @@ shopt -s expand_aliases
   readonly scr_repo_nm scr_nm datadir_basenm datdir_idfile
   :
   sha256_of_repo_readme="da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c"
-  data_pttn_uuid="949f3d8c-2dbe-4356-8a6b-3389e4c016d4"
+  data_pttn_uuid="7fcfd195-01"
   data_dir_id_sha256="7542c27ad7c381b059009e2b321155b8ea498cf77daaba8c6d186d6a0e356280"
   readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
   :
@@ -123,7 +122,7 @@ shopt -s expand_aliases
   readonly arrays_of_conf_files
   unset "${arrays_of_conf_files[@]}"
   :
-  ## Bug? this is really a lot of manually entered data ...of filenames -- it\s a lot to maintain. :-\
+  ## Note, this is really a lot of manually entered data ...of filenames -- it\s a lot to maintain. :-\
   #+  Wouldn\t it be better to just always keep the data directory... in proper intended order...?
   #+  But then the data dir can be changed and there wouldn\t be any process of making sure the DACs
   #+  are correct. On the other hand, it\s easier to maintain a simple set of files. ...but their state
@@ -214,7 +213,7 @@ function set(){
   #+  "__vte_prompt_command()"
   #+  "clone_repo()"
   #+  '_die_'
-  #+  "enable_git_debug_settings()"
+  #+  "enable_git_deburg_settings()"
   #+  "error_and_exit()"
   #+  "get_pids_for_restarting()"
   #+  "gh_auth_login_command()"
@@ -289,11 +288,11 @@ function clone_repo(){ _als_function_boundary_in_
 alias _die_='error_and_exit "${nL}"'
 :
 
-: "Define enable_git_debug_settings()"
-function enable_git_debug_settings(){ _als_function_boundary_in_
+: "Define enable_git_deburg_settings()"
+function enable_git_deburg_settings(){ _als_function_boundary_in_
   #builtin set -x # []
 
-  :;: "Variables -- Global git debug settings"
+  :;: "Variables -- Global git deburg settings"
   # shellcheck disable=SC2034
   {
     GIT_TRACE=true
@@ -333,6 +332,8 @@ function error_and_exit(){ _als_function_boundary_in_
 
   EC="${loc_exit_code}" LN="${loc_lineno}" builtin exit
 }
+
+## TODO: add a "get_distro()" function
 
 : "Define get_pids_for_restarting()"
 function get_pids_for_restarting(){ _als_function_boundary_in_
@@ -405,19 +406,16 @@ function increase_disk_space(){ _als_function_boundary_in_
   #builtin set -x # []
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
-  ## Note, for $dirs1 , find  syntax based on Mascheck\s
+  ## Note, for $dirs1 , find syntax based on Mascheck\s
   ## Note, for $dirs2 , use of bit bucket because GVFS ‘/run/user/1000/doc’ cannot be read, even by root
   ## Note, for $fsos3 , "--and" is not POSIX compliant
   ## Note, for $fsos4 , sorts by unique inode and delimits by nulls
-
-  ## Bug, Hardcoded path, for $dirs2 , /run/media/root is a default for mounting external media on
-  #+  Fedora-like systems
 
   declare -A Aa_fsos5
   readarray -d "" -t dirs1 < <( find -- /  \!  -path / -prune -type d -print0 )
 
   readarray -d "" -t dirs2 < <(
-    find -- "${dirs1[@]}" -type d -name "*locale*"  \!  -ipath "*/run/media/root/*" -print0 2> /dev/null )
+    find -- "${dirs1[@]}" -type d -name "*locale*"  \!  -ipath "${mount_base__fedora}/*" -print0 2> /dev/null )
 
   readarray -d "" -t fsos3 < <(
     find -- "${dirs2[@]}" -type f -size +$(( 2**16 ))  \(  \!  -ipath "*en_*" -a  \!  -ipath "*/.git/*"  \)  -print0 )
@@ -531,11 +529,9 @@ function min_necc_packages(){ _als_function_boundary_in_
 
   local XX
 
-  ## Bug? how many $a_pids arrays are there, and are they ever misused?
+  ## Question? how many $a_pids arrays are there, and are they ever misused?
 
   #local -a a_pids
-
-  ## Bug, command list hardcoded in multiple places. s/b coded in just one place, ie at TOF w reqd files lists
 
   for XX in "${list_of_minimum_reqd_rpms[@]}"
   do
@@ -644,7 +640,10 @@ function reqd_user_files(){ _als_function_boundary_in_
       local pttn_label
       pttn_label=$( lsblk --noheadings --output label "${pttn_device_path}" )
       pttn_label="${pttn_label:=live_usb_tmplabel}"
-      mount_pt="/run/media/root/${pttn_label}"
+      #mount_base__debian=""
+      mount_base__fedora="/run/media/root"
+      #mount_base__suse=""
+      mount_pt="${mount_base__fedora}/${pttn_label}"
       data_dir="${mount_pt}/${datadir_basenm}"
       is_mounted=no
       unset pttn_label
@@ -808,7 +807,9 @@ function reqd_user_files(){ _als_function_boundary_in_
 
 : "Define rsync_install_if_missing()"
 function rsync_install_if_missing(){ _als_function_boundary_in_
-  #builtin set -x # []
+  builtin set -x # []
+
+    if [[ -z $(declare -p data_dir) ]]; then echo FOOL; exit "${LINENO}"; fi # <>
 
   local fn_target_dir fn_source_var
   fn_source_var="$1"
@@ -829,7 +830,8 @@ function rsync_install_if_missing(){ _als_function_boundary_in_
     unset fn_umask
   fi
 
-  ## Bug, variable $data_dir is defined in a different function, reqd_user_files()
+  ## Bug, variable $data_dir is defined in a different function, reqd_user_files().
+  #+ See <> test above, ~line 812
 
   if [[ -z "${data_dir}" ]]
   then
@@ -872,22 +874,38 @@ function setup_bashrc(){ _als_function_boundary_in_
 
   for WW in "${files_for_use_with_bash[@]}"
   do
+    hash -r
+
     : "  bashrc -- RC File must exist"
-    if ! sudo -- [ -f "${WW}" ]
+    if ! sudo -- "$(type -P test)" -f "${WW}" 
     then
       _die_ "${WW}"
     fi
 
-    ## Bug, chmod changes the ctime, even with no change of DAC\s
+    ## Note, chmod changes the ctime, even with no change of DAC\s
 
     : "  bashrc -- ...of the array files_for_use_with_bash"
-    if ! sudo -- [ -e "${WW}.orig" ]
+    if ! sudo -- "$(type -P test)" -e "${WW}.orig"
     then
       sudo -- rsync --archive --checksum "${verb__[@]}" "${WW}" "${WW}.orig"
-      sudo -- chmod 400 "${verb__[@]}" "${WW}.orig"
+      
+      local AA
+      AA=$(sudo -- stat -c%a -- "${WW}.orig")
+      if [[ ${AA} != 400 ]]
+      then
+        sudo -- chmod 400 "${verb__[@]}" "${WW}.orig"
+      fi
+      unset AA
 
-      ## Bug, Adding attr changes ctime once; removing attr changes ctime every time
-      sudo -- chattr +i -- "${WW}.orig"
+      ## Note, Adding attr changes ctime once; removing attr changes ctime every time
+
+      local BB
+      BB=$(sudo -- lsattr -l -- "${WW}.orig")
+      if [[ ${BB} != immutable ]]
+      then
+        sudo -- chattr +i -- "${WW}.orig"
+      fi
+      unset BB
     fi
 
     : "  bashrc -- ...per-script-execution file backup"
@@ -925,10 +943,6 @@ function setup_bashrc(){ _als_function_boundary_in_
   ## Note, PROMPT_COMMAND could have been inherited as a string variable
   unset PROMPT_COMMAND
   declare -a PROMPT_COMMAND
-  
-  ## Bug? shouldn't this array $PROMPT_COMMAND have as value index 0 the variable $prompt_cmd_0 ?
-
-  #PROMPT_COMMAND=([0]="printf \"%b\" \"\${prompt_colors_reset}\"")
   PROMPT_COMMAND=( [0]="${prompt_cmd_0}" )
 
   if ! [[ "$( declare -pF __vte_prompt_command 2>&1 )" =~ ${pc_regx} ]]
@@ -1058,12 +1072,10 @@ function setup_bashrc(){ _als_function_boundary_in_
 
 : "Define setup_dnf()"
 function setup_dnf(){ _als_function_boundary_in_
-  #builtin set -x # []
+  builtin set -x # []
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
-
-  ## TODO, a --bugfix dnf command
 
     :;: "Beginning section on DNF" ;: # <>
 
@@ -1077,7 +1089,7 @@ function setup_dnf(){ _als_function_boundary_in_
   ## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will
   #+  apply to the entire block
 
-  hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
+  hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | cut --delimiter=' ' --fields=1 )
 
   : "Define filename for record of previous hash..B"
   local hash_f hash_of_installed_pkgs_B_prev
@@ -1131,7 +1143,7 @@ function setup_dnf(){ _als_function_boundary_in_
     # addl_pkgs+=( ${for_careful_A:=}     systemd )
     # addl_pkgs+=( ${for_careful_B:=}     sssd{,-{ad,client,common{,-pac},ipa,kcm,krb5{,-common},ldap,nfs-idmap,proxy}} )
     # addl_pkgs+=( ${for_db_ish:=}        libreoffice-calc )
-    # addl_pkgs+=( ${for_bug_rpts:=}      inxi zsh dash mksh )
+    # addl_pkgs+=( ${for_burg_rpts:=}     inxi zsh dash mksh )
     # addl_pkgs+=( ${for_char_sets:=}     enca moreutils uchardet )
       addl_pkgs+=( ${for_duh:=}           info plocate lynx )
     # addl_pkgs+=( ${for_duh:=}           pdfgrep wdiff )
@@ -1194,7 +1206,7 @@ function setup_dnf(){ _als_function_boundary_in_
 
     : "Get full list of rpms to upgrade, in an array; exit on non-zero"
     readarray -d "" -t pkgs_for_upgrade < <(
-      sudo -- dnf --assumeno --security upgrade 2>/dev/null |
+      sudo -- dnf --assumeno --security --bugfix upgrade 2>/dev/null |
         awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' |
         grep -vE ^replacing$
       )
@@ -1366,6 +1378,7 @@ function setup_dnf(){ _als_function_boundary_in_
 
           : "Kill a particular process"
           #sudo -- "$(type -P kill)" --timeout 1000 HUP --timeout 1000 USR1 --timeout 1000 TERM --timeout 1000 KILL "${verb__[@]}"  "${a_pids[WW]}"
+          hash -r
           sudo -- "$(type -P kill)" \
             --timeout 1000 HUP \
             --timeout 1000 USR1 \
@@ -1383,7 +1396,7 @@ function setup_dnf(){ _als_function_boundary_in_
     unset VV
   fi
   unset pkg_nms_for_removal addl_pkgs
-  unset for_{admin,bash,bashdb,db_ish,bug_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
+  unset for_{admin,bash,bashdb,db_ish,burg_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
   unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
   unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
@@ -2289,6 +2302,8 @@ function write_ssh_conf(){ _als_function_boundary_in_
 
 #######  FUNCTION DEFINITIONS COMPLETE #######
 
+## TODO, perhaps there should be a "main()" function.
+
 :;: "Regular users with sudo, only"
 must_be_root
 
@@ -2303,9 +2318,9 @@ must_be_root
   #echo foo
   #set +x
   #echo bar
-  #set -x
+  set -x
   #declare -p qui__ verb__
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
 
 :;: "Define trap on ERR"
 trap trap_err ERR
@@ -2417,6 +2432,7 @@ done
 unset BB
 
 # <Logs> Write to TTY and exit
+#hash -r
 #"$( type -P kill )" --signal USR2 -- "$$" # <Logs>
 
 :;: "SSH"
@@ -2437,8 +2453,8 @@ setup_git_user_dirs
   #EC=101 LN="${nL}" exit # <>
   set -x
 
-#:;: "Git debug settings"
-#enable_git_debug_settings
+#:;: "Git deburg settings"
+#enable_git_deburg_settings
 
 :;: "Git"
 setup_git
@@ -2474,4 +2490,3 @@ fi
 #"$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${verb__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 EC=00 LN="${nL}" exit
-
