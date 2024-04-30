@@ -48,7 +48,6 @@
 ## TODO, systemd services to possibly enable: sshd, sssd
 
 # <> Deburging
-set -x # <>
 # shellcheck disable=SC1001
 declare -nx nL=L\INENO ## <> Note, this assignment is repeated here; originally it\s located in setup_vars()
 set -a # <>
@@ -60,44 +59,69 @@ set -o pipefail # <>
 
 hash -r
 shopt -s expand_aliases
+set -x # <>
 
 ## How to add colors to xtrace comments
-#color_yellow=$( tput setaf 11 )
-#color_reset=$( tput sgr0 )
-#alias .y:=': $color_yellow ; :'
-#alias .^:=': $color_reset ; :'
+C1="$( tput setaf 1 )"    ;: "01 is Red"          ; tput sgr0
+C2="$( tput setaf 2 )"    ;: "02 is Green"        ; tput sgr0
+C3="$( tput setaf 3 )"    ;: "03 is Brown"        ; tput sgr0
+C4="$( tput setaf 4 )"    ;: "04 is Purple"       ; tput sgr0
+C5="$( tput setaf 5 )"    ;: "05 is Dark blue"    ; tput sgr0
+C6="$( tput setaf 6 )"    ;: "06 is Teal"         ; tput sgr0
+C7="$( tput setaf 7 )"    ;: "07 is Pink"         ; tput sgr0
+C8="$( tput setaf 8 )"    ;: "08 is Dark red"     ; tput sgr0
+C9="$( tput setaf 9 )"    ;: "09 is Dark green"   ; tput sgr0
+C10="$( tput setaf 10 )"  ;: "10 is Light green"  ; tput sgr0
+C11="$( tput setaf 11 )"  ;: "11 is Orange"       ; tput sgr0
+C12="$( tput setaf 12 )"  ;: "12 is Blue"         ; tput sgr0
+C13="$( tput setaf 13 )"  ;: "13 is Magenta"      ; tput sgr0
+C14="$( tput setaf 14 )"  ;: "14 is Light blue"   ; tput sgr0
+C15="$( tput setaf 15 )"  ;: "15 is White"        ; tput sgr0
+C0="$( tput sgr0 )"       ;: "Off"
 
-:;: "Variables likely to be manually changed with some regularity, or which absolutely must be defined early on"
+  #exit "${LINENO}"
+  set -x # <>
+  
+: "${C12}Variables likely to be manually changed with some regularity, or which absolutely must be defined early on${C0}"
 # shellcheck disable=SC2034
 {
+  : "${C2}Script metadata${C0}"
   script_start_time=$( date +%H:%M:%S )
   readonly script_start_time
+  global_hyphn=$-
+  export global_hyphn
   :
+  : "${C2}Repo info${C0}"
   scr_repo_nm="LiveUsb"
   scr_nm="LiveUsb1.sh"
   datadir_basenm="skel-LiveUsb"
   datdir_idfile=".${scr_repo_nm}_id-key"
   readonly scr_repo_nm scr_nm datadir_basenm datdir_idfile
   :
+  : "${C2}File and partition data and metadata${C0}"
   sha256_of_repo_readme="da016cc2869741834138be9f5261f14a00810822a41e366bae736bd07fd19b7c"
   data_pttn_uuid="7fcfd195-01"
   data_dir_id_sha256="7542c27ad7c381b059009e2b321155b8ea498cf77daaba8c6d186d6a0e356280"
   readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
   :
-  fn_bndry_sh=" ~~~ ~~~ ~~~ "
-  fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
+  : "${C2}Function boundary parameters${C0}"
+  fn_bndry_sh="${C11} ~~~ ~~~ ~~~ ${C0}"
+  fn_bndry_lo="${C11} ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ ${C0}"
   readonly fn_bndry_sh fn_bndry_lo
   fn_lvl=0
   :
-  alias _als_function_boundary_in_='local - _="${fn_bndry_lo} ${fn_bndry_sh} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" loc_hyphn="$-" loc_exit_code="${EC:-$?}" loc_lineno="${LN:-"${nL:-"${1}"}"}"'
-  alias _als_function_boundary_out_0_='true "${fn_bndry_lo} ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
-  alias _als_function_boundary_out_1_='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
+  : "${C2}Function boundary aliases${C0}"
+  alias    _als_function_boundary_in_='_="${fn_bndry_lo} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" local_hyphn="$-" local_exit_code="${EC:-$?}" local_lineno="${LN:-"${nL:-"${1}"}"}"'
+  alias _als_function_boundary_out_0_='_="${fn_bndry_lo} ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
+  alias _als_function_boundary_out_1_='_="${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
   :
+  : "${C2}User info${C0}"
   user_real_name="Wiley Young"
   user_github_email_address="84648683+wileyhy@users.noreply.github.com"
   user_github_gpg_key="E287D0CF528591CE"
   readonly user_real_name user_github_email_address user_github_gpg_key
   :
+  : "${C2}Required RPM\s${C0}"
   list_of_minimum_reqd_rpms=( 
     [0]="ShellCheck" 
     [1]="firewall-config" 
@@ -107,7 +131,7 @@ shopt -s expand_aliases
     [5]="vim-enhanced" )
   readonly list_of_minimum_reqd_rpms
   :
-  : "Parameters regarding required files"
+  : "${C12}Required files lists${C0}"
   ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more
   #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and 
   #+  are numbered sequentially are created here on one line only and have values assigned to each of them 
@@ -132,63 +156,72 @@ shopt -s expand_aliases
   #: "  Files, firefox"
   #files_for_use_with_github_depth_0+=( ~/.mozilla )
 
-  : "  Files, gh (cli)"
+  : "${C2}  Files, gh (cli)${C0}"
   files_for_use_with_github_depth_2+=( ~/.config/gh/{config.yml,gpg-agent.conf,hosts.yml,pubring.kbx,trustdb.gpg} )
   files_for_use_with_github_depth_3+=( ~/.config/gh/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev )
   files_for_use_with_github_depth_3+=( ~/.config/gh/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
-  : "  Files, gpg"
+  : "${C2}  Files, gpg${C0}"
   files_for_use_with_github_depth_1+=( ~/.gnupg/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
   files_for_use_with_github_depth_2+=( ~/.gnupg/crls.d/DIR.txt )
   files_for_use_with_github_depth_2+=( ~/.gnupg/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev )
   files_for_use_with_github_depth_2+=( ~/.gnupg/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
-  : "  Files, ssh"
+  : "${C2}  Files, ssh${C0}"
   files_for_use_with_github_depth_1+=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
-  : "  Files, top"
+  : "${C2}  Files, top${C0}"
   files_for_use_with_github_depth_2+=( ~/.config/procps/toprc )
-  : "  Files, vim"
+  : "${C2}  Files, vim${C0}"
   files_for_use_with_github_depth_0+=( ~/.vimrc )
-  : "  End of Files lists"
-  :
+  : "${C12}  End of Files lists${C0}"
+
+  #: "${C12}Duck xtrace${C0}"
   ## TODO, I do this duck-xtrace dance a few time in this script, but the procedure isn\t normalized yet; do so.
   #+    One problem, you can\t run `readonly ps_o` multiple times. 
-
   ## Note, `[[ -o` is a newer bashism
-  [[ -o xtrace ]] && xon=yes && set +x  ## Turns xtrace off after recording previous state
-  ps_o=$( ps aux )
+  #[[ -o xtrace ]] && xon=yes && set +x  ## Turns xtrace off after recording previous state
+  #ps_o=$( ps aux )
   #readonly ps_o
-  [[ ${xon:=} = yes ]] && set -x        ## Turns xtrace on after recording previous state
+  #[[ ${xon:=} = yes ]] && set -x        ## Turns xtrace on after recording previous state
 }
+
 :
-: "Write to TTY"
+: "${C12}Write to TTY${C0}"
 printf '  %s - Executing %s \n' "${script_start_time}" "$0"
 umask 077
 
-:;: '##  CRITICAL FUNCTIONS' ;:;
 
-: "Define trap_return()"
+
+
+
+:;: "${C12}##  CRITICAL FUNCTIONS  ##${C0}";:
+
+: "${C2}Define trap_return()${C0}"
 function trap_return(){                          _als_function_boundary_in_
   local -
   builtin set -x # []
   
-    echo "fn_bndry_lo: ${fn_bndry_lo}" 
+    #echo "fn_bndry_lo: ${fn_bndry_lo}" 
     echo "FUNCNAME[0]: ${FUNCNAME[0]}"
     echo "FUNCNAME[1]: ${FUNCNAME[1]}"
-    echo "fn_bndry_sh: ${fn_bndry_sh}"
-    echo "fn_lvl: ${fn_lvl}"
+    #echo "fn_bndry_sh: ${fn_bndry_sh}"
+    #echo "fn_lvl: ${fn_lvl}"
     #exit "${LINENO}"
-                                                 _als_function_boundary_out_1_
+                                                 _als_function_boundary_out_0_
+                                                 #_als_function_boundary_out_1_
 }
+
+
+
   #alias _als_function_boundary_out_0_='true "${fn_bndry_lo} ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
   #alias _als_function_boundary_out_1_='true "${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"'
 
-:;: "Define trap on RETURN"
+: "${C2}Define trap on RETURN${C0}"
 trap trap_return RETURN
 
-: "Define set()"
+: "${C2}Define set()${C0}"
 function set(){                                  _als_function_boundary_in_ 
   ## The global variable $fn_lvl is pulled in from the global scope and is set to effect the global
   #+  scope as well
-  local -Ig fn_lvl _="${fn_bndry_lo} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" glo_hyphn="$-" loc_exit_code="${EC:-$?}" loc_lineno="${LN:-"${nL:-"${1}"}"}"
+  local -Ig fn_lvl 
 
   ## This `set` effects global scope
   builtin set "$@"
@@ -197,13 +230,13 @@ function set(){                                  _als_function_boundary_in_
   local -
   builtin set -x
   
-  local loc_hyphn
-    loc_hyphn="${loc_hyphn:-"${-}"}" 
+  local local_hyphn
+    local_hyphn="${local_hyphn:-"${-}"}" 
   local -aIg qui__ ver__
-    qui__=()
-    ver__=()
+    qui__=("${qui_[@]}")
+    ver__=("${ver_[@]}")
 
-    declare -p glo_hyphn loc_hyphn qui__ ver__
+    #declare -p global_hyphn local_hyphn qui__ ver__
 
   if [[ -o xtrace ]]
   then
@@ -214,12 +247,15 @@ function set(){                                  _als_function_boundary_in_
     ver__=( [0]="--" )
   fi
   export qui__ ver__
+                                                 _als_function_boundary_out_0_
 }
+:;: "${C12}##  CRITICAL FUNCTIONS COMPLETE  ##${C0}";:
 
-##  REGULAR FUNCTION DEFINITIONS, BEGIN ##
 
-:
-: "Functions and Aliases TOC..."    ## Conf files?
+
+:;: "${C12}##  REGULAR FUNCTIONS  ##${C0}";:
+
+: "${C12}Functions and Aliases TOC...${C0}"
   ## functions_this_script=(
   #+  "__vte_osc7()"
   #+  "__vte_prompt_command()"
@@ -256,7 +292,7 @@ function set(){                                  _als_function_boundary_in_
   #+  "write_ssh_conf()"              # y
   #+)
 
-#:;: "Define __vte_osc7() -- for bashrc only"
+#: "Define __vte_osc7() -- for bashrc only"
 # shellcheck disable=SC2317
 #function __vte_osc7(){                          _als_function_boundary_in_
   #local - cmd urlencode_o
@@ -268,7 +304,7 @@ function set(){                                  _als_function_boundary_in_
   #printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
 #}
 
-#:;: "Define __vte_prompt_command() -- for bashrc only"
+#: "Define __vte_prompt_command() -- for bashrc only"
 # shellcheck disable=SC2317
 #function __vte_prompt_command(){                _als_function_boundary_in_
     #local - fn_pwd
@@ -283,9 +319,10 @@ function set(){                                  _als_function_boundary_in_
     #__vte_osc7
 #}
 
-: "Define clone_repo()"
+: "${C2}Define clone_repo()${C0}"
 function clone_repo(){                           _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   [[ ${PWD} = "${dev_d1}" ]] || _die_
 
@@ -296,18 +333,22 @@ function clone_repo(){                           _als_function_boundary_in_
   fi
 }
 
+
+
+
 ## Bug, separate alias definitions to a subsection above function definitions. Defining of alias B can 
 #+ occur before the defining of function A which is contained within in (alias B).
 
-: "Define \"_die_\" alias to function error_and_exit()"
+: "${C2}Define \"_die_\" alias to function error_and_exit()${C0}"
 alias _die_='error_and_exit "${nL}"'
 :
 
-: "Define enable_git_deburg_settings()"
+: "${C2}Define enable_git_deburg_settings()${C0}"
 function enable_git_deburg_settings(){           _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
-  :;: "Variables -- Global git deburg settings"
+  : "${C2}Variables -- Global git deburg settings${C0}"
   # shellcheck disable=SC2034
   {
     GIT_TRACE=true
@@ -323,9 +364,18 @@ function enable_git_deburg_settings(){           _als_function_boundary_in_
   [[ -f ~/.gitconfig ]] && git config --global --list --show-origin --show-scope | cat -n
 }
 
-: "Define error_and_exit()"
+
+
+
+: "${C2}Define error_and_exit()${C0}"
 function error_and_exit(){                       _als_function_boundary_in_
+  ##_="${fn_bndry_lo} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" local_hyphn="$-" local_exit_code="${EC:-$?}" local_lineno="${LN:-"${nL:-"${1}"}"}"
+  local -
   builtin set -x # []
+
+    #declare -p local_hyphn
+    #declare -p local_lineno
+    #declare -p local_exit_code
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] && return 1
@@ -333,26 +383,31 @@ function error_and_exit(){                       _als_function_boundary_in_
   ## The first positional parameter must be a digit, and should be the LINENO from where error_and_exit() is called
   if ! [[ $1 = [0-9]* ]]
   then
-    printf '\n%s, %s, Error, first positional parameter must be a line number\n\n' "${scr_nm}" "${FUNCNAME[0]}"
+    printf '\n%b%s, %s, Error, first positional parameter must be a line number%b\n\n' "${C1}" "${scr_nm}" "${funcname}" "${C0}"
+    #printf '\n%s, %s, Error, first positional parameter must be a line number\n\n' "${scr_nm}" "${FUNCNAME[0]}"
     return 2
   fi
 
-  local loc_lineno
-  loc_lineno="$1"
+  local local_lineno
+  local_lineno="$1"
   shift
 
-  printf '%s, Error, line %d, %s\n' "${scr_nm}" "${loc_lineno}" "$*" >&2
+  printf '%b%s, Error, line %d, %s%b\n' "${C1}" "${scr_nm}" "${local_lineno}" "$*" "${C0}" >&2
 
-  [[ ${loc_exit_code} = 0 ]] && loc_exit_code="01"
+  [[ ${local_exit_code} = 0 ]] && local_exit_code="01"
 
-  EC="${loc_exit_code}" LN="${loc_lineno}" builtin exit
+  EC="${local_exit_code}" LN="${local_lineno}" builtin exit
 }
+
+
+
 
 ## TODO: add a "get_distro()" function
 
-: "Define get_pids_for_restarting()"
+: "${C2}Define get_pids_for_restarting()${C0}"
 function get_pids_for_restarting(){              _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   # shellcheck disable=SC2034
   local dnf_o
@@ -379,7 +434,7 @@ function get_pids_for_restarting(){              _als_function_boundary_in_
     return 0
   fi
 
-    #declare -p dnf_o # <>
+    declare -p dnf_o # <>
 
   readarray -t pipline0 < <( printf '%s\n' "${dnf_o[@]}" | grep --invert-match --fixed-strings --regexp="/firefox/" )
   if [[ ${#pipline0[@]} -eq 0 ]]
@@ -400,8 +455,12 @@ function get_pids_for_restarting(){              _als_function_boundary_in_
   fi
 }
 
-: "Define gh_auth_login_command()"
+
+
+
+: "${C2}Define gh_auth_login_command()${C0}"
 function gh_auth_login_command(){                _als_function_boundary_in_ 
+  local -
   # set -
 
   if gh auth status >/dev/null 2>&1
@@ -416,9 +475,12 @@ function gh_auth_login_command(){                _als_function_boundary_in_
   gh auth login -p ssh -h github.com -s admin:public_key,read:gpg_key,admin:ssh_signing_key -w || _die_
 }
 
-: "Define increase_disk_space()"
+
+
+
+: "${C2}Define increase_disk_space()${C0}"
 function increase_disk_space(){                  _als_function_boundary_in_
-  #builtin set -x # []
+  builtin set -x # []
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
   ## Note, for $dirs1 , find syntax based on Mascheck\s
@@ -463,10 +525,10 @@ function increase_disk_space(){                  _als_function_boundary_in_
     done
   fi
 
-  : "If any larger local data files were found, then remove them interactively"
+  : "${C2}If any larger local data files were found, then remove them interactively${C0}"
   if [[ -n ${!Aa_fsos5[*]} ]]
   then
-    : "Inform user of any found FSOs"
+    : "${C2}Inform user of any found FSOs${C0}"
     printf '%s, Delete these files? \n' "${scr_nm}"
     declare -p Aa_fsos5
     sleep 3
@@ -538,9 +600,13 @@ function increase_disk_space(){                  _als_function_boundary_in_
   unset dirs1 dirs2 fsos3 fsos4 Aa_fsos5 AA HH II JJ yes_or_no
 }
 
-: "Define min_necc_packages()"
+
+
+
+: "${C2}Define min_necc_packages()${C0}"
 function min_necc_packages(){                    _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   local XX
 
@@ -564,9 +630,13 @@ function min_necc_packages(){                    _als_function_boundary_in_
   unset XX
 }
 
-: "Define must_be_root()"
+
+
+
+: "${C2}Define must_be_root()${C0}"
 function must_be_root(){                         _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   if (( UID == 0 ))
   then
@@ -574,11 +644,16 @@ function must_be_root(){                         _als_function_boundary_in_
   else
     sudo --validate || _die_
   fi
+                                                 _als_function_boundary_out_0_
 }
 
-: "Define pause_to_check()"
+
+
+
+: "${C2}Define pause_to_check()${C0}"
 ## Usage,   pause_to_check "${nL}"
 function pause_to_check(){                       _als_function_boundary_in_
+  local -
   builtin set - # []
   local -I EC=101 LN="$1"
 
@@ -612,11 +687,15 @@ function pause_to_check(){                       _als_function_boundary_in_
   #if [[ $hyphn =~ x ]]; then bndry_cmd="echo"; else bndry_cmd="true"; fi
   #"${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
 }
+
+
+
 alias _pause2ck_='pause_to_check "${nL}"'
 
-: "Define reqd_user_files()"
+: "${C2}Define reqd_user_files()${C0}"
 function reqd_user_files(){                      _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
   #+  effect the local variable
@@ -635,7 +714,7 @@ function reqd_user_files(){                      _als_function_boundary_in_
   pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }' )
   [[ -n ${pttn_device_path} ]] || _die_ $'Necessary USB drive isn\x60t plugged in or its filesystem has changed.'
   
-  :;: "Vars: get mountpoints and label"
+  : "${C2}Vars: get mountpoints and label${C0}"
   local mount_pt data_dir is_mounted
   local -a array_mt_pts
   readarray -t array_mt_pts < <( lsblk --noheadings --output mountpoints "${pttn_device_path}" )
@@ -649,7 +728,7 @@ function reqd_user_files(){                      _als_function_boundary_in_
 
   case "${#array_mt_pts[@]}" in
     0 )
-      : "  Zero matches"
+      : "${C2}  Zero matches${C0}"
       ## Note, "plugged in and not mounted" means the LABEL would still be visible, if there is one: the USB
       #+  drive or the filesystem holding the data could change, and either change would rewrite the PARTUUID
       local pttn_label
@@ -664,25 +743,25 @@ function reqd_user_files(){                      _als_function_boundary_in_
       unset pttn_label
       ;; #
     1 )
-      : "  One match"
+      : "${C2}  One match${C0}"
       mount_pt="${array_mt_pts[*]}"
       data_dir="${mount_pt}/${datadir_basenm}"
       is_mounted=yes
       ;; #
     * )
-      : "  Multiple matches"
+      : "${C2}  Multiple matches${C0}"
       _die_ "The target partition is mounted in multiple places"
       ;; #
   esac
   unset array_mt_pts
 
-  : "FS mounting must be restricted to root and/or liveuser"
+  : "${C2}FS mounting must be restricted to root and/or liveuser${C0}"
   local mount_user
   mount_user="${mount_pt%/*}" mount_user="${mount_user##*/}"
   [[ ${mount_user} = @(root|liveuser) ]] || _die_
   unset mount_user
 
-  : "USB drive must be mounted"
+  : "${C2}USB drive must be mounted${C0}"
   if [[ ${is_mounted} = "no" ]]
   then
     if ! [[ -d "${mount_pt}" ]]
@@ -702,21 +781,21 @@ function reqd_user_files(){                      _als_function_boundary_in_
     sync -f
   fi
 
-  : "Directories from mount-username directory to mount point must be readable via ACL, but not writeable"
+  : "${C2}Directories from mount-username directory to mount point must be readable via ACL, but not writeable${C0}"
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${mount_pt%/*}"
   sudo -- setfacl --remove-all --remove-default -- "${mount_pt}" 
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${mount_pt}"
   
-  : "Data directory must already exist"
+  : "${C2}Data directory must already exist${C0}"
   if ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]; then _die_; fi
   
-  : "Data directory must be readable via ACL, but not writeable"
+  : "${C2}Data directory must be readable via ACL, but not writeable${C0}"
   sudo -- setfacl --remove-all --remove-default --recursive --physical -- "${data_dir}" 
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${data_dir}"
   sudo -- find "${data_dir}" -type d -execdir setfacl --modify="u:${LOGNAME}:rx" --recursive --physical '{}' \;
   sudo -- find "${data_dir}" -type f -execdir setfacl --modify="u:${LOGNAME}:r" '{}' \;
 
-  : "Data directory verification info must be correct"
+  : "${C2}Data directory verification info must be correct${C0}"
   local ZZ
   ZZ=$( sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" | grep -o "${data_dir_id_sha256}" )
 
@@ -724,12 +803,12 @@ function reqd_user_files(){                      _als_function_boundary_in_
   if ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]; then _die_; fi
   unset ZZ
   
-  : "Capture previous umask and set a new one"
+  : "${C2}Capture previous umask and set a new one${C0}"
   local prev_umask
   read -r -a prev_umask < <( umask -p )
   umask 177
 
-  :;: "For each array of conf files and/or directories"
+  : "${C2}For each array of conf files and/or directories${C0}"
   local AA
   local -n QQ
   ## Note, It isn\t strictly necessary to declare QQ as a nameref here, since unsetting QQ (see below) removes
@@ -738,9 +817,9 @@ function reqd_user_files(){                      _als_function_boundary_in_
 
   for AA in "${arrays_of_conf_files[@]}"
   do
-    #:;: 'Loop A - open \\\ ' ;:
+    #: 'Loop A - open \\\ ' ;:
 
-    : "Vars"
+    : "${C2}Vars${C0}"
     ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
     #+  directly, `foo=bar`, then on the second loop `local -p QQ` prints the former value of QQ. Perhaps
     #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
@@ -750,25 +829,25 @@ function reqd_user_files(){                      _als_function_boundary_in_
     local -n QQ="${AA}"   ## good code
     #QQ="${AA}"           ## baaad code
 
-    :;: "For each conf file or dir"
+    : "${C2}For each conf file or dir${C0}"
     local BB
 
-    : "If the target conf file/dir does not exist"
+    : "${C2}If the target conf file/dir does not exist${C0}"
     for BB in "${!QQ[@]}"
     do
       #: '    Loop A:1 - open \\\ '
       if ! [[ -e ${QQ[BB]} ]]
       then
 
-        : "Vars"
+        : "${C2}Vars${C0}"
         local source_file
         source_file="${data_dir}/${QQ[BB]#~/}"
 
-        :;: "If the source conf file/dir does not exist, then find it"
+        : "${C2}If the source conf file/dir does not exist, then find it${C0}"
         if ! [[ -e ${source_file} ]]
         then
 
-          : "If the partition is not mounted which holds the data directory, then mount it"
+          : "${C2}If the partition is not mounted which holds the data directory, then mount it${C0}"
           if [[ ${is_mounted} = no ]]
           then
 
@@ -787,7 +866,7 @@ function reqd_user_files(){                      _als_function_boundary_in_
             fi
           fi
 
-          :;: "If the source conf file/dir still does not exist, then throw an error"
+          : "${C2}If the source conf file/dir still does not exist, then throw an error${C0}"
           if ! [[ -e "${source_file}" ]]
           then
             _die_ "${QQ[BB]}" "${source_file}"
@@ -799,29 +878,33 @@ function reqd_user_files(){                      _als_function_boundary_in_
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
         unset source_file dest_dir
       fi
-      #: "    Loop A:1 - shut /// " ;:;:
+      #: "    Loop A:1 - shut /// " 
     done
     #: "Loops A:1 - complete === " ;:
 
     unset BB
     unset -n QQ
-    #:;: "Loop A - shut /// " ;:
+    #: "Loop A - shut /// " ;:
   done
 
   unset AA
   unset mount_pt data_dir is_mounted
   unset pttn_device_path
-  #:;: "Loops A - complete === " ;:
+  #: "Loops A - complete === " ;:
 
-  : "Restore previous umask"
+  : "${C2}Restore previous umask${C0}"
   builtin "${prev_umask[@]}"
   unset prev_umask
 
-    #EC=101 LN="${nL}" exit # <>
+    EC=101 LN="${nL}" exit # <>
 }
 
-: "Define rsync_install_if_missing()"
+
+
+
+: "${C2}Define rsync_install_if_missing()${C0}"
 function rsync_install_if_missing(){             _als_function_boundary_in_
+  local -
   builtin set -x # []
 
     if [[ -z $(declare -p data_dir) ]]; then echo FOOL; exit "${LINENO}"; fi # <>
@@ -873,25 +956,29 @@ function rsync_install_if_missing(){             _als_function_boundary_in_
     rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || _die_ "${fn_target_dir}"
   fi
 
-  : "Unset a local variable defined and assigned in only this function, and not any variables by the same name..."
+  : "${C2}Unset a local variable defined and assigned in only this function, and not any variables by the same name...${C0}"
   #+  from any other scope
   [[ ${unset_local_var_rand5791:=} = "yes" ]] && unset unset_local_var_rand5791 data_dir
   
   unset fn_source_var fn_target_dir
 }
 
-: "Define setup_bashrc()"
+
+
+
+: "${C2}Define setup_bashrc()${C0}"
 function setup_bashrc(){                         _als_function_boundary_in_
+  local -
   builtin set -x # []
 
-  :;: "  bashrc -- Do some backups"
+  : "${C2}  bashrc -- Do some backups${C0}"
   files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 
   for WW in "${files_for_use_with_bash[@]}"
   do
     hash -r
 
-    : "  bashrc -- RC File must exist"
+    : "${C2}  bashrc -- RC File must exist${C0}"
     if ! sudo -- "$(type -P test)" -f "${WW}" 
     then
       _die_ "${WW}"
@@ -899,7 +986,7 @@ function setup_bashrc(){                         _als_function_boundary_in_
 
     ## Note, chmod changes the ctime, even with no change of DAC\s
 
-    : "  bashrc -- ...of the array files_for_use_with_bash"
+    : "${C2}  bashrc -- ...of the array files_for_use_with_bash${C0}"
     if ! sudo -- "$(type -P test)" -e "${WW}.orig"
     then
       sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}.orig"
@@ -923,25 +1010,25 @@ function setup_bashrc(){                         _als_function_boundary_in_
       unset BB
     fi
 
-    : "  bashrc -- ...per-script-execution file backup"
+    : "${C2}  bashrc -- ...per-script-execution file backup${C0}"
     sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}~" || _die_ "${WW}"
   done
   unset WW
 
-  :;: "  bashrc -- Env parameters for bashrc"
+  : "${C2}  bashrc -- Env parameters for bashrc${C0}"
 
-  :;: "  bashrc -- PS0 -- Assign color code and duck xtrace"
+  : "${C2}  bashrc -- PS0 -- Assign color code and duck xtrace${C0}"
   ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
   if [[ -o xtrace ]]
   then
     set -
     PS0=$( tput setaf 43 )
-    set -x
+    builtin set -x
   else
     PS0=$( tput setaf 43 )
   fi
 
-  :;: "  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 1 --"
+  : "${C2}  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 1 --${C0}"
   pc_regx="not found"$
   # shellcheck disable=SC2034
   prompt_colors_reset=$( tput sgr0 )
@@ -950,11 +1037,11 @@ function setup_bashrc(){                         _als_function_boundary_in_
   #+    man(){ "$( type -P man )" --nh --nj "$@"; }
   #+    export TMOUT=15
 
-  : "  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 2 --"
+  : "${C2}  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 2 --${C0}"
   # shellcheck disable=SC2016
   prompt_cmd_0='printf "%b" "${prompt_colors_reset}"'
 
-  : "  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 3 --"
+  : "${C2}  bashrc -- PROMPT_COMMAND -- Variables dependency -- level 3 --${C0}"
   ## Note, PROMPT_COMMAND could have been inherited as a string variable
   unset PROMPT_COMMAND
   declare -a PROMPT_COMMAND
@@ -965,7 +1052,7 @@ function setup_bashrc(){                         _als_function_boundary_in_
     PROMPT_COMMAND+=( __vte_prompt_command )
   fi
 
-  : "  bashrc -- Other parameters"
+  : "${C2}  bashrc -- Other parameters${C0}"
   # shellcheck disable=SC2034
   {
     PS1="[\\u@\\h]\\\$ "
@@ -973,11 +1060,11 @@ function setup_bashrc(){                         _als_function_boundary_in_
     EDITOR=$( command -v vim vi nano | head --lines=1 )
   }
 
-  :;: "  bashrc -- Append user variables and functions into .bashrc."
+  : "${C2}  bashrc -- Append user variables and functions into .bashrc${C0}"
   ## Note, these arrays include some command substitutions which depend on some function definitions, which in
   #+  turn must be defined prior to defining these arrays
 
-  :;: "  bashrc -- Define lists of parameters to be appended into bashrc"
+  : "${C2}  bashrc -- Define lists of parameters to be appended into bashrc${C0}"
   ## Note, there are multiple lists for variables due to layers of dependencies. Later in this procedure,
   #+  each of these groups is relayed using associative arrays, which do not reliably maintain their internal
   #+  ordering, so, some consistent ordering must be imposed here.
@@ -995,10 +1082,10 @@ function setup_bashrc(){                         _als_function_boundary_in_
     ## TODO, write lists of how the data is to be written in bashrc, and of how the data exists originally,
     #+  then with those endpoints, chart how to transform the strings from a simple list to output in bashrc
 
-  :;: "  bashrc -- Variables"
+  : "${C2}  bashrc -- Variables${C0}"
   missing_vars_and_fns=()
 
-  : "Note, test for whether the reqd variables are defined in the script#s current execution environment"
+  : "${C2}Note, test for whether the reqd variables are defined in the script#s current execution environment${C0}"
   for QQ in "${vars_for_bashrc_1[@]}" "${vars_for_bashrc_2[@]}" "${vars_for_bashrc_3[@]}"
   do
     if [[ $( declare -p "${QQ}" 2>&1 ) =~ ${pc_regx} ]]
@@ -1008,7 +1095,7 @@ function setup_bashrc(){                         _als_function_boundary_in_
   done
   unset QQ
 
-  :;: "  bashrc -- Functions"
+  : "${C2}  bashrc -- Functions${C0}"
   for UU in "${fcns_for_bashrc_1[@]}"
   do
     if [[ $( declare -pF "${UU}" 2>&1 ) =~ ${pc_regx} ]]
@@ -1018,15 +1105,15 @@ function setup_bashrc(){                         _als_function_boundary_in_
   done
   unset UU
 
-  :;: "  bashrc -- Test for any missing parameters"
+  : "${C2}  bashrc -- Test for any missing parameters${C0}"
   if (( ${#missing_vars_and_fns[@]} > 0 ))
   then
     _die_ "${missing_vars_and_fns[@]}"
   fi
 
-  :;: "  bashrc -- Create Associative arrays of required parameters"
+  : "${C2}  bashrc -- Create Associative arrays of required parameters${C0}"
 
-  : "  bashrc -- Define Aa_bashrc_strngs_*"
+  : "${C2}  bashrc -- Define Aa_bashrc_strngs_*${C0}"
   ## Note, you want for these array elements to represent just one parameter or function each.  ...what does this mean?
   local -a bashrc_Assoc_arrays
   local -a bashrc_Assoc_arrays=( Aa_bashrc_strngs_F1   Aa_bashrc_strngs_V1   Aa_bashrc_strngs_V2   Aa_bashrc_strngs_V3 )
@@ -1049,7 +1136,7 @@ function setup_bashrc(){                         _als_function_boundary_in_
   #       local -A Aa_bashrc_strngs_V{ number }[$AA] = [def parm BB]=$( declare -p BB)
   #
 
-  : "  bashrc -- Variables"
+  : "${C2}  bashrc -- Variables${C0}"
   ## Note, three temp vars are used here because of the correspondence of numbers, ie, 1 and 1, 2 and 2, etc
   #+  between the names of the respective indexed and associative arrays. In effect, this is the clearest and
   #+  shortest way to write it in bash (5.2), for the intended purpose, to the best of my knowledge.
@@ -1059,7 +1146,7 @@ function setup_bashrc(){                         _als_function_boundary_in_
   for ZZ in "${vars_for_bashrc_3[@]}"; do Aa_bashrc_strngs_V3+=( ["define parameter ${ZZ}"]=$( declare -p "${ZZ}" ) ); done
   unset XX YY ZZ
 
-  : "  bashrc -- Functions (a.k.a. \"subroutines\")"
+  : "${C2}  bashrc -- Functions (a.k.a. \"subroutines\")${C0}"
   local AA
   for AA in "${fcns_for_bashrc_1[@]}"
   do
@@ -1067,7 +1154,7 @@ function setup_bashrc(){                         _als_function_boundary_in_
   done
   unset AA
 
-  :;: "  bashrc -- Write functions and variable definitions into bashrc files"
+  : "${C2}  bashrc -- Write functions and variable definitions into bashrc files${C0}"
   local KK
   for KK in "${!bashrc_Assoc_arrays[@]}"
   do
@@ -1075,7 +1162,7 @@ function setup_bashrc(){                         _als_function_boundary_in_
   done
   unset KK
 
-  :;: "  bashrc -- Clean up"
+  : "${C2}  bashrc -- Clean up${C0}"
   unset pc_regx prompt_cmd_0
   unset files_for_use_with_bash
   unset -f write_bashrc_strings
@@ -1083,16 +1170,20 @@ function setup_bashrc(){                         _als_function_boundary_in_
   unset bashrc_Assoc_arrays
 }
 
+
+
+
 ## Bug, setup_dnf is too long and too complicated
 
-: "Define setup_dnf()"
+: "${C2}Define setup_dnf()${C0}"
 function setup_dnf(){                           _als_function_boundary_in_
+  local -
   builtin set -x # []
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
 
-    :;: "Beginning section on DNF" ;: # <>
+    : "${C2}Beginning section on DNF${C0}"
 
   ## Note, CUPS cannot be safely removed; too many dependencies
   ## Note, For some unknown reason, even when  dnf  doesn\t change any programs,  dnf
@@ -1106,29 +1197,29 @@ function setup_dnf(){                           _als_function_boundary_in_
 
   hash_of_installed_pkgs_A=$( rpm --all --query | sha256sum | cut --delimiter=' ' --fields=1 )
 
-  : "Define filename for record of previous hash..B"
+  : "${C2}Define filename for record of previous hash..B${C0}"
   local hash_f hash_of_installed_pkgs_B_prev
   hash_f=/tmp/setup_dnf__hash_of_installed_pkgs_B_prev
   hash_of_installed_pkgs_B_prev=""
 
-  : "If the record already exists..."
+  : "${C2}If the record already exists...${C0}"
   if [[ -f ${hash_f} ]]
   then
 
-    : "...then read it in"
+    : "${C2}...then read it in${C0}"
     read -r hash_of_installed_pkgs_B_prev < "${hash_f}"
 
-    : "If the old hash...B matches the new hash...A, then return from this function"
+    : "${C2}If the old hash...B matches the new hash...A, then return from this function${C0}"
     if [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B_prev}" ]]
     then
       return
     fi
   fi
 
-  : "Removals for disk space"
+  : "${C2}Removals for disk space${C0}"
   pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
 
-  : "Removals for security"
+  : "${C2}Removals for security${C0}"
   #pkg_nms_for_removal+=( blueman bluez )
 
   ## Note, xfce4-terminal -- hardcoded WM ...can be used w/o XFCE....
@@ -1182,7 +1273,7 @@ function setup_dnf(){                           _als_function_boundary_in_
     # addl_pkgs+=( ${for_security:=}      orca protonvpn-cli xsecurelock )
   }
 
-  :;: "Start with removing any unnecessary RPMs"
+  : "${C2}Start with removing any unnecessary RPMs${C0}"
 
   if [[ -n ${pkg_nms_for_removal:0:8} ]]
   then
@@ -1192,7 +1283,7 @@ function setup_dnf(){                           _als_function_boundary_in_
     readarray -t removable_pkgs < <(
       rpm --all --query | grep --ignore-case --extended-regexp "${grep_args[@]}" )
 
-    :;: "Keep a list, just in case an rpm removal accidentally erases something vital"
+    : "${C2}Keep a list, just in case an rpm removal accidentally erases something vital${C0}"
     if [[ -n ${removable_pkgs[*]:0:8} ]]
     then
       for QQ in "${!removable_pkgs[@]}"
@@ -1209,7 +1300,7 @@ function setup_dnf(){                           _als_function_boundary_in_
     fi
   fi
 
-  :;: "Then do a blanket security upgrade"
+  : "${C2}Then do a blanket security upgrade${C0}"
 
   ## Note, the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to
   #+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest
@@ -1219,7 +1310,7 @@ function setup_dnf(){                           _als_function_boundary_in_
   while true
   do
 
-    : "Get full list of rpms to upgrade, in an array; exit on non-zero"
+    : "${C2}Get full list of rpms to upgrade, in an array; exit on non-zero${C0}"
     readarray -d "" -t pkgs_for_upgrade < <(
       sudo -- dnf --assumeno --security --bugfix upgrade 2>/dev/null |
         awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' |
@@ -1237,13 +1328,13 @@ function setup_dnf(){                           _als_function_boundary_in_
     done
     unset HH
 
-    : "If count of upgradeable rpms is 0, then break loop"
+    : "${C2}If count of upgradeable rpms is 0, then break loop${C0}"
     if [[ ${#pkgs_for_upgrade[@]} -eq 0 ]]
     then
       break
     fi
 
-    : "Upgrade the RPM\s one at a time"
+    : "${C2}Upgrade the RPM\s one at a time${C0}"
     for II in "${!pkgs_for_upgrade[@]}"
     do
       if sudo -- dnf --assumeyes --security upgrade -- "${pkgs_for_upgrade[II]}"
@@ -1271,7 +1362,7 @@ function setup_dnf(){                           _als_function_boundary_in_
 
   pause_to_check "${nL}" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
 
-  :;: "Find out whether an RPM is installed, one by one"
+  : "${C2}Find out whether an RPM is installed, one by one${C0}"
   for UU in "${!addl_pkgs[@]}"
   do
     if rpm --query --quiet -- "${addl_pkgs[UU]}"
@@ -1286,7 +1377,7 @@ function setup_dnf(){                           _als_function_boundary_in_
 
   ## Bug, this section should upgrade rpms one by one
 
-  :;: "Upgrade any installed RPMs from the main list, en masse"
+  : "${C2}Upgrade any installed RPMs from the main list, en masse${C0}"
   if [[ -n ${pkgs_installed[*]: -1:1} ]]
   then
     sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" || _die_
@@ -1294,7 +1385,7 @@ function setup_dnf(){                           _als_function_boundary_in_
 
     pause_to_check "${nL}" $'From the \x24addl_pkgs array, install the remainder' # <>
 
-  :;: "Install any as yet uninstalled RPMs from the main list as necessary"
+  : "${C2}Install any as yet uninstalled RPMs from the main list as necessary${C0}"
   not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
 
   if [[ -n ${not_yet_installed_pkgs[*]: -1:1} ]]
@@ -1329,7 +1420,7 @@ function setup_dnf(){                           _als_function_boundary_in_
             #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?" # <>
 
 
-          : "Ensure a process is still running before trying to kill it"
+          : "${C2}Ensure a process is still running before trying to kill it${C0}"
 
           ## Note, some strings from /proc/[pid]/cmdline include "[]" brackets; `pgrep -f` parses these as
           #+  ERE's and cannot parse fixed strings, so a Parameter Expansion is necessary in order to render
@@ -1340,9 +1431,9 @@ function setup_dnf(){                           _als_function_boundary_in_
           #+  "/proc/${a_pids[WW]}/cmdline" would not exist.
           sleep 1
 
-          : "Most existing processes have some commandline information available"
+          : "${C2}Most existing processes have some commandline information available${C0}"
           :
-          : "If the /proc/PID/cmdline FSO exists and is a file, then..."
+          : "${C2}If the /proc/PID/cmdline FSO exists and is a file, then...${C0}"
           if [[ -f /proc/${a_pids[WW]}/cmdline ]] 
           then
             ## Note, these files are in _PROC_! Of course they have a zero filesize!!
@@ -1350,13 +1441,13 @@ function setup_dnf(){                           _als_function_boundary_in_
             ## Bug, the bash(ism) `[[` keyword cannot accept a leading or internal "2>/dev/null", though 
             #+  `test` and `[` can. 
 
-            : "If the /proc/PID/cmdline FSO also has a size greater than zero..."
+            : "${C2}If the /proc/PID/cmdline FSO also has a size greater than zero...${C0}"
             if [[ -n "$( tr -d '\0' < /proc/${a_pids[WW]}/cmdline )" ]]
             then
               local -a array_of_PIDs_cmdline
               local string_of_PIDs_cmdline
 
-              : "Load the cmdline into an array"
+              : "${C2}Load the cmdline into an array${C0}"
               readarray -d '' -t array_of_PIDs_cmdline < <( cat "/proc/${a_pids[WW]}/cmdline" )
 
               : $'Skip zombie processes, which have zero length \x22/proc/[pid]/cmdline\x22 files'
@@ -1366,7 +1457,7 @@ function setup_dnf(){                           _als_function_boundary_in_
                 continue
               fi
 
-              : "If the commandline cannot be found in ps output, then move on to the next loop"
+              : "${C2}If the commandline cannot be found in ps output, then move on to the next loop${C0}"
               string_of_PIDs_cmdline=( "${array_of_PIDs_cmdline[@]//\[/\\[}" )
 
               if ! pgrep -f "${string_of_PIDs_cmdline[*]}" >/dev/null
@@ -1391,7 +1482,7 @@ function setup_dnf(){                           _als_function_boundary_in_
             continue
           fi
 
-          : "Kill a particular process"
+          : "${C2}Kill a particular process${C0}"
           #sudo -- "$(type -P kill)" --timeout 1000 HUP --timeout 1000 USR1 --timeout 1000 TERM --timeout 1000 KILL "${ver__[@]}"  "${a_pids[WW]}"
           hash -r
           sudo -- "$(type -P kill)" \
@@ -1415,14 +1506,14 @@ function setup_dnf(){                           _als_function_boundary_in_
   unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
   unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
-    #EC=101 LN="${nL}" exit # <>
+    EC=101 LN="${nL}" exit # <>
     #pause_to_check "${nL}" "Begin section on restarting processes?" # <>
 
-  :;: "Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs"
+  : "${C2}Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs${C0}"
   #a_pids=()
   get_pids_for_restarting
 
-    #EC=101 LN="${nL}" exit # <>
+    EC=101 LN="${nL}" exit # <>
 
   : $'Get new hash of installed packages, ie, \x24{hash..B}'
   hash_of_installed_pkgs_B=$( rpm --all --query | sha256sum | awk '{ print $1 }' )
@@ -1432,32 +1523,32 @@ function setup_dnf(){                           _als_function_boundary_in_
   local hash_of_installed_pkgs_B_prev
   hash_of_installed_pkgs_B_prev="${hash_of_installed_pkgs_B}"
   
-  : "If the target file exists"
+  : "${C2}If the target file exists${C0}"
   if [[ -f ${hash_f} ]]
   then
 
-    : "If the target file is immutable"
+    : "${C2}If the target file is immutable${C0}"
     local has_immutable
     has_immutable=$( lsattr -l "${hash_f}" | awk '$1 ~ /i/ { printf "Yes" }' )
     
     if [[ ${has_immutable} = "Yes" ]] 
     then
 
-      : "...then remove the immutable flag"
+      : "${C2}...then remove the immutable flag${C0}"
       sudo chattr -i "${hash_f}"
     fi
     
-  : "if the target file does not exist"
+  : "${C2}if the target file does not exist${C0}"
   else
     
-    : "then create it"
+    : "${C2}then create it${C0}"
     touch "${hash_f}"
   fi
 
-  : "Make sure the file is writeable"
+  : "${C2}Make sure the file is writeable${C0}"
   [[ -w "${hash_f}" ]] || chmod u+w "${hash_f}"
 
-  :;: "State: the file exists and is writeable";:
+  : "${C2}State: the file exists and is writeable${C0}"
 
   : $'Write \x24{hash..B} to disk, and make it RO and immutable'
   printf '%s\n' "${hash_of_installed_pkgs_B_prev}" | tee "${hash_f}"
@@ -1474,23 +1565,23 @@ function setup_dnf(){                           _als_function_boundary_in_
 
       ## Note,  [[ ... = , this second test,  [[ ${a_pids[*]} = 1 ]]  is correct. This means, do not use
       #+  ((...)) , and "=" is intended to that "1" on RHS is matched as in Pattern Matching, ie, as "PID 1."
-      :;: $'if any PID\x60s were found... ...and if there are any PID\x60s other than PID 1...'
+      : $'if any PID\x60s were found... ...and if there are any PID\x60s other than PID 1...'
       if [[ -n ${a_pids[*]: -1:1} ]] && ! [[ ${a_pids[*]} = 1 ]]
       then
         II=0
         XX="${#a_pids[@]}"
 
-        :;: "Print some info and wait for it to be read"
+        : "${C2}Print some info and wait for it to be read${C0}"
         ## Note, "\x60" is a grace accent used as a single quote
         printf '\n  %b for restarting, count, %d \n\n' 'PID\x60s' "${XX}"
 
           sleep 1 # <>
 
-        :;: "for each signal and for each PID..."
+        : "${C2}for each signal and for each PID...${C0}"
         for YY in "${!a_pids[@]}"
         do
           ## Note, readability
-          :;: $'\x60kill\x60'" loop $(( ++II )) of ${XX}" ;:
+          : $'\x60kill\x60'" loop $(( ++II )) of ${XX}" ;:
 
           ZZ="${a_pids[YY]}"
           (( ZZ == 1 )) && continue 001
@@ -1501,7 +1592,7 @@ function setup_dnf(){                           _als_function_boundary_in_
           for AA in HUP USR1 TERM KILL
           do
 
-              : "To kill PID ${ZZ} with signal ${AA}" # <>
+              : "${C2}To kill PID ${ZZ} with signal ${AA}${C0}"
               #pause_to_check "${nL}" # <>
 
             #sleep 1
@@ -1509,28 +1600,28 @@ function setup_dnf(){                           _als_function_boundary_in_
 
               wait -f # <>
 
-            :;: "...if the PID is still running..."
+            : "${C2}...if the PID is still running...${C0}"
             if ps --no-headers --quick-pid "${ZZ}"
             then
-              :;: "Evidently, I need to give the system a little time for processing"
+              : "${C2}Evidently, I need to give the system a little time for processing${C0}"
               sleep 1
 
-              :;: $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
+              : $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
               ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
               #+ than whether the  kill  operation succeeded, per  info kill .
               sudo -- "$( type -P kill )" --signal "${AA}" -- "${ZZ}"
 
-              :;: "Evidently, I need to give the system a little MORE time for processing"
+              : "${C2}Evidently, I need to give the system a little MORE time for processing${C0}"
               sleep 1
 
-              :;: "...and if the PID in question no longer exists then unset the current array index number"
+              : "${C2}...and if the PID in question no longer exists then unset the current array index number${C0}"
               if ps --no-headers --quick-pid "${ZZ}" | grep -qv defunct 
               then
                 is_pid_a_zombie=$( ps aux | awk --assign "EE=${ZZ}" '$2 ~ EE { print $8 }' )
 
                 if [[ ${is_pid_a_zombie} = Z ]]
                 then
-                  : "Process is a zombie; unsetting"
+                  : "${C2}Process is a zombie; unsetting${C0}"
                   unset "a_pids[YY]"
                   break 1
                 else
@@ -1556,11 +1647,15 @@ function setup_dnf(){                           _als_function_boundary_in_
   fi
 }
 
-: "Define setup_gh_cli()"
-function setup_gh_cli(){                        _als_function_boundary_in_
-  #builtin set -x # []
 
-  :;: "GH -- set config key-value pairs"
+
+
+: "${C2}Define setup_gh_cli()${C0}"
+function setup_gh_cli(){                        _als_function_boundary_in_
+  local -
+  builtin set -x # []
+
+  : "${C2}GH -- set config key-value pairs${C0}"
   local -A github_configs
   local gh_config_list_out
   github_configs=( [editor]=vim [browser]=firefox [pager]=less [git_protocol]=ssh )
@@ -1584,7 +1679,7 @@ function setup_gh_cli(){                        _als_function_boundary_in_
 
     #gh auth status ## <>
 
-  :;: "GH -- Login to github"
+  : "${C2}GH -- Login to github${C0}"
   ## Note, this command actually works as desired: neither pipefail nor the ERR trap are triggered
   printf -v count_gh_auth_checkmarks "%s" "$( gh auth status |& grep --count $'\xe2\x9c\x93' )"
 
@@ -1602,7 +1697,7 @@ function setup_gh_cli(){                        _als_function_boundary_in_
   ## Bug, when `gh ssh-key list` fails, then after gh_auth_login_command() executes, `gh ssh-key list` is
   #+  not executed again, when it should be
 
-  :;: "GH -- Get SSH & GPG keys"
+  : "${C2}GH -- Get SSH & GPG keys${C0}"
   for QQ in ssh-key gpg-key
   do
     if ! gh "${QQ}" list > /dev/null 2>&1
@@ -1612,13 +1707,17 @@ function setup_gh_cli(){                        _als_function_boundary_in_
   done
   unset QQ
 
-  :;: "GH -- Use GitHub CLI as a credential helper"
+  : "${C2}GH -- Use GitHub CLI as a credential helper${C0}"
   gh auth setup-git --hostname github.com
 }
 
-: "Define setup_git()"
+
+
+
+: "${C2}Define setup_git()${C0}"
 function setup_git(){                           _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   ## Note: git ui colors: normal black red green yellow blue magenta cyan white
   #+  git ui attributes: bold dim ul (underline blink reverse)
@@ -1627,7 +1726,7 @@ function setup_git(){                           _als_function_boundary_in_
   ## Bug? in vim, when quoting "EOF", $tmp_dir changes color, but bash still expands the redirection
   #+ destination file.
 
-  :;: "Git -- parameters, dependency level 1"
+  : "${C2}Git -- parameters, dependency level 1${C0}"
   local git_conf_global_f git_ignr git_mesg
   #local git_system_conf_file
   git_conf_global_f=~/.gitconfig
@@ -1635,13 +1734,13 @@ function setup_git(){                           _als_function_boundary_in_
   git_ignr=~/.gitignore
   git_mesg=~/.gitmessage
 
-  : "  Paramters with globs"
+  : "${C2}  Paramters with globs${C0}"
   ## Note, use of globs. The RE pattern must match all of the patterns in the array assignments
   local git_files_a git_regexp
   git_files_a=( /etc/git* /etc/.git* ~/.git* )
   git_regexp="git*"
 
-  :;: "Git -- parameters, dependency level 2"
+  : "${C2}Git -- parameters, dependency level 2${C0}"
   if [[ -f ${git_conf_global_f} ]]
   then
     local git_cnf_glob_list
@@ -1668,11 +1767,11 @@ function setup_git(){                           _als_function_boundary_in_
     [user.signingkey]="${user_github_gpg_key}"
   )
 
-  :;: "Git -- Files must exist and Permissions"
+  : "${C2}Git -- Files must exist and Permissions${C0}"
   read -r -a prev_umask < <( umask -p )
   umask 133
 
-  : "  Remove any unmatched glob patterns"
+  : "${C2}  Remove any unmatched glob patterns${C0}"
   local ZZ
 
   for ZZ in "${!git_files_a[@]}"
@@ -1684,47 +1783,47 @@ function setup_git(){                           _als_function_boundary_in_
   done
   unset ZZ git_regexp
 
-  :;: $'Git -- Create files and set DAC\x60s as necessary - Loop B' ;:
+  : $'Git -- Create files and set DAC\x60s as necessary - Loop B' ;:
   local AA
   for AA in "${git_files_a[@]}"
   do
-    :;: '  Loop B - open \\\ ' ;:
+    : '  Loop B - open \\\ ' ;:
     sudo -- [ -e "${AA}" ] || sudo -- touch "${AA}"
     sudo -- chmod 0600 "${ver__[@]}" "${AA}"
-    :;: "  Loop B - shut /// " ;:
+    : "${C2}  Loop B - shut /// ${C0}"
   done
   unset AA
-  :;: "  Loops B - complete === " ;:
+  : "${C2}  Loops B - complete === ${C0}"
 
   builtin "${prev_umask[@]}"
 
-  :;: "Git -- remove a particular configuration key/value pair if present"
+  : "${C2}Git -- remove a particular configuration key/value pair if present${C0}"
   if printf '%s\n' "${git_cnf_glob_list[@]}" | grep gpg.format "${qui__[@]}"
   then
     git config --global --unset gpg.format
   fi
 
-  :;: "Git -- setup configuration - Loop C" ;:
+  : "${C2}Git -- setup configuration - Loop C${C0}"
   local BB
   for BB in "${!git_keys[@]}"
   do
-    :;: '  Loop C - open \\\ ' ;:
+    : '  Loop C - open \\\ ' ;:
 
-      : "BB:${BB}" # <>
+      : "${C2}BB:${BB}${C0}"
 
     if ! grep -e "${BB#*.} = ${git_keys[${BB}]}" "${qui__[@]}" "${git_conf_global_f}"
     then
       git config --global "${BB}" "${git_keys[${BB}]}"
     fi
-    :;: "  Loop C - shut /// " ;:
+    : "${C2}  Loop C - shut /// ${C0}"
   done
   unset BB
-  :;: "  Loops C - complete === " ;:
+  : "${C2}  Loops C - complete === ${C0}"
 
-  :;: "Git -- gitmessage (global)"
+  : "${C2}Git -- gitmessage (global)${C0}"
   if ! [[ -f ${git_mesg} ]]
   then
-    :;: "  Heredoc: gitmessage"
+    : "${C2}  Heredoc: gitmessage${C0}"
     cat <<- "EOF" > "${tmp_dir}/msg"
 		Subject line (try to keep under 50 characters)
 
@@ -1740,10 +1839,10 @@ function setup_git(){                           _als_function_boundary_in_
     chmod 0644 "${ver__[@]}" "${git_mesg}" || _die_
   fi
 
-  :;: "Git -- gitignore (global)"
+  : "${C2}Git -- gitignore (global)${C0}"
   if ! [[ -f ${git_ignr} ]] || ! grep swp "${qui__[@]}" "${git_ignr}"
   then
-    :;: "  Heredoc: gitignore"
+    : "${C2}  Heredoc: gitignore${C0}"
     cat <<- \EOF > "${tmp_dir}/ign"
 		*~
 		.*.swp
@@ -1756,7 +1855,7 @@ function setup_git(){                           _als_function_boundary_in_
     chmod 0644 "${ver__[@]}" "${git_ignr}" || _die_
   fi
 
-  :;: $'Git -- Set correct DAC\x60s (ownership and permissions)'
+  : $'Git -- Set correct DAC\x60s (ownership and permissions)'
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
@@ -1772,16 +1871,20 @@ function setup_git(){                           _als_function_boundary_in_
   done
   unset HH
 
-  : "Clean up after section, Git"
+  : "${C2}Clean up after section, Git${C0}"
   unset git_files_a git_conf_global_f git_mesg git_ignr git_keys
   #unset git_system_conf_file
 }
 
-: "Define setup_gpg()"
-function setup_gpg(){                           _als_function_boundary_in_
-  #builtin set -x # []
 
-  :;: "If any files in ~/.gnupg are not owned by either USER or root, then error out and exit"
+
+
+: "${C2}Define setup_gpg()${C0}"
+function setup_gpg(){                           _als_function_boundary_in_
+  local -
+  builtin set -x # []
+
+  : "${C2}If any files in ~/.gnupg are not owned by either USER or root, then error out and exit${C0}"
   local -a problem_files
   problem_files=()
   readarray -d "" -t problem_files < <(
@@ -1794,17 +1897,17 @@ function setup_gpg(){                           _als_function_boundary_in_
   [[ -n ${problem_files[*]} ]] && _die_ Incorrect ownership on -- "${problem_files[@]}"
   unset problem_files
 
-  :;: $'If any files are owned by root, then change their ownership to \x24USER'
+  : $'If any files are owned by root, then change their ownership to \x24USER'
   sudo -- \
     find -- ~/.gnupg -xdev \( -uid 0 -o -gid 0 \) -execdir \
       chown "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; ||
         _die_
 
-  :;: $'If any dir perms aren\x60t 700 or any file perms aren\x60t 600, then make them so'
+  : $'If any dir perms aren\x60t 700 or any file perms aren\x60t 600, then make them so'
   find -- ~/.gnupg -xdev -type d \! -perm 700  -execdir chmod 700 "${ver__[@]}" \{\} \; #
   find -- ~/.gnupg -xdev -type f \! -perm 600  -execdir chmod 600 "${ver__[@]}" \{\} \; #
 
-  : "GPG -- If a gpg-agent daemon is running, or not, then, either way say so"
+  : "${C2}GPG -- If a gpg-agent daemon is running, or not, then, either way say so${C0}"
   if grep --extended-regexp "[g]pg-a.*daemon" "${qui__[@]}" <<< "${ps_o}"
   then
     printf '\n\tgpg-agent daemon IS RUNNING\n\n'
@@ -1823,9 +1926,13 @@ function setup_gpg(){                           _als_function_boundary_in_
   export GPG_TTY
 }
 
-: "Define setup_network()"
+
+
+
+: "${C2}Define setup_network()${C0}"
 function setup_network(){                       _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   dns_srv_1=8.8.8.8
   dns_srv_A=75.75.75.75
@@ -1835,21 +1942,21 @@ function setup_network(){                       _als_function_boundary_in_
   then
     printf '\n%s, Attempting to connect to the internet... \n\n' "${scr_nm}"
 
-    : "Try to get NetworkManager up and running"
+    : "${C2}Try to get NetworkManager up and running${C0}"
     sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
     wait -f
 
-    : "Turn on networking"
+    : "${C2}Turn on networking${C0}"
     sudo -- nmcli n on
 
-    : "Turn on WiFi"
+    : "${C2}Turn on WiFi${C0}"
     sudo -- nmcli r wifi on
 
-    : "Get interface name(s)"
+    : "${C2}Get interface name(s)${C0}"
     readarray -d "" -t ifaces < <( nmcli --terse c |
       awk --field-separator : '$1 !~ /lo/ { printf "%s\0", $1 }' )
 
-    : "Connect the interface"
+    : "${C2}Connect the interface${C0}"
     case "${#ifaces[@]}" in
       0 )
         _die_ "No network device available"
@@ -1871,14 +1978,18 @@ function setup_network(){                       _als_function_boundary_in_
     fi
   fi
 
-  : "Clean up from Network"
+  : "${C2}Clean up from Network${C0}"
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
 }
 
-: "Define setup_ssh()"
+
+
+
+: "${C2}Define setup_ssh()${C0}"
 function setup_ssh(){                           _als_function_boundary_in_
-  #builtin set - ## []
+  local -
+  builtin set - ## []
 
   ## Bug? hardcoded filenames? ...yes, I know it#s mis-spelled.
 
@@ -1886,7 +1997,7 @@ function setup_ssh(){                           _als_function_boundary_in_
   ssh_usr_conf_dir=~/.ssh/
   ssh_user_conf_file=~/.ssh/config
 
-  :;: "Make sure the SSH config directory and file for USER exist"
+  : "${C2}Make sure the SSH config directory and file for USER exist${C0}"
   [[ -d ${ssh_usr_conf_dir} ]] || mkdir -m 0700 "${ssh_usr_conf_dir}" || _die_
   [[ -f ${ssh_user_conf_file} ]] || write_ssh_conf || _die_
   
@@ -1896,7 +2007,7 @@ function setup_ssh(){                           _als_function_boundary_in_
   ## TODO, all aliases should be prefixed and suffixed with underscores, while functions should
   #+  include at least one underscore
 
-  :;: $'Make sure the SSH config file for USER is correct, and write it if it is missing or wrong'
+  : $'Make sure the SSH config file for USER is correct, and write it if it is missing or wrong'
   if ! grep "ForwardAgent yes" "${qui__[@]}" "${ssh_user_conf_file}"
   then
     "$( type -P rm )" --force --one-file-system --preserve-root=all "${ver__[@]}" "${ssh_user_conf_file}"
@@ -1909,7 +2020,7 @@ function setup_ssh(){                           _als_function_boundary_in_
 
   ## Bug, timestamps, chown changes ctime on every execution, whether or not the ownership changes
 
-  :;: $'Make sure the SSH config directories and files for USER have correct DAC\x60s'
+  : $'Make sure the SSH config directories and files for USER have correct DAC\x60s'
   {
     sudo -- \
       find -- "${ssh_usr_conf_dir}" -xdev  \(  \! -uid "${login_uid}"  -o  \! -gid "${login_gid}"  \) \
@@ -1922,26 +2033,26 @@ function setup_ssh(){                           _als_function_boundary_in_
 
   ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
-    : "${SSH_AUTH_SOCK:=}" "${SSH_AGENT_PID:=}" # <<>>
+    : "${C2}${SSH_AUTH_SOCK:=}" "${SSH_AGENT_PID:=}${C0}"
     declare -p SSH_AUTH_SOCK SSH_AGENT_PID # <>
 
     _pause2ck_ # <>
 
-  :;: "Get the PID of any running SSH Agents -- there may be more than one"
+  : "${C2}Get the PID of any running SSH Agents -- there may be more than one${C0}"
   local -a ssh_agent_pids
   readarray -t ssh_agent_pids < <( ps h -C 'ssh-agent -s' -o pid | tr -d ' ' )
 
-  : "Make sure ssh daemon is running (?)"
+  : "${C2}Make sure ssh daemon is running (?)${C0}"
   if [[ -z ${SSH_AUTH_SOCK:-} ]] || [[ -z ${SSH_AGENT_PID:-} ]] || [[ -z ${ssh_agent_pids[*]:-} ]]
   then
-    :;: $'If there aren\x60t any SSH Agents running, then start one'
+    : $'If there aren\x60t any SSH Agents running, then start one'
     ## Note, https://stackoverflow.com/questions/10032461/git-keeps-asking-me-for-my-ssh-key-passphrase
     local HH
     HH=$( ssh-agent -s )
     eval "${HH}"
     unset HH
 
-    :;: "...and try again to get the PID of the SSH Agent"
+    : "${C2}...and try again to get the PID of the SSH Agent${C0}"
     readarray -t ssh_agent_pids < <( ps h -C 'ssh-agent -s' -o pid | tr -d ' ' )
   fi
 
@@ -1962,7 +2073,7 @@ function setup_ssh(){                           _als_function_boundary_in_
     * )
         ## TODO, _kill_ should be an alias
       
-        :;: "If more than one ssh-agent is running, then keep the first and kill the rest"
+        : "${C2}If more than one ssh-agent is running, then keep the first and kill the rest${C0}"
         local II
         for II in "${!ssh_agent_pids[@]}"
         do
@@ -1977,7 +2088,7 @@ function setup_ssh(){                           _als_function_boundary_in_
   ## TODO, review these commands for necessity
   ## Note, ssh-add  and  ssh  don\t have long options.  
 
-  :;: "?"
+  #: "?"
   #ssh-add -v
 
   ## Note,  ssh-add -L  is "list;"  
@@ -1987,17 +2098,25 @@ function setup_ssh(){                           _als_function_boundary_in_
   #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
 }
 
-: "Define setup_temp_dirs()"
+
+
+
+: "${C2}Define setup_temp_dirs()${C0}"
 function setup_temp_dirs(){                     _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   tmp_dir=$( TMPDIR="" mktemp --directory --suffix=-LiveUsb 2>&1 || _die_ )
   [[ -d ${tmp_dir} ]] || _die_
   readonly tmp_dir
 }
 
+
+
+
 #: "setup_systemd()"
 #function setup_systemd(){                      _als_function_boundary_in_
+  #local -
   #builtin set -x # []
 #
   ### Note, services to disable and mask
@@ -2019,9 +2138,10 @@ function setup_temp_dirs(){                     _als_function_boundary_in_
   ##+  
 
 
-: "Define setup_time()"
+: "${C2}Define setup_time()${C0}"
 function setup_time(){                          _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
@@ -2029,20 +2149,24 @@ function setup_time(){                          _als_function_boundary_in_
   sudo -- chronyc makestep > /dev/null
 }
 
-: "Define setup_git_user_dirs()"
+
+
+
+: "${C2}Define setup_git_user_dirs()${C0}"
 function setup_git_user_dirs(){                 _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   ## Note: in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
   #+   popd
 
-  :;: "Variables -- global, for use for entire script"
+  : "${C2}Variables -- global, for use for entire script${C0}"
   dev_d1=~/MYPROJECTS
   dev_d2=~/OTHERSPROJECTS
   readonly dev_d1
   readonly dev_d2
 
-  :;: "Make dirs"
+  : "${C2}Make dirs${C0}"
   local UU
   for UU in "${dev_d1}" "${dev_d2}"
   do
@@ -2053,27 +2177,31 @@ function setup_git_user_dirs(){                 _als_function_boundary_in_
   done
   unset UU
 
-  :;: "Change dirs"
+  : "${C2}Change dirs${C0}"
   pushd "${dev_d1}" > /dev/null || _die_
 }
 
-: "Define setup_vars()"
-function setup_vars(){                          _als_function_boundary_in_
-  #builtin set -x # []
 
-  :;: "Vars, dirs, etc"
+
+
+: "${C2}Define setup_vars()${C0}"
+function setup_vars(){                          _als_function_boundary_in_
+  local -
+  builtin set -x # []
+
+  : "${C2}Vars, dirs, etc${C0}"
   ## Bug, only way to export namerefs?  `declare -nx nL=...`
 
-  :;: "Vars... Error handling, variables and functions"
+  : "${C2}Vars... Error handling, variables and functions${C0}"
   ## Note, variable assignments, backslash escape bc  sed -i
   # shellcheck disable=SC1001
   local -gnx nL=L\INENO
 
-  :;: "Vars... PATH"
+  : "${C2}Vars... PATH${C0}"
   PATH="/usr/bin:/usr/sbin"
   export PATH
 
-  :;: "Vars... Other environment variables"
+  : "${C2}Vars... Other environment variables${C0}"
   ## Note, Initialize some env vars found in sourced files, as a workaround for nounset
   ## Note, local style, inline comments, ie, ": foo ## Note, blah", are useful for rebutting false positives
   #+  from ShellCheck
@@ -2094,11 +2222,15 @@ function setup_vars(){                          _als_function_boundary_in_
   local -g BASHRCSOURCED USER_LS_COLORS
 }
 
-: "Define setup_vim()"
-function setup_vim(){                           _als_function_boundary_in_
-  #builtin set -x # []
 
-  : "Heredoc of vim-conf-text"
+
+
+: "${C2}Define setup_vim()${C0}"
+function setup_vim(){                           _als_function_boundary_in_
+  local -
+  builtin set -x # []
+
+  : "${C2}Heredoc of vim-conf-text${C0}"
   cat <<- \EOF | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
 		" ~/.vimrc
 
@@ -2147,40 +2279,48 @@ function setup_vim(){                           _als_function_boundary_in_
     sudo -- touch -- "${strng_vrc}" # <> set-e
   fi
 
-  : "Write .vimrc"
+  : "${C2}Write .vimrc${C0}"
   if (( ${#arr_vrc[@]} == 0 )) || ! [[ ${WW} = "${YY}" ]]
   then
     : $'Test returned \x22true,\x22 the number didn\x60t match, so write to .vimrc'
 
-    : "Set the umask"
+    : "${C2}Set the umask${C0}"
     read -ra umask_prior < <( umask -p )
     umask 177
 
-    : "Write the root file"
+    : "${C2}Write the root file${C0}"
     sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || _die_
 
-    : "Copy the root file to ${HOME}"$' and repair DAC\x60s on '"${USER}"$'\x60s copy'
+    : "${C2}Copy the root file to ${HOME}"$' and repair DAC\x60s on '"${USER}"$'\x60s copy'
     sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc || _die_
     sudo -- chown "${UID}:${UID}" -- ~/.vimrc
     chmod 0400 -- ~/.vimrc
 
-    : "Reset the umask"
+    : "${C2}Reset the umask${C0}"
     builtin "${umask_prior[@]}"
   fi
   unset arr_vrc strng_vrc WW YY umask_prior
 }
 
-: "Define test_dns()"
+
+
+
+: "${C2}Define test_dns()${C0}"
 function test_dns(){                            _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   return "$?"
 }
 
-: "Define test_os()"
+
+
+
+: "${C2}Define test_os()${C0}"
 function test_os(){                             _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   local kern_rel
   kern_rel=$( uname --kernel-release )
@@ -2193,115 +2333,131 @@ function test_os(){                             _als_function_boundary_in_
   unset kern_rel
 }
 
-: "Define trap_err()"
+
+
+
+: "${C2}Define trap_err()${C0}"
 function trap_err(){                            _als_function_boundary_in_
-  #builtin set -x # []
+  local -
+  builtin set -x # []
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
   declare -p LC_ALL LINENO PATH PIPESTATUS PPID PWD SHELL SHELLOPTS SHLVL UID
 }
 
-## Bug, these var assignments $loc_exit_code and $lineno only fail when they\re on line number >=2
+
+
+
+## Bug, these var assignments $local_exit_code and $lineno only fail when they\re on line number >=2
 #+  of  trap  "args section" ??
 
-: "Define trap_exit()"
+: "${C2}Define trap_exit()${C0}"
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
 function trap_exit(){                           _als_function_boundary_in_
+  local -
   builtin set -x # []
 
   trap - EXIT
 
-  : "Remove temporary directory, if one exists"
+  : "${C2}Remove temporary directory, if one exists${C0}"
   [[ -d ${tmp_dir:=} ]] &&
     "$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${ver__[@]}" "${tmp_dir}"
 
-  builtin exit "${loc_exit_code}"
+  builtin exit "${local_exit_code}"
 }
 
-: "Define write_bashrc_strings()"
-function write_bashrc_strings(){                _als_function_boundary_in_
-  #builtin set -x # []
 
-  :;: "Certain parameters must be defined and have non-zero values"
+
+
+: "${C2}Define write_bashrc_strings()${C0}"
+function write_bashrc_strings(){                _als_function_boundary_in_
+  local -
+  builtin set -x # []
+
+  : "${C2}Certain parameters must be defined and have non-zero values${C0}"
   (( ${#files_for_use_with_bash[@]} == 0 )) && _die_
   (( $# == 0 ))                             && _die_
 
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
 
-  :;: "For each set of strings to append into bashrc" ;:
+  : "${C2}For each set of strings to append into bashrc" ;:
   for JJ
   do
-    :;: 'Loop D - open \\\ ' ;:
+    : 'Loop D - open \\\ ' ;:
 
     unset -n fn_nameref
     local -n fn_nameref="${JJ}"
 
-    :;: "For each .bashrc" ;:
+    : "${C2}For each .bashrc" ;:
     for file_x in "${files_for_use_with_bash[@]}"
     do
-      :;: 'Loop D:1 - open \\\ ' ;:
+      : 'Loop D:1 - open \\\ ' ;:
 
-      : "file_x, ${file_x}"
+      : "${C2}file_x, ${file_x}${C0}"
 
-      :;: "For each definition (function or parameter)" ;:
+      : "${C2}For each definition (function or parameter)" ;:
       for Aa_index in "${!fn_nameref[@]}"
       do
-        :;: 'Loop D:1:a - open \\\ ' ;:
+        : 'Loop D:1:a - open \\\ ' ;:
 
-        : "Aa_index, ${Aa_index}"
+        : "${C2}Aa_index, ${Aa_index}${C0}"
         Aa_element="${fn_nameref[${Aa_index}]}"
 
-        :;: "(1) If the definition is not yet written into the file..."
+        : "${C2}(1) If the definition is not yet written into the file...${C0}"
         if ! sudo -- grep --quiet --fixed-strings "## ${Aa_index}" -- "${file_x}"
         then
 
-          : "Then write the function definition into the file"
+          : "${C2}Then write the function definition into the file${C0}"
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" |
             sudo -- tee --append -- "${file_x}" > /dev/null || _die_
         else
-          : "Definition exists, skipping"
+          : "${C2}Definition exists, skipping${C0}"
         fi
 
         ## Bug: what if it\s a multiline alias?
 
         ## Question, can `sed` take variable assignments the way `awk` can?
 
-        :;: "(2) If there is an alias by the same name, then delete it from the bashrc file at hand..."
+        : "${C2}(2) If there is an alias by the same name, then delete it from the bashrc file at hand...${C0}"
         sudo -- sed --in-place "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
-        :;: "Loop D:1:a - shut /// " ;:
+        : "${C2}Loop D:1:a - shut /// " ;:
       done
       unset Aa_element
-      :;: "Loops D:1:a - complete === " ;:
+      : "${C2}Loops D:1:a - complete === " ;:
 
-      :;: "For each file, if absent add a newline at EOF"
+      : "${C2}For each file, if absent add a newline at EOF${C0}"
       if sudo -- tail --lines 1 -- "${file_x}" | grep --quiet --extended-regexp "[[:graph:]]"
       then
         printf '\n' | sudo -- tee --append -- "${file_x}" > /dev/null
       fi
 
-      :;: "Loop D:1 - shut /// " ;:
+      : "${C2}Loop D:1 - shut /// " ;:
     done
-    :;: "Loops D:1 - complete === " ;:
+    : "${C2}Loops D:1 - complete === " ;:
 
-    :;: "Reset for the next loop, assuming there is one"
+    : "${C2}Reset for the next loop, assuming there is one${C0}"
     ## Note, ?? use  unset  so that values from previous loops will not interfere with the current loop
     shift
 
-    :;: "Loop D - shut /// " ;:
+    : "${C2}Loop D - shut /// " ;:
   done
   unset JJ
-  :;: "Loops D - complete === " ;:
+  : "${C2}Loops D - complete === " ;:
 }
+
+
+
 
 ## TODO, look at how each conf file is defined and written, each one's a little different. Make them 
 #+  uniform with each other, since the purpose of each section is the same in each case.
 
 function write_ssh_conf(){                      _als_function_boundary_in_
-  #builtin set - # []
+  local -
+  builtin set - # []
 
   ## Bug? $ssh_user_conf_file defined in a different function, setup_ssh()
 
@@ -2312,18 +2468,24 @@ function write_ssh_conf(){                      _als_function_boundary_in_
 	EOF
 }
 
-  #EC=101 LN="${nL}" exit # <>
-  #set -x
+:;: "${C12}##  REGULAR FUNCTIONS COMPLETE  ##${C0}";:
 
-#######  FUNCTION DEFINITIONS COMPLETE #######
+  #EC=101 LN="${nL}" exit # <>  
+  builtin set -x
 
 ## TODO, perhaps there should be a "main()" function.
 
-:;: "Regular users with sudo, only"
+
+
+
+
+
+
+: "${C12}L:${LINENO}, Regular users with sudo, only${C0}"
 must_be_root
 
   #EC=101 LN="${nL}" exit # <>
-  : "LINENO: ${LINENO}"
+  : "${C2}LINENO: ${LINENO}${C0}"
   set -x
 
 ## Note, traps
@@ -2334,108 +2496,108 @@ must_be_root
   #echo foo
   #set +x
   #echo bar
-  set -x
-  #declare -p qui__ ver__
+  #set -x
+  declare -p qui__ ver__
   EC=101 LN="${nL}" exit # <>
 
-:;: "Define trap on ERR"
+: "${C12}Define trap on ERR${C0}"
 trap trap_err ERR
 
-:;: "Define trap on EXIT"
+: "${C12}Define trap on EXIT${C0}"
 trap trap_exit EXIT
 
   EC=101 LN="${nL}" exit # <>
-  #set -x
+  set -x
 
-:;: "Test OS"
+: "${C12}Test OS${C0}"
 test_os
 
-  #EC=101 LN="${nL}" exit # <>
-  #set -x
+  EC=101 LN="${nL}" exit # <>
+  set -x
 
-:;: "Variables"
+: "${C12}Variables${C0}"
 setup_vars
 
-  #EC=101 LN="${nL}" exit # <>
-  #set -x
+  EC=101 LN="${nL}" exit # <>
+  set -x
   #_die_ testing
   #false
 
-#:;: "<Logs>"
-#set -x
+#: "<Logs>"
+set -x
 #logf="${tmp_dir}/log.${scr_nm}.${script_start_time}.txt"
 #printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}"
 #exec > >( tee "${logf}" ) 2>&1
 
-:;: "Certain files must have been installed from off-disk"
+: "${C12}Certain files must have been installed from off-disk${C0}"
 reqd_user_files
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Network"
+: "${C12}Network${C0}"
 setup_network
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Time"
+: "${C12}Time${C0}"
 setup_time
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Temporary directory"
+: "${C12}Temporary directory${C0}"
 setup_temp_dirs
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Minimum necessary rpms"
+: "${C12}Minimum necessary rpms${C0}"
 min_necc_packages
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Vim"
+: "${C12}Vim${C0}"
 setup_vim
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Bash"
+: "${C12}Bash${C0}"
 setup_bashrc
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Increase disk space"
+: "${C12}Increase disk space${C0}"
 increase_disk_space
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-#:;: "<Logs>"
-#set -x # <Logs>
+#: "<Logs>"
+set -x # <Logs>
 #printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
 #exec 3>&1 4>&2 # <Logs>
 #trap "trap - INT QUIT USR2; exec 2>&4 1>&3" INT QUIT USR2 # <Logs>
 #exec 1> "${logf}" 2>&1 # <Logs>
 
-#:;: "<Logs>"
+#: "<Logs>"
 #printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
-#set -x # <Logs>
+set -x # <Logs>
 #exec > >( tee "${logf}" ) 2>&1 ## this works. however, there aren\t any colors.
 #exec > >( tee --append "${logf}" ) ##
 #exec 2> >( GREP_COLORS="mt=01;33" grep --color=always -Ee ".*" | tee --append "${logf}" ) ## Burgy
 
-:;: "Dnf"
+: "${C12}Dnf${C0}"
 setup_dnf
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Restart NetworkManager if necessary"
+: "${C12}Restart NetworkManager if necessary${C0}"
 
 ## TODO: use written function here
 for BB in "${dns_srv_A}" "${dns_srv_1}"
@@ -2451,46 +2613,46 @@ unset BB
 #hash -r
 #"$( type -P kill )" --signal USR2 -- "$$" # <Logs>
 
-:;: "SSH"
+: "${C12}SSH${C0}"
 setup_ssh
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "GPG"
+: "${C12}GPG${C0}"
 setup_gpg
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Make and change into directories"
+: "${C12}Make and change into directories${C0}"
 setup_git_user_dirs
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-#:;: "Git deburg settings"
+#: "Git deburg settings"
 #enable_git_deburg_settings
 
-:;: "Git"
+: "${C12}Git${C0}"
 setup_git
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "GH -- github CLI configuration"
+: "${C12}GH -- github CLI configuration${C0}"
 setup_gh_cli
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Clone repo"
+: "${C12}Clone repo${C0}"
 clone_repo
 
-  #EC=101 LN="${nL}" exit # <>
+  EC=101 LN="${nL}" exit # <>
   set -x
 
-:;: "Remind user of commands for the interactive shell"
+: "${C12}Remind user of commands for the interactive shell${C0}"
 
 popd > /dev/null || _die_
 
@@ -2502,7 +2664,7 @@ fi
 
   set -v ## <>
 
-:;: "Clean up & exit"
+: "${C12}Clean up & exit${C0}"
 #"$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${ver__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 EC=00 LN="${nL}" exit
