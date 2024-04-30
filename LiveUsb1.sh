@@ -2,6 +2,8 @@
 ## LiveUsb1
 ##    #!/bin/env -iS bash
 
+## Note, Putting a LN (LINENO) assignment preceding an `exit` command lets the value of LN match the line
+#+  number of the `exit` command.
 ## Note, idempotent script
 ## Note, the symbol "<>" marks code as for deburging purpoeses only
 ## Note, ...undocumented feature??
@@ -62,23 +64,41 @@ shopt -s expand_aliases
 #set -x # <>
 
 ## How to add colors to xtrace comments
-C1="$( tput setaf 1 )"    ;: "01 is Red"          ; tput sgr0
-C2="$( tput setaf 2 )"    ;: "02 is Green"        ; tput sgr0
-C3="$( tput setaf 3 )"    ;: "03 is Brown"        ; tput sgr0
-C4="$( tput setaf 4 )"    ;: "04 is Purple"       ; tput sgr0
-C5="$( tput setaf 5 )"    ;: "05 is Dark blue"    ; tput sgr0
-C6="$( tput setaf 6 )"    ;: "06 is Teal"         ; tput sgr0
-C7="$( tput setaf 7 )"    ;: "07 is Pink"         ; tput sgr0
-C8="$( tput setaf 8 )"    ;: "08 is Dark red"     ; tput sgr0
-C9="$( tput setaf 9 )"    ;: "09 is Dark green"   ; tput sgr0
-C10="$( tput setaf 10 )"  ;: "10 is Light green"  ; tput sgr0
-C11="$( tput setaf 11 )"  ;: "11 is Orange"       ; tput sgr0
-C12="$( tput setaf 12 )"  ;: "12 is Blue"         ; tput sgr0
-C13="$( tput setaf 13 )"  ;: "13 is Magenta"      ; tput sgr0
-C14="$( tput setaf 14 )"  ;: "14 is Light blue"   ; tput sgr0
-C15="$( tput setaf 15 )"  ;: "15 is White"        ; tput sgr0
-C0="$( tput sgr0 )"       ;: "Off"
+C0="$( tput sgr0 )"
 
+unset II aa_colors
+declare -A aa_colors
+  aa_colors+=( ["1"]="Red" )
+  aa_colors+=( ["2"]="Green" )
+  aa_colors+=( ["3"]="Brown" )
+  aa_colors+=( ["4"]="Purple" )
+  aa_colors+=( ["5"]="Dark blue" )
+  aa_colors+=( ["6"]="Teal" )
+  aa_colors+=( ["7"]="Pink" )
+  aa_colors+=( ["8"]="Dark red" )
+  aa_colors+=( ["9"]="Dark green" )
+  aa_colors+=( ["10"]="Light green" )
+  aa_colors+=( ["11"]="Orange" )
+  aa_colors+=( ["12"]="Blue" )
+  aa_colors+=( ["13"]="Magenta" )
+  aa_colors+=( ["14"]="Light blue" )
+  aa_colors+=( ["15"]="White" )
+
+for II in "${!aa_colors[@]}"
+do
+  declare -n XX="C${II}" 
+  printf -v XX '%b' "$( tput setaf "${II}" )"
+
+    # <>
+    #printf '%b%d is %s%b' "${XX}" "${II}" "${aa_colors[$II]}" "${C0}"; tput sgr0
+done
+unset -n XX
+unset aa_colors
+readonly C{0..15}
+
+  # <>
+  #declare -p C{0..15}
+  #echo "C1=$( tput setaf 1 );: 01 is Red; tput sgr0"
   #exit "${LINENO}"
   #set -x # <>
 
@@ -106,21 +126,25 @@ C0="$( tput sgr0 )"       ;: "Off"
   :
   : "${C2}Function boundary parameters${C0}"
   printf -v__ '%b%s%b' "${C13}" '<>  <>  <>  <>  <>  <>  <>  <>  <>  <>  <>  <>  <>' "${C0}"
-  fn_bndry_sh="${C11} ~~~ ~~~ ~~~ ${C0}"
-  fn_bndry_lo="${C11} ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ ${C0}"
+  #fn_bndry_sh="${C11} ~~~ ~~~ ~~~ ${C0}"
+  #fn_bndry_lo="${C11} ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ ${C0}"
+  fn_bndry_sh=" ~~~ ~~~ ~~~ "
+  fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
   readonly fn_bndry_sh fn_bndry_lo
   fn_lvl=0
   :
   : "${C2}Function boundary aliases${C0}"
   ## Note, as I recall, these variable assignments all need to be on the first line of this array 
   #+  definition, so that they can all be on the first line of each function definition.
-  alias _als_function_boundary_in_='xtr_get_on; _="${fn_bndry_lo} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" local_hyphn="$-" local_exit_code="${EC:-$?}" local_lineno="${LN:-"${nL:-"${1}"}"}"; xtr_restore'
+  alias _als_function_boundary_in_='xtr_read_and_on; : "${C11}"; _="${fn_bndry_lo} ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl ))" local_hyphn="$-" local_exit_code="${EC:-$?}" local_lineno="${LN:-"${nL:-"${1}"}"}"; xtr_restore'
   alias _als_function_boundary_out_0_='
-    xtr_get_on
+    xtr_read_and_on
+    : "${C11}"
     _="${fn_bndry_lo} ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"
     xtr_restore'
   alias _als_function_boundary_out_1_='
-    xtr_get_on
+    xtr_read_and_on
+    : "${C11}"
     _="${fn_bndry_lo} ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"
     xtr_restore'
   :
@@ -131,12 +155,12 @@ C0="$( tput sgr0 )"       ;: "Off"
   readonly user_real_name user_github_email_address user_github_gpg_key
   :
   : "${C2}Required RPM\s${C0}"
-  list_of_minimum_reqd_rpms+=( [0]="ShellCheck" )
-  list_of_minimum_reqd_rpms+=( [1]="firewall-config" )
-  list_of_minimum_reqd_rpms+=( [2]="geany" )
-  list_of_minimum_reqd_rpms+=( [3]="gh" )
-  list_of_minimum_reqd_rpms+=( [4]="git" )
-  list_of_minimum_reqd_rpms+=( [5]="vim-enhanced" )
+    list_of_minimum_reqd_rpms+=( [0]="ShellCheck" )
+    list_of_minimum_reqd_rpms+=( [1]="firewall-config" )
+    list_of_minimum_reqd_rpms+=( [2]="geany" )
+    list_of_minimum_reqd_rpms+=( [3]="gh" )
+    list_of_minimum_reqd_rpms+=( [4]="git" )
+    list_of_minimum_reqd_rpms+=( [5]="vim-enhanced" )
   readonly list_of_minimum_reqd_rpms
   :
   : "${C12}Required files lists${C0}"
@@ -145,10 +169,10 @@ C0="$( tput sgr0 )"       ;: "Off"
   #+  are numbered sequentially are created here on one line only and have values assigned to each of them
   #+  within the next ~50 lines. The list of index numbers is created just once, so the indices in the
   #+  assignment section below must match the indices created here.
-  arrays_of_conf_files+=( [0]="files_for_use_with_github_depth_0" )
-  arrays_of_conf_files+=( [1]="files_for_use_with_github_depth_1" )
-  arrays_of_conf_files+=( [2]="files_for_use_with_github_depth_2" )
-  arrays_of_conf_files+=( [3]="files_for_use_with_github_depth_3" )
+    arrays_of_conf_files+=( [0]="files_for_use_with_github_depth_0" )
+    arrays_of_conf_files+=( [1]="files_for_use_with_github_depth_1" )
+    arrays_of_conf_files+=( [2]="files_for_use_with_github_depth_2" )
+    arrays_of_conf_files+=( [3]="files_for_use_with_github_depth_3" )
   readonly arrays_of_conf_files 
 
   : 'Unset each value of the array'
@@ -193,8 +217,10 @@ umask 077
 
 :;: "${C12}##  CRITICAL FUNCTIONS  ##${C0}";:
 
-: "${C2}Define alias xtr_get_on${C0}"
-alias xtr_get_on='printf "%b" "${C14}"
+: "${C2}Define alias xtr_read_and_on${C0}"
+#alias xtr_read_and_on='printf "%b" "${C14}"
+alias xtr_read_and_on='
+  echo "${C14}"
   builtin set -x
   if [[ $- == *x* ]]
   then
@@ -204,13 +230,15 @@ alias xtr_get_on='printf "%b" "${C14}"
   fi
   export xtr_state
   builtin set -x
-  printf "%b" "${C0}"'
+  echo "${C0}"'
 
 
 
 
 : "${C2}Define alias xtr_restore${C0}"
-alias xtr_restore='printf "%b" "${C14}"
+#alias xtr_restore='printf "%b" "${C14}"
+alias xtr_restore='
+  echo "${C14}"
   if [[ -z ${xtr_state} ]]
   then
     _die_ Some state must have been established
@@ -221,31 +249,26 @@ alias xtr_restore='printf "%b" "${C14}"
   then
     builtin set +x
   fi
-  printf "%b" "${C0}"'
+  echo "${C0}"'
 
 
 
 
-: "${C2}Define trap_return()${C0}"
-function trap_return(){                          _als_function_boundary_in_
-  local -
-  builtin set -x # []
-
+#: "${C2}Define trap_return()${C0}"
+#function trap_return(){                          _als_function_boundary_in_
+  #local -
+  #builtin set -x # []
     #echo "fn_bndry_lo: ${fn_bndry_lo}"
     #echo "FUNCNAME[0]: ${FUNCNAME[0]}"
     #echo "FUNCNAME[1]: ${FUNCNAME[1]}"
     #echo "fn_bndry_sh: ${fn_bndry_sh}"
     #echo "fn_lvl: ${fn_lvl}"
     #exit "${LINENO}"
-                                                 _als_function_boundary_out_0_
+                                                 #_als_function_boundary_out_0_
                                                  #_als_function_boundary_out_1_
-}
-
-
-
-
-: "${C2}Define trap on RETURN${C0}"
-trap trap_return RETURN
+#}
+#: "${C2}Define trap on RETURN${C0}"
+#trap trap_return RETURN
 
 
 
@@ -254,7 +277,7 @@ trap trap_return RETURN
 function set(){                                  _als_function_boundary_in_
   ## The global variable $fn_lvl is pulled in from the global scope and is set to effect the global
   #+  scope as well
-  : "$__"
+  #: "$__"
   local -Ig fn_lvl
 
   ## This `set` effects global scope
@@ -262,7 +285,7 @@ function set(){                                  _als_function_boundary_in_
 
   ## This `set` effects local scope
   local -
-  builtin set -
+  builtin set -x
 
   local local_hyphn
     local_hyphn="${local_hyphn:-"${-}"}"
@@ -1046,8 +1069,7 @@ function reqd_user_files(){                      _als_function_boundary_in_
 
     # <>
     EC=101 
-    LN="${nL}" 
-    exit 
+    LN="${nL}" exit 
 }
 
 
@@ -1721,8 +1743,7 @@ function setup_dnf(){                           _als_function_boundary_in_
 
     # <>
     EC=101 
-    LN="${nL}" 
-    exit 
+    LN="${nL}" exit 
     
     # <>
     #pause_to_check "${nL}" "Begin section on restarting processes?" 
@@ -1733,8 +1754,7 @@ function setup_dnf(){                           _als_function_boundary_in_
 
     # <>
     EC=101 
-    LN="${nL}" 
-    exit 
+    LN="${nL}" exit 
 
   : $'Get new hash of installed packages, ie, \x24{hash..B}'
   hash_of_installed_pkgs_B=$( 
@@ -2653,7 +2673,7 @@ function test_os(){                             _als_function_boundary_in_
 
 : "${C2}Define trap_err()${C0}"
 function trap_err(){                            _als_function_boundary_in_
-  : "$__"
+  #: "$__"
   local -
   builtin set -x # []
 
@@ -2672,7 +2692,7 @@ function trap_err(){                            _als_function_boundary_in_
 ## Note: these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
 function trap_exit(){                           _als_function_boundary_in_
-  : "$__"
+  #: "$__"
   local -
   builtin set -x # []
 
@@ -2815,20 +2835,17 @@ trap trap_exit EXIT
   #exit 
   
   # <>
-  set -x
+  set -
   
   # <>
   EC=101 
-  LN="${nL}" 
-  exit 
-
+  LN="${nL}" exit 
 : "${C12}L:${LINENO}, Regular users with sudo, only${C0}"
 must_be_root
 
   # <>
   EC=101 
-  LN="${nL}" 
-  exit 
+  LN="${nL}" exit 
   : "${C2}LINENO: ${LINENO}${C0}"
   set -x
 
@@ -2843,23 +2860,20 @@ must_be_root
   #set -x
   declare -p qui__ ver__
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
 
 : "${C12}L:${LINENO}, Test OS${C0}"
 test_os
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Variables${C0}"
 setup_vars
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
   #_die_ testing
   #false
@@ -2874,64 +2888,56 @@ set -x
 reqd_user_files
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Network${C0}"
 setup_network
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Time${C0}"
 setup_time
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Temporary directory${C0}"
 setup_temp_dirs
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Minimum necessary rpms${C0}"
 min_necc_packages
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Vim${C0}"
 setup_vim
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Bash${C0}"
 setup_bashrc
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Increase disk space${C0}"
 increase_disk_space
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 #: "<Logs>"
@@ -2952,8 +2958,7 @@ increase_disk_space
 setup_dnf
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Restart NetworkManager if necessary${C0}"
@@ -2977,24 +2982,21 @@ unset BB
 setup_ssh
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, GPG${C0}"
 setup_gpg
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Make and change into directories${C0}"
 setup_git_user_dirs
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 #: "Git deburg settings"
@@ -3004,24 +3006,21 @@ setup_git_user_dirs
 setup_git
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, GH -- github CLI configuration${C0}"
 setup_gh_cli
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Clone repo${C0}"
 clone_repo
 
   EC=101 
-  LN="${nL}" 
-  exit # <>
+  LN="${nL}" exit # <>
   set -x
 
 : "${C12}L:${LINENO}, Remind user of commands for the interactive shell${C0}"
@@ -3041,5 +3040,4 @@ fi
 #"$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${ver__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 EC=00 
-LN="${nL}" 
-exit
+LN="${nL}" exit
