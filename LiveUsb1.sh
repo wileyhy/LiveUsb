@@ -5,7 +5,7 @@
 ## Note, Putting a `LN="$nL"` (LINENO) or `main_lineno="$nL"` assignment preceding an `exit` command lets
 #+ the value of LN or main_lineno match the line number of the `exit` command.
 ## Note, idempotent script
-## Note, the symbol "<>" marks code as for deburging purpoeses only
+## Note, the symbol "<>" marks code as for debugging purpoeses only
 ## Note, ...undocumented feature??
 #+     Use `env -i` or else the script\s execution environment will inherit any exported anything,
 #+   including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`)
@@ -22,7 +22,7 @@
 #+   `rsync` doesn\t, but if the file changes, it does. Also, "btime" on ext4 still isn\t consistent.
 #+   `grep` has no effect on times; `cp -a` effects "ctimes" even if file contents do not change.
 
-## Reportable burg. `command -p kill "$AA"` executes the bash builtin, judging by the output of `command
+## Reportable bugg. `command -p kill "$AA"` executes the bash builtin, judging by the output of `command
 #+   -p kill` without any operands. The output of `$( type -P kill )"` without operands is the same as the
 #+   output of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points.
 #+     `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what
@@ -64,7 +64,7 @@ function start_script(){
   ## Print script start time
   printf '%s - Executing %s \n' "${script_start_time}" "$0"
 
-  ## Set up non-deburg shell options
+  ## Set up non-debugg shell options
   hash -r
   shopt -s expand_aliases
   umask 077
@@ -79,10 +79,10 @@ start_script
 
 
 function setup_aliases(){
-  : "${C_Comment} Line ${nL}, Aliases, non-deburg ${C_AttrOff}"
+  : "${C_Comment} Line ${nL}, Aliases, non-debugg ${C_AttrOff}"
   local -gnx nL=L\INENO
 
-  : "${C_CmntSub} Line ${nL}, Aliases TOC, non-deburg ${C_AttrOff}"
+  : "${C_CmntSub} Line ${nL}, Aliases TOC, non-debugg ${C_AttrOff}"
 
   ##  Alias name
   #+  ~~~~~~~~~~
@@ -90,12 +90,11 @@ function setup_aliases(){
 
   : "${C_CmntSub} Define alias __die__ onto function error_and_exit() ${C_AttrOff}"
   als_di__def_lineno="$((nL+1))"
-  alias __die__='
-    : "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}
+  alias __die__=': "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}
 
-    error_and_exit "${nL}"
+      error_and_exit "${nL}"
 
-    : "${C_AlsFnBndry}" Line ${nL}, alias __die__, end "${C_AttrOff}"'
+      : "${C_AlsFnBndry}" Line ${nL}, alias __die__, end "${C_AttrOff}"'
 }
 setup_aliases
 
@@ -106,13 +105,13 @@ setup_aliases
 
 
 
-## <> Enable debugging (ie, "deburging")
-function enable_deburg_params(){
+## <> Enable debugging (ie, "debugging")
+function enable_debugg_params(){
 
-  ## Set up deburg shell options
+  ## Set up debugg shell options
   local -
   #builtin set -x
-  : "$( tput setaf 12 ) Deburging $( tput sgr0   )"
+  : "$( tput setaf 12 ) Debugging $( tput sgr0   )"
   # shellcheck disable=SC1001
   ## <> Note, this assignment is repeated here; originally it\s located in setup_vars()
   local -gnx nL=L\INENO
@@ -131,7 +130,7 @@ function enable_deburg_params(){
     #set -x
 
 
-  ## Set up deburg colors
+  ## Set up debugg colors
   [[ -o xtrace ]] &&
     : "$( tput setaf 12 ) Set up colors for xtrace comments $( tput sgr0 )"
   C_AttrOff="$( tput sgr0 )"
@@ -195,20 +194,20 @@ function enable_deburg_params(){
   fn_lvl=0
   #print_function_boundaries=do_prFnBndrys
 }
-enable_deburg_params
+enable_debugg_params
 
     # <>
     #exit "$LINENO"
     #set -x
 
 
-function enable_deburg_aliases(){
-  : "${C_Comment} Line ${nL}, Aliases, deburg ${C_AttrOff}"
+function enable_debugg_aliases(){
+  : "${C_Comment} Line ${nL}, Aliases, debugg ${C_AttrOff}"
 
   ## Bug, separate alias definitions to a subsection above function definitions. Defining of alias B can
   #+ occur before the defining of function A which is contained within in (alias B)
 
-  : "${C_CmntSub} Line ${nL}, Aliases, deburg - TOC ${C_AttrOff}"
+  : "${C_CmntSub} Line ${nL}, Aliases, debugg - TOC ${C_AttrOff}"
   ##  Alias name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  __call_fn__ 
@@ -226,7 +225,7 @@ function enable_deburg_aliases(){
 
   : "${C_CmntSub} Define alias __call_fn__ ${C_AttrOff}"
   ## Note, Usage:   -|__call_fn__ \
-  #+                -|[function name]
+  #+                -|    [function name]
   #+   Reason: so that the alias can be added to a script via sed/awk.
   als_cl_fn__def_lineno="$((nL+1))"
   alias __call_fn__='_="${C_XtrAls} alias __call_fn__, begin" als_cl_fn__call_line="$nL" als_def_line="${als_cl_fn__def_lineno}" _="alias __call_fn__, end ${C_AttrOff}" '
@@ -240,7 +239,7 @@ function enable_deburg_aliases(){
     : If xtrace is already enabled, then disable xtrace and exit the script
     if [[ -o xtrace ]]
     then
-      builtin set -
+      builtin set - && printf "%b\n" "${C_AttrOff}"
       EC=101
       main_lineno="${nL}" exit
     else
@@ -276,6 +275,7 @@ function enable_deburg_aliases(){
   als_enbl_loc_xtr__def_lineno="$((nL+1))"
   alias __enable_local_xtrace__='
     : "${C_XtrAls}" Line ${nL}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}
+    #fn_def_lineno="${nL:-}" 
 
     if ! [[ -o xtrace ]]
     then
@@ -404,30 +404,30 @@ function enable_deburg_aliases(){
     #: "quux"
     #builtin exit "$nL"
     ## <> End
-  : "${C_CmntSub} Line ${nL}, Aliases, Deburg -  Complete ${C_AttrOff}"
+  : "${C_CmntSub} Line ${nL}, Aliases, Debugg -  Complete ${C_AttrOff}"
 }
-enable_deburg_aliases
+enable_debugg_aliases
 
     # <>
     #exit "$LINENO"
     #set -x
 
 
-function enable_deburg_functions(){
-  : "${C_Comment} Line ${nL}, Functions, Deburg ${C_AttrOff}"
-  : "${C_CmntSub} Line ${nL}, Functions, Deburg -  TOC ${C_AttrOff}"
+function enable_debugg_functions(){
+  : "${C_Comment} Line ${nL}, Functions, Debugg ${C_AttrOff}"
+  : "${C_CmntSub} Line ${nL}, Functions, Debugg -  TOC ${C_AttrOff}"
     ##  Function name
     #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #+  enable_git_deburg_settings()
+    #+  enable_git_debugg_settings()
     #+  pause_to_check()
     #+  set()
     #+  xtr_duck()
 
-  : "${C_CmntSub} Define enable_git_deburg_settings() ${C_AttrOff}"
-  function enable_git_deburg_settings(){           __function_boundary_in__
+  : "${C_CmntSub} Define enable_git_debugg_settings() ${C_AttrOff}"
+  function enable_git_debugg_settings(){           __function_boundary_in__
     #__enable_local_xtrace__
 
-    : "${C_CmntSub} Variables -- Global git deburg settings ${C_AttrOff}"
+    : "${C_CmntSub} Variables -- Global git debugg settings ${C_AttrOff}"
     # shellcheck disable=SC2034
     {
       GIT_TRACE=true
@@ -544,9 +544,9 @@ function enable_deburg_functions(){
       #return
   #}
 
-  : "${C_Comment} Line ${nL}, Functions, Deburg - Complete ${C_AttrOff}"
+  : "${C_Comment} Line ${nL}, Functions, Debugg - Complete ${C_AttrOff}"
 }
-enable_deburg_functions
+enable_debugg_functions
 
   # <>
   #set -x
@@ -562,7 +562,7 @@ function setup_variables(){ __function_boundary_in__
   :
   : "${C_Comment} Line ${nL}, Variables ...likely to change or early-definition required ${C_AttrOff}"
   :
-  : "${C_CmntSub} Variables, colors, non-deburg ${C_AttrOff}"
+  : "${C_CmntSub} Variables, colors, non-debugg ${C_AttrOff}"
   [[ -v C_AlsFnBndry ]] || C_AlsFnBndry="${C_AlsFnBndry:=}"
   [[ -v C_AttrOff ]]    || C_AttrOff="${C_AttrOff:=}"
   [[ -v C_CmntSub ]]    || C_CmntSub="${C_CmntSub:=}"
@@ -695,15 +695,15 @@ function setup_variables(){ __function_boundary_in__
   }
   __function_boundary_out_0__
 }
+
+: "${C_Comment} Line ${nL}, Variables ${C_AttrOff}"
 __call_fn__ \
-setup_variables
+    setup_variables
 
-: "${C_Comment} Line ${nL}, \
-# Testing testing testing \
-	${C_AttrOff}"
+: "${C_Comment} Line ${nL}, # Testing testing testing ${C_AttrOff}"
 
-  exit "$nL"
-  builtin set -x
+  #exit "$nL" #<>
+  builtin set -x #<>
 
 
 
@@ -782,8 +782,9 @@ setup_variables
 function clone_repo(){                           __function_boundary_in__
   #__enable_local_xtrace__
 
-  [[ ${PWD} = "${dev_d1}" ]] ||
+  [[ ${PWD} = "${dev_d1}" ]] || {
     __die__
+  }
 
   local AA
     AA=$(
@@ -795,8 +796,9 @@ function clone_repo(){                           __function_boundary_in__
       ! [[ -f ./${scr_repo_nm}/README.md ]] ||
       ! [[ ${AA} == "${sha256_of_repo_readme}" ]]
   then
-    git clone --origin github "https://github.com/wileyhy/${scr_repo_nm}" ||
+    git clone --origin github "https://github.com/wileyhy/${scr_repo_nm}" || {
       __die__
+    }
   fi
   unset AA
                                                  __function_boundary_out_0__
@@ -814,7 +816,8 @@ function error_and_exit(){                       __function_boundary_in__
     #declare -p prev_cmd_exit_code
 
   ## Some positional parameters must exist
-  [[ $# -lt 1 ]] && return 1
+  [[ $# -lt 1 ]] &&
+    return 1
 
   ## The first positional parameter must be a digit, and should be the LINENO from where error_and_exit() is called
   if ! [[ $1 = [0-9]* ]]
@@ -868,8 +871,9 @@ function get_pids_for_restarting(){              __function_boundary_in__
 
 
   readarray -t dnf_o < <(
-    sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null ||
+    sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || {
       __die__
+    }
   )
   if [[ ${#dnf_o[@]} -eq 0 ]]
   then
@@ -923,8 +927,9 @@ function gh_auth_login_command(){                __function_boundary_in__
 
   ## Note, do not break this line with any backslashed newlines or it will fail and you\ll have to
   #+  refresh auth manually; using short options for just this reason
-  gh auth login -p ssh -h github.com -s admin:public_key,read:gpg_key,admin:ssh_signing_key -w ||
+  gh auth login -p ssh -h github.com -s admin:public_key,read:gpg_key,admin:ssh_signing_key -w || {
     __die__
+  }
                                                  __function_boundary_out_0__
 }
 
@@ -1115,26 +1120,117 @@ function must_be_root(){                         __function_boundary_in__
     __die__
   fi
                                                  __function_boundary_out_0__
-}
+} 
 
 
+
+
+
+  builtin set -x #<>
+  #pttn_device_path=/dev/sda1 #<>
+  #builtin unset -f setup_aliases #<>
+
+#: 'Define function \setup_aliases\'
+#function setup_aliases(){
+  #builtin local -; builtin set -x
+  #builtin local -gnx nL=L\INENO
+  #als_di__def_lineno="$((nL+1))"
+#
+    #builtin declare -p C_AlsFnBndry nL als_di__def_lineno || builtin exit "${LINENO}"
+#
+  #: error, line "${LINENO}"
+  #builtin alias __die__='{ builtin : "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}; error_and_exit "${nL}" "$@";}'
+#
+  #: error, line "${LINENO}"
+  ##alias __die__=': "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}; error_and_exit "${nL}" "$@"'
+#
+  #: no error, line "${LINENO}"
+  #alias __die__='error_and_exit "${nL}" "$@"'
+#
+  #: error, line "${LINENO}"
+  #alias __die__=': "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}; error_and_exit "${nL}" "$@"'
+#
+    #: "${C_AlsFnBndry}" Line ${nL}, alias __die__, end "${C_AttrOff}"'
+#}
+  #builtin declare -pf setup_aliases error_and_exit #<>
+
+#setup_aliases
+
+#: Note, error, line "${LINENO}"
+#[[ -n ${pttn_device_path} ]] || #{
+  #: nonprinting
+  #: ec: $?
+  #: "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}; error_and_exit "${nL}" $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+#}
+#
+#: Note, error, line "${LINENO}"
+#[[ -n ${pttn_device_path} ]] ||
+  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+#
+#: Note, no error, line "${LINENO}"
+#[[ -n ${pttn_device_path} ]] || {
+  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+  #}
+#
+#: Note, error, line "${LINENO}"
+#[[ -n ${pttn_device_path} ]] ||
+  #__die__
+
+#: Note, no error, line "${LINENO}"
+#[[ -n ${pttn_device_path} ]] || {
+  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+  #}
+
+#: Note, error, line "${LINENO}"
+#[[ -n ${pttn_device_path} ]] || #{ echo ec:$?
+  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+#  }
+#
+#: Note, no error, line "${LINENO}"
+#if [[ -n ${pttn_device_path} ]]
+#then
+  #echo OKAY
+  #exit "${LINENO}"
+  #echo '\{C_AlsFnBndry}:' "${C_AlsFnBndry}"
+  #echo '\{nL}:' "${nL}"
+  #echo '\{als_di__def_lineno}:' "${als_di__def_lineno}"
+  #declare -pF error_and_exit
+  #alias __die__
+  #echo '\{C_AttrOff}:' "${C_AttrOff}"
+#else
+  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+#fi
+
+#: Note, error, line "${LINENO}"
+#[[ -n ${pttn_device_path} ]] ||
+  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+
+#: Note, error, line "${LINENO}"
+#[[ -n ${pttn_device_path} ]] || __die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+#
+  #exit 101 #<>
 
 
 : "${C_CmntSub} Define reqd_user_files() ${C_AttrOff}"
 function reqd_user_files(){                      __function_boundary_in__
   __enable_local_xtrace__
 
-  ## Note, QQ must be declared as local before unsetting it inside the function so that the `unset` will
-  #+  effect the local variable
-  ## Note, and yet, when locally declaring and assigning separately a regular variable, ie,
-  #+  `local lsblk_out \n lsblk_out=""` the assignment doesn\t need a preceding `local`
-  ## Note, I\m using an array with $lsblk_out so I can work around `set -u` by using a ":=" PE, and so that
-  #+  I can limit xtrace output by testing for a shortened version of the output of `lsblk`. I.e., I\m testing
-  #+  the last line of the array, index "-1", but this is really just a practice, since a lot of times index
-  #+  zero gets unset for whatever reason, but if there are any values in the array at all, then index
-  #+  "-1" is guaranteed to exist. ...unless the array is completely empty...
-  #+	but I don\t want to UNSET ie RESET the array on each loop...
-  #+ In this script, index zero should exist, barring any future changes. So, it\s a bit of future-proofing.
+  ## Note, QQ must be declared as local before unsetting it inside the
+  #+   function so that the `unset` will effect the local variable
+  ## Note, and yet, when locally declaring and assigning separately a
+  #+   regular variable, ie, `local lsblk_out \n lsblk_out=""` the
+  #+   assignment doesn\t need a preceding `local`
+  ## Note, I\m using an array with $lsblk_out so I can work around
+  #+   `set -u` by using a ":=" PE, and so that I can limit xtrace output
+  #+   by testing for a shortened version of the output of `lsblk`. I.e.,
+  #+   I\m testing the last line of the array, index "-1", but this is
+  #+   really just a practice, since a lot of times index zero gets unset
+  #+   for whatever reason, but if there are any values in the array at
+  #+   all, then index "-1" is guaranteed to exist. ...unless the array is
+  #+   completely empty...
+  #+	 but I don\t want to UNSET ie RESET the array on each loop...
+  #+ In this script, index zero should exist, barring any future changes.
+  #+   So, it\s a bit of future-proofing.
 
   : $'Vars, Is device identified by \x22\x24data_pttn_uuid\x22 attached to this machine? If so, get device path'
   local pttn_device_path
@@ -1142,8 +1238,11 @@ function reqd_user_files(){                      __function_boundary_in__
     lsblk --noheadings --output partuuid,path |
       awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }'
   )
-  [[ -n ${pttn_device_path} ]] ||
-    __die__ $'Necessary USB drive isn\x60t plugged in or its filesystem has changed.'
+
+  #! Note, error
+  [[ -n ${pttn_device_path} ]] || {
+    __die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+  }
 
   : "${C_CmntSub} Vars, get mountpoints and label ${C_AttrOff}"
   local mount_pt data_dir is_mounted
@@ -1194,8 +1293,9 @@ function reqd_user_files(){                      __function_boundary_in__
   : "${C_CmntSub} FS mounting must be restricted to root and/or liveuser ${C_AttrOff}"
   local mount_user
   mount_user="${mount_pt%/*}" mount_user="${mount_user##*/}"
-  [[ ${mount_user} = @(root|liveuser) ]] ||
+  [[ ${mount_user} = @(root|liveuser) ]] || {
     __die__
+  }
   unset mount_user
 
   : "${C_CmntSub} USB drive must be mounted ${C_AttrOff}"
@@ -1203,12 +1303,14 @@ function reqd_user_files(){                      __function_boundary_in__
   then
     if ! [[ -d "${mount_pt}" ]]
     then
-      sudo -- mkdir --parents -- "${mount_pt}" ||
+      sudo -- mkdir --parents -- "${mount_pt}" || {
         __die__
+      }
     fi
 
-    sudo -- mount -- "${pttn_device_path}" "${mount_pt}" ||
+    sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || {
       __die__
+    }
     is_mounted=yes
     sync -f
   fi
@@ -1317,8 +1419,9 @@ function reqd_user_files(){                      __function_boundary_in__
             #     __die__
             #fi
 
-            sudo -- mount -- "${pttn_device_path}" "${mount_pt}" ||
+            sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || {
               __die__
+            }
 
             if  mount |
                   grep -q "${pttn_device_path}"
@@ -1358,7 +1461,7 @@ function reqd_user_files(){                      __function_boundary_in__
   unset prev_umask
 
     # <>
-    __debug_break__
+    #__debug_break__
                                                  __function_boundary_out_0__
 }
 
@@ -1423,8 +1526,9 @@ function rsync_install_if_missing(){             __function_boundary_in__
 
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
-    rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" ||
+    rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || {
       __die__ "${fn_target_dir}"
+    }
   fi
 
   : "${C_CmntSub} Unset a local variable defined and assigned in only this function, and not any variables by the same name... ${C_AttrOff}"
@@ -1483,8 +1587,9 @@ function setup_bashrc(){                         __function_boundary_in__
     fi
 
     : "${C_CmntSub} bashrc -- ...per-script-execution file backup ${C_AttrOff}"
-    sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}~" ||
+    sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}~" || {
       __die__ "${WW}"
+    }
   done
   unset WW
 
@@ -1764,7 +1869,7 @@ function setup_dnf(){                           __function_boundary_in__
     # addl_pkgs+=( ${for_careful_A:=}     systemd )
     # addl_pkgs+=( ${for_careful_B:=}     sssd{,-{ad,client,common{,-pac},ipa,kcm,krb5{,-common},ldap,nfs-idmap,proxy}} )
     # addl_pkgs+=( ${for_db_ish:=}        libreoffice-calc )
-    # addl_pkgs+=( ${for_burg_rpts:=}     inxi zsh dash mksh )
+    # addl_pkgs+=( ${for_bugg_rpts:=}     inxi zsh dash mksh )
     # addl_pkgs+=( ${for_char_sets:=}     enca moreutils uchardet )
       addl_pkgs+=( ${for_duh:=}           info plocate lynx )
     # addl_pkgs+=( ${for_duh:=}           pdfgrep wdiff )
@@ -1807,12 +1912,26 @@ function setup_dnf(){                           __function_boundary_in__
       for QQ in "${!removable_pkgs[@]}"
       do
         ## Note,  dnf , do not use [-y|--yes] with this particular command
-        if sudo -- nice --adjustment=-20 -- dnf --allowerasing remove -- "${removable_pkgs[QQ]}"
+        unset DD exp_dt dnf_cmd
+        DD=$( date +%s )
+        exp_dt=$( date --date="January 1, 2026" +%s )
+
+        if (( DD > exp_dt ))
+        then
+          dnf_cmd=dnf5
+        else
+          dnf_cmd=dnf4
+        fi
+
+        if sudo -- \
+          nice --adjustment=-20 -- \
+          "${dnf_cmd}" --allowerasing remove -- "${removable_pkgs[QQ]}"
         then
           unset "removable_pkgs[QQ]"
         else
           __die__ "${removable_pkgs[QQ]}"
         fi
+        unset DD exp_dt dnf_cmd
       done
       unset QQ
     fi
@@ -1820,9 +1939,10 @@ function setup_dnf(){                           __function_boundary_in__
 
   : "${C_CmntSub} Then do a blanket security upgrade ${C_AttrOff}"
 
-  ## Note, the problem with this "blanket security upgrade" is how it includes kernel and firmware. Better to
-  #+  capture list of rpms in a no-op cmd, filter out impractical (for a LiveUsb) rpms, then upgrade the rest
-  #+  one by one
+  ## Note, the problem with this "blanket security upgrade" is how it
+  #+   includes kernel and firmware. Better to capture list of rpms in
+  #+   a no-op cmd, filter out impractical (for a LiveUsb) rpms, then
+  #+   upgrade the rest one by one
 
   : $'Run this loop until \x60dnf --security upgrade\x60 returns 0, or 0 upgradable, rpms'
   while true
@@ -1873,8 +1993,9 @@ function setup_dnf(){                           __function_boundary_in__
       #exit 101
 
     : $'Send signals to "needs-restarting" PID\x27s, one at a time...'
-    #+  with pauses and descriptions between each one, so I can see which signal/process combinations cause
-    #+  any problems. This would be a great job for logging.
+    #+   with pauses and descriptions between each one, so I can see which
+    #+   signal/process combinations cause any problems. This would be a
+    #+   great job for logging.
 
   done
 
@@ -1898,8 +2019,9 @@ function setup_dnf(){                           __function_boundary_in__
   : "${C_CmntSub} Upgrade any installed RPMs from the main list, en masse ${C_AttrOff}"
   if [[ -n ${pkgs_installed[*]: -1:1} ]]
   then
-    sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade -- "${pkgs_installed[@]}" ||
+    sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade "${pkgs_installed[@]}" || {
       __die__
+    }
   fi
 
     pause_to_check "${nL}" $'From the \x24addl_pkgs array, install the remainder' # <>
@@ -1914,8 +2036,9 @@ function setup_dnf(){                           __function_boundary_in__
 
     for VV in "${not_yet_installed_pkgs[@]}"
     do
-      sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install -- "${VV}" ||
+      sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install "${VV}" || {
         __die__
+      }
 
       #a_pids=()
       get_pids_for_restarting
@@ -2026,12 +2149,12 @@ function setup_dnf(){                           __function_boundary_in__
     unset VV
   fi
   unset pkg_nms_for_removal addl_pkgs
-  unset for_{admin,bash,bashdb,db_ish,burg_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
+  unset for_{admin,bash,bashdb,db_ish,bugg_rpts,duh,firefox,fun,gcov,git,internet,later_{other,trace}}
   unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
   unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
     # <>
-    __debug_break__
+    #__debug_break__
 
     # <>
     #pause_to_check "${nL}" "Begin section on restarting processes?"
@@ -2041,7 +2164,7 @@ function setup_dnf(){                           __function_boundary_in__
   get_pids_for_restarting
 
     # <>
-    __debug_break__
+    #__debug_break__
 
   : $'Get new hash of installed packages, ie, \x24{hash..B}'
   hash_of_installed_pkgs_B=$(
@@ -2399,10 +2522,12 @@ function setup_git(){                           __function_boundary_in__
 		EOF
 
     # shellcheck disable=SC2024 #(info): sudo does not affect redirects. Use sudo cat file | ..
-    tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null ||
+    tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || {
       __die__
-    chmod 0644 "${ver__[@]}" "${git_mesg}" ||
+    }
+    chmod 0644 "${ver__[@]}" "${git_mesg}" || {
       __die__
+    }
   fi
 
   : "${C_CmntSub} Git -- gitignore (global) ${C_AttrOff}"
@@ -2418,10 +2543,12 @@ function setup_git(){                           __function_boundary_in__
 		EOF
 
     # shellcheck disable=SC2024
-    tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null ||
+    tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || {
       __die__
-    chmod 0644 "${ver__[@]}" "${git_ignr}" ||
+    }
+    chmod 0644 "${ver__[@]}" "${git_ignr}" || {
       __die__
+    }
   fi
 
   : $'Git -- Set correct DAC\x60s (ownership and permissions)'
@@ -2469,15 +2596,17 @@ function setup_git_user_dirs(){                 __function_boundary_in__
   do
     if ! [[ -d ${UU} ]]
     then
-      mkdir --mode=0700 "${ver__[@]}" "${UU}" ||
+      mkdir --mode=0700 "${ver__[@]}" "${UU}" || {
         __die__
+      }
     fi
   done
   unset UU
 
   : "${C_CmntSub} Change dirs ${C_AttrOff}"
-  pushd "${dev_d1}" > /dev/null ||
+  pushd "${dev_d1}" > /dev/null || {
     __die__
+  }
                                                  __function_boundary_out_0__
 }
 
@@ -2498,15 +2627,17 @@ function setup_gpg(){                           __function_boundary_in__
           \(  \!  -gid "${login_uid}" -a  \! -uid 0  \) \
         \)  -print0 \
   )
-  [[ -n ${problem_files[*]} ]] &&
+  [[ -n ${problem_files[*]} ]] && {
     __die__ Incorrect ownership on -- "${problem_files[@]}"
+  }
   unset problem_files
 
   : $'If any files are owned by root, then change their ownership to \x24USER'
   sudo -- \
     find -- ~/.gnupg -xdev \( -uid 0 -o -gid 0 \) -execdir \
-      chown "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; ||
+      chown "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; || {
         __die__
+      }
 
   : $'If any dir perms aren\x60t 700 or any file perms aren\x60t 600, then make them so'
   find -- ~/.gnupg -xdev -type d \! -perm 700  -execdir \
@@ -2611,12 +2742,13 @@ function setup_ssh(){                           __function_boundary_in__
 
   : "${C_CmntSub} Make sure the SSH config directory and file for USER exist ${C_AttrOff}"
   [[ -d ${ssh_usr_conf_dir} ]] ||
-    mkdir -m 0700 "${ssh_usr_conf_dir}" ||
-    __die__
+    mkdir -m 0700 "${ssh_usr_conf_dir}" || {
+      __die__
+    }
   [[ -f ${ssh_user_conf_file} ]] ||
-    write_ssh_conf ||
-    __die__
-
+    write_ssh_conf || {
+      __die__
+    }
     __pause2ck__ # <>
 
   ## TODO, _rm_ should be an alias
@@ -2643,8 +2775,9 @@ function setup_ssh(){                           __function_boundary_in__
         \(  \! -uid "${login_uid}"  -o  \
             \! -gid "${login_gid}"  \
         \) -execdir \
-          chown -- "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \;  ||
+          chown -- "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; || {
             __die__
+          }
     find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir \
       chmod 700 "${ver__[@]}" \{\} \; #
     find -- "${ssh_usr_conf_dir}" -xdev -type f -execdir \
@@ -2751,12 +2884,16 @@ function setup_ssh(){                           __function_boundary_in__
 function setup_temp_dirs(){                     __function_boundary_in__
   #__enable_local_xtrace__
 
-  tmp_dir=$( TMPDIR="" \
-    mktemp --directory --suffix=-LiveUsb 2>&1 ||
+  tmp_dir=$(
+    if ! TMPDIR="" mktemp --directory --suffix=-LiveUsb 2>&1
+    then
       __die__
+    fi
   )
-  [[ -d ${tmp_dir} ]] ||
+
+  [[ -d ${tmp_dir} ]] || {
     __die__
+  }
   readonly tmp_dir
                                                  __function_boundary_out_0__
 }
@@ -2770,8 +2907,9 @@ function setup_time(){                          __function_boundary_in__
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
-  sudo -- systemctl start chronyd.service ||
+  sudo -- systemctl start chronyd.service || {
     __die__
+  }
   sudo -- chronyc makestep > /dev/null
                                                  __function_boundary_out_0__
 }
@@ -2851,12 +2989,14 @@ function setup_vim(){                           __function_boundary_in__
     umask 177
 
     : "${C_CmntSub} Write the root file ${C_AttrOff}"
-    sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" ||
+    sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || {
       __die__
+    }
 
     : "${C_CmntSub} Copy the root file to ${HOME}"$' and repair DAC\x60s on '"${USER}"$'\x60s copy'
-    sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc ||
+    sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc || {
       __die__
+    }
     sudo -- chown "${UID}:${UID}" -- ~/.vimrc
     chmod 0400 -- ~/.vimrc
 
@@ -2958,10 +3098,12 @@ function write_bashrc_strings(){                __function_boundary_in__
   #__enable_local_xtrace__
 
   : "${C_CmntSub} Certain parameters must be defined and have non-zero values ${C_AttrOff}"
-  (( ${#files_for_use_with_bash[@]} == 0 )) &&
+  (( ${#files_for_use_with_bash[@]} == 0 )) && {
     __die__
-  (( $# == 0 )) &&
+  }
+  (( $# == 0 )) && {
     __die__
+  }
 
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
@@ -2995,8 +3137,9 @@ function write_bashrc_strings(){                __function_boundary_in__
 
           : "${C_CmntSub} Then write the function definition into the file ${C_AttrOff}"
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" |
-            sudo -- tee --append -- "${file_x}" > /dev/null ||
+            sudo -- tee --append -- "${file_x}" > /dev/null || {
               __die__
+            }
         else
           : "${C_CmntSub} Definition exists, skipping ${C_AttrOff}"
         fi
@@ -3058,7 +3201,7 @@ function write_ssh_conf(){                      __function_boundary_in__
 : "${C_CmntSub} Line ${nL}, Functions Complete ${C_AttrOff}"
 
   ## <>
-  __debug_break__
+  #__debug_break__
   #: 'hyphen,' "$-"
 
 ## TODO, perhaps there should be a "main()" function.
@@ -3079,8 +3222,11 @@ trap trap_exit EXIT
 #trap trap_return RETURN
 
   # <>
+  #trap
+  #declare -pF trap_err trap_exit
+  #declare -pf trap_err trap_exit
   #set -
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Regular users with sudo, only ${C_AttrOff}"
 #( builtin set -x; : "${C_Comment} Line ${nL},   Regular users with sudo, only   ${C_AttrOff}" )
@@ -3107,12 +3253,12 @@ must_be_root
 : "${C_Comment} Line ${nL}, Test OS ${C_AttrOff}"
 test_os
 
-  __debug_break__
+  #__debug_break__
 
-: "${C_Comment} Line ${nL}, Variables ${C_AttrOff}"
-setup_variables
+#: "${C_Comment} Line ${nL}, Variables ${C_AttrOff}"
+#setup_variables
 
-  __debug_break__
+  #__debug_break__
   #__die__ testing
   #false
 
@@ -3125,42 +3271,42 @@ setup_variables
 : "${C_Comment} Line ${nL}, Certain files must have been installed from off-disk ${C_AttrOff}"
 reqd_user_files
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Network ${C_AttrOff}"
 setup_network
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Time ${C_AttrOff}"
 setup_time
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Temporary directory ${C_AttrOff}"
 setup_temp_dirs
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Minimum necessary rpms ${C_AttrOff}"
 min_necc_packages
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Vim ${C_AttrOff}"
 setup_vim
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Bash ${C_AttrOff}"
 setup_bashrc
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Increase disk space ${C_AttrOff}"
 increase_disk_space
 
-  __debug_break__
+  #__debug_break__
 
 #: "<Logs>"
 #__enable_global_xtrace__
@@ -3179,7 +3325,7 @@ increase_disk_space
 : "${C_Comment} Line ${nL}, Dnf ${C_AttrOff}"
 setup_dnf
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Restart NetworkManager if necessary ${C_AttrOff}"
 
@@ -3188,8 +3334,9 @@ for BB in "${dns_srv_A}" "${dns_srv_1}"
 do
   if ! ping -4qc1 -- "${BB}" > /dev/null 2>&1
   then
-    sudo -- nice --adjustment=-20 -- systemctl restart -- NetworkManager.service ||
+    sudo -- nice --adjustment=-20 -- systemctl restart -- NetworkManager.service || {
       __die__
+    }
   fi
 done
 unset BB
@@ -3201,40 +3348,41 @@ unset BB
 : "${C_Comment} Line ${nL}, SSH ${C_AttrOff}"
 setup_ssh
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, GPG ${C_AttrOff}"
 setup_gpg
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Make and change into directories ${C_AttrOff}"
 setup_git_user_dirs
 
-  __debug_break__
+  #__debug_break__
 
-#: "Git deburg settings"
-#enable_git_deburg_settings
+#: "Git debugg settings"
+#enable_git_debugg_settings
 
 : "${C_Comment} Line ${nL}, Git ${C_AttrOff}"
 setup_git
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, GH -- github CLI configuration ${C_AttrOff}"
 setup_gh_cli
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Clone repo ${C_AttrOff}"
 clone_repo
 
-  __debug_break__
+  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Remind user of commands for the interactive shell ${C_AttrOff}"
 
-popd > /dev/null ||
+popd > /dev/null || {
   __die__
+}
 
 if ! [[ ${PWD} = ${dev_d1}/${scr_repo_nm} ]]
 then
