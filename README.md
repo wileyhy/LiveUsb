@@ -1,2 +1,2 @@
 # LiveUsb
-Shell scripts for setting up a LiveUSB for using git.
+Shell scripts for setting up a LiveUSB for using git. 
