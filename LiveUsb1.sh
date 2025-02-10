@@ -469,7 +469,6 @@ function enable_debugg_functions(){
   function pause_to_check(){                       __function_boundary_in__
     #__enable_local_xtrace__
 
-    #local -I EC=101 LN="$1" ## Q, Why inherit attributes and values when you assign values anyway?
     local -I EC=101 ## Q, Why inherit attributes and values when you assign values anyway?
 
     #shift
