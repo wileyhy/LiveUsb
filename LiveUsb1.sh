@@ -130,12 +130,12 @@ function _fn_enable_debug_parameters_(){
   local -gnx  nameref_Lineno=L\INENO
   # shellcheck disable=SC2218
   {
-    set -o allexport        
-    set -o noclobber
-    set -o nounset
-    set -o functrace
-    set -o errexit
-    set -o pipefail
+    builtin set -o allexport        
+    builtin set -o noclobber
+    builtin set -o nounset
+    builtin set -o functrace
+    builtin set -o errexit
+    builtin set -o pipefail
   }
 
   ## Set up debug colors
@@ -444,7 +444,7 @@ function _fn_enable_debug_functions_(){
     #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #+  _fn_enable_git_debug_settings_()
     #+  _fn_pause_to_check_()
-    #+  set()
+    #+  _fn_set_()
 
 
   : "${Color_SubComent} Define _fn_enable_git_debug_settings_() ${Color_AttributesOff}"
@@ -509,26 +509,29 @@ function _fn_enable_debug_functions_(){
     _als_fnction_boundary_out_0_
   }
 
-  : "${Color_SubComent} Define set() ${Color_AttributesOff}"
-  function set(){                                  _als_fnction_boundary_in_
-    ## The global variable $fn_lvl is pulled in from the global scope and is set to effect the global
+  : "${Color_SubComent} Define _fn_set_() ${Color_AttributesOff}"
+  function _fn_set_(){                                  _als_fnction_boundary_in_
+    ## The global variable $fn_lvl is pulled in from the global scope and is s\et to effect the global
     #+  scope as well
-    local -Ig fn_lvl
-    local local_hyphn
-      local_hyphn=${local_hyphn:-"$-"}
-    local -aIg qui__ ver__
-      qui__=( "${qui__[@]}" )
-      ver__=( "${ver__[@]}" )
+    local -Ig   fn_lvl
+    local       local_hyphn
+                local_hyphn=${local_hyphn:-"$-"}
+    local -aIg  qui__
+                qui__=( "${qui__[@]}" )
+    local -aIg  ver__
+                ver__=( "${ver__[@]}" )
 
     if [[ -o xtrace ]]
     then
-      qui__=( [0]="--" )
-      ver__=( [0]="--verbose" [1]="--" )
+                qui__=( [0]="--" )
+                ver__=( [0]="--verbose" [1]="--" )
     else
-      qui__=( [0]="--quiet" [1]="--" )
-      ver__=( [0]="--" )
+                qui__=( [0]="--quiet" [1]="--" )
+                ver__=( [0]="--" )
     fi
-    export qui__ ver__
+    export      qui__
+    export      ver__
+
     _als_fnction_boundary_out_0_
   }
 
@@ -536,7 +539,7 @@ function _fn_enable_debug_functions_(){
 }
 _fn_enable_debug_functions_
 
-  builtin set -x
+  _fn_set_ -x
 
 : "${Color_SubComent} Define setup_variables() ${Color_AttributesOff}"
 function setup_variables(){ _als_fnction_boundary_in_
@@ -645,7 +648,7 @@ function setup_variables(){ _als_fnction_boundary_in_
     ## Note, this is really a lot of manually entered data ...of filenames -- it\s a lot to maintain. :-\
     #+  Wouldn\t it be better to just always keep the data directory... in proper intended order...?
     #+  But then the data dir can be changed and there wouldn\t be any process of making sure the DACs
-    #+  are correct. On the other hand, it\s easier to maintain a simple set of files. ...but their state
+    #+  are correct. On the other hand, it\s easier to maintain a simple s\et of files. ...but their state
     #+  wouldn\t necessarily have been documented, which is valuable in and of itself. Otherwise, if they
     #+  were changed accidentally, how would you know any change had occurred?
     ## ToDo
@@ -800,7 +803,7 @@ function get_pids_for_restarting(){              _als_fnction_boundary_in_
   ## Note, this pipeline was broken out into its constituent commands in order to verify the values
   #+  mid-stream. Yes, some of the array names are in fact spelled uncorrectly.
 
-  ## Note, this set of arrays could be a function, but \return\ can only return from one function level at
+  ## Note, this s\et of arrays could be a function, but \return\ can only return from one function level at
   #+  at time, or it could be a loop, but the array names and command strings would have to be in an
   #+  associative array, and that seems like adding complexity.
 
@@ -921,7 +924,7 @@ function increase_disk_space(){                  _als_fnction_boundary_in_
     while true
     do
       [[ -z ${1:-} ]] &&
-        break 1 # <> set-u
+        break 1 # <> s\et-u
 
       # shellcheck disable=SC2190
       Aa_fsos5+=( "${1%% *}" "${1#* }")
@@ -993,7 +996,7 @@ function increase_disk_space(){                  _als_fnction_boundary_in_
                   unset "Aa_fsos5[${AA}]"
                   break 1
                 ;; #
-            * )   HH=$(( ++HH )) # <> set-e, can be just  (( HH++ ))  when errexit\s off
+            * )   HH=$(( ++HH )) # <> s\et-e, can be just  (( HH++ ))  when errexit\s off
 
                   if (( HH < 3 ))
                   then
@@ -1072,7 +1075,7 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
   #+   regular variable, ie, \local lsblk_out \n lsblk_out=\ the
   #+   assignment doesn\t need a preceding \local\
   ## Note, I\m using an array with $lsblk_out so I can work around
-  #+   \set -u\ by using a \:=\ PE, and so that I can limit xtrace output
+  #+   \s\et -u\ by using a \:=\ PE, and so that I can limit xtrace output
   #+   by testing for a shortened version of the output of \lsblk\. I.e.,
   #+   I\m testing the last line of the array, index \-1\, but this is
   #+   really just a practice, since a lot of times index zero gets unset
@@ -1210,7 +1213,7 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
   fi
   unset ZZ
 
-  : "${Color_SubComent} Capture previous umask and set a new one ${Color_AttributesOff}"
+  : "${Color_SubComent} Capture previous umask and s\et a new one ${Color_AttributesOff}"
   local prev_umask
   read -r -a prev_umask < <(
     umask -p
@@ -1431,7 +1434,7 @@ function setup_bashrc(){                         _als_fnction_boundary_in_
   : "${Color_SubComent} bashrc -- Env parameters for bashrc ${Color_AttributesOff}"
 
   : "${Color_SubComent} bashrc -- PS0 -- Assign color code and duck xtrace ${Color_AttributesOff}"
-  ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
+  ## Note,  s\et [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
   if [[ -o xtrace ]]
   then
     set -
@@ -2064,7 +2067,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
               : "${Color_SubComent} Evidently, I need to give the system a little time for processing ${Color_AttributesOff}"
               sleep 1
 
-              ## Bug?? all of the \type -P\ commands s\b consolidated into a set of variables ...?
+              ## Bug?? all of the \type -P\ commands s\b consolidated into a s\et of variables ...?
 
               : $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
               ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
@@ -2118,7 +2121,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
 : "${Color_SubComent} Define setup_gh_cli() ${Color_AttributesOff}"
 function setup_gh_cli(){                        _als_fnction_boundary_in_
 
-  : "${Color_SubComent} GH -- set config key-value pairs ${Color_AttributesOff}"
+  : "${Color_SubComent} GH -- s\et config key-value pairs ${Color_AttributesOff}"
   local -A github_configs
   local gh_config_list_out
   github_configs+=( [editor]=vim )
@@ -2193,7 +2196,7 @@ function setup_git(){                           _als_fnction_boundary_in_
 
   ## Note, git ui colors: normal black red green yellow blue magenta cyan white
   #+  git ui attributes: bold dim ul (underline blink reverse)
-  ## Note, In vim, since \expandtab\ is set in .vimrc, to make some actual tabs, press Ctrl-v-[tab]
+  ## Note, In vim, since \expandtab\ is s\et in .vimrc, to make some actual tabs, press Ctrl-v-[tab]
 
   ## Bug? in vim, when quoting \EOF\, $tmp_dir changes color, but bash still expands the redirection
   #+ destination file.
@@ -2258,7 +2261,7 @@ function setup_git(){                           _als_fnction_boundary_in_
   done
   unset ZZ git_regexp
 
-  : $'Git -- Create files and set DAC\x60s as necessary - Loop B'
+  : $'Git -- Create files and s\et DAC\x60s as necessary - Loop B'
   local AA
   for AA in "${git_files_a[@]}"
   do
@@ -2760,7 +2763,7 @@ function setup_vim(){                           _als_fnction_boundary_in_
     )
     unset      XX
   else
-    sudo -- touch -- "${strng_vrc}" # <> set-e
+    sudo -- touch -- "${strng_vrc}" # <> s\et-e
   fi
 
   : "${Color_SubComent} Write .vimrc ${Color_AttributesOff}"
@@ -2879,7 +2882,7 @@ function write_bashrc_strings(){                _als_fnction_boundary_in_
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
 
-  : "${Color_SubComent} For each set of strings to append into bashrc"
+  : "${Color_SubComent} For each s\et of strings to append into bashrc"
   for JJ
   do
     : 'Loop D - open \\\ '
