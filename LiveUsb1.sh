@@ -699,7 +699,7 @@ _als_call_fncton_ _fn_setup_variables_
 
   ##  Function name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #+  clone_repo()
+  #+  _fn_clone_repo_()
   #+  _fn_error_and_exit_()
   #+  get_pids_for_restarting()
   #+  gh_auth_login_command()
@@ -728,8 +728,8 @@ _als_call_fncton_ _fn_setup_variables_
   #+  write_bashrc_strings()
   #+  write_ssh_conf()
 
-: "${Color_SubComent} Define clone_repo() ${Color_AttributesOff}"
-function clone_repo(){                           _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_clone_repo_() ${Color_AttributesOff}"
+function _fn_clone_repo_(){                           _als_fnction_boundary_in_
 
   [[ ${PWD} = "${dev_d1}" ]] || {
     _als_die_
@@ -3102,7 +3102,7 @@ setup_gh_cli
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Clone repo ${Color_AttributesOff}"
-clone_repo
+_fn_clone_repo_
 
   #_als_debug_break_
 
