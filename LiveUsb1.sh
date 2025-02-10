@@ -748,13 +748,13 @@ _als_call_fncton_ _fn_setup_variables_
 function _fn_clone_repo_ ()
 {                           _als_fnction_boundary_in_
 
-  [[ ${PWD} = "${dev_d1}" ]] || {
+  [[ ${PWD} = "${local_dir_1}" ]] || {
     _als_die_
   }
 
   local AA
     AA=$(
-      sha256sum "${dev_d1}/${script__repo_name}/README.md" |
+      sha256sum "${local_dir_1}/${script__repo_name}/README.md" |
         cut --delimiter=" " --fields=1
     )
 
@@ -2405,14 +2405,14 @@ function _fn_setup_gti_user_dirs_ ()
   #+   popd
 
   : "${Color_SubComent} Variables -- global, for use for entire script ${Color_AttributesOff}"
-  dev_d1=~/MYPROJECTS
-  dev_d2=~/OTHERSPROJECTS
-  readonly dev_d1
-  readonly dev_d2
+  local_dir_1=~/MYPROJECTS
+  local_dir_2=~/OTHERSPROJECTS
+  readonly local_dir_1
+  readonly local_dir_2
 
   : "${Color_SubComent} Make dirs ${Color_AttributesOff}"
   local UU
-  for UU in "${dev_d1}" "${dev_d2}"
+  for UU in "${local_dir_1}" "${local_dir_2}"
   do
     if ! [[ -d ${UU} ]]
     then
@@ -2424,7 +2424,7 @@ function _fn_setup_gti_user_dirs_ ()
   unset UU
 
   : "${Color_SubComent} Change dirs ${Color_AttributesOff}"
-  pushd "${dev_d1}" > /dev/null || {
+  pushd "${local_dir_1}" > /dev/null || {
     _als_die_
   }
                                                  _als_fnction_boundary_out_0_
@@ -3170,10 +3170,10 @@ popd > /dev/null || {
 
 
 ##
-if ! [[ ${PWD} = ${dev_d1}/${script__repo_name} ]]
+if ! [[ ${PWD} = ${local_dir_1}/${script__repo_name} ]]
 then
   printf '\n  Now run this command: \n'
-  printf '\n\t cd "%s/%s" ; git status \n\n' "${dev_d1}" "${script__repo_name}"
+  printf '\n\t cd "%s/%s" ; git status \n\n' "${local_dir_1}" "${script__repo_name}"
 fi
 
   set -v ## <>
