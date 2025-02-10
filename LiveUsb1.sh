@@ -175,13 +175,13 @@ function _fn_enable_debug_parameters_(){
   for   II in "${!assoc_arr_Colors[@]}"
   do
     unset -n    NN
-    declare -n  NN="C_${II}"
+    declare -n  NN="Color_${II}"
     unset       DD
                 DD="$( awk '{ print $1 }' <<< "${assoc_arr_Colors[$II]}" )"
 
     # shellcheck disable=SC2034
     printf -v NN '%b' "$( tput setaf "${DD}" )"
-    readonly C_"${II}"
+    readonly Color_"${II}"
     tput sgr0
 
   done
