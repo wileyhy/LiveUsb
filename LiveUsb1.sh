@@ -1,6 +1,8 @@
 #!/bin/bash
 #!/bin/env -iS bash
+
 ## LiveUsb1
+#+ version 1.2
 
 #! Note, Putting a `LN="$nL"` (LINENO) or `main_lineno="$nL"` assignment
 #!   preceding an `exit` command lets the value of LN or main_lineno
