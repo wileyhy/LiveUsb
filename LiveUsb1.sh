@@ -158,9 +158,9 @@ function _fn_enable_debug_parameters_(){
 
   ##          Array nm    ## Var sub-name   ## Digit / Color
   ###########################################################
-  unset       aa_colors
-  declare -A  aa_colors
-              aa_colors+=( ["Comment"]="               12 blue"
+  unset       assoc_arr_Colors
+  declare -A  assoc_arr_Colors
+              assoc_arr_Colors+=( ["Comment"]="               12 blue"
                            ["SubComent"]="             10 light_green"
                            ["SubSbComent"]="          226 yellow"
                            ["AliasFunctionBoundary"]=" 14 light_blue"
@@ -170,12 +170,12 @@ function _fn_enable_debug_parameters_(){
                            ["Errors"]="                 8 brick_red" )
 
   unset II
-  for   II in "${!aa_colors[@]}"
+  for   II in "${!assoc_arr_Colors[@]}"
   do
     unset -n    NN
     declare -n  NN="C_${II}"
     unset       DD
-                DD="$( awk '{ print $1 }' <<< "${aa_colors[$II]}" )"
+                DD="$( awk '{ print $1 }' <<< "${assoc_arr_Colors[$II]}" )"
 
     # shellcheck disable=SC2034
     printf -v NN '%b' "$( tput setaf "${DD}" )"
@@ -184,7 +184,7 @@ function _fn_enable_debug_parameters_(){
 
   done
   unset -n      NN
-  unset         DD II aa_colors
+  unset         DD II assoc_arr_Colors
 
 
   : "${Color_Comment} Variables, Function boundary parameters ${Color_AttributesOff}"
