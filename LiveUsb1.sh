@@ -190,11 +190,11 @@ function _fn_enable_debug_parameters_(){
 
 
   : "${Color_Comment} Variables, Function boundary parameters ${Color_AttributesOff}"
-  unset     fn_bndry_sh
-            fn_bndry_sh=" ~~~ ~~~ ~~~ "
-  readonly  fn_bndry_sh
+  unset     _var_function_boundary_short
+            _var_function_boundary_short=" ~~~ ~~~ ~~~ "
+  readonly  _var_function_boundary_short
   unset     fn_bndry_lo
-            fn_bndry_lo=${fn_bndry_sh}${fn_bndry_sh}${fn_bndry_sh}
+            fn_bndry_lo=${_var_function_boundary_short}${_var_function_boundary_short}${_var_function_boundary_short}
   readonly  fn_bndry_lo
 
   unset     fn_lvl
@@ -333,7 +333,7 @@ function enable_debug_aliases(){
         als_fn_bdry_in__def_lineno="$((nameref_Lineno+1))"
 
   alias __function_boundary_in__='
-    _="${C_FnctionBoundry} ${fn_bndry_lo} function ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl )) ${C_AliasFunctionBoundary}"
+    _="${C_FnctionBoundry} ${fn_bndry_lo} function ${FUNCNAME[0]}() BEGINS ${_var_function_boundary_short} ${fn_lvl} to $(( ++fn_lvl )) ${C_AliasFunctionBoundary}"
     _="${C_AliasFunctionBoundary} alias __function_boundary_in__, begin"
     als_fn_bndry_in__call_line=${nameref_Lineno}
     als_def_line="${als_fn_bdry_in__def_lineno}"
@@ -353,7 +353,7 @@ function enable_debug_aliases(){
   alias __function_boundary_out_0__='
     _="${C_AliasFunctionBoundary} alias __function_boundary_out_0__ begin" als_call_line=$nameref_Lineno als_def_line=${als_fn_bdry_out_0__def_lineno}
     _="alias __function_boundary_out_0__, end"
-    _="${C_FnctionBoundry} ${fn_bndry_lo} function ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl )) ${Color_AttributesOff}"
+    _="${C_FnctionBoundry} ${fn_bndry_lo} function ${FUNCNAME[0]}()  ENDS  ${_var_function_boundary_short} ${fn_lvl} to $(( --fn_lvl )) ${Color_AttributesOff}"
     '
   #! \end alias definition\
 
