@@ -702,8 +702,8 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_clone_repo_()
   #+  _fn_error_and_exit_()
   #+  _fn_get_pids_for_restarting_()
-  #+  gh_auth_login_command()
-  #+  increase_disk_space()
+  #+  _fn_gh_auth_login_command_()
+  #+  _fn_increase_disk_space_()
   #+  min_necc_packages()
   #+  must_be_root()
   #+  reqd_user_files()
@@ -863,8 +863,8 @@ function _fn_get_pids_for_restarting_(){              _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define gh_auth_login_command() ${Color_AttributesOff}"
-function gh_auth_login_command(){                _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_gh_auth_login_command_() ${Color_AttributesOff}"
+function _fn_gh_auth_login_command_(){                _als_fnction_boundary_in_
 
   if gh auth status >/dev/null 2>&1
   then
@@ -884,8 +884,8 @@ function gh_auth_login_command(){                _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define increase_disk_space() ${Color_AttributesOff}"
-function increase_disk_space(){                  _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_increase_disk_space_() ${Color_AttributesOff}"
+function _fn_increase_disk_space_(){                  _als_fnction_boundary_in_
   builtin set -x # []
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
@@ -2172,11 +2172,11 @@ function setup_gh_cli(){                        _als_fnction_boundary_in_
       firefox --browser 2>/dev/null 1>&2 &
       sleep 5
       _fn_pause_to_check_ "${nameref_Lineno}" $'Waiting till browser is open before running \x60gh auth\x60 command'
-      gh_auth_login_command
+      _fn_gh_auth_login_command_
     fi
   fi
 
-  ## Bug, when \gh ssh-key list\ fails, then after gh_auth_login_command() executes, \gh ssh-key list\ is
+  ## Bug, when \gh ssh-key list\ fails, then after _fn_gh_auth_login_command_() executes, \gh ssh-key list\ is
   #+  not executed again, when it should be
 
   : "${Color_SubComent} GH -- Get SSH & GPG keys ${Color_AttributesOff}"
@@ -2184,7 +2184,7 @@ function setup_gh_cli(){                        _als_fnction_boundary_in_
   do
     if ! gh "${QQ}" list > /dev/null 2>&1
     then
-      gh_auth_login_command
+      _fn_gh_auth_login_command_
     fi
   done
   unset QQ
@@ -3049,7 +3049,7 @@ setup_bashrc
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Increase disk space ${Color_AttributesOff}"
-increase_disk_space
+_fn_increase_disk_space_
 
   #_als_debug_break_
 
