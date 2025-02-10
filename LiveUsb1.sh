@@ -220,8 +220,8 @@ function _fn_enable_debug_aliases_(){
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  _als_call_fncton
   #+  _als_debug_break_
-  #+  __enable_local_xtrace__
-  #+  __enable_global_xtrace__
+  #+  _als_enble_locl_xtrce_
+  #+  _als_enble_globl_xtrce_
   #+  __function_boundary_in__
   #+  __function_boundary_out_0__
   #+  __function_boundary_out_1__
@@ -264,7 +264,7 @@ function _fn_enable_debug_aliases_(){
       main_lineno="${nameref_Lineno}" exit
     else
       printf "%b\n" "${C_XtraceOfAlias} Line ${nameref_Lineno}, alias _als_debug_break_, begin, def Line ${als_dbg_brk__def_lineno}"
-      __enable_global_xtrace__
+      _als_enble_globl_xtrce_
     fi
 
     : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_debug_break_, end "${Color_AttributesOff}"'
@@ -272,19 +272,19 @@ function _fn_enable_debug_aliases_(){
 
 
   ##
-  : "${Color_SubComent} Define alias __enable_global_xtrace__ ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_enble_globl_xtrce_ ${Color_AttributesOff}"
   ## Note, this alias is in intended to function as a
   unset als_enbl_glbl_xtr__def_lineno
         als_enbl_glbl_xtr__def_lineno="$((nameref_Lineno+1))"
 
-  alias __enable_global_xtrace__='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
+  alias _als_enble_globl_xtrce_='
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
 
     : If xtrace is already enabled, then exit the script
 
     if ! [[ -o xtrace ]]
     then
-      printf "%b\n" "${C_XtraceOfAlias} Line ${nameref_Lineno}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
+      printf "%b\n" "${C_XtraceOfAlias} Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
 
       print_function_boundaries=do_prFnctionBoundrys
       export print_function_boundaries
@@ -294,17 +294,17 @@ function _fn_enable_debug_aliases_(){
       builtin set -x
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_global_xtrace__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
   ##
-  : "${Color_SubComent} Define alias __enable_local_xtrace__ ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_enble_locl_xtrce_ ${Color_AttributesOff}"
   unset als_enbl_loc_xtr__def_lineno
         als_enbl_loc_xtr__def_lineno="$((nameref_Lineno+1))"
 
-  alias __enable_local_xtrace__='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}
+  alias _als_enble_locl_xtrce_='
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, begin, def Line ${als_enbl_loc_xtr__def_lineno}
     #fn_def_lineno="${nameref_Lineno:-}"
 
     if ! [[ -o xtrace ]]
@@ -316,14 +316,14 @@ function _fn_enable_debug_aliases_(){
       local -
       builtin set -x
 
-      : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}, end
+      : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, begin, def Line ${als_enbl_loc_xtr__def_lineno}, end
       : "${C_XtraceOfAlias}" Line $fn_def_lineno, function definition: "${FUNCNAME[0]}()"
       : fn_lvl: ${fn_lvl}
       : local_hyphn: $local_hyphn
       : prev_cmd_exit_code: $prev_cmd_exit_code
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_local_xtrace__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -1048,7 +1048,7 @@ function must_be_root(){                         __function_boundary_in__
 
 : "${Color_SubComent} Define reqd_user_files() ${Color_AttributesOff}"
 function reqd_user_files(){                      __function_boundary_in__
-  __enable_local_xtrace__
+  _als_enble_locl_xtrce_
 
   ## Note, QQ must be declared as local before unsetting it inside the
   #+   function so that the `unset` will effect the local variable
@@ -2442,7 +2442,7 @@ function setup_gpg(){                           __function_boundary_in__
 
 : "${Color_SubComent} Define setup_network() ${Color_AttributesOff}"
 function setup_network(){                       __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   dns_srv_1=8.8.8.8
   dns_srv_A=75.75.75.75
@@ -2503,7 +2503,7 @@ function setup_network(){                       __function_boundary_in__
 
 : "${Color_SubComent} Define setup_ssh() ${Color_AttributesOff}"
 function setup_ssh(){                           __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   ## Bug? hardcoded filenames? ...yes, I know it#s mis-spelled.
 
@@ -2640,7 +2640,7 @@ function setup_ssh(){                           __function_boundary_in__
 
 #: "setup_systemd()"
 #function setup_systemd(){                      __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
   ### Note, services to disable and mask
   ##+  ModemManager.service
   ##+ ...
@@ -2653,7 +2653,7 @@ function setup_ssh(){                           __function_boundary_in__
 
 : "${Color_SubComent} Define setup_temp_dirs() ${Color_AttributesOff}"
 function setup_temp_dirs(){                     __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   tmp_dir=$(
     if ! TMPDIR="" mktemp --directory --suffix=-LiveUsb 2>&1
@@ -2674,7 +2674,7 @@ function setup_temp_dirs(){                     __function_boundary_in__
 
 : "${Color_SubComent} Define setup_time() ${Color_AttributesOff}"
 function setup_time(){                          __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
@@ -2690,7 +2690,7 @@ function setup_time(){                          __function_boundary_in__
 
 : "${Color_SubComent} Define setup_vim() ${Color_AttributesOff}"
 function setup_vim(){                           __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   : "${Color_SubComent} Heredoc of vim-conf-text ${Color_AttributesOff}"
   cat <<- \EOF | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
@@ -2783,7 +2783,7 @@ function setup_vim(){                           __function_boundary_in__
 
 : "${Color_SubComent} Define test_dns() ${Color_AttributesOff}"
 function test_dns(){                            __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   return "$?"
@@ -2795,7 +2795,7 @@ function test_dns(){                            __function_boundary_in__
 
 : "${Color_SubComent} Define test_os() ${Color_AttributesOff}"
 function test_os(){                             __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   local kern_rel
   kern_rel=$(
@@ -2833,7 +2833,7 @@ function trap_err(){                            __function_boundary_in__
 ## Note, these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
 function trap_exit(){                           __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   trap - EXIT
 
@@ -2850,7 +2850,7 @@ function trap_exit(){                           __function_boundary_in__
 
 : "${Color_SubComent} Define write_bashrc_strings() ${Color_AttributesOff}"
 function write_bashrc_strings(){                __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   : "${Color_SubComent} Certain parameters must be defined and have non-zero values ${Color_AttributesOff}"
   (( ${#files_for_use_with_bash[@]} == 0 )) && {
@@ -2941,7 +2941,7 @@ function write_bashrc_strings(){                __function_boundary_in__
 #+  uniform with each other, since the purpose of each section is the same in each case.
 
 function write_ssh_conf(){                      __function_boundary_in__
-  #__enable_local_xtrace__
+  #_als_enble_locl_xtrce_
 
   ## Bug? $ssh_user_conf_file defined in a different function, setup_ssh()
 
