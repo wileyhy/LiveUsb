@@ -32,7 +32,7 @@
 #!   on ext4 still isn\t consistent. `grep` has no effect on times.
 #!   `cp -a` effects "ctimes" even if file contents do not change.
 #!
-#! Reportable bugg.
+#! Reportable bug.
 #!     `command -p kill "$AA"` executes the bash builtin, judging by the
 #!   output of `command -p kill` without any operands. The output of
 #!   `$( type -P kill )"` without operands is the same as the output of
@@ -79,7 +79,7 @@ function start_script(){
   ## Print script start time
   printf '%s - Executing %s \n' "${script_start_time}" "$0"
 
-  ## Set up non-debugg shell options
+  ## Set up non-debug shell options
   hash -r
   shopt -s expand_aliases
   umask 077
@@ -89,12 +89,12 @@ start_script
 
 ## 
 function setup_aliases(){
-  : "${C_Comment} Line ${nL}, Aliases, non-debugg ${C_AttrOff}"
+  : "${C_Comment} Line ${nL}, Aliases, non-debug ${C_AttrOff}"
   unset       nl
   unset -n    nL
   local -gnx  nL=L\INENO
 
-  : "${C_CmntSub} Line ${nL}, Aliases TOC, non-debugg ${C_AttrOff}"
+  : "${C_CmntSub} Line ${nL}, Aliases TOC, non-debug ${C_AttrOff}"
 
   ##  Alias name
   #+  ~~~~~~~~~~
@@ -115,7 +115,7 @@ setup_aliases
 ## Enable debugging
 function enable_debug_params(){
 
-  ## Set up debugg shell options
+  ## Set up debug shell options
   local -
 
   : "$( tput setaf 12 ) Debugging $( tput sgr0   )"
@@ -202,14 +202,14 @@ enable_debug_params
 function enable_debug_aliases(){
   
   ##
-  : "${C_Comment} Line ${nL}, Aliases, debugg ${C_AttrOff}"
+  : "${C_Comment} Line ${nL}, Aliases, debug ${C_AttrOff}"
 
   #! Bug, separate alias definitions to a subsection above function
   #!   definitions. Defining of alias B can occur before the defining
   #!   of function A which is contained within in (alias B).
 
   ##  Aliases, TOC
-  : "${C_CmntSub} Line ${nL}, Aliases, debugg - TOC ${C_AttrOff}"
+  : "${C_CmntSub} Line ${nL}, Aliases, debug - TOC ${C_AttrOff}"
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  __call_fn__
   #+  __debug_break__
@@ -415,15 +415,15 @@ function enable_debug_aliases(){
   #! \end alias definition\
 
 
-  : "${C_CmntSub} Line ${nL}, Aliases, Debugg -  Complete ${C_AttrOff}"
+  : "${C_CmntSub} Line ${nL}, Aliases, Debug -  Complete ${C_AttrOff}"
 }
 enable_debug_aliases
 
 
 ##
 function enable_debug_functions(){
-  : "${C_Comment} Line ${nL}, Functions, Debugg ${C_AttrOff}"
-  : "${C_CmntSub} Line ${nL}, Functions, Debugg -  TOC ${C_AttrOff}"
+  : "${C_Comment} Line ${nL}, Functions, Debug ${C_AttrOff}"
+  : "${C_CmntSub} Line ${nL}, Functions, Debug -  TOC ${C_AttrOff}"
 
     ##  Function name
     #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -436,7 +436,7 @@ function enable_debug_functions(){
   : "${C_CmntSub} Define enable_git_debugg_settings() ${C_AttrOff}"
   function enable_git_debugg_settings(){    __function_boundary_in__
 
-    : "${C_CmntSub} Variables -- Global git debugg settings ${C_AttrOff}"
+    : "${C_CmntSub} Variables -- Global git debug settings ${C_AttrOff}"
     # shellcheck disable=SC2034
     {
       GIT_TRACE=true
@@ -518,7 +518,7 @@ function enable_debug_functions(){
     __function_boundary_out_0__
   }
 
-  : "${C_Comment} Line ${nL}, Functions, Debugg - Complete ${C_AttrOff}"
+  : "${C_Comment} Line ${nL}, Functions, Debug - Complete ${C_AttrOff}"
 }
 enable_debug_functions
 
@@ -529,7 +529,7 @@ function setup_variables(){ __function_boundary_in__
   :
   : "${C_Comment} Line ${nL}, Variables ...likely to change or early-definition required ${C_AttrOff}"
   :
-  : "${C_CmntSub} Variables, colors, non-debugg ${C_AttrOff}"
+  : "${C_CmntSub} Variables, colors, non-debug ${C_AttrOff}"
   [[ -v C_AlsFnBndry ]] || C_AlsFnBndry="${C_AlsFnBndry:=}"
   [[ -v C_AttrOff ]]    || C_AttrOff="${C_AttrOff:=}"
   [[ -v C_CmntSub ]]    || C_CmntSub="${C_CmntSub:=}"
@@ -3056,7 +3056,7 @@ setup_git_user_dirs
 
   #__debug_break__
 
-: "Git debugg settings"
+: "Git debug settings"
 #enable_git_debugg_settings
 
 : "${C_Comment} Line ${nL}, Git ${C_AttrOff}"
