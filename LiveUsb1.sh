@@ -225,7 +225,7 @@ function _fn_enable_debug_aliases_(){
   #+  _als_fnction_boundary_in_
   #+  _als_fnction_boundary_out_0_
   #+  _als_fnction_boundry_out_1_
-  #+  __pause2ck__
+  #+  _als_pause_to_check_
   #+  __xtr_read_and_on__
   #+  __xtr_restore__
 
@@ -361,16 +361,16 @@ function _fn_enable_debug_aliases_(){
 
 
   ##
-  : "${Color_SubComent} Define alias __pause2ck__ ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_pause_to_check_ ${Color_AttributesOff}"
   unset als_ps2ck__def_lineno
         als_ps2ck__def_lineno="$((nameref_Lineno+1))"
 
-  alias __pause2ck__='
-    : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias __pause2ck__, begin, def Line ${als_ps2ck__def_lineno}
+  alias _als_pause_to_check_='
+    : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_pause_to_check_, begin, def Line ${als_ps2ck__def_lineno}
 
     pause_to_check "${nameref_Lineno}"
 
-    : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias __pause2ck__, end "${Color_AttributesOff}"'
+    : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_pause_to_check_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -2520,7 +2520,7 @@ function setup_ssh(){                           _als_fnction_boundary_in_
     write_ssh_conf || {
       _als_die_
     }
-    __pause2ck__ # <>
+    _als_pause_to_check_ # <>
 
   ## ToDo, _rm_ should be an alias
   ## ToDo, all aliases should be prefixed and suffixed with underscores, while functions should
@@ -2561,7 +2561,7 @@ function setup_ssh(){                           _als_fnction_boundary_in_
     : "${Color_SubComent}${SSH_AUTH_SOCK:=}" "${SSH_AGENT_PID:=} ${Color_AttributesOff}"
     declare -p SSH_AUTH_SOCK SSH_AGENT_PID # <>
 
-    __pause2ck__ # <>
+    _als_pause_to_check_ # <>
 
   : "${Color_SubComent} Get the PID of any running SSH Agents -- there may be more than one ${Color_AttributesOff}"
   local -a ssh_agent_pids
@@ -2591,7 +2591,7 @@ function setup_ssh(){                           _als_fnction_boundary_in_
     )
   fi
 
-    __pause2ck__ # <>
+    _als_pause_to_check_ # <>
 
   case "${#ssh_agent_pids[@]}" in
     0 )
