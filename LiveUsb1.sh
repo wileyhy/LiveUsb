@@ -124,7 +124,7 @@ function _fn_enable_debug_parameters_(){
   : "$( tput setaf 12 ) Debugging $( tput sgr0 )"
   # shellcheck disable=SC1001
   #! Note, this assignment is repeated here; originally it\s located
-  #!   in setup_vars()
+  #!   in _fn_setup_vars()
   unset       nameref_Lineno
   unset -n    nameref_Lineno
   local -gnx  nameref_Lineno=L\INENO
@@ -708,18 +708,18 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_must_be_root_()
   #+  _fn_reqd_user_files_()
   #+  _fn_rsync_install_if_missing_()
-  #+  setup_bashrc()
-  #+  setup_dnf()
-  #+  setup_gh_cli()
-  #+  setup_git()
-  #+  setup_git_user_dirs()
-  #+  setup_gpg()
-  #+  setup_network()
-  #+  setup_ssh()
-  #+  setup_systemd()
-  #+  setup_temp_dirs()
-  #+  setup_time()
-  #+  setup_vim()
+  #+  _fn_setup_bashrc()
+  #+  _fn_setup_dnf()
+  #+  _fn_setup_gh_cli()
+  #+  _fn_setup_git()
+  #+  _fn_setup_git_user_dirs()
+  #+  _fn_setup_gpg()
+  #+  _fn_setup_network()
+  #+  _fn_setup_ssh()
+  #+  _fn_setup_systemd()
+  #+  _fn_setup_temp_dirs()
+  #+  _fn_setup_time()
+  #+  _fn_setup_vim()
   #+  test_dns()
   #+  test_os()
   #+  trap_err()
@@ -1388,8 +1388,8 @@ function _fn_rsync_install_if_missing_(){             _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_bashrc() ${Color_AttributesOff}"
-function setup_bashrc(){                         _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_bashrc() ${Color_AttributesOff}"
+function _fn_setup_bashrc(){                         _als_fnction_boundary_in_
 
   : "${Color_SubComent} bashrc -- Do some backups ${Color_AttributesOff}"
   files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
@@ -1615,10 +1615,10 @@ function setup_bashrc(){                         _als_fnction_boundary_in_
 }
 
 
-## Bug, setup_dnf is too long and too complicated
+## Bug, _fn_setup_dnf is too long and too complicated
 
-: "${Color_SubComent} Define setup_dnf() ${Color_AttributesOff}"
-function setup_dnf(){                           _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_dnf() ${Color_AttributesOff}"
+function _fn_setup_dnf(){                           _als_fnction_boundary_in_
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
@@ -2124,8 +2124,8 @@ function setup_dnf(){                           _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_gh_cli() ${Color_AttributesOff}"
-function setup_gh_cli(){                        _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_gh_cli() ${Color_AttributesOff}"
+function _fn_setup_gh_cli(){                        _als_fnction_boundary_in_
 
   : "${Color_SubComent} GH -- s\et config key-value pairs ${Color_AttributesOff}"
   local -A github_configs
@@ -2197,8 +2197,8 @@ function setup_gh_cli(){                        _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_git() ${Color_AttributesOff}"
-function setup_git(){                           _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_git() ${Color_AttributesOff}"
+function _fn_setup_git(){                           _als_fnction_boundary_in_
 
   ## Note, git ui colors: normal black red green yellow blue magenta cyan white
   #+  git ui attributes: bold dim ul (underline blink reverse)
@@ -2375,8 +2375,8 @@ function setup_git(){                           _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_git_user_dirs() ${Color_AttributesOff}"
-function setup_git_user_dirs(){                 _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_git_user_dirs() ${Color_AttributesOff}"
+function _fn_setup_git_user_dirs(){                 _als_fnction_boundary_in_
 
   ## Note, in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
   #+   popd
@@ -2410,8 +2410,8 @@ function setup_git_user_dirs(){                 _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_gpg() ${Color_AttributesOff}"
-function setup_gpg(){                           _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_gpg() ${Color_AttributesOff}"
+function _fn_setup_gpg(){                           _als_fnction_boundary_in_
 
   : "${Color_SubComent} If any files in ~/.gnupg are not owned by either USER or root, then error out and exit ${Color_AttributesOff}"
   local -a problem_files
@@ -2465,8 +2465,8 @@ function setup_gpg(){                           _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_network() ${Color_AttributesOff}"
-function setup_network(){                       _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_network() ${Color_AttributesOff}"
+function _fn_setup_network(){                       _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   dns_srv_1=8.8.8.8
@@ -2526,8 +2526,8 @@ function setup_network(){                       _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_ssh() ${Color_AttributesOff}"
-function setup_ssh(){                           _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_ssh() ${Color_AttributesOff}"
+function _fn_setup_ssh(){                           _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   ## Bug? hardcoded filenames? ...yes, I know it#s mis-spelled.
@@ -2560,7 +2560,7 @@ function setup_ssh(){                           _als_fnction_boundary_in_
   unset -f write_ssh_conf
 
   ## Bug, security, these #chown# commands should operate on the files while they are still in skel_LiveUsb
-  #+  see also similar code in setup_gpg(), possibly elsewhere also  :-\
+  #+  see also similar code in _fn_setup_gpg(), possibly elsewhere also  :-\
 
   ## Bug, timestamps, chown changes ctime on every execution, whether or not the ownership changes
 
@@ -2664,7 +2664,7 @@ function setup_ssh(){                           _als_fnction_boundary_in_
 
 
 #: "setup_systemd()"
-#function setup_systemd(){                      _als_fnction_boundary_in_
+#function _fn_setup_systemd(){                      _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
   ### Note, services to disable and mask
   ##+  ModemManager.service
@@ -2676,8 +2676,8 @@ function setup_ssh(){                           _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_temp_dirs() ${Color_AttributesOff}"
-function setup_temp_dirs(){                     _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_temp_dirs() ${Color_AttributesOff}"
+function _fn_setup_temp_dirs(){                     _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   tmp_dir=$(
@@ -2697,8 +2697,8 @@ function setup_temp_dirs(){                     _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_time() ${Color_AttributesOff}"
-function setup_time(){                          _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_time() ${Color_AttributesOff}"
+function _fn_setup_time(){                          _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   sudo -- timedatectl set-local-rtc 0
@@ -2713,8 +2713,8 @@ function setup_time(){                          _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define setup_vim() ${Color_AttributesOff}"
-function setup_vim(){                           _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_vim() ${Color_AttributesOff}"
+function _fn_setup_vim(){                           _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   : "${Color_SubComent} Heredoc of vim-conf-text ${Color_AttributesOff}"
@@ -2968,7 +2968,7 @@ function write_bashrc_strings(){                _als_fnction_boundary_in_
 function write_ssh_conf(){                      _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
-  ## Bug? $ssh_user_conf_file defined in a different function, setup_ssh()
+  ## Bug? $ssh_user_conf_file defined in a different function, _fn_setup_ssh()
 
   cat <<- \EOF > "${ssh_user_conf_file}"
 	Host github.com
