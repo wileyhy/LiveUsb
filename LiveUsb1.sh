@@ -961,9 +961,10 @@ function increase_disk_space(){                  _als_fnction_boundary_in_
           )
 
           local KK
-            KK="$( realpath -e "${JJ}" )"
-          ## Note, "\x60" is a "grave accent"
-          printf '%s, output of %bls%b, %s \n' "${scr_nm}" '\x60' '\x60' "${KK}"
+            KK=$( realpath -e "${JJ}" )
+          ## Note, \\x60\ is a \grave accent\.
+          printf '%s, output of %bls%b, %s \n' "${scr_nm}" \
+            '\x60' '\x60' "${KK}"
           printf '%s\n' "${ls_out[@]}"
           unset ls_out KK
 
@@ -978,10 +979,12 @@ function increase_disk_space(){                  _als_fnction_boundary_in_
                   continue 1
                 ;; #
             y | t )
-                  printf '  %s %b %s %s \n' "Script," ' \x60rm -i\x60 ' "requires a typed [yN] response," \
+                  printf '  %s %b %s %s \n' "Script," ' \x60rm -i\x60 ' \
+                    "requires a typed [yN] response," \
                     "it defaults to do-not-delete if a user just presses [enter]."
 
-                  if sudo -- "$( type -P rm )" --interactive --one-file-system --preserve-root=all "${ver__[@]}" "${JJ}"
+                  if sudo -- "$( type -P rm )" --interactive --one-file-system \
+                    --preserve-root=all "${ver__[@]}" "${JJ}"
                   then
                     unset "Aa_fsos5[${AA}]"
                     break 1
@@ -1068,17 +1071,17 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
   _als_enble_locl_xtrce_
 
   ## Note, QQ must be declared as local before unsetting it inside the
-  #+   function so that the `unset` will effect the local variable
+  #+   function so that the \unset\ will effect the local variable
   ## Note, and yet, when locally declaring and assigning separately a
-  #+   regular variable, ie, `local lsblk_out \n lsblk_out=""` the
-  #+   assignment doesn\t need a preceding `local`
+  #+   regular variable, ie, \local lsblk_out \n lsblk_out=\ the
+  #+   assignment doesn\t need a preceding \local\
   ## Note, I\m using an array with $lsblk_out so I can work around
-  #+   `set -u` by using a ":=" PE, and so that I can limit xtrace output
-  #+   by testing for a shortened version of the output of `lsblk`. I.e.,
-  #+   I\m testing the last line of the array, index "-1", but this is
+  #+   \set -u\ by using a \:=\ PE, and so that I can limit xtrace output
+  #+   by testing for a shortened version of the output of \lsblk\. I.e.,
+  #+   I\m testing the last line of the array, index \-1\, but this is
   #+   really just a practice, since a lot of times index zero gets unset
   #+   for whatever reason, but if there are any values in the array at
-  #+   all, then index "-1" is guaranteed to exist. ...unless the array is
+  #+   all, then index \-1\ is guaranteed to exist. ...unless the array is
   #+   completely empty...
   #+   but I don\t want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes.
@@ -1114,23 +1117,23 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
   case "${#array_mt_pts[@]}" in
     0 )
       : "${Color_SubComent} Zero matches ${Color_AttributesOff}"
-      ## Note, "plugged in and not mounted" means the LABEL would still be visible, if there is one, the USB
+      ## Note, \plugged in and not mounted\ means the LABEL would still be visible, if there is one, the USB
       #+  drive or the filesystem holding the data could change, and either change would rewrite the PARTUUID
       local pttn_label
       pttn_label=$(
         lsblk --noheadings --output label "${pttn_device_path}"
       )
-      pttn_label="${pttn_label:=live_usb_tmplabel}"
-      mount_base__fedora="/run/media/root"
-      mount_pt="${mount_base__fedora}/${pttn_label}"
-      data_dir="${mount_pt}/${datadir_basenm}"
+      pttn_label=${pttn_label:=live_usb_tmplabel}
+      mount_base__fedora=/run/media/root
+      mount_pt=${mount_base__fedora}/${pttn_label}
+      data_dir=${mount_pt}/${datadir_basenm}
       is_mounted=no
       unset pttn_label
       ;; #
     1 )
       : "${Color_SubComent} One match ${Color_AttributesOff}"
-      mount_pt="${array_mt_pts[*]}"
-      data_dir="${mount_pt}/${datadir_basenm}"
+      mount_pt=${array_mt_pts[*]}
+      data_dir=${mount_pt}/${datadir_basenm}
       is_mounted=yes
       ;; #
     * )
@@ -1142,7 +1145,7 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
 
   : "${Color_SubComent} FS mounting must be restricted to root and/or liveuser ${Color_AttributesOff}"
   local mount_user
-  mount_user="${mount_pt%/*}" mount_user="${mount_user##*/}"
+  mount_user=${mount_pt%/*} mount_user=${mount_user##*/}
   [[ ${mount_user} = @(root|liveuser) ]] || {
     _als_die_
   }
@@ -1199,13 +1202,13 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
       grep -o "${data_dir_id_sha256}"
   )
 
-  if  ! [[ -f "${data_dir}/${datdir_idfile}" ]] ||
-      [[ -L "${data_dir}/${datdir_idfile}" ]]
+  if  ! [[ -f ${data_dir}/${datdir_idfile} ]] ||
+      [[ -L ${data_dir}/${datdir_idfile} ]]
   then
     _als_die_
   fi
 
-  if ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]
+  if ! [[ ${ZZ} = ${data_dir_id_sha256} ]]
   then
     _als_die_
   fi
@@ -1227,16 +1230,16 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
 
   for AA in "${arrays_of_conf_files[@]}"
   do
-    #: 'Loop A - open \\\ '
+    #: \Loop A - open \\\ \
 
     : "${Color_SubComent} Vars ${Color_AttributesOff}"
-    ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
-    #+  directly, `foo=bar`, then on the second loop `local -p QQ` prints the former value of QQ. Perhaps
-    #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
-    ## Note, remember, namerefs can only be unset with the -n flag to the `unset` builtin
+    ## Note, if I declare a local nameref, \local -n foo\, then on the next line just assign to the nameref
+    #+  directly, \foo=bar\, then on the second loop \local -p QQ\ prints the former value of QQ. Perhaps
+    #+  the second assignment statement, ie, \foo=bar\ without \local -n\ is global?
+    ## Note, remember, namerefs can only be unset with the -n flag to the \unset\ builtin
     #unset -n QQ
     local -n QQ
-    local -n QQ="${AA}"   ## good code
+    local -n QQ=${AA}   ## good code
 
     : "${Color_SubComent} For each conf file or dir ${Color_AttributesOff}"
     local BB
@@ -1244,13 +1247,13 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
     : "${Color_SubComent} If the target conf file/dir does not exist ${Color_AttributesOff}"
     for BB in "${!QQ[@]}"
     do
-      #: '    Loop A:1 - open \\\ '
+      #: \    Loop A:1 - open \\\ \
       if ! [[ -e ${QQ[BB]} ]]
       then
 
         : "${Color_SubComent} Vars ${Color_AttributesOff}"
         local source_file
-        source_file="${data_dir}/${QQ[BB]#~/}"
+        source_file=${data_dir}/${QQ[BB]#~/}
 
         : "${Color_SubComent} If the source conf file/dir does not exist, then find it ${Color_AttributesOff}"
         if ! [[ -e ${source_file} ]]
@@ -1272,30 +1275,30 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
           fi
 
           : "${Color_SubComent} If the source conf file/dir still does not exist, then throw an error ${Color_AttributesOff}"
-          if ! [[ -e "${source_file}" ]]
+          if ! [[ -e ${source_file} ]]
           then
             _als_die_ "${QQ[BB]}" "${source_file}"
           fi
         fi
 
         local dest_dir
-        dest_dir="${QQ[BB]%/*}"
+        dest_dir=${QQ[BB]%/*}
         rsync_install_if_missing  "${source_file}" "${dest_dir}"
         unset source_file dest_dir
       fi
-      #: "    Loop A:1 - shut /// "
+      #: \    Loop A:1 - shut /// \
     done
-    #: "Loops A:1 - complete === "
+    #: \Loops A:1 - complete === \
 
     unset BB
     unset -n QQ
-    #: "Loop A - shut /// "
+    #: \Loop A - shut /// \
   done
 
   unset AA
   unset mount_pt data_dir is_mounted
   unset pttn_device_path
-  #: "Loops A - complete === "
+  #: \Loops A - complete === \
 
   : "${Color_SubComent} Restore previous umask ${Color_AttributesOff}"
   builtin "${prev_umask[@]}"
@@ -1313,12 +1316,12 @@ function rsync_install_if_missing(){             _als_fnction_boundary_in_
     if [[ -z $(declare -p data_dir) ]]
     then
       echo FOOL
-      exit "${LINENO}"
+      exit ${LINENO}
     fi
 
   local fn_target_dir fn_source_var
-  fn_source_var="$1"
-  fn_target_dir="$2"
+  fn_source_var=$1
+  fn_target_dir=$2
 
   if [[ -e ${fn_target_dir} ]]
   then
@@ -1340,7 +1343,7 @@ function rsync_install_if_missing(){             _als_fnction_boundary_in_
   ## Bug, variable $data_dir is defined in a different function, reqd_user_files().
   #+ See <> test above, ~line 812
 
-  if [[ -z "${data_dir}" ]]
+  if [[ -z ${data_dir} ]]
   then
     local unset_local_var_rand5791
     unset_local_var_rand5791=yes
