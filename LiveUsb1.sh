@@ -113,7 +113,7 @@ setup_aliases
 
 
 ## Enable debugging
-function enable_debugg_params(){
+function enable_debug_params(){
 
   ## Set up debugg shell options
   local -
@@ -197,9 +197,9 @@ function enable_debugg_params(){
   unset     fn_lvl
             fn_lvl=0
 }
-enable_debugg_params
+enable_debug_params
 
-function enable_debugg_aliases(){
+function enable_debug_aliases(){
   : "${C_Comment} Line ${nL}, Aliases, debugg ${C_AttrOff}"
 
   #! Bug, separate alias definitions to a subsection above function
@@ -389,11 +389,11 @@ function enable_debugg_aliases(){
 
   : "${C_CmntSub} Line ${nL}, Aliases, Debugg -  Complete ${C_AttrOff}"
 }
-enable_debugg_aliases
+enable_debug_aliases
 
 
 ##
-function enable_debugg_functions(){
+function enable_debug_functions(){
   : "${C_Comment} Line ${nL}, Functions, Debugg ${C_AttrOff}"
   : "${C_CmntSub} Line ${nL}, Functions, Debugg -  TOC ${C_AttrOff}"
 
@@ -490,7 +490,7 @@ function enable_debugg_functions(){
 
   : "${C_Comment} Line ${nL}, Functions, Debugg - Complete ${C_AttrOff}"
 }
-enable_debugg_functions
+enable_debug_functions
 
   builtin set -x
 
