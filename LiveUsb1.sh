@@ -544,7 +544,7 @@ _fn_enable_debug_functions_
 
 ##
 : "${Color_SubComent} Define _fn_setup_variables_() ${Color_AttributesOff}"
-function _fn_setup_variables_(){ _als_fnction_boundary_in_
+function _fn_setup_variables_(){            _als_fnction_boundary_in_
   :
   : "${Color_Comment} Line ${nameref_Lineno}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
   :
@@ -678,19 +678,23 @@ function _fn_setup_variables_(){ _als_fnction_boundary_in_
   _als_fnction_boundary_out_0_
 }
 
-: "${Color_Comment} Line ${nameref_Lineno}, Variables ${Color_AttributesOff}"
-_als_call_fncton_ \
-    _fn_setup_variables_
 
+##
+: "${Color_Comment} Line ${nameref_Lineno}, Variables ${Color_AttributesOff}"
+_als_call_fncton_ _fn_setup_variables_
+
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, # Testing testing testing ${Color_AttributesOff}"
 
   builtin set -x #<>
 
 
-
-
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Functions ${Color_AttributesOff}"
 
+
+##
 : "${Color_SubComent} Line ${nameref_Lineno}, Functions TOC ${Color_AttributesOff}"
 
   ##  Function name
