@@ -242,7 +242,7 @@ function _fn_enable_debug_aliases_(){
   unset als_cl_fn__def_lineno
         als_cl_fn__def_lineno="$((  nameref_Lineno + 2  ))"
 
-  alias _als_call_fncton_='_="${C_XtraceOfAlias} alias _als_call_fncton_, begin" als_cl_fn__call_line="$nameref_Lineno" als_def_line="${als_cl_fn__def_lineno}" _="alias _als_call_fncton_, end ${Color_AttributesOff}" '
+  alias _als_call_fncton_='_="${Color_XtraceOfAlias} alias _als_call_fncton_, begin" als_cl_fn__call_line="$nameref_Lineno" als_def_line="${als_cl_fn__def_lineno}" _="alias _als_call_fncton_, end ${Color_AttributesOff}" '
   #! \end alias definition\
 
 
@@ -253,7 +253,7 @@ function _fn_enable_debug_aliases_(){
         als_dbg_brk__def_lineno="$((  nameref_Lineno + 2  ))"
 
   alias _als_debug_break_='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_debug_break_, begin, def Line ${als_dbg_brk__def_lineno}
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_debug_break_, begin, def Line ${als_dbg_brk__def_lineno}
 
     : If xtrace is already enabled, then disable xtrace and exit the script
 
@@ -263,11 +263,11 @@ function _fn_enable_debug_aliases_(){
       EC=101
       main_lineno="${nameref_Lineno}" exit
     else
-      printf "%b\n" "${C_XtraceOfAlias} Line ${nameref_Lineno}, alias _als_debug_break_, begin, def Line ${als_dbg_brk__def_lineno}"
+      printf "%b\n" "${Color_XtraceOfAlias} Line ${nameref_Lineno}, alias _als_debug_break_, begin, def Line ${als_dbg_brk__def_lineno}"
       _als_enble_globl_xtrce_
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_debug_break_, end "${Color_AttributesOff}"'
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_debug_break_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -278,13 +278,13 @@ function _fn_enable_debug_aliases_(){
         als_enbl_glbl_xtr__def_lineno="$((  nameref_Lineno + 2  ))"
 
   alias _als_enble_globl_xtrce_='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
 
     : If xtrace is already enabled, then exit the script
 
     if ! [[ -o xtrace ]]
     then
-      printf "%b\n" "${C_XtraceOfAlias} Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
+      printf "%b\n" "${Color_XtraceOfAlias} Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
 
       print_function_boundaries=do_prFnctionBoundrys
       export print_function_boundaries
@@ -294,7 +294,7 @@ function _fn_enable_debug_aliases_(){
       builtin set -x
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, end "${Color_AttributesOff}"'
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -304,7 +304,7 @@ function _fn_enable_debug_aliases_(){
         als_enbl_loc_xtr__def_lineno="$(( nameref_Lineno + 2  ))"
 
   alias _als_enble_locl_xtrce_='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, begin, def Line ${als_enbl_loc_xtr__def_lineno}
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, begin, def Line ${als_enbl_loc_xtr__def_lineno}
     #fn_def_lineno="${nameref_Lineno:-}"
 
     if ! [[ -o xtrace ]]
@@ -316,14 +316,14 @@ function _fn_enable_debug_aliases_(){
       local -
       builtin set -x
 
-      : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, begin, def Line ${als_enbl_loc_xtr__def_lineno}, end
-      : "${C_XtraceOfAlias}" Line $fn_def_lineno, function definition: "${FUNCNAME[0]}()"
+      : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, begin, def Line ${als_enbl_loc_xtr__def_lineno}, end
+      : "${Color_XtraceOfAlias}" Line $fn_def_lineno, function definition: "${FUNCNAME[0]}()"
       : fn_lvl: ${fn_lvl}
       : local_hyphn: $local_hyphn
       : prev_cmd_exit_code: $prev_cmd_exit_code
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, end "${Color_AttributesOff}"'
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -380,7 +380,7 @@ function _fn_enable_debug_aliases_(){
         als_xtr_read_on__def_lineno="$((nameref_Lineno+1))"
 
   alias _als_read_xtrce_state_and_enable_='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_read_xtrce_state_and_enable_, begin, def Line ${als_xtr_read_on__def_lineno}
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_read_xtrce_state_and_enable_, begin, def Line ${als_xtr_read_on__def_lineno}
 
     if [[ $- == *x* ]]
     then
@@ -392,7 +392,7 @@ function _fn_enable_debug_aliases_(){
 
     builtin set -x
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_read_xtrce_state_and_enable_, end "${Color_AttributesOff}"'
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_read_xtrce_state_and_enable_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -403,7 +403,7 @@ function _fn_enable_debug_aliases_(){
         als_xtr_rstr__def_lineno="$((nameref_Lineno+1))"
 
   alias _als_restore_xtrce_state_='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_restore_xtrce_state_, begin, def Line ${als_xtr_rstr__def_lineno}
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_restore_xtrce_state_, begin, def Line ${als_xtr_rstr__def_lineno}
     local -
     builtin set +x
 
@@ -418,7 +418,7 @@ function _fn_enable_debug_aliases_(){
       _als_die_
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_restore_xtrce_state_, end "${Color_AttributesOff}"'
+    : "${Color_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_restore_xtrce_state_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -545,7 +545,7 @@ function setup_variables(){ _als_fnction_boundary_in_
   [[ -v C_Errors ]]     || C_Errors="${C_Error:=}"
   [[ -v C_FnctionBoundry ]]    || C_FnctionBoundry="${C_FnctionBoundry:=}"
   [[ -v C_TechCmnt ]]   || C_TechCmnt="${C_TechCmnt:=}"
-  [[ -v C_XtraceOfAlias ]]     || C_XtraceOfAlias="${C_XtraceOfAlias:=}"
+  [[ -v Color_XtraceOfAlias ]]     || Color_XtraceOfAlias="${Color_XtraceOfAlias:=}"
   :
     builtin set -x
   :
