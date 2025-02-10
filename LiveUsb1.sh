@@ -704,8 +704,8 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_get_pids_for_restarting_()
   #+  _fn_gh_auth_login_command_()
   #+  _fn_increase_disk_space_()
-  #+  min_necc_packages()
-  #+  must_be_root()
+  #+  _fn_min_necc_packages_()
+  #+  _fn_must_be_root_()
   #+  reqd_user_files()
   #+  rsync_install_if_missing()
   #+  setup_bashrc()
@@ -1028,8 +1028,8 @@ function _fn_increase_disk_space_(){                  _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define min_necc_packages() ${Color_AttributesOff}"
-function min_necc_packages(){                    _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_min_necc_packages_() ${Color_AttributesOff}"
+function _fn_min_necc_packages_(){                    _als_fnction_boundary_in_
 
   local XX
 
@@ -1053,8 +1053,8 @@ function min_necc_packages(){                    _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define must_be_root() ${Color_AttributesOff}"
-function must_be_root(){                         _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_must_be_root_() ${Color_AttributesOff}"
+function _fn_must_be_root_(){                         _als_fnction_boundary_in_
 
   if (( UID == 0 ))
   then
@@ -3000,7 +3000,7 @@ trap trap_exit EXIT
 
 
 : "${Color_Comment} Line ${nameref_Lineno}, Regular users with sudo, only ${Color_AttributesOff}"
-must_be_root
+_fn_must_be_root_
 
 ## Note, traps
 # EXIT -- for exiting
@@ -3034,7 +3034,7 @@ setup_temp_dirs
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Minimum necessary rpms ${Color_AttributesOff}"
-min_necc_packages
+_fn_min_necc_packages_
 
   #_als_debug_break_
 
