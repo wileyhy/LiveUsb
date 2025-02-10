@@ -88,7 +88,7 @@ _fn_start_script_
 
 
 ##
-function setup_aliases(){
+function _fn_setup_aliases_(){
   : "${C_Comment} Line ${nL}, Aliases, non-debug ${Color_AttributesOff}"
   unset       nl
   unset -n    nL
@@ -109,7 +109,7 @@ function setup_aliases(){
 
       : "${C_AliasFunctionBoundary}" Line ${nL}, alias __die__, end "${Color_AttributesOff}"'
 }
-setup_aliases
+_fn_setup_aliases_
 
 
 ## Enable debugging
