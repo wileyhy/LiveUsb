@@ -3019,17 +3019,17 @@ _fn_reqd_user_files_
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Network ${Color_AttributesOff}"
-setup_network
+_fn_setup_network
 
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Time ${Color_AttributesOff}"
-setup_time
+_fn_setup_time
 
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Temporary directory ${Color_AttributesOff}"
-setup_temp_dirs
+_fn_setup_temp_dirs
 
   #_als_debug_break_
 
@@ -3039,12 +3039,12 @@ _fn_min_necc_packages_
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Vim ${Color_AttributesOff}"
-setup_vim
+_fn_setup_vim
 
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Bash ${Color_AttributesOff}"
-setup_bashrc
+_fn_setup_bashrc
 
   #_als_debug_break_
 
@@ -3054,7 +3054,7 @@ _fn__fn_increase_disk_space__
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Dnf ${Color_AttributesOff}"
-setup_dnf
+_fn_setup_dnf
 
   #_als_debug_break_
 
@@ -3074,17 +3074,17 @@ unset BB
 
 
 : "${Color_Comment} Line ${nameref_Lineno}, SSH ${Color_AttributesOff}"
-setup_ssh
+_fn_setup_ssh
 
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, GPG ${Color_AttributesOff}"
-setup_gpg
+_fn_setup_gpg
 
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Make and change into directories ${Color_AttributesOff}"
-setup_git_user_dirs
+_fn_setup_git_user_dirs
 
   #_als_debug_break_
 
@@ -3092,12 +3092,12 @@ setup_git_user_dirs
 #_fn_enable_git_debug_settings_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Git ${Color_AttributesOff}"
-setup_git
+_fn_setup_git
 
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, GH -- github CLI configuration ${Color_AttributesOff}"
-setup_gh_cli
+_fn_setup_gh_cli
 
   #_als_debug_break_
 
