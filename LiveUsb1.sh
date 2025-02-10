@@ -61,11 +61,11 @@
 #!   help file for /bin/kill, since using that syntax most likely
 #!   indicates that intention  :-\
 #!
-#! TODO, lock file, bc ^z
-#! TODO, add colors to xtrace comments
-#! TODO, systemd services to disable, bluetooth, cups,
+#! ToDo, lock file, bc ^z
+#! ToDo, add colors to xtrace comments
+#! ToDo, systemd services to disable, bluetooth, cups,
 #!   [ systemd-resolved ? ]
-#! TODO, systemd services to possibly enable, sshd, sssd
+#! ToDo, systemd services to possibly enable, sshd, sssd
 
 
 ## Start the script
@@ -487,7 +487,7 @@ function enable_debug_functions(){
     esac
     unset KK
 
-    ## TODO: copy out this construct to the rest of the functions, re bndry_cmd
+    ## ToDo: copy out this construct to the rest of the functions, re bndry_cmd
     ## SAVE this block
     #local bndry_cmd
     #if [[ $hyphn =~ x ]]; then bndry_cmd="echo"; else bndry_cmd="true"; fi
@@ -634,7 +634,7 @@ function setup_variables(){ __function_boundary_in__
     #+  are correct. On the other hand, it\s easier to maintain a simple set of files. ...but their state
     #+  wouldn\t necessarily have been documented, which is valuable in and of itself. Otherwise, if they
     #+  were changed accidentally, how would you know any change had occurred?
-    ## TODO
+    ## ToDo
     #: "  Files, firefox"
     #files_for_use_with_github_depth_0+=( ~/.mozilla )
     :
@@ -768,7 +768,7 @@ function error_and_exit(){                       __function_boundary_in__
 
 
 
-## TODO: add a "get_distro()" function
+## ToDo: add a "get_distro()" function
 
 : "${C_CmntSub} Define get_pids_for_restarting() ${C_AttrOff}"
 function get_pids_for_restarting(){              __function_boundary_in__
@@ -786,7 +786,7 @@ function get_pids_for_restarting(){              __function_boundary_in__
   #+  at time, or it could be a loop, but the array names and command strings would have to be in an
   #+  associative array, and that seems like adding complexity.
 
-  ## TODO, implement some improved commands,
+  ## ToDo, implement some improved commands,
   #+  dnf --assumeno --security upgrade 2>/dev/null | grep -e ^'Install ' -e ^'Upgrade '
   #+  dnf --assumeno --bugfix upgrade 2>/dev/null | grep -e ^'Install ' -e ^'Upgrade '
   #+  for II in 7656 11807 17897 72230; do ps_o=$( ps aux ); printf '\n%s\n' "$( grep -Ee "\<${II}\>" <<< "${ps_o}" )"; /bin/kill -s HUP "${II}"; sleep 2; done
@@ -1009,7 +1009,7 @@ function min_necc_packages(){                    __function_boundary_in__
     then
       sudo -- dnf --assumeyes install "${XX}"
 
-      ## TODO, comment out this use of $a_pids, re declaring and unsetting
+      ## ToDo, comment out this use of $a_pids, re declaring and unsetting
       get_pids_for_restarting
 
     fi
@@ -1429,7 +1429,7 @@ function setup_bashrc(){                         __function_boundary_in__
     tput sgr0
   )
 
-  ## TODO, append some additional definitions into bashrc
+  ## ToDo, append some additional definitions into bashrc
   #+    man() { "$( type -P man )" --nh --nj "$@"; }
   #+    export TMOUT=15
 
@@ -1480,7 +1480,7 @@ function setup_bashrc(){                         __function_boundary_in__
     #
     # identify [ var or fn ] by parsing shell builtins
 
-    ## TODO, write lists of how the data is to be written in bashrc, and of how the data exists originally,
+    ## ToDo, write lists of how the data is to be written in bashrc, and of how the data exists originally,
     #+  then with those endpoints, chart how to transform the strings from a simple list to output in bashrc
 
   : "${C_CmntSub} bashrc -- Variables ${C_AttrOff}"
@@ -1991,7 +1991,7 @@ function setup_dnf(){                           __function_boundary_in__
   sudo chattr +i "${hash_f}"
   unset hash_f
 
-  ## TODO: change temp-vars (II, XX, etc) to fully named vars
+  ## ToDo: change temp-vars (II, XX, etc) to fully named vars
 
   if  ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] ||
       [[ ${#a_pids[@]} -gt 0 ]]
@@ -2197,7 +2197,7 @@ function setup_git(){                           __function_boundary_in__
   fi
 
   ## Note, write large array assignments this way so that they mirror xtrace output cleanly
-  ## TODO, make a note of this in my style guide
+  ## ToDo, make a note of this in my style guide
 
   local -A git_keys
   git_keys+=( [color.diff]=always )
@@ -2515,8 +2515,8 @@ function setup_ssh(){                           __function_boundary_in__
     }
     __pause2ck__ # <>
 
-  ## TODO, _rm_ should be an alias
-  ## TODO, all aliases should be prefixed and suffixed with underscores, while functions should
+  ## ToDo, _rm_ should be an alias
+  ## ToDo, all aliases should be prefixed and suffixed with underscores, while functions should
   #+  include at least one underscore
 
   : $'Make sure the SSH config file for USER is correct, and write it if it is missing or wrong'
@@ -2599,7 +2599,7 @@ function setup_ssh(){                           __function_boundary_in__
         fi
       ;; #
     * )
-        ## TODO, _kill_ should be an alias?
+        ## ToDo, _kill_ should be an alias?
 
         : "${C_CmntSub} If more than one ssh-agent is running, then keep the first and kill the rest ${C_AttrOff}"
         local II
@@ -2614,7 +2614,7 @@ function setup_ssh(){                           __function_boundary_in__
       ;; #
   esac
 
-  ## TODO, review these commands for necessity
+  ## ToDo, review these commands for necessity
   ## Note, ssh-add  and  ssh  don\t have long options.
 
   #: "?"
@@ -2930,7 +2930,7 @@ function write_bashrc_strings(){                __function_boundary_in__
 
 
 
-## TODO, look at how each conf file is defined and written, each one's a little different. Make them
+## ToDo, look at how each conf file is defined and written, each one's a little different. Make them
 #+  uniform with each other, since the purpose of each section is the same in each case.
 
 function write_ssh_conf(){                      __function_boundary_in__
@@ -2952,7 +2952,7 @@ function write_ssh_conf(){                      __function_boundary_in__
   #__debug_break__
   #: 'hyphen,' "$-"
 
-## TODO, perhaps there should be a "main()" function.
+## ToDo, perhaps there should be a "main()" function.
 
 
 
@@ -3028,7 +3028,7 @@ setup_dnf
 
 : "${C_Comment} Line ${nL}, Restart NetworkManager if necessary ${C_AttrOff}"
 
-## TODO: use written function here
+## ToDo: use written function here
 for BB in "${dns_srv_A}" "${dns_srv_1}"
 do
   if ! ping -4qc1 -- "${BB}" > /dev/null 2>&1
