@@ -436,7 +436,7 @@ _fn_enable_debug_aliases_
 
 
 ##
-function enable_debug_functions(){
+function _fn_enable_debug_functions_(){
   : "${Color_Comment} Line ${nameref_Lineno}, Functions, Debug ${Color_AttributesOff}"
   : "${Color_SubComent} Line ${nameref_Lineno}, Functions, Debug -  TOC ${Color_AttributesOff}"
 
@@ -535,7 +535,7 @@ function enable_debug_functions(){
 
   : "${Color_Comment} Line ${nameref_Lineno}, Functions, Debug - Complete ${Color_AttributesOff}"
 }
-enable_debug_functions
+_fn_enable_debug_functions_
 
   builtin set -x
 
