@@ -532,7 +532,7 @@ function setup_variables(){ __function_boundary_in__
     : "${C_CmntSub} Variables, User info ${C_AttrOff}"
     user_real_name="Wiley Young"
     user_github_email_address="84648683+wileyhy@users.noreply.github.com"
-    user_github_gpg_key="E287D0CF528591CE"
+    user_github_gpg_key="0C83679F385F55F914D25A21CD85D53BBCB172C2"
     readonly user_real_name user_github_email_address user_github_gpg_key
     :
     : "${C_CmntSub} Variables, Required RPM\s ${C_AttrOff}"
