@@ -130,7 +130,7 @@ function _fn_enable_debug_parameters_(){
   local -gnx  nameref_Lineno=L\INENO
   # shellcheck disable=SC2218
   {
-    builtin set -o allexport        
+    builtin set -o allexport
     builtin set -o noclobber
     builtin set -o nounset
     builtin set -o functrace
@@ -455,7 +455,7 @@ function _fn_enable_debug_functions_(){
     {
       GIT_TRACE=true
       GIT_CURL_VERBOSE=true
-      GIT_SSH_COMMAND="ssh -vvv"
+      GIT_SSH_COMMAND=ssh\ -vvv
       GIT_TRACE_PACK_ACCESS=true
       GIT_TRACE_PACKET=true
       GIT_TRACE_PACKFILE=true
