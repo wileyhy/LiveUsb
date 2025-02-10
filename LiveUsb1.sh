@@ -91,18 +91,18 @@ _fn_start_script_
 ##
 function _fn_setup_aliases_ ()
 {
-  : "${Color_Comment} Line ${nameref_Lineno}, Aliases, non-debug ${Color_AttributesOff}"
+  : "$( tput setaf 12 ) Line ${nameref_Lineno}, Aliases, non-debug $( tput sgr0 )"
   unset       nameref_Lineno
   unset -n    nameref_Lineno
   local -gnx  nameref_Lineno=L\INENO
 
-  : "${Color_SubComent} Line ${nameref_Lineno}, Aliases TOC, non-debug ${Color_AttributesOff}"
+  : "$( tput setaf 10 ) Line ${nameref_Lineno}, Aliases TOC, non-debug $( tput sgr0 )"
 
   ##  Alias name
   #+  ~~~~~~~~~~
   #+  _als_die_
 
-  : "${Color_SubComent} Define alias _als_die_ onto function _fn_error_and_exit_ ${Color_AttributesOff}"
+  : "$( tput setaf 10 ) Define alias _als_die_ onto function _fn_error_and_exit_ $( tput sgr0 )"
   unset       lineno__defin_of_alias_die
               lineno__defin_of_alias_die=$(( nameref_Lineno + 2  ))
 
