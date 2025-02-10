@@ -720,7 +720,7 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_setup_dnf_()
   #+  _fn_setup_gh_cli_()
   #+  _fn_setup_git()
-  #+  _fn_setup_git_user_dirs()
+  #+  _fn_setup_gti_user_dirs_()
   #+  _fn_setup_gpg()
   #+  _fn_setup_network()
   #+  _fn_setup_ssh()
@@ -2396,8 +2396,8 @@ function _fn_setup_git()
 
 
 
-: "${Color_SubComent} Define _fn_setup_git_user_dirs() ${Color_AttributesOff}"
-function _fn_setup_git_user_dirs()
+: "${Color_SubComent} Define _fn_setup_gti_user_dirs_() ${Color_AttributesOff}"
+function _fn_setup_gti_user_dirs_()
 {                 _als_fnction_boundary_in_
 
   ## Note, in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
@@ -3119,7 +3119,7 @@ _fn_setup_gpg
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Make and change into directories ${Color_AttributesOff}"
-_fn_setup_git_user_dirs
+_fn_setup_gti_user_dirs_
 
   #_als_debug_break_
 
