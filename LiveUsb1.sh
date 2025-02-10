@@ -206,7 +206,7 @@ _fn_enable_debug_parameters_
 
 
 ##
-function enable_debug_aliases(){
+function _fn_enable_debug_aliases_(){
 
   ##
   : "${Color_Comment} Line ${nameref_Lineno}, Aliases, debug ${Color_AttributesOff}"
@@ -424,7 +424,7 @@ function enable_debug_aliases(){
 
   : "${Color_SubComent} Line ${nameref_Lineno}, Aliases, Debug -  Complete ${Color_AttributesOff}"
 }
-enable_debug_aliases
+_fn_enable_debug_aliases_
 
 
 ##
