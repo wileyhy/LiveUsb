@@ -90,7 +90,7 @@ _fn_start_script_
 
 
 ##
-function _fn_setup_aliases_ ()
+function _fn_setup_regular_aliases_ ()
 {
   : "$( tput setaf 12 ) Line ${nameref_Lineno}, Aliases, non-debug $( tput sgr0 )"
   unset       nameref_Lineno
@@ -113,7 +113,7 @@ function _fn_setup_aliases_ ()
 
       : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, end "${Color_AttributesOff}" '
 }
-_fn_setup_aliases_
+_fn_setup_regular_aliases_
 
 
 ## Enable debugging.
