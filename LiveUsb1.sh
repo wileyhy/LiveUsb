@@ -707,7 +707,7 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_min_necc_packages_()
   #+  _fn_must_be_root_()
   #+  _fn_reqd_user_files_()
-  #+  rsync_install_if_missing()
+  #+  _fn_rsync_install_if_missing_()
   #+  setup_bashrc()
   #+  setup_dnf()
   #+  setup_gh_cli()
@@ -1288,7 +1288,7 @@ function _fn_reqd_user_files_(){                      _als_fnction_boundary_in_
 
         local dest_dir
         dest_dir=${QQ[BB]%/*}
-        rsync_install_if_missing  "${source_file}" "${dest_dir}"
+        _fn_rsync_install_if_missing_  "${source_file}" "${dest_dir}"
         unset source_file dest_dir
       fi
       #: \    Loop A:1 - shut /// \
@@ -1314,8 +1314,8 @@ function _fn_reqd_user_files_(){                      _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define rsync_install_if_missing() ${Color_AttributesOff}"
-function rsync_install_if_missing(){             _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_rsync_install_if_missing_() ${Color_AttributesOff}"
+function _fn_rsync_install_if_missing_(){             _als_fnction_boundary_in_
 
     # <>
     if [[ -z $(declare -p data_dir) ]]
