@@ -194,7 +194,9 @@ function _fn_enable_debug_parameters_(){
             _var_function_boundary_short=" ~~~ ~~~ ~~~ "
   readonly  _var_function_boundary_short
   unset     _var_fnction_boundry_long
-            _var_fnction_boundry_long=${_var_function_boundary_short}${_var_function_boundary_short}${_var_function_boundary_short}
+            _var_fnction_boundry_long+=${_var_function_boundary_short}
+            _var_fnction_boundry_long+=${_var_function_boundary_short}
+            _var_fnction_boundry_long+=${_var_function_boundary_short}
   readonly  _var_fnction_boundry_long
 
   unset     fn_lvl
