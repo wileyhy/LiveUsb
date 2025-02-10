@@ -728,8 +728,8 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_setup_temp_dirs_()
   #+  _fn_setup_time_()
   #+  _fn_setup_vim_()
-  #+  _fn_test_dns()
-  #+  _fn_test_os()
+  #+  _fn_test_dns_()
+  #+  _fn_test_os_()
   #+  _fn_trap_err()
   #+  _fn_trap_exit()
   #+  _fn_trap_return()
@@ -2497,8 +2497,8 @@ function _fn_setup_network_()
   dns_srv_A=75.75.75.75
   readonly dns_srv_1 dns_srv_A
 
-  if  ! _fn_test_dns "${dns_srv_1}" ||
-      ! _fn_test_dns "${dns_srv_A}"
+  if  ! _fn_test_dns_ "${dns_srv_1}" ||
+      ! _fn_test_dns_ "${dns_srv_A}"
   then
     printf '\n%s, Attempting to connect to the internet... \n\n' "${scr_nm}"
 
@@ -2532,8 +2532,8 @@ function _fn_setup_network_()
         ;; #
     esac
 
-    if  ! _fn_test_dns "${dns_srv_1}" ||
-        ! _fn_test_dns "${dns_srv_A}"
+    if  ! _fn_test_dns_ "${dns_srv_1}" ||
+        ! _fn_test_dns_ "${dns_srv_A}"
     then
       printf '\n%s, Network, Giving up, exiting.\n\n' "${scr_nm}"
     else
@@ -2543,7 +2543,7 @@ function _fn_setup_network_()
 
   : "${Color_SubComent} Clean up from Network ${Color_AttributesOff}"
   ## Note, dns_srv_A will be used at the end of the script
-  unset -f _fn_test_dns
+  unset -f _fn_test_dns_
                                                  _als_fnction_boundary_out_0_
 }
 
@@ -2835,8 +2835,8 @@ function _fn_setup_vim_()
 
 
 
-: "${Color_SubComent} Define _fn_test_dns() ${Color_AttributesOff}"
-function _fn_test_dns()
+: "${Color_SubComent} Define _fn_test_dns_() ${Color_AttributesOff}"
+function _fn_test_dns_()
 {                            _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
@@ -2848,8 +2848,8 @@ function _fn_test_dns()
 
 
 
-: "${Color_SubComent} Define _fn_test_os() ${Color_AttributesOff}"
-function _fn_test_os()
+: "${Color_SubComent} Define _fn_test_os_() ${Color_AttributesOff}"
+function _fn_test_os_()
 {                             _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
@@ -3044,7 +3044,7 @@ _fn_must_be_root_
 # for starting logging ?
 
 : "${Color_Comment} Line ${nameref_Lineno}, Test OS ${Color_AttributesOff}"
-_fn_test_os
+_fn_test_os_
 
   #_als_debug_break_
 
