@@ -1042,7 +1042,7 @@ function _fn_increase_disk_space_ ()
 
 
 : "${Color_SubComent} Define _fn_min_necc_packages_() ${Color_AttributesOff}"
-function _fn_min_necc_packages_()
+function _fn_min_necc_packages_ ()
 {                    _als_fnction_boundary_in_
 
   local XX
@@ -1068,7 +1068,7 @@ function _fn_min_necc_packages_()
 
 
 : "${Color_SubComent} Define _fn_must_be_root_() ${Color_AttributesOff}"
-function _fn_must_be_root_()
+function _fn_must_be_root_ ()
 {                         _als_fnction_boundary_in_
 
   if (( UID == 0 ))
@@ -1087,7 +1087,7 @@ function _fn_must_be_root_()
   builtin set -x #<>
 
 : "${Color_SubComent} Define _fn_reqd_user_files_() ${Color_AttributesOff}"
-function _fn_reqd_user_files_()
+function _fn_reqd_user_files_ ()
 {                      _als_fnction_boundary_in_
   _als_enble_locl_xtrce_
 
@@ -1331,7 +1331,7 @@ function _fn_reqd_user_files_()
 
 
 : "${Color_SubComent} Define _fn_rsync_install_if_missing_() ${Color_AttributesOff}"
-function _fn_rsync_install_if_missing_()
+function _fn_rsync_install_if_missing_ ()
 {             _als_fnction_boundary_in_
 
     # <>
@@ -1406,7 +1406,7 @@ function _fn_rsync_install_if_missing_()
 
 
 : "${Color_SubComent} Define _fn_setup_bashrc() ${Color_AttributesOff}"
-function _fn_setup_bashrc()
+function _fn_setup_bashrc ()
 {                         _als_fnction_boundary_in_
 
   : "${Color_SubComent} bashrc -- Do some backups ${Color_AttributesOff}"
