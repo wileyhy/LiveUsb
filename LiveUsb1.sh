@@ -71,6 +71,7 @@
 ## Start the script
 function _fn_start_script_ ()
 {
+  : "$( tput setaf 12 ) Line ${nameref_Lineno}, Start the script.$( tput sgr0 )"
 
   ## Get & print script start time
   unset     script_start_time
@@ -115,17 +116,17 @@ function _fn_setup_aliases_ ()
 _fn_setup_aliases_
 
 
-## Enable debugging
+## Enable debugging.
 function _fn_enable_debug_parameters_ ()
 {
+  : "$( tput setaf 12 ) Line ${nameref_Lineno}, Enable debug parameters.$( tput sgr0 )"
 
-  ## Set up debug shell options
+  ## Set up debug shell options.
   local -
 
-  : "$( tput setaf 12 ) Debugging $( tput sgr0 )"
   # shellcheck disable=SC1001
   #! Note, this assignment is repeated here; originally it\s located
-  #!   in _fn_setup_vars
+  #!   in _fn_setup_vars.
   unset       nameref_Lineno
   unset -n    nameref_Lineno
   local -gnx  nameref_Lineno=L\INENO
@@ -212,7 +213,7 @@ function _fn_enable_debug_aliases_ ()
 {
 
   ##
-  : "${Color_Comment} Line ${nameref_Lineno}, Aliases, debug ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nameref_Lineno}, Enable debug aliases.${Color_AttributesOff}"
 
   #! Bug, separate alias definitions to a subsection above function
   #!   definitions. Defining of alias B can occur before the defining
