@@ -717,7 +717,7 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_reqd_user_files_()
   #+  _fn_rsync_install_if_missing_()
   #+  _fn_setup_bashrc_()
-  #+  _fn_setup_dnf()
+  #+  _fn_setup_dnf_()
   #+  _fn_setup_gh_cli()
   #+  _fn_setup_git()
   #+  _fn_setup_git_user_dirs()
@@ -1633,10 +1633,10 @@ function _fn_setup_bashrc_ ()
 }
 
 
-## Bug, _fn_setup_dnf is too long and too complicated
+## Bug, _fn_setup_dnf_ is too long and too complicated
 
-: "${Color_SubComent} Define _fn_setup_dnf() ${Color_AttributesOff}"
-function _fn_setup_dnf()
+: "${Color_SubComent} Define _fn_setup_dnf_() ${Color_AttributesOff}"
+function _fn_setup_dnf_()
 {                           _als_fnction_boundary_in_
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
@@ -3089,7 +3089,7 @@ _fn_increase_disk_space_
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Dnf ${Color_AttributesOff}"
-_fn_setup_dnf
+_fn_setup_dnf_
 
   #_als_debug_break_
 
