@@ -160,14 +160,14 @@ function _fn_enable_debug_parameters_(){
   ###########################################################
   unset       aa_colors
   declare -A  aa_colors
-              aa_colors+=( ["Comment"]="    12  blue"
-                           ["SubComent"]="    10  light_green"
-                           ["SubSbComent"]=" 226 yellow"
-                           ["AliasFunctionBoundary"]=" 14  light_blue"
-                           ["FnctionBoundry"]="    11  orange"
-                           ["XtraceOfAlias"]="     3   brown"
-                           ["TechCmnt"]="   4   purple"
-                           ["Errors"]="     8   brick_red" )
+              aa_colors+=( ["Comment"]="               12 blue"
+                           ["SubComent"]="             10 light_green"
+                           ["SubSbComent"]="          226 yellow"
+                           ["AliasFunctionBoundary"]=" 14 light_blue"
+                           ["FnctionBoundry"]="        11 orange"
+                           ["XtraceOfAlias"]="          3 brown"
+                           ["TechCmnt"]="               4 purple"
+                           ["Errors"]="                 8 brick_red" )
 
   unset II
   for   II in "${!aa_colors[@]}"
