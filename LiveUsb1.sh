@@ -218,7 +218,7 @@ function _fn_enable_debug_aliases_(){
   ##  Aliases, TOC
   : "${Color_SubComent} Line ${nameref_Lineno}, Aliases, debug - TOC ${Color_AttributesOff}"
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #+  _als_call_fncton
+  #+  _als_call_fncton_
   #+  _als_debug_break_
   #+  _als_enble_locl_xtrce_
   #+  _als_enble_globl_xtrce_
@@ -234,15 +234,15 @@ function _fn_enable_debug_aliases_(){
 
 
   ##
-  : "${Color_SubComent} Define alias _als_call_fncton ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_call_fncton_ ${Color_AttributesOff}"
 
-  ## Note, Usage:   -|_als_call_fncton \
+  ## Note, Usage:   -|_als_call_fncton_ \
   #+                -|    [function name]
   #+   Reason: so that the alias can be added to a script via sed/awk.
   unset als_cl_fn__def_lineno
         als_cl_fn__def_lineno="$((nameref_Lineno+1))"
 
-  alias _als_call_fncton='_="${C_XtraceOfAlias} alias _als_call_fncton, begin" als_cl_fn__call_line="$nameref_Lineno" als_def_line="${als_cl_fn__def_lineno}" _="alias _als_call_fncton, end ${Color_AttributesOff}" '
+  alias _als_call_fncton_='_="${C_XtraceOfAlias} alias _als_call_fncton_, begin" als_cl_fn__call_line="$nameref_Lineno" als_def_line="${als_cl_fn__def_lineno}" _="alias _als_call_fncton_, end ${Color_AttributesOff}" '
   #! \end alias definition\
 
 
@@ -667,7 +667,7 @@ function setup_variables(){ _als_fnction_boundary_in_
 }
 
 : "${Color_Comment} Line ${nameref_Lineno}, Variables ${Color_AttributesOff}"
-_als_call_fncton \
+_als_call_fncton_ \
     setup_variables
 
 : "${Color_Comment} Line ${nameref_Lineno}, # Testing testing testing ${Color_AttributesOff}"
