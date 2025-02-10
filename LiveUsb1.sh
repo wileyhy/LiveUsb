@@ -102,13 +102,13 @@ function _fn_setup_aliases_ ()
   #+  ~~~~~~~~~~
   #+  _als_die_
 
-  : "${Color_SubComent} Define alias _als_die_ onto function error_and_exit() ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_die_ onto function _fn_error_and_exit_() ${Color_AttributesOff}"
   unset lineno__defin_of_alias_die
         lineno__defin_of_alias_die="$((nameref_Lineno+1))"
 
   alias _als_die_=': "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, begin, def Line ${lineno__defin_of_alias_die}
 
-      error_and_exit "${nameref_Lineno}"
+      _fn_error_and_exit_ "${nameref_Lineno}"
 
       : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, end "${Color_AttributesOff}"'
 }
@@ -682,7 +682,7 @@ __call_fn__ \
   #+  __vte_osc7()
   #+  __vte_prompt_command()
   #+  clone_repo()
-  #+  error_and_exit()
+  #+  _fn_error_and_exit_()
   #+  get_pids_for_restarting()
   #+  gh_auth_login_command()
   #+  increase_disk_space()
@@ -738,14 +738,14 @@ function clone_repo(){                           __function_boundary_in__
 
 
 
-: "${Color_SubComent} Define error_and_exit() ${Color_AttributesOff}"
-function error_and_exit(){                       __function_boundary_in__
+: "${Color_SubComent} Define _fn_error_and_exit_() ${Color_AttributesOff}"
+function _fn_error_and_exit_(){                       __function_boundary_in__
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] &&
     return 1
 
-  ## The first positional parameter must be a digit, and should be the LINENO from where error_and_exit() is called
+  ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_() is called
   if ! [[ $1 = [0-9]* ]]
   then
     printf '\n%b:: %s :: %s' "${C_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
