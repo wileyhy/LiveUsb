@@ -130,12 +130,12 @@ function _fn_enable_debug_parameters_(){
   local -gnx  nameref_Lineno=L\INENO
   # shellcheck disable=SC2218
   {
-    set -a # <>   All export
-    set -C # <>   No clobber
-    set -u # <>   No unset
-    set -T # <>   Trace
-    set -e # <>   Err + exit
-    set -o pipefail # <>
+    set -o allexport        
+    set -o noclobber
+    set -o nounset
+    set -o functrace
+    set -o errexit
+    set -o pipefail
   }
 
   ## Set up debug colors
