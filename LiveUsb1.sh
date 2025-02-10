@@ -289,7 +289,7 @@ function _fn_enable_debug_aliases_(){
       print_function_boundaries=do_prFnctionBoundrys
       export print_function_boundaries
 
-      printf "%b Line %d, Enabling global xtrace %b\n" "${C_TechCmnt}" "${nameref_Lineno}" "${Color_AttributesOff}"
+      printf "%b Line %d, Enabling global xtrace %b\n" "${Color_TechCmnt}" "${nameref_Lineno}" "${Color_AttributesOff}"
 
       builtin set -x
     fi
@@ -312,7 +312,7 @@ function _fn_enable_debug_aliases_(){
       local -Ig print_function_boundaries=do_prFnctionBoundrys
       export print_function_boundaries
 
-      printf "%b   Enabling function-local xtrace %b\n" "${C_TechCmnt}" "${Color_AttributesOff}"
+      printf "%b   Enabling function-local xtrace %b\n" "${Color_TechCmnt}" "${Color_AttributesOff}"
       local -
       builtin set -x
 
@@ -544,7 +544,7 @@ function setup_variables(){ _als_fnction_boundary_in_
   [[ -v Color_Comment ]]    || Color_Comment="${Color_Comment:=}"
   [[ -v C_Errors ]]     || C_Errors="${C_Error:=}"
   [[ -v C_FnctionBoundry ]]    || C_FnctionBoundry="${C_FnctionBoundry:=}"
-  [[ -v C_TechCmnt ]]   || C_TechCmnt="${C_TechCmnt:=}"
+  [[ -v Color_TechCmnt ]]   || Color_TechCmnt="${Color_TechCmnt:=}"
   [[ -v Color_XtraceOfAlias ]]     || Color_XtraceOfAlias="${Color_XtraceOfAlias:=}"
   :
     builtin set -x
