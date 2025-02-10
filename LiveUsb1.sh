@@ -226,7 +226,7 @@ function _fn_enable_debug_aliases_(){
   #+  _als_fnction_boundary_out_0_
   #+  _als_fnction_boundry_out_1_
   #+  _als_pause_to_check_
-  #+  __xtr_read_and_on__
+  #+  _als_read_xtrce_state_and_enable_
   #+  __xtr_restore__
 
   #! Note, as I recall, these variable assignments all need to be on
@@ -375,12 +375,12 @@ function _fn_enable_debug_aliases_(){
 
 
   ##
-  : "${Color_SubComent} Define alias __xtr_read_and_on__ ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_read_xtrce_state_and_enable_ ${Color_AttributesOff}"
   unset als_xtr_read_on__def_lineno
         als_xtr_read_on__def_lineno="$((nameref_Lineno+1))"
 
-  alias __xtr_read_and_on__='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __xtr_read_and_on__, begin, def Line ${als_xtr_read_on__def_lineno}
+  alias _als_read_xtrce_state_and_enable_='
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_read_xtrce_state_and_enable_, begin, def Line ${als_xtr_read_on__def_lineno}
 
     if [[ $- == *x* ]]
     then
@@ -392,7 +392,7 @@ function _fn_enable_debug_aliases_(){
 
     builtin set -x
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __xtr_read_and_on__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_read_xtrce_state_and_enable_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
