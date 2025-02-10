@@ -87,7 +87,7 @@ function start_script(){
 start_script
 
 
-## 
+##
 function setup_aliases(){
   : "${C_Comment} Line ${nL}, Aliases, non-debug ${C_AttrOff}"
   unset       nl
@@ -153,20 +153,20 @@ function enable_debug_params(){
   # "4   purple"      ##    Technical comments
   # "8   brick_red" ) ##    Errors
 
-  ##          Array nm    ## Var sub-name   ## Digit / Color      
+  ##          Array nm    ## Var sub-name   ## Digit / Color
   ###########################################################
   unset       aa_colors
   declare -A  aa_colors
-              aa_colors+=( ["Comment"]="    12  blue"       
+              aa_colors+=( ["Comment"]="    12  blue"
                            ["SubComent"]="    10  light_green"
-                           ["SubSbComent"]=" 226 yellow"     
-                           ["AliasFunctionBoundary"]=" 14  light_blue" 
-                           ["FnctionBoundry"]="    11  orange"     
-                           ["XtrAls"]="     3   brown"      
-                           ["TechCmnt"]="   4   purple"     
+                           ["SubSbComent"]=" 226 yellow"
+                           ["AliasFunctionBoundary"]=" 14  light_blue"
+                           ["FnctionBoundry"]="    11  orange"
+                           ["XtraceOfAlias"]="     3   brown"
+                           ["TechCmnt"]="   4   purple"
                            ["Errors"]="     8   brick_red" )
 
-  unset II 
+  unset II
   for   II in "${!aa_colors[@]}"
   do
     unset -n    NN
@@ -200,7 +200,7 @@ enable_debug_params
 
 ##
 function enable_debug_aliases(){
-  
+
   ##
   : "${C_Comment} Line ${nL}, Aliases, debug ${C_AttrOff}"
 
@@ -235,7 +235,7 @@ function enable_debug_aliases(){
   unset als_cl_fn__def_lineno
         als_cl_fn__def_lineno="$((nL+1))"
 
-  alias __call_fn__='_="${C_XtrAls} alias __call_fn__, begin" als_cl_fn__call_line="$nL" als_def_line="${als_cl_fn__def_lineno}" _="alias __call_fn__, end ${C_AttrOff}" '
+  alias __call_fn__='_="${C_XtraceOfAlias} alias __call_fn__, begin" als_cl_fn__call_line="$nL" als_def_line="${als_cl_fn__def_lineno}" _="alias __call_fn__, end ${C_AttrOff}" '
   #! \end alias definition\
 
 
@@ -246,7 +246,7 @@ function enable_debug_aliases(){
         als_dbg_brk__def_lineno="$((nL+1))"
 
   alias __debug_break__='
-    : "${C_XtrAls}" Line ${nL}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}
 
     : If xtrace is already enabled, then disable xtrace and exit the script
 
@@ -256,11 +256,11 @@ function enable_debug_aliases(){
       EC=101
       main_lineno="${nL}" exit
     else
-      printf "%b\n" "${C_XtrAls} Line ${nL}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}"
+      printf "%b\n" "${C_XtraceOfAlias} Line ${nL}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}"
       __enable_global_xtrace__
     fi
 
-    : "${C_XtrAls}" Line ${nL}, alias __debug_break__, end "${C_AttrOff}"'
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __debug_break__, end "${C_AttrOff}"'
   #! \end alias definition\
 
 
@@ -271,13 +271,13 @@ function enable_debug_aliases(){
         als_enbl_glbl_xtr__def_lineno="$((nL+1))"
 
   alias __enable_global_xtrace__='
-    : "${C_XtrAls}" Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
 
     : If xtrace is already enabled, then exit the script
 
     if ! [[ -o xtrace ]]
     then
-      printf "%b\n" "${C_XtrAls} Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
+      printf "%b\n" "${C_XtraceOfAlias} Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
 
       print_function_boundaries=do_prFnctionBoundrys
       export print_function_boundaries
@@ -287,7 +287,7 @@ function enable_debug_aliases(){
       builtin set -x
     fi
 
-    : "${C_XtrAls}" Line ${nL}, alias __enable_global_xtrace__, end "${C_AttrOff}"'
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_global_xtrace__, end "${C_AttrOff}"'
   #! \end alias definition\
 
 
@@ -297,7 +297,7 @@ function enable_debug_aliases(){
         als_enbl_loc_xtr__def_lineno="$((nL+1))"
 
   alias __enable_local_xtrace__='
-    : "${C_XtrAls}" Line ${nL}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}
     #fn_def_lineno="${nL:-}"
 
     if ! [[ -o xtrace ]]
@@ -309,14 +309,14 @@ function enable_debug_aliases(){
       local -
       builtin set -x
 
-      : "${C_XtrAls}" Line ${nL}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}, end
-      : "${C_XtrAls}" Line $fn_def_lineno, function definition: "${FUNCNAME[0]}()"
+      : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}, end
+      : "${C_XtraceOfAlias}" Line $fn_def_lineno, function definition: "${FUNCNAME[0]}()"
       : fn_lvl: ${fn_lvl}
       : local_hyphn: $local_hyphn
       : prev_cmd_exit_code: $prev_cmd_exit_code
     fi
 
-    : "${C_XtrAls}" Line ${nL}, alias __enable_local_xtrace__, end "${C_AttrOff}"'
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_local_xtrace__, end "${C_AttrOff}"'
   #! \end alias definition\
 
 
@@ -371,9 +371,9 @@ function enable_debug_aliases(){
   : "${C_SubComent} Define alias __xtr_read_and_on__ ${C_AttrOff}"
   unset als_xtr_read_on__def_lineno
         als_xtr_read_on__def_lineno="$((nL+1))"
-  
+
   alias __xtr_read_and_on__='
-    : "${C_XtrAls}" Line ${nL}, alias __xtr_read_and_on__, begin, def Line ${als_xtr_read_on__def_lineno}
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __xtr_read_and_on__, begin, def Line ${als_xtr_read_on__def_lineno}
 
     if [[ $- == *x* ]]
     then
@@ -385,7 +385,7 @@ function enable_debug_aliases(){
 
     builtin set -x
 
-    : "${C_XtrAls}" Line ${nL}, alias __xtr_read_and_on__, end "${C_AttrOff}"'
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __xtr_read_and_on__, end "${C_AttrOff}"'
   #! \end alias definition\
 
 
@@ -396,7 +396,7 @@ function enable_debug_aliases(){
         als_xtr_rstr__def_lineno="$((nL+1))"
 
   alias __xtr_restore__='
-    : "${C_XtrAls}" Line ${nL}, alias __xtr_restore__, begin, def Line ${als_xtr_rstr__def_lineno}
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __xtr_restore__, begin, def Line ${als_xtr_rstr__def_lineno}
     local -
     builtin set +x
 
@@ -411,7 +411,7 @@ function enable_debug_aliases(){
       __die__
     fi
 
-    : "${C_XtrAls}" Line ${nL}, alias __xtr_restore__, end "${C_AttrOff}"'
+    : "${C_XtraceOfAlias}" Line ${nL}, alias __xtr_restore__, end "${C_AttrOff}"'
   #! \end alias definition\
 
 
@@ -452,7 +452,7 @@ function enable_debug_functions(){
     [[ -f ~/.gitconfig ]] &&
       git config --global --list --show-origin --show-scope |
       cat -n
-    
+
                                             __function_boundary_out_0__
   }
 
@@ -538,7 +538,7 @@ function setup_variables(){ __function_boundary_in__
   [[ -v C_Errors ]]     || C_Errors="${C_Error:=}"
   [[ -v C_FnctionBoundry ]]    || C_FnctionBoundry="${C_FnctionBoundry:=}"
   [[ -v C_TechCmnt ]]   || C_TechCmnt="${C_TechCmnt:=}"
-  [[ -v C_XtrAls ]]     || C_XtrAls="${C_XtrAls:=}"
+  [[ -v C_XtraceOfAlias ]]     || C_XtraceOfAlias="${C_XtraceOfAlias:=}"
   :
     builtin set -x
   :
@@ -1056,7 +1056,7 @@ function reqd_user_files(){                      __function_boundary_in__
   #+   for whatever reason, but if there are any values in the array at
   #+   all, then index "-1" is guaranteed to exist. ...unless the array is
   #+   completely empty...
-  #+	 but I don\t want to UNSET ie RESET the array on each loop...
+  #+   but I don\t want to UNSET ie RESET the array on each loop...
   #+ In this script, index zero should exist, barring any future changes.
   #+   So, it\s a bit of future-proofing.
 
