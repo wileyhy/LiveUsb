@@ -116,7 +116,7 @@ _fn_setup_aliases_
 
 
 ## Enable debugging
-function enable_debug_params(){
+function _fn_enable_debug_parameters_(){
 
   ## Set up debug shell options
   local -
@@ -198,7 +198,7 @@ function enable_debug_params(){
   unset     fn_lvl
             fn_lvl=0
 }
-enable_debug_params
+_fn_enable_debug_parameters_
 
 
 ##
