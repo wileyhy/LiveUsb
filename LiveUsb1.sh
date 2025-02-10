@@ -721,13 +721,13 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_setup_gh_cli_()
   #+  _fn_setup_git_()
   #+  _fn_setup_gti_user_dirs_()
-  #+  _fn_setup_gpg()
-  #+  _fn_setup_network()
-  #+  _fn_setup_ssh()
-  #+  _fn_setup_systemd()
-  #+  _fn_setup_temp_dirs()
-  #+  _fn_setup_time()
-  #+  _fn_setup_vim()
+  #+  _fn_setup_gpg_()
+  #+  _fn_setup_network_()
+  #+  _fn_setup_ssh_()
+  #+  _fn_setup_systemd_()
+  #+  _fn_setup_temp_dirs_()
+  #+  _fn_setup_time_()
+  #+  _fn_setup_vim_()
   #+  _fn_test_dns()
   #+  _fn_test_os()
   #+  _fn_trap_err()
@@ -2432,8 +2432,8 @@ function _fn_setup_gti_user_dirs_()
 
 
 
-: "${Color_SubComent} Define _fn_setup_gpg() ${Color_AttributesOff}"
-function _fn_setup_gpg()
+: "${Color_SubComent} Define _fn_setup_gpg_() ${Color_AttributesOff}"
+function _fn_setup_gpg_()
 {                           _als_fnction_boundary_in_
 
   : "${Color_SubComent} If any files in ~/.gnupg are not owned by either USER or root, then error out and exit ${Color_AttributesOff}"
@@ -2488,8 +2488,8 @@ function _fn_setup_gpg()
 
 
 
-: "${Color_SubComent} Define _fn_setup_network() ${Color_AttributesOff}"
-function _fn_setup_network()
+: "${Color_SubComent} Define _fn_setup_network_() ${Color_AttributesOff}"
+function _fn_setup_network_()
 {                       _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
@@ -2550,8 +2550,8 @@ function _fn_setup_network()
 
 
 
-: "${Color_SubComent} Define _fn_setup_ssh() ${Color_AttributesOff}"
-function _fn_setup_ssh()
+: "${Color_SubComent} Define _fn_setup_ssh_() ${Color_AttributesOff}"
+function _fn_setup_ssh_()
 {                           _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
@@ -2585,7 +2585,7 @@ function _fn_setup_ssh()
   unset -f _fn_write_ssh_conf
 
   ## Bug, security, these #chown# commands should operate on the files while they are still in skel_LiveUsb
-  #+  see also similar code in _fn_setup_gpg(), possibly elsewhere also  :-\
+  #+  see also similar code in _fn_setup_gpg_(), possibly elsewhere also  :-\
 
   ## Bug, timestamps, chown changes ctime on every execution, whether or not the ownership changes
 
@@ -2689,7 +2689,7 @@ function _fn_setup_ssh()
 
 
 #: "setup_systemd()"
-#function _fn_setup_systemd()
+#function _fn_setup_systemd_()
 #{                      _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
   ### Note, services to disable and mask
@@ -2702,8 +2702,8 @@ function _fn_setup_ssh()
 
 
 
-: "${Color_SubComent} Define _fn_setup_temp_dirs() ${Color_AttributesOff}"
-function _fn_setup_temp_dirs()
+: "${Color_SubComent} Define _fn_setup_temp_dirs_() ${Color_AttributesOff}"
+function _fn_setup_temp_dirs_()
 {                     _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
@@ -2724,8 +2724,8 @@ function _fn_setup_temp_dirs()
 
 
 
-: "${Color_SubComent} Define _fn_setup_time() ${Color_AttributesOff}"
-function _fn_setup_time()
+: "${Color_SubComent} Define _fn_setup_time_() ${Color_AttributesOff}"
+function _fn_setup_time_()
 {                          _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
@@ -2741,8 +2741,8 @@ function _fn_setup_time()
 
 
 
-: "${Color_SubComent} Define _fn_setup_vim() ${Color_AttributesOff}"
-function _fn_setup_vim()
+: "${Color_SubComent} Define _fn_setup_vim_() ${Color_AttributesOff}"
+function _fn_setup_vim_()
 {                           _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
@@ -3003,7 +3003,7 @@ function _fn_write_ssh_conf()
 {                      _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
-  ## Bug? $ssh_user_conf_file defined in a different function, _fn_setup_ssh()
+  ## Bug? $ssh_user_conf_file defined in a different function, _fn_setup_ssh_()
 
   cat <<- \EOF > "${ssh_user_conf_file}"
 	Host github.com
@@ -3054,17 +3054,17 @@ _fn_reqd_user_files_
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Network ${Color_AttributesOff}"
-_fn_setup_network
+_fn_setup_network_
 
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Time ${Color_AttributesOff}"
-_fn_setup_time
+_fn_setup_time_
 
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Temporary directory ${Color_AttributesOff}"
-_fn_setup_temp_dirs
+_fn_setup_temp_dirs_
 
   #_als_debug_break_
 
@@ -3074,7 +3074,7 @@ _fn_min_necc_packages_
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Vim ${Color_AttributesOff}"
-_fn_setup_vim
+_fn_setup_vim_
 
   #_als_debug_break_
 
@@ -3109,12 +3109,12 @@ unset BB
 
 
 : "${Color_Comment} Line ${nameref_Lineno}, SSH ${Color_AttributesOff}"
-_fn_setup_ssh
+_fn_setup_ssh_
 
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, GPG ${Color_AttributesOff}"
-_fn_setup_gpg
+_fn_setup_gpg_
 
   #_als_debug_break_
 
