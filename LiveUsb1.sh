@@ -427,14 +427,14 @@ function enable_debug_functions(){
 
     ##  Function name
     #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #+  enable_git_debugg_settings()
+    #+  enable_git_debug_settings()
     #+  pause_to_check()
     #+  set()
     #+  xtr_duck()
 
 
-  : "${C_CmntSub} Define enable_git_debugg_settings() ${C_AttrOff}"
-  function enable_git_debugg_settings(){    __function_boundary_in__
+  : "${C_CmntSub} Define enable_git_debug_settings() ${C_AttrOff}"
+  function enable_git_debug_settings(){    __function_boundary_in__
 
     : "${C_CmntSub} Variables -- Global git debug settings ${C_AttrOff}"
     # shellcheck disable=SC2034
@@ -3057,7 +3057,7 @@ setup_git_user_dirs
   #__debug_break__
 
 : "Git debug settings"
-#enable_git_debugg_settings
+#enable_git_debug_settings
 
 : "${C_Comment} Line ${nL}, Git ${C_AttrOff}"
 setup_git
