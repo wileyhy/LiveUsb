@@ -540,7 +540,7 @@ function setup_variables(){ _als_fnction_boundary_in_
   [[ -v Color_AliasFunctionBoundary ]] || Color_AliasFunctionBoundary="${Color_AliasFunctionBoundary:=}"
   [[ -v Color_AttributesOff ]]    || Color_AttributesOff="${Color_AttributesOff:=}"
   [[ -v Color_SubComent ]]    || Color_SubComent="${Color_SubComent:=}"
-  [[ -v C_SubSbComent ]] || C_SubSbComent="${C_SubSbComent:=}"
+  [[ -v Color_SubSbComent ]] || Color_SubSbComent="${Color_SubSbComent:=}"
   [[ -v Color_Comment ]]    || Color_Comment="${Color_Comment:=}"
   [[ -v C_Errors ]]     || C_Errors="${C_Error:=}"
   [[ -v Color_FnctionBoundry ]]    || Color_FnctionBoundry="${Color_FnctionBoundry:=}"
