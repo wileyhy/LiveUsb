@@ -2405,10 +2405,13 @@ function _fn_setup_gti_user_dirs_ ()
   #+   popd
 
   : "${Color_SubComent} Variables -- global, for use for entire script ${Color_AttributesOff}"
-  local_dir_1=~/MYPROJECTS
-  local_dir_2=~/OTHERSPROJECTS
-  readonly local_dir_1
-  readonly local_dir_2
+  unset     local_dir_1 
+            local_dir_1=~/MYPROJECTS
+  readonly  local_dir_1
+
+  unset     local_dir_2
+            local_dir_2=~/OTHERSPROJECTS
+  readonly  local_dir_2
 
   : "${Color_SubComent} Make dirs ${Color_AttributesOff}"
   local UU
