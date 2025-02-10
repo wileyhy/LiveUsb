@@ -225,7 +225,7 @@ function _fn_enable_debug_aliases_(){
   #+  _als_fnction_boundary_in_
   #+  _als_fnction_boundary_out_0_
   #+  _als_fnction_boundry_out_1_
-  #+  _als_pause_to_check_
+  #+  _als__fn_pause_to_check__
   #+  _als_read_xtrce_state_and_enable_
   #+  _als_restore_xtrce_state_
 
@@ -369,16 +369,16 @@ function _fn_enable_debug_aliases_(){
 
 
   ##
-  : "${Color_SubComent} Define alias _als_pause_to_check_ ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als__fn_pause_to_check__ ${Color_AttributesOff}"
   unset als_ps2ck__def_lineno
         als_ps2ck__def_lineno=$((  nameref_Lineno + 2  ))
 
-  alias _als_pause_to_check_='
-    : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_pause_to_check_, begin, def Line ${als_ps2ck__def_lineno}
+  alias _als__fn_pause_to_check__='
+    : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als__fn_pause_to_check__, begin, def Line ${als_ps2ck__def_lineno}
 
-    pause_to_check ${nameref_Lineno}
+    _fn_pause_to_check_ ${nameref_Lineno}
 
-    : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_pause_to_check_, end "${Color_AttributesOff}" '
+    : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als__fn_pause_to_check__, end "${Color_AttributesOff}" '
   #! \end alias definition\
 
 
@@ -443,7 +443,7 @@ function _fn_enable_debug_functions_(){
     ##  Function name
     #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #+  _fn_enable_git_debug_settings_()
-    #+  pause_to_check()
+    #+  _fn_pause_to_check_()
     #+  set()
     #+  xtr_duck()
 
@@ -472,9 +472,9 @@ function _fn_enable_debug_functions_(){
   }
 
 
-  : "${Color_SubComent} Define pause_to_check() ${Color_AttributesOff}"
-  ## Usage,   pause_to_check ${nameref_Lineno}
-  function pause_to_check(){                _als_fnction_boundary_in_
+  : "${Color_SubComent} Define _fn_pause_to_check_() ${Color_AttributesOff}"
+  ## Usage,   _fn_pause_to_check_ ${nameref_Lineno}
+  function _fn_pause_to_check_(){                _als_fnction_boundary_in_
 
     local -I exti_code=101 ## Q, Why inherit attributes and values when you assign values anyway?
 
@@ -1815,7 +1815,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
 
   done
 
-  pause_to_check "${nameref_Lineno}" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
+  _fn_pause_to_check_ "${nameref_Lineno}" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
 
   : "${Color_SubComent} Find out whether an RPM is installed, one by one ${Color_AttributesOff}"
   for UU in "${!addl_pkgs[@]}"
@@ -1828,7 +1828,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
   done
   unset UU
 
-    pause_to_check "${nameref_Lineno}" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
+    _fn_pause_to_check_ "${nameref_Lineno}" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
 
   ## Bug, this section should upgrade rpms one by one
 
@@ -1840,7 +1840,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
     }
   fi
 
-    pause_to_check "${nameref_Lineno}" $'From the \x24addl_pkgs array, install the remainder' # <>
+    _fn_pause_to_check_ "${nameref_Lineno}" $'From the \x24addl_pkgs array, install the remainder' # <>
 
   : "${Color_SubComent} Install any as yet uninstalled RPMs from the main list as necessary ${Color_AttributesOff}"
   not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
@@ -2163,7 +2163,7 @@ function setup_gh_cli(){                        _als_fnction_boundary_in_
     then
       firefox --browser 2>/dev/null 1>&2 &
       sleep 5
-      pause_to_check "${nameref_Lineno}" $'Waiting till browser is open before running \x60gh auth\x60 command'
+      _fn_pause_to_check_ "${nameref_Lineno}" $'Waiting till browser is open before running \x60gh auth\x60 command'
       gh_auth_login_command
     fi
   fi
@@ -2537,7 +2537,7 @@ function setup_ssh(){                           _als_fnction_boundary_in_
     write_ssh_conf || {
       _als_die_
     }
-    _als_pause_to_check_ # <>
+    _als__fn_pause_to_check__ # <>
 
   ## ToDo, _rm_ should be an alias
   ## ToDo, all aliases should be prefixed and suffixed with underscores, while functions should
@@ -2578,7 +2578,7 @@ function setup_ssh(){                           _als_fnction_boundary_in_
     : "${Color_SubComent}${SSH_AUTH_SOCK:=}" "${SSH_AGENT_PID:=} ${Color_AttributesOff}"
     declare -p SSH_AUTH_SOCK SSH_AGENT_PID # <>
 
-    _als_pause_to_check_ # <>
+    _als__fn_pause_to_check__ # <>
 
   : "${Color_SubComent} Get the PID of any running SSH Agents -- there may be more than one ${Color_AttributesOff}"
   local -a ssh_agent_pids
@@ -2608,7 +2608,7 @@ function setup_ssh(){                           _als_fnction_boundary_in_
     )
   fi
 
-    _als_pause_to_check_ # <>
+    _als__fn_pause_to_check__ # <>
 
   case "${#ssh_agent_pids[@]}" in
     0 )
