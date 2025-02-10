@@ -69,7 +69,8 @@
 
 
 ## Start the script
-function _fn_start_script_(){
+function _fn_start_script_ ()
+{
 
   ## Get & print script start time
   unset     script_start_time
@@ -88,7 +89,8 @@ _fn_start_script_
 
 
 ##
-function _fn_setup_aliases_(){
+function _fn_setup_aliases_ ()
+{
   : "${Color_Comment} Line ${nameref_Lineno}, Aliases, non-debug ${Color_AttributesOff}"
   unset       nameref_Lineno
   unset -n    nameref_Lineno
@@ -103,6 +105,7 @@ function _fn_setup_aliases_(){
   : "${Color_SubComent} Define alias _als_die_ onto function error_and_exit() ${Color_AttributesOff}"
   unset lineno__defin_of_alias_die
         lineno__defin_of_alias_die="$((nameref_Lineno+1))"
+
   alias _als_die_=': "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, begin, def Line ${lineno__defin_of_alias_die}
 
       error_and_exit "${nameref_Lineno}"
