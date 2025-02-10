@@ -4,15 +4,15 @@
 ## LiveUsb1
 #+ version 1.2
 
-#! Note, Putting a `LN="$nameref_Lineno"` (LINENO) or `main_lineno="$nameref_Lineno"` assignment
-#!   preceding an `exit` command lets the value of LN or main_lineno
-#!   match the line number of the `exit` command.
+#! Note, Putting a \LN=$nameref_Lineno\, ie, LINENO or \main_lineno=$nameref_Lineno\ assignment
+#!   preceding an \exit\ command lets the value of LN or main_lineno
+#!   match the line number of the \exit\ command.
 #! Note, idempotent script
-#! Note, the symbol "<>" marks code as for debugging purpoeses only
+#! Note, the symbol \<>\ marks code as for debugging purpoeses only
 #! Note, ...undocumented feature??
-#!     Use `env -i` or else the script\s execution environment will
+#!     Use \env -i\ or else the script\s execution environment will
 #!   inherit any exported anything, including and especially functions,
-#!   from its caller, e.g., any locally defined functions (such as `rm`)
+#!   from its caller, e.g., any locally defined functions (such as \rm\)
 #!   which might be intended to shadow any builtins or commands or to
 #!   supplant any of the aliases which some of the various Linux
 #!   distributions often define and provide for users\ convenience.
@@ -20,44 +20,44 @@
 #!   environment get printed above the script\s shebang in xtrace when
 #!   xtrace and vebose are both enabled on the shebang line. ...but
 #!   exported variables do not print.
-#!     ...also, using `env` messes up vim\s default bash-colorizations
-#! Note, style, function definition syntax, "(){ :" makes plain xtrace
+#!     ...also, using \env\ messes up vim\s default bash-colorizations
+#! Note, style, function definition syntax, \(){ :\ makes plain xtrace
 #!   easier to read.
-#! Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas
-#!   "[[ ! -e" does, and yet, for `grep`.....
-#! Note, timestamps, `find`, `stat` and `[[` (and `ls`) don\t effect
-#!   ext4 timestamps, as tested, but idempotent `chown` and `chmod` do,
-#!   and of course `touch` does; if there\s no change in the file,
-#!   `rsync` doesn\t, but if the file changes, it does. Also, "btime"
-#!   on ext4 still isn\t consistent. `grep` has no effect on times.
-#!   `cp -a` effects "ctimes" even if file contents do not change.
+#! Note, style, \! [[ -e\ doesn\t show the \!\ in xtrace, whereas
+#!   \[[ ! -e\ does, and yet, for \grep\.....
+#! Note, timestamps, \find\, \stat\ and \[[\ (and \ls\) don\t effect
+#!   ext4 timestamps, as tested, but idempotent \chown\ and \chmod\ do,
+#!   and of course \touch\ does; if there\s no change in the file,
+#!   \rsync\ doesn\t, but if the file changes, it does. Also, \btime\
+#!   on ext4 still isn\t consistent. \grep\ has no effect on times.
+#!   \cp -a\ effects mes even if file contents do not change.
 #!
 #! Reportable bug.
-#!     `command -p kill "$AA"` executes the bash builtin, judging by the
-#!   output of `command -p kill` without any operands. The output of
-#!   `$( type -P kill )"` without operands is the same as the output of
+#!     \command -p kill $AA\ executes the bash builtin, judging by the
+#!   output of \command -p kill\ without any operands. The output of
+#!   \$( type -P kill )\ without operands is the same as the output of
 #!   /usr/bin/kill without operands. The documentation is ...somewhat
-#!   unclear on these points. `help command`: "Runs COMMAND with ARGS
-#!   suppressing shell function lookup...." It seems that what is
-#!   intended is, "...suppressing shell function lookup, but still
-#!   allowing builtins to be executed," and possibly also aliases and
+#!   unclear on these points. \help command\: \Runs COMMAND with ARGS
+#!   suppressing shell function lookup....\ It seems that what is
+#!   intended is, \...suppressing shell function lookup, but still
+#!   allowing builtins to be executed,\ and possibly also aliases and
 #!   keywords, though I haven\t tested those. The description of the
-#!   "-p" option is particularly misleading: "use a default value for
-#!   PATH that is guaranteed to find all of the standard utilities."
-#!   That "guarantee" sounds as if use of the "-p" option "shall"
+#!   \-p\ option is particularly misleading: \use a default value for
+#!   PATH that is guaranteed to find all of the standard utilities.\
+#!   That \guarantee\ sounds as if use of the \-p\ option \shall\
 #!   (using the POSIX defition of the word) result in a binary utility
 #!   being used, when actually that is not the case.
-#!     Binary `kill` has a few options not available with the builtin,
-#!   such as "--timeout", which can be used to avoid writing an extra
+#!     Binary \kill\ has a few options not available with the builtin,
+#!   such as \--timeout\, which can be used to avoid writing an extra
 #!   for loop...
 #!
-#!       sudo -- "$( type -P kill )" --verbose \
+#!       sudo -- $( type -P kill ) --verbose \
 #!           --timeout 1000 HUP \
 #!           --timeout 1000 USR1 \
 #!           --timeout 1000 TERM \
-#!           --timeout 1000 KILL -- "$WW"
+#!           --timeout 1000 KILL -- $WW
 #!
-#!     Otherwise, it would be useful, IMO, if `kill --help` showed the
+#!     Otherwise, it would be useful, IMO, if \kill --help\ showed the
 #!   help file for /bin/kill, since using that syntax most likely
 #!   indicates that intention  :-\
 #!
@@ -104,7 +104,7 @@ function _fn_setup_aliases_ ()
 
   : "${Color_SubComent} Define alias _als_die_ onto function _fn_error_and_exit_() ${Color_AttributesOff}"
   unset lineno__defin_of_alias_die
-        lineno__defin_of_alias_die="$((nameref_Lineno+1))"
+        lineno__defin_of_alias_die=$(( nameref_Lineno + 2  ))
 
   alias _als_die_=': "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, begin, def Line ${lineno__defin_of_alias_die}
 
