@@ -236,8 +236,7 @@ function _fn_enable_debug_aliases_(){
   ##
   : "${Color_SubComent} Define alias _als_call_fncton_ ${Color_AttributesOff}"
 
-  ## Note, Usage:   -|_als_call_fncton_ \
-  #+                -|    [function name]
+  ## Note, Usage:   -|_als_call_fncton_ [function name]
   #+   Reason: so that the alias can be added to a script via sed/awk.
   unset als_cl_fn__def_lineno
         als_cl_fn__def_lineno=$((  nameref_Lineno + 2  ))
