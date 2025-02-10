@@ -730,9 +730,9 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_setup_vim_()
   #+  _fn_test_dns_()
   #+  _fn_test_os_()
-  #+  _fn_trap_err()
-  #+  _fn_trap_exit()
-  #+  _fn_trap_return()
+  #+  _fn_trap_err_()
+  #+  _fn_trap_exit_()
+  #+  _fn_trap_return_()
   #+  _fn_write_bashrc_strings()
   #+  _fn_write_ssh_conf()
 
@@ -2870,8 +2870,8 @@ function _fn_test_os_()
 
 
 
-: "${Color_SubComent} Define _fn_trap_err() ${Color_AttributesOff}"
-function _fn_trap_err()
+: "${Color_SubComent} Define _fn_trap_err_() ${Color_AttributesOff}"
+function _fn_trap_err_()
 {                            _als_fnction_boundary_in_
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
@@ -2886,10 +2886,10 @@ function _fn_trap_err()
 ## Bug, these var assignments $prev_cmd_exit_code and $lineno only fail when they\re on line number >=2
 #+  of  trap  "args section" ??
 
-: "${Color_SubComent} Define _fn_trap_exit() ${Color_AttributesOff}"
+: "${Color_SubComent} Define _fn_trap_exit_() ${Color_AttributesOff}"
 ## Note, these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function _fn_trap_exit()
+function _fn_trap_exit_()
 {                           _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
@@ -3028,10 +3028,10 @@ function _fn_write_ssh_conf()
 
 
 : "${Color_Comment} Line ${nameref_Lineno}, Define trap on ERR ${Color_AttributesOff}"
-trap _fn_trap_err ERR
+trap _fn_trap_err_ ERR
 
 : "${Color_Comment} Line ${nameref_Lineno}, Define trap on EXIT ${Color_AttributesOff}"
-trap _fn_trap_exit EXIT
+trap _fn_trap_exit_ EXIT
 
 
 : "${Color_Comment} Line ${nameref_Lineno}, Regular users with sudo, only ${Color_AttributesOff}"
