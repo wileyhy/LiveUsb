@@ -68,14 +68,13 @@
 #! TODO, systemd services to possibly enable, sshd, sssd
 
 
-
-
 ## Start the script
 function start_script(){
 
   ## Get & print script start time
-  script_start_time=$( date +%H:%M:%S )
-  readonly script_start_time
+  unset     script_start_time
+            script_start_time=$( date +%H:%M:%S )
+  readonly  script_start_time
 
   ## Print script start time
   printf '%s - Executing %s \n' "${script_start_time}" "$0"
@@ -87,9 +86,13 @@ function start_script(){
 }
 start_script
 
+
+## 
 function setup_aliases(){
   : "${C_Comment} Line ${nL}, Aliases, non-debugg ${C_AttrOff}"
-  local -gnx nL=L\INENO
+  unset       nl
+  unset -n    nL
+  local -gnx  nL=L\INENO
 
   : "${C_CmntSub} Line ${nL}, Aliases TOC, non-debugg ${C_AttrOff}"
 
@@ -98,7 +101,8 @@ function setup_aliases(){
   #+  __die__
 
   : "${C_CmntSub} Define alias __die__ onto function error_and_exit() ${C_AttrOff}"
-  als_di__def_lineno="$((nL+1))"
+  unset als_di__def_lineno
+        als_di__def_lineno="$((nL+1))"
   alias __die__=': "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}
 
       error_and_exit "${nL}"
@@ -107,16 +111,20 @@ function setup_aliases(){
 }
 setup_aliases
 
-## <> Enable debugging (ie, "debugging")
+
+## Enable debugging
 function enable_debugg_params(){
 
   ## Set up debugg shell options
   local -
+
   : "$( tput setaf 12 ) Debugging $( tput sgr0   )"
   # shellcheck disable=SC1001
   #! Note, this assignment is repeated here; originally it\s located
   #!   in setup_vars()
-  local -gnx nL=L\INENO
+  unset       nL
+  unset -n    nL
+  local -gnx  nL=L\INENO
   # shellcheck disable=SC2218
   {
     set -a # <>   All export
@@ -127,43 +135,44 @@ function enable_debugg_params(){
     set -o pipefail # <>
   }
 
-  ## Set up debugg colors
+  ## Set up debug colors
   [[ -o xtrace ]] &&
     : "$( tput setaf 12 ) Set up colors for xtrace comments $( tput sgr0 )"
-  C_AttrOff="$( tput sgr0 )"
-  readonly C_AttrOff
+  unset       C_AttrOff
+              C_AttrOff="$( tput sgr0 )"
+  readonly    C_AttrOff
 
-  unset II aa_colors
-  declare -A aa_colors
+  ## Digit Color      ## Execution of code regarding...
+  ##################################################################
+  # "12  blue"        ##    Explanatory comments, per major sections
+  # "10  light_green" ##    Explanatory comments, per-subsection
+  # "226 yellow"      ##    Explanatory comments, per-sub-subsection
+  # "14  light_blue"  ##    Aliases at function boundaries
+  # "11  orange"      ##    Function boundary lines in xtrace
+  # "3   brown"       ##    Aliases in xtrace
+  # "4   purple"      ##    Technical comments
+  # "8   brick_red" ) ##    Errors
 
-    ## Digit Color      ## Execution of code regarding...
-    ##################################################################
-    # "12  blue"        ##    Explanatory comments, per major sections
-    # "10  light_green" ##    Explanatory comments, per-subsection
-    # "226 yellow"      ##    Explanatory comments, per-sub-subsection
-    # "14  light_blue"  ##    Aliases at function boundaries
-    # "11  orange"      ##    Function boundary lines in xtrace
-    # "3   brown"       ##    Aliases in xtrace
-    # "4   purple"      ##    Technical comments
-    # "8   brick_red" ) ##    Errors
+  ##          Array nm    ## Var sub-name   ## Digit / Color      
+  ###########################################################
+  unset       aa_colors
+  declare -A  aa_colors
+              aa_colors+=( ["Comment"]="    12  blue"       
+                           ["CmntSub"]="    10  light_green"
+                           ["CmntSubSub"]=" 226 yellow"     
+                           ["AlsFnBndry"]=" 14  light_blue" 
+                           ["FnBndry"]="    11  orange"     
+                           ["XtrAls"]="     3   brown"      
+                           ["TechCmnt"]="   4   purple"     
+                           ["Errors"]="     8   brick_red" )
 
-    ## Array nm  ## Var sub-name   ## Digit Color      
-    ##################################################
-       aa_colors+=( ["Comment"]="     12  blue"       
-                    ["CmntSub"]="     10  light_green"
-                    ["CmntSubSub"]="  226 yellow"     
-                    ["AlsFnBndry"]="  14  light_blue" 
-                    ["FnBndry"]="     11  orange"     
-                    ["XtrAls"]="      3   brown"      
-                    ["TechCmnt"]="    4   purple"     
-                    ["Errors"]="      8   brick_red" )
-
-  for II in "${!aa_colors[@]}"
+  unset II 
+  for   II in "${!aa_colors[@]}"
   do
-    unset -n NN
-      declare -n NN="C_${II}"
-    unset DD
-      DD="$( awk '{ print $1 }' <<< "${aa_colors[$II]}" )"
+    unset -n    NN
+    declare -n  NN="C_${II}"
+    unset       DD
+                DD="$( awk '{ print $1 }' <<< "${aa_colors[$II]}" )"
 
     # shellcheck disable=SC2034
     printf -v NN '%b' "$( tput setaf "${DD}" )"
@@ -171,14 +180,22 @@ function enable_debugg_params(){
     tput sgr0
 
   done
-  unset -n NN
-  unset II DD aa_colors
+  unset -n      NN
+  unset         DD
+  unset         II
+  unset         aa_colors
+
 
   : "${C_Comment} Variables, Function boundary parameters ${C_AttrOff}"
-  fn_bndry_sh=" ~~~ ~~~ ~~~ "
-  fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
-  readonly fn_bndry_sh fn_bndry_lo
-  fn_lvl=0
+  unset     fn_bndry_sh
+            fn_bndry_sh=" ~~~ ~~~ ~~~ "
+  readonly  fn_bndry_sh
+  unset     fn_bndry_lo
+            fn_bndry_lo=${fn_bndry_sh}${fn_bndry_sh}${fn_bndry_sh}
+  readonly  fn_bndry_lo
+
+  unset     fn_lvl
+            fn_lvl=0
 }
 enable_debugg_params
 
@@ -190,6 +207,7 @@ function enable_debugg_aliases(){
   #!   of function A which is contained within in (alias B).
 
   : "${C_CmntSub} Line ${nL}, Aliases, debugg - TOC ${C_AttrOff}"
+
   ##  Alias name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  __call_fn__
@@ -207,19 +225,24 @@ function enable_debugg_aliases(){
   #!   the first line of this array.
 
   : "${C_CmntSub} Define alias __call_fn__ ${C_AttrOff}"
+
   ## Note, Usage:   -|__call_fn__ \
   #+                -|    [function name]
   #+   Reason: so that the alias can be added to a script via sed/awk.
-  als_cl_fn__def_lineno="$((nL+1))"
+  unset als_cl_fn__def_lineno
+        als_cl_fn__def_lineno="$((nL+1))"
   alias __call_fn__='_="${C_XtrAls} alias __call_fn__, begin" als_cl_fn__call_line="$nL" als_def_line="${als_cl_fn__def_lineno}" _="alias __call_fn__, end ${C_AttrOff}" '
 
 
   : "${C_CmntSub} Define alias __debug_break__ ${C_AttrOff}"
   ## Note, this alias is in intended to function as a
-  als_dbg_brk__def_lineno="$((nL+1))"
+  unset als_dbg_brk__def_lineno
+        als_dbg_brk__def_lineno="$((nL+1))"
   alias __debug_break__='
     : "${C_XtrAls}" Line ${nL}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}
+
     : If xtrace is already enabled, then disable xtrace and exit the script
+
     if [[ -o xtrace ]]
     then
       builtin set - && printf "%b\n" "${C_AttrOff}"
@@ -231,14 +254,18 @@ function enable_debugg_aliases(){
     fi
 
     : "${C_XtrAls}" Line ${nL}, alias __debug_break__, end "${C_AttrOff}"'
+  #! \end alias definition\
 
 
   : "${C_CmntSub} Define alias __enable_global_xtrace__ ${C_AttrOff}"
   ## Note, this alias is in intended to function as a
-  als_enbl_glbl_xtr__def_lineno="$((nL+1))"
+  unset als_enbl_glbl_xtr__def_lineno
+        als_enbl_glbl_xtr__def_lineno="$((nL+1))"
   alias __enable_global_xtrace__='
     : "${C_XtrAls}" Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
+
     : If xtrace is already enabled, then exit the script
+
     if ! [[ -o xtrace ]]
     then
       printf "%b\n" "${C_XtrAls} Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
@@ -277,6 +304,7 @@ function enable_debugg_aliases(){
     fi
 
     : "${C_XtrAls}" Line ${nL}, alias __enable_local_xtrace__, end "${C_AttrOff}"'
+  #! \end alias definition\
 
 
   : "${C_CmntSub} Define alias __function_boundary_in__ ${C_AttrOff}"
@@ -293,6 +321,7 @@ function enable_debugg_aliases(){
     local_hyphn="$-"
     prev_cmd_exit_code="${EC:-$?}"
     : alias __function_boundary_in__, end "${C_AttrOff}"'
+  #! \end alias definition\
 
 
   : "${C_CmntSub} Define alias __function_boundary_out_0__ ${C_AttrOff}"
@@ -302,6 +331,7 @@ function enable_debugg_aliases(){
     _="alias __function_boundary_out_0__, end"
     _="${C_FnBndry} ${fn_bndry_lo} function ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl )) ${C_AttrOff}"
     '
+  #! \end alias definition\
 
 
   : "${C_CmntSub} Define alias __pause2ck__ ${C_AttrOff}"
@@ -312,6 +342,7 @@ function enable_debugg_aliases(){
     pause_to_check "${nL}"
 
     : "${C_AlsFnBndry}" Line ${nL}, alias __pause2ck__, end "${C_AttrOff}"'
+  #! \end alias definition\
 
 
   : "${C_CmntSub} Define alias __xtr_read_and_on__ ${C_AttrOff}"
@@ -330,6 +361,7 @@ function enable_debugg_aliases(){
     builtin set -x
 
     : "${C_XtrAls}" Line ${nL}, alias __xtr_read_and_on__, end "${C_AttrOff}"'
+  #! \end alias definition\
 
 
   : "${C_CmntSub} Define alias __xtr_restore__ ${C_AttrOff}"
@@ -352,11 +384,15 @@ function enable_debugg_aliases(){
     fi
 
     : "${C_XtrAls}" Line ${nL}, alias __xtr_restore__, end "${C_AttrOff}"'
+  #! \end alias definition\
+
 
   : "${C_CmntSub} Line ${nL}, Aliases, Debugg -  Complete ${C_AttrOff}"
 }
 enable_debugg_aliases
 
+
+##
 function enable_debugg_functions(){
   : "${C_Comment} Line ${nL}, Functions, Debugg ${C_AttrOff}"
   : "${C_CmntSub} Line ${nL}, Functions, Debugg -  TOC ${C_AttrOff}"
