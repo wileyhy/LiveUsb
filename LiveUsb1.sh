@@ -597,7 +597,6 @@ __call_fn__ \
 
 : "${C_Comment} Line ${nL}, # Testing testing testing ${C_AttrOff}"
 
-  #exit "$nL" #<>
   builtin set -x #<>
 
 
@@ -1785,9 +1784,6 @@ function setup_dnf(){                           __function_boundary_in__
           ps aux |
             awk --assign "CC=${a_pids[WW]}" '$2 ~ CC { print }'
 
-            #pause_to_check "${nL}" "Execute a lengthy \x60kill --timeout...\x60 command?" # <>
-
-
           : "${C_CmntSub} Ensure a process is still running before trying to kill it ${C_AttrOff}"
 
           ## Note, some strings from /proc/[pid]/cmdline include "[]" brackets; `pgrep -f` parses these as
@@ -2273,7 +2269,6 @@ function setup_git(){                           __function_boundary_in__
 
   : "${C_CmntSub} Clean up after section, Git ${C_AttrOff}"
   unset git_files_a git_conf_global_f git_mesg git_ignr git_keys
-  #unset git_system_conf_file
                                                  __function_boundary_out_0__
 }
 
@@ -2282,7 +2277,6 @@ function setup_git(){                           __function_boundary_in__
 
 : "${C_CmntSub} Define setup_git_user_dirs() ${C_AttrOff}"
 function setup_git_user_dirs(){                 __function_boundary_in__
-  #__enable_local_xtrace__
 
   ## Note, in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
   #+   popd
@@ -2318,7 +2312,6 @@ function setup_git_user_dirs(){                 __function_boundary_in__
 
 : "${C_CmntSub} Define setup_gpg() ${C_AttrOff}"
 function setup_gpg(){                           __function_boundary_in__
-  #__enable_local_xtrace__
 
   : "${C_CmntSub} If any files in ~/.gnupg are not owned by either USER or root, then error out and exit ${C_AttrOff}"
   local -a problem_files
@@ -2780,22 +2773,6 @@ function trap_exit(){                           __function_boundary_in__
 
 
 
-#: "${C_CmntSub} Define trap_return() ${C_AttrOff}"
-#function trap_return(){                          __function_boundary_in__
-  #__enable_local_xtrace__
-    #echo "fn_bndry_lo: ${fn_bndry_lo}"
-    #echo "FUNCNAME[0]: ${FUNCNAME[0]}"
-    #echo "FUNCNAME[1]: ${FUNCNAME[1]}"
-    #echo "fn_bndry_sh: ${fn_bndry_sh}"
-    #echo "fn_lvl: ${fn_lvl}"
-    #exit "${LINENO}"
-                                                 #__function_boundary_out_0__
-#}
-
-
-
-
-
 : "${C_CmntSub} Define write_bashrc_strings() ${C_AttrOff}"
 function write_bashrc_strings(){                __function_boundary_in__
   #__enable_local_xtrace__
@@ -2921,26 +2898,9 @@ trap trap_err ERR
 : "${C_Comment} Line ${nL}, Define trap on EXIT ${C_AttrOff}"
 trap trap_exit EXIT
 
-#: "${C_CmntSub} Define trap on RETURN ${C_AttrOff}"
-#trap trap_return RETURN
-
-  # <>
-  #trap
-  #declare -pF trap_err trap_exit
-  #declare -pf trap_err trap_exit
-  #set -
-  #__debug_break__
 
 : "${C_Comment} Line ${nL}, Regular users with sudo, only ${C_AttrOff}"
-#( builtin set -x; : "${C_Comment} Line ${nL},   Regular users with sudo, only   ${C_AttrOff}" )
-#fn_call_ln="$((nL+1))"
 must_be_root
-
-  # <>
-  #: "${C_CmntSub} LINENO: ${LINENO} ${C_AttrOff}"
-  #: "${Halt:?}"
-  #__debug_break__
-  #main_lineno="$nL" exit # <>
 
 ## Note, traps
 # EXIT -- for exiting
@@ -2948,28 +2908,10 @@ must_be_root
 # INT QUIT USR2 -- for stopping logging
 # for starting logging ?
 
-  #echo foo
-  #echo bar
-  #__debug_break__
-  #declare -p qui__ ver__
-
 : "${C_Comment} Line ${nL}, Test OS ${C_AttrOff}"
 test_os
 
   #__debug_break__
-
-#: "${C_Comment} Line ${nL}, Variables ${C_AttrOff}"
-#setup_variables
-
-  #__debug_break__
-  #__die__ testing
-  #false
-
-#: "<Logs>"
-#__enable_global_xtrace__
-#logf="${tmp_dir}/log.${scr_nm}.${script_start_time}.txt"
-#printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}"
-#exec > >( tee "${logf}" ) 2>&1
 
 : "${C_Comment} Line ${nL}, Certain files must have been installed from off-disk ${C_AttrOff}"
 reqd_user_files
@@ -3011,20 +2953,6 @@ increase_disk_space
 
   #__debug_break__
 
-#: "<Logs>"
-#__enable_global_xtrace__
-#printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
-#exec 3>&1 4>&2 # <Logs>
-#trap "trap - INT QUIT USR2; exec 2>&4 1>&3" INT QUIT USR2 # <Logs>
-#exec 1> "${logf}" 2>&1 # <Logs>
-
-#: "<Logs>"
-#printf '\n%s, beginning logging to file, %s\n' "${scr_nm}" "${logf}" # <Logs>
-#__enable_global_xtrace__
-#exec > >( tee "${logf}" ) 2>&1 ## this works. however, there aren\t any colors.
-#exec > >( tee --append "${logf}" ) ##
-#exec 2> >( GREP_COLORS="mt=01;33" grep --color=always -Ee ".*" | tee --append "${logf}" ) ## Burgy
-
 : "${C_Comment} Line ${nL}, Dnf ${C_AttrOff}"
 setup_dnf
 
@@ -3044,9 +2972,6 @@ do
 done
 unset BB
 
-# <Logs> Write to TTY and exit
-#hash -r
-#"$( type -P kill )" --signal USR2 -- "$$" # <Logs>
 
 : "${C_Comment} Line ${nL}, SSH ${C_AttrOff}"
 setup_ssh
@@ -3063,7 +2988,7 @@ setup_git_user_dirs
 
   #__debug_break__
 
-#: "Git debugg settings"
+: "Git debugg settings"
 #enable_git_debugg_settings
 
 : "${C_Comment} Line ${nL}, Git ${C_AttrOff}"
@@ -3096,7 +3021,7 @@ fi
   set -v ## <>
 
 : "${C_Comment} Line ${nL}, Clean up & exit ${C_AttrOff}"
-#"$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${ver__[@]}" "${tmp_dir}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 EC=00
 main_lineno="${nL}" exit
+
