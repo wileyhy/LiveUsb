@@ -701,7 +701,7 @@ _als_call_fncton_ _fn_setup_variables_
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  _fn_clone_repo_()
   #+  _fn_error_and_exit_()
-  #+  get_pids_for_restarting()
+  #+  _fn_get_pids_for_restarting_()
   #+  gh_auth_login_command()
   #+  increase_disk_space()
   #+  min_necc_packages()
@@ -797,8 +797,8 @@ function _fn_error_and_exit_(){                       _als_fnction_boundary_in_
 
 ## ToDo: add a \get_distro()\ function
 
-: "${Color_SubComent} Define get_pids_for_restarting() ${Color_AttributesOff}"
-function get_pids_for_restarting(){              _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_get_pids_for_restarting_() ${Color_AttributesOff}"
+function _fn_get_pids_for_restarting_(){              _als_fnction_boundary_in_
 
   # shellcheck disable=SC2034
   local dnf_o
@@ -1042,7 +1042,7 @@ function min_necc_packages(){                    _als_fnction_boundary_in_
       sudo -- dnf --assumeyes install "${XX}"
 
       ## ToDo, comment out this use of $a_pids, re declaring and unsetting
-      get_pids_for_restarting
+      _fn_get_pids_for_restarting_
 
     fi
   done
@@ -1811,7 +1811,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
 
     : $'Run \x60dnf needs-restarting\x60, collecting PID/commandline pairs'
     #a_pids=()
-    get_pids_for_restarting
+    _fn_get_pids_for_restarting_
 
       declare -p a_pids
       #exit 101
@@ -1864,7 +1864,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
         _als_die_
       }
 
-      get_pids_for_restarting
+      _fn_get_pids_for_restarting_
 
       ## BUG, killing NetworkManager or firewalld stops the systemd service process, and neither restart
       #+  automatically
@@ -1971,7 +1971,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
   unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
   : "${Color_SubComent} Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs ${Color_AttributesOff}"
-  get_pids_for_restarting
+  _fn_get_pids_for_restarting_
 
   : $'Get new hash of installed packages, ie, \x24{hash..B}'
   hash_of_installed_pkgs_B=$(
