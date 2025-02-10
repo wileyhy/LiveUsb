@@ -692,8 +692,6 @@ _als_call_fncton_ \
 
   ##  Function name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #+  __vte_osc7()
-  #+  __vte_prompt_command()
   #+  clone_repo()
   #+  _fn_error_and_exit_()
   #+  get_pids_for_restarting()
@@ -1499,7 +1497,7 @@ function setup_bashrc(){                         _als_fnction_boundary_in_
   declare -a vars_for_bashrc_1=([0]="BROWSER" [1]="EDITOR" [2]="PS0" [3]="prompt_colors_reset")
   declare -a vars_for_bashrc_2=([0]="prompt_cmd_0")
   declare -a vars_for_bashrc_3=([0]="PROMPT_COMMAND")
-  declare -a fcns_for_bashrc_1=() #rm ) #__vte_osc7 __vte_prompt_command
+  declare -a fcns_for_bashrc_1=()
 
     # indices=()
     #
