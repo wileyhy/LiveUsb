@@ -262,7 +262,7 @@ function _fn_enable_debug_aliases_(){
     if [[ -o xtrace ]]
     then
       builtin set - && printf "%b\n" "${Color_AttributesOff}"
-      EC=101
+      exti_code=101
       main_lineno="${nameref_Lineno}" builtin exit
     else
       printf "%b\n" "${Color_XtraceOfAlias} Line ${nameref_Lineno}, alias _als_debug_break_, begin, def Line ${als_dbg_brk__def_lineno}"
@@ -348,7 +348,7 @@ function _fn_enable_debug_aliases_(){
     fn_call_lineno=$(( ${als_cl_fn__call_line:-} +1))
     fn_def_lineno=${nameref_Lineno:-}
     local_hyphn=$-
-    prev_cmd_exit_code=${EC:-$?}
+    prev_cmd_exit_code=${exti_code:-$?}
     : alias _als_fnction_boundary_in_, end "${Color_AttributesOff}" '
   #! \end alias definition\
 
@@ -476,7 +476,7 @@ function enable_debug_functions(){
   ## Usage,   pause_to_check ${nameref_Lineno}
   function pause_to_check(){                _als_fnction_boundary_in_
 
-    local -I EC=101 ## Q, Why inherit attributes and values when you assign values anyway?
+    local -I exti_code=101 ## Q, Why inherit attributes and values when you assign values anyway?
 
     local -a KK=( "$@" )
     local reply
@@ -779,7 +779,7 @@ function _fn_error_and_exit_(){                       _als_fnction_boundary_in_
     prev_cmd_exit_code=01
 
     ## <>
-    EC=${prev_cmd_exit_code}
+    exti_code=${prev_cmd_exit_code}
     LN=${local_lineno} builtin exit
                                                  _als_fnction_boundary_out_0_
 }
@@ -3114,6 +3114,6 @@ fi
 
 : "${Color_Comment} Line ${nameref_Lineno}, Clean up & exit ${Color_AttributesOff}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
-EC=00
+exti_code=00
 main_lineno="${nameref_Lineno}" exit
 
