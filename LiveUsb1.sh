@@ -549,15 +549,15 @@ function _fn_setup_variables_(){ _als_fnction_boundary_in_
   : "${Color_Comment} Line ${nameref_Lineno}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
   :
   : "${Color_SubComent} Variables, colors, non-debug ${Color_AttributesOff}"
-  [[ -v Color_AliasFunctionBoundary ]] || Color_AliasFunctionBoundary=${Color_AliasFunctionBoundary:=}
-  [[ -v Color_AttributesOff ]]    || Color_AttributesOff=${Color_AttributesOff:=}
-  [[ -v Color_SubComent ]]    || Color_SubComent=${Color_SubComent:=}
-  [[ -v Color_SubSbComent ]] || Color_SubSbComent=${Color_SubSbComent:=}
-  [[ -v Color_Comment ]]    || Color_Comment=${Color_Comment:=}
-  [[ -v Color_Errors ]]     || Color_Errors=${Color_Error:=}
-  [[ -v Color_FnctionBoundry ]]    || Color_FnctionBoundry=${Color_FnctionBoundry:=}
-  [[ -v Color_TechCmnt ]]   || Color_TechCmnt=${Color_TechCmnt:=}
-  [[ -v Color_XtraceOfAlias ]]     || Color_XtraceOfAlias=${Color_XtraceOfAlias:=}
+  [[ -v Color_AliasFunctionBoundary ]]  || Color_AliasFunctionBoundary=${Color_AliasFunctionBoundary:=}
+  [[ -v Color_AttributesOff ]]          || Color_AttributesOff=${Color_AttributesOff:=}
+  [[ -v Color_SubComent ]]              || Color_SubComent=${Color_SubComent:=}
+  [[ -v Color_SubSbComent ]]            || Color_SubSbComent=${Color_SubSbComent:=}
+  [[ -v Color_Comment ]]                || Color_Comment=${Color_Comment:=}
+  [[ -v Color_Errors ]]                 || Color_Errors=${Color_Error:=}
+  [[ -v Color_FnctionBoundry ]]         || Color_FnctionBoundry=${Color_FnctionBoundry:=}
+  [[ -v Color_TechCmnt ]]               || Color_TechCmnt=${Color_TechCmnt:=}
+  [[ -v Color_XtraceOfAlias ]]          || Color_XtraceOfAlias=${Color_XtraceOfAlias:=}
   :
     builtin set -x
   :
