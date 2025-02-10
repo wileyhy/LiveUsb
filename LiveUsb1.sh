@@ -733,8 +733,8 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_trap_err_()
   #+  _fn_trap_exit_()
   #+  _fn_trap_return_()
-  #+  _fn_write_bashrc_strings()
-  #+  _fn_write_ssh_conf()
+  #+  _fn_write_bashrc_strings_()
+  #+  _fn_write_ssh_conf_()
 
 : "${Color_SubComent} Define _fn_clone_repo_() ${Color_AttributesOff}"
 function _fn_clone_repo_ ()
@@ -1619,14 +1619,14 @@ function _fn_setup_bashrc_ ()
   local KK
   for KK in "${!bashrc_Assoc_arrays[@]}"
   do
-    _fn_write_bashrc_strings "${bashrc_Assoc_arrays[${KK}]}"
+    _fn_write_bashrc_strings_ "${bashrc_Assoc_arrays[${KK}]}"
   done
   unset KK
 
   : "${Color_SubComent} bashrc -- Clean up ${Color_AttributesOff}"
   unset pc_regx prompt_cmd_0
   unset files_for_use_with_bash
-  unset -f _fn_write_bashrc_strings
+  unset -f _fn_write_bashrc_strings_
   unset "${bashrc_Assoc_arrays[@]}"
   unset bashrc_Assoc_arrays
                                                  _als_fnction_boundary_out_0_
@@ -2567,7 +2567,7 @@ function _fn_setup_ssh_()
       _als_die_
     }
   [[ -f ${ssh_user_conf_file} ]] ||
-    _fn_write_ssh_conf || {
+    _fn_write_ssh_conf_ || {
       _als_die_
     }
     _als__fn_pause_to_check__ # <>
@@ -2580,9 +2580,9 @@ function _fn_setup_ssh_()
   if ! grep "ForwardAgent yes" "${qui__[@]}" "${ssh_user_conf_file}"
   then
     "$( type -P rm )" --force --one-file-system --preserve-root=all "${ver__[@]}" "${ssh_user_conf_file}"
-    _fn_write_ssh_conf
+    _fn_write_ssh_conf_
   fi
-  unset -f _fn_write_ssh_conf
+  unset -f _fn_write_ssh_conf_
 
   ## Bug, security, these #chown# commands should operate on the files while they are still in skel_LiveUsb
   #+  see also similar code in _fn_setup_gpg_(), possibly elsewhere also  :-\
@@ -2906,8 +2906,8 @@ function _fn_trap_exit_()
 
 
 
-: "${Color_SubComent} Define _fn_write_bashrc_strings() ${Color_AttributesOff}"
-function _fn_write_bashrc_strings()
+: "${Color_SubComent} Define _fn_write_bashrc_strings_() ${Color_AttributesOff}"
+function _fn_write_bashrc_strings_()
 {                _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
@@ -2999,7 +2999,7 @@ function _fn_write_bashrc_strings()
 ## ToDo, look at how each conf file is defined and written, each one's a little different. Make them
 #+  uniform with each other, since the purpose of each section is the same in each case.
 
-function _fn_write_ssh_conf()
+function _fn_write_ssh_conf_()
 {                      _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
