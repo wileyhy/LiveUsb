@@ -94,20 +94,20 @@ function setup_aliases(){
   unset -n    nL
   local -gnx  nL=L\INENO
 
-  : "${C_CmntSub} Line ${nL}, Aliases TOC, non-debug ${C_AttrOff}"
+  : "${C_SubComent} Line ${nL}, Aliases TOC, non-debug ${C_AttrOff}"
 
   ##  Alias name
   #+  ~~~~~~~~~~
   #+  __die__
 
-  : "${C_CmntSub} Define alias __die__ onto function error_and_exit() ${C_AttrOff}"
+  : "${C_SubComent} Define alias __die__ onto function error_and_exit() ${C_AttrOff}"
   unset als_di__def_lineno
         als_di__def_lineno="$((nL+1))"
-  alias __die__=': "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}
+  alias __die__=': "${C_AliasFunctionBoundary}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}
 
       error_and_exit "${nL}"
 
-      : "${C_AlsFnBndry}" Line ${nL}, alias __die__, end "${C_AttrOff}"'
+      : "${C_AliasFunctionBoundary}" Line ${nL}, alias __die__, end "${C_AttrOff}"'
 }
 setup_aliases
 
@@ -158,10 +158,10 @@ function enable_debug_params(){
   unset       aa_colors
   declare -A  aa_colors
               aa_colors+=( ["Comment"]="    12  blue"       
-                           ["CmntSub"]="    10  light_green"
-                           ["CmntSubSub"]=" 226 yellow"     
-                           ["AlsFnBndry"]=" 14  light_blue" 
-                           ["FnBndry"]="    11  orange"     
+                           ["SubComent"]="    10  light_green"
+                           ["SubSbComent"]=" 226 yellow"     
+                           ["AliasFunctionBoundary"]=" 14  light_blue" 
+                           ["FnctionBoundry"]="    11  orange"     
                            ["XtrAls"]="     3   brown"      
                            ["TechCmnt"]="   4   purple"     
                            ["Errors"]="     8   brick_red" )
@@ -209,7 +209,7 @@ function enable_debug_aliases(){
   #!   of function A which is contained within in (alias B).
 
   ##  Aliases, TOC
-  : "${C_CmntSub} Line ${nL}, Aliases, debug - TOC ${C_AttrOff}"
+  : "${C_SubComent} Line ${nL}, Aliases, debug - TOC ${C_AttrOff}"
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  __call_fn__
   #+  __debug_break__
@@ -227,7 +227,7 @@ function enable_debug_aliases(){
 
 
   ##
-  : "${C_CmntSub} Define alias __call_fn__ ${C_AttrOff}"
+  : "${C_SubComent} Define alias __call_fn__ ${C_AttrOff}"
 
   ## Note, Usage:   -|__call_fn__ \
   #+                -|    [function name]
@@ -240,7 +240,7 @@ function enable_debug_aliases(){
 
 
   ##
-  : "${C_CmntSub} Define alias __debug_break__ ${C_AttrOff}"
+  : "${C_SubComent} Define alias __debug_break__ ${C_AttrOff}"
   ## Note, this alias is in intended to function as a
   unset als_dbg_brk__def_lineno
         als_dbg_brk__def_lineno="$((nL+1))"
@@ -265,7 +265,7 @@ function enable_debug_aliases(){
 
 
   ##
-  : "${C_CmntSub} Define alias __enable_global_xtrace__ ${C_AttrOff}"
+  : "${C_SubComent} Define alias __enable_global_xtrace__ ${C_AttrOff}"
   ## Note, this alias is in intended to function as a
   unset als_enbl_glbl_xtr__def_lineno
         als_enbl_glbl_xtr__def_lineno="$((nL+1))"
@@ -279,7 +279,7 @@ function enable_debug_aliases(){
     then
       printf "%b\n" "${C_XtrAls} Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
 
-      print_function_boundaries=do_prFnBndrys
+      print_function_boundaries=do_prFnctionBoundrys
       export print_function_boundaries
 
       printf "%b Line %d, Enabling global xtrace %b\n" "${C_TechCmnt}" "${nL}" "${C_AttrOff}"
@@ -292,7 +292,7 @@ function enable_debug_aliases(){
 
 
   ##
-  : "${C_CmntSub} Define alias __enable_local_xtrace__ ${C_AttrOff}"
+  : "${C_SubComent} Define alias __enable_local_xtrace__ ${C_AttrOff}"
   unset als_enbl_loc_xtr__def_lineno
         als_enbl_loc_xtr__def_lineno="$((nL+1))"
 
@@ -302,7 +302,7 @@ function enable_debug_aliases(){
 
     if ! [[ -o xtrace ]]
     then
-      local -Ig print_function_boundaries=do_prFnBndrys
+      local -Ig print_function_boundaries=do_prFnctionBoundrys
       export print_function_boundaries
 
       printf "%b   Enabling function-local xtrace %b\n" "${C_TechCmnt}" "${C_AttrOff}"
@@ -321,15 +321,15 @@ function enable_debug_aliases(){
 
 
   ##
-  : "${C_CmntSub} Define alias __function_boundary_in__ ${C_AttrOff}"
+  : "${C_SubComent} Define alias __function_boundary_in__ ${C_AttrOff}"
   ## Note, s\b all one line
   # shellcheck disable=SC2142
   unset als_fn_bdry_in__def_lineno
         als_fn_bdry_in__def_lineno="$((nL+1))"
 
   alias __function_boundary_in__='
-    _="${C_FnBndry} ${fn_bndry_lo} function ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl )) ${C_AlsFnBndry}"
-    _="${C_AlsFnBndry} alias __function_boundary_in__, begin"
+    _="${C_FnctionBoundry} ${fn_bndry_lo} function ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl )) ${C_AliasFunctionBoundary}"
+    _="${C_AliasFunctionBoundary} alias __function_boundary_in__, begin"
     als_fn_bndry_in__call_line=${nL}
     als_def_line="${als_fn_bdry_in__def_lineno}"
     fn_call_lineno=$(( ${als_cl_fn__call_line:-} +1))
@@ -341,34 +341,34 @@ function enable_debug_aliases(){
 
 
   ##
-  : "${C_CmntSub} Define alias __function_boundary_out_0__ ${C_AttrOff}"
+  : "${C_SubComent} Define alias __function_boundary_out_0__ ${C_AttrOff}"
   unset als_fn_bdry_out_0__def_lineno
         als_fn_bdry_out_0__def_lineno="$((nL+1))"
 
   alias __function_boundary_out_0__='
-    _="${C_AlsFnBndry} alias __function_boundary_out_0__ begin" als_call_line=$nL als_def_line=${als_fn_bdry_out_0__def_lineno}
+    _="${C_AliasFunctionBoundary} alias __function_boundary_out_0__ begin" als_call_line=$nL als_def_line=${als_fn_bdry_out_0__def_lineno}
     _="alias __function_boundary_out_0__, end"
-    _="${C_FnBndry} ${fn_bndry_lo} function ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl )) ${C_AttrOff}"
+    _="${C_FnctionBoundry} ${fn_bndry_lo} function ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl )) ${C_AttrOff}"
     '
   #! \end alias definition\
 
 
   ##
-  : "${C_CmntSub} Define alias __pause2ck__ ${C_AttrOff}"
+  : "${C_SubComent} Define alias __pause2ck__ ${C_AttrOff}"
   unset als_ps2ck__def_lineno
         als_ps2ck__def_lineno="$((nL+1))"
 
   alias __pause2ck__='
-    : "${C_AlsFnBndry}" Line ${nL}, alias __pause2ck__, begin, def Line ${als_ps2ck__def_lineno}
+    : "${C_AliasFunctionBoundary}" Line ${nL}, alias __pause2ck__, begin, def Line ${als_ps2ck__def_lineno}
 
     pause_to_check "${nL}"
 
-    : "${C_AlsFnBndry}" Line ${nL}, alias __pause2ck__, end "${C_AttrOff}"'
+    : "${C_AliasFunctionBoundary}" Line ${nL}, alias __pause2ck__, end "${C_AttrOff}"'
   #! \end alias definition\
 
 
   ##
-  : "${C_CmntSub} Define alias __xtr_read_and_on__ ${C_AttrOff}"
+  : "${C_SubComent} Define alias __xtr_read_and_on__ ${C_AttrOff}"
   unset als_xtr_read_on__def_lineno
         als_xtr_read_on__def_lineno="$((nL+1))"
   
@@ -390,7 +390,7 @@ function enable_debug_aliases(){
 
 
   ##
-  : "${C_CmntSub} Define alias __xtr_restore__ ${C_AttrOff}"
+  : "${C_SubComent} Define alias __xtr_restore__ ${C_AttrOff}"
   # shellcheck disable=SC2154
   unset als_xtr_rstr__def_lineno
         als_xtr_rstr__def_lineno="$((nL+1))"
@@ -415,7 +415,7 @@ function enable_debug_aliases(){
   #! \end alias definition\
 
 
-  : "${C_CmntSub} Line ${nL}, Aliases, Debug -  Complete ${C_AttrOff}"
+  : "${C_SubComent} Line ${nL}, Aliases, Debug -  Complete ${C_AttrOff}"
 }
 enable_debug_aliases
 
@@ -423,7 +423,7 @@ enable_debug_aliases
 ##
 function enable_debug_functions(){
   : "${C_Comment} Line ${nL}, Functions, Debug ${C_AttrOff}"
-  : "${C_CmntSub} Line ${nL}, Functions, Debug -  TOC ${C_AttrOff}"
+  : "${C_SubComent} Line ${nL}, Functions, Debug -  TOC ${C_AttrOff}"
 
     ##  Function name
     #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -433,10 +433,10 @@ function enable_debug_functions(){
     #+  xtr_duck()
 
 
-  : "${C_CmntSub} Define enable_git_debug_settings() ${C_AttrOff}"
+  : "${C_SubComent} Define enable_git_debug_settings() ${C_AttrOff}"
   function enable_git_debug_settings(){    __function_boundary_in__
 
-    : "${C_CmntSub} Variables -- Global git debug settings ${C_AttrOff}"
+    : "${C_SubComent} Variables -- Global git debug settings ${C_AttrOff}"
     # shellcheck disable=SC2034
     {
       GIT_TRACE=true
@@ -457,7 +457,7 @@ function enable_debug_functions(){
   }
 
 
-  : "${C_CmntSub} Define pause_to_check() ${C_AttrOff}"
+  : "${C_SubComent} Define pause_to_check() ${C_AttrOff}"
   ## Usage,   pause_to_check "${nL}"
   function pause_to_check(){                __function_boundary_in__
 
@@ -495,7 +495,7 @@ function enable_debug_functions(){
     __function_boundary_out_0__
   }
 
-  : "${C_CmntSub} Define set() ${C_AttrOff}"
+  : "${C_SubComent} Define set() ${C_AttrOff}"
   function set(){                                  __function_boundary_in__
     ## The global variable $fn_lvl is pulled in from the global scope and is set to effect the global
     #+  scope as well
@@ -524,35 +524,35 @@ enable_debug_functions
 
   builtin set -x
 
-: "${C_CmntSub} Define setup_variables() ${C_AttrOff}"
+: "${C_SubComent} Define setup_variables() ${C_AttrOff}"
 function setup_variables(){ __function_boundary_in__
   :
   : "${C_Comment} Line ${nL}, Variables ...likely to change or early-definition required ${C_AttrOff}"
   :
-  : "${C_CmntSub} Variables, colors, non-debug ${C_AttrOff}"
-  [[ -v C_AlsFnBndry ]] || C_AlsFnBndry="${C_AlsFnBndry:=}"
+  : "${C_SubComent} Variables, colors, non-debug ${C_AttrOff}"
+  [[ -v C_AliasFunctionBoundary ]] || C_AliasFunctionBoundary="${C_AliasFunctionBoundary:=}"
   [[ -v C_AttrOff ]]    || C_AttrOff="${C_AttrOff:=}"
-  [[ -v C_CmntSub ]]    || C_CmntSub="${C_CmntSub:=}"
-  [[ -v C_CmntSubSub ]] || C_CmntSubSub="${C_CmntSubSub:=}"
+  [[ -v C_SubComent ]]    || C_SubComent="${C_SubComent:=}"
+  [[ -v C_SubSbComent ]] || C_SubSbComent="${C_SubSbComent:=}"
   [[ -v C_Comment ]]    || C_Comment="${C_Comment:=}"
   [[ -v C_Errors ]]     || C_Errors="${C_Error:=}"
-  [[ -v C_FnBndry ]]    || C_FnBndry="${C_FnBndry:=}"
+  [[ -v C_FnctionBoundry ]]    || C_FnctionBoundry="${C_FnctionBoundry:=}"
   [[ -v C_TechCmnt ]]   || C_TechCmnt="${C_TechCmnt:=}"
   [[ -v C_XtrAls ]]     || C_XtrAls="${C_XtrAls:=}"
   :
     builtin set -x
   :
-  : "${C_CmntSub} Variables, Error handling ${C_AttrOff}"
+  : "${C_SubComent} Variables, Error handling ${C_AttrOff}"
   ## Bug, only way to export namerefs?  `declare -nx nL=...`
   ## Note, variable assignments, backslash escape bc  sed -i
   # shellcheck disable=SC1001
   local -gnx nL=L\INENO
   :
-  : "${C_CmntSub} Variables, PATH ${C_AttrOff}"
+  : "${C_SubComent} Variables, PATH ${C_AttrOff}"
   PATH="/usr/bin:/usr/sbin"
   export PATH
   :
-  : "${C_CmntSub} Variables, Other environment variables ${C_AttrOff}"
+  : "${C_SubComent} Variables, Other environment variables ${C_AttrOff}"
   ## Note, Initialize some env vars found in sourced files, as a workaround for nounset
   ## Note, local style, inline comments, ie, ": foo ## Note, blah", are useful for rebutting false positives
   #+  from ShellCheck
@@ -563,7 +563,7 @@ function setup_variables(){ __function_boundary_in__
   # shellcheck disable=SC2034
   local -g BASHRCSOURCED USER_LS_COLORS
   :
-  : "${C_CmntSub} Variables, Login UID and GID ${C_AttrOff}"
+  : "${C_SubComent} Variables, Login UID and GID ${C_AttrOff}"
   ## Note, ps(1), "The real group ID identifies the group of the user who created the process" and "The
   #+   effective group ID describes the group whose file access permissions are used by the process"
   #+   See output of,  `ps ax -o euid,ruid,egid,rgid,pid,ppid,stat,cmd | awk '$1 !~ $2 || $3 !~ $4'`
@@ -580,30 +580,30 @@ function setup_variables(){ __function_boundary_in__
   :
   # shellcheck disable=SC2034
   {
-    : "${C_CmntSub} Variables, Script metadata ${C_AttrOff}"
+    : "${C_SubComent} Variables, Script metadata ${C_AttrOff}"
     global_hyphn=$-
     export global_hyphn
     :
-    : "${C_CmntSub} Variables, Repo info ${C_AttrOff}"
+    : "${C_SubComent} Variables, Repo info ${C_AttrOff}"
     scr_repo_nm="LiveUsb"
     scr_nm="LiveUsb1.sh"
     datadir_basenm="skel-LiveUsb"
     datdir_idfile=".${scr_repo_nm}_id-key"
     readonly scr_repo_nm scr_nm datadir_basenm datdir_idfile
     :
-    : "${C_CmntSub} Variables, File and partition data and metadata ${C_AttrOff}"
+    : "${C_SubComent} Variables, File and partition data and metadata ${C_AttrOff}"
     sha256_of_repo_readme="167e18b59ecd9140079503836e2dda1315b8799395b8da67693479b3d970f0a1"
     data_pttn_uuid="7fcfd195-01"
     data_dir_id_sha256="7542c27ad7c381b059009e2b321155b8ea498cf77daaba8c6d186d6a0e356280"
     readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
     :
-    : "${C_CmntSub} Variables, User info ${C_AttrOff}"
+    : "${C_SubComent} Variables, User info ${C_AttrOff}"
     user_real_name="Wiley Young"
     user_github_email_address="84648683+wileyhy@users.noreply.github.com"
     user_github_gpg_key="0C83679F385F55F914D25A21CD85D53BBCB172C2"
     readonly user_real_name user_github_email_address user_github_gpg_key
     :
-    : "${C_CmntSub} Variables, Required RPM\s ${C_AttrOff}"
+    : "${C_SubComent} Variables, Required RPM\s ${C_AttrOff}"
       list_of_minimum_reqd_rpms+=( [0]="ShellCheck"
                                    [1]="firewall-config"
                                    [2]="geany"
@@ -638,22 +638,22 @@ function setup_variables(){ __function_boundary_in__
     #: "  Files, firefox"
     #files_for_use_with_github_depth_0+=( ~/.mozilla )
     :
-    : "${C_CmntSub} Files, gh (cli) ${C_AttrOff}"
+    : "${C_SubComent} Files, gh (cli) ${C_AttrOff}"
     files_for_use_with_github_depth_2+=( ~/.config/gh/{config.yml,gpg-agent.conf,hosts.yml,pubring.kbx,trustdb.gpg} )
     files_for_use_with_github_depth_3+=( ~/.config/gh/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev )
     files_for_use_with_github_depth_3+=( ~/.config/gh/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
-    : "${C_CmntSub} Files, gpg ${C_AttrOff}"
+    : "${C_SubComent} Files, gpg ${C_AttrOff}"
     files_for_use_with_github_depth_1+=( ~/.gnupg/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
     files_for_use_with_github_depth_2+=( ~/.gnupg/crls.d/DIR.txt )
     files_for_use_with_github_depth_2+=( ~/.gnupg/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev )
     files_for_use_with_github_depth_2+=( ~/.gnupg/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
-    : "${C_CmntSub} Files, ssh ${C_AttrOff}"
+    : "${C_SubComent} Files, ssh ${C_AttrOff}"
     files_for_use_with_github_depth_1+=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
-    : "${C_CmntSub} Files, top ${C_AttrOff}"
+    : "${C_SubComent} Files, top ${C_AttrOff}"
     files_for_use_with_github_depth_2+=( ~/.config/procps/toprc )
-    : "${C_CmntSub} Files, vim ${C_AttrOff}"
+    : "${C_SubComent} Files, vim ${C_AttrOff}"
     files_for_use_with_github_depth_0+=( ~/.vimrc )
-    : "${C_CmntSub}   End of Files lists ${C_AttrOff}"
+    : "${C_SubComent}   End of Files lists ${C_AttrOff}"
     :
   }
   __function_boundary_out_0__
@@ -672,7 +672,7 @@ __call_fn__ \
 
 : "${C_Comment} Line ${nL}, Functions ${C_AttrOff}"
 
-: "${C_CmntSub} Line ${nL}, Functions TOC ${C_AttrOff}"
+: "${C_SubComent} Line ${nL}, Functions TOC ${C_AttrOff}"
 
   ##  Function name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -707,7 +707,7 @@ __call_fn__ \
   #+  write_bashrc_strings()
   #+  write_ssh_conf()
 
-: "${C_CmntSub} Define clone_repo() ${C_AttrOff}"
+: "${C_SubComent} Define clone_repo() ${C_AttrOff}"
 function clone_repo(){                           __function_boundary_in__
 
   [[ ${PWD} = "${dev_d1}" ]] || {
@@ -735,7 +735,7 @@ function clone_repo(){                           __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define error_and_exit() ${C_AttrOff}"
+: "${C_SubComent} Define error_and_exit() ${C_AttrOff}"
 function error_and_exit(){                       __function_boundary_in__
 
   ## Some positional parameters must exist
@@ -770,7 +770,7 @@ function error_and_exit(){                       __function_boundary_in__
 
 ## ToDo: add a "get_distro()" function
 
-: "${C_CmntSub} Define get_pids_for_restarting() ${C_AttrOff}"
+: "${C_SubComent} Define get_pids_for_restarting() ${C_AttrOff}"
 function get_pids_for_restarting(){              __function_boundary_in__
 
   # shellcheck disable=SC2034
@@ -836,7 +836,7 @@ function get_pids_for_restarting(){              __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define gh_auth_login_command() ${C_AttrOff}"
+: "${C_SubComent} Define gh_auth_login_command() ${C_AttrOff}"
 function gh_auth_login_command(){                __function_boundary_in__
 
   if gh auth status >/dev/null 2>&1
@@ -857,7 +857,7 @@ function gh_auth_login_command(){                __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define increase_disk_space() ${C_AttrOff}"
+: "${C_SubComent} Define increase_disk_space() ${C_AttrOff}"
 function increase_disk_space(){                  __function_boundary_in__
   builtin set -x # []
 
@@ -912,10 +912,10 @@ function increase_disk_space(){                  __function_boundary_in__
     done
   fi
 
-  : "${C_CmntSub} If any larger local data files were found, then remove them interactively ${C_AttrOff}"
+  : "${C_SubComent} If any larger local data files were found, then remove them interactively ${C_AttrOff}"
   if [[ -n ${!Aa_fsos5[*]} ]]
   then
-    : "${C_CmntSub} Inform user of any found FSOs ${C_AttrOff}"
+    : "${C_SubComent} Inform user of any found FSOs ${C_AttrOff}"
     printf '%s, Delete these files? \n' "${scr_nm}"
     declare -p Aa_fsos5
     sleep 3
@@ -996,7 +996,7 @@ function increase_disk_space(){                  __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define min_necc_packages() ${C_AttrOff}"
+: "${C_SubComent} Define min_necc_packages() ${C_AttrOff}"
 function min_necc_packages(){                    __function_boundary_in__
 
   local XX
@@ -1021,7 +1021,7 @@ function min_necc_packages(){                    __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define must_be_root() ${C_AttrOff}"
+: "${C_SubComent} Define must_be_root() ${C_AttrOff}"
 function must_be_root(){                         __function_boundary_in__
 
   if (( UID == 0 ))
@@ -1039,7 +1039,7 @@ function must_be_root(){                         __function_boundary_in__
 
   builtin set -x #<>
 
-: "${C_CmntSub} Define reqd_user_files() ${C_AttrOff}"
+: "${C_SubComent} Define reqd_user_files() ${C_AttrOff}"
 function reqd_user_files(){                      __function_boundary_in__
   __enable_local_xtrace__
 
@@ -1072,7 +1072,7 @@ function reqd_user_files(){                      __function_boundary_in__
     __die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
   }
 
-  : "${C_CmntSub} Vars, get mountpoints and label ${C_AttrOff}"
+  : "${C_SubComent} Vars, get mountpoints and label ${C_AttrOff}"
   local mount_pt data_dir is_mounted
   local -a array_mt_pts
   readarray -t array_mt_pts < <(
@@ -1089,7 +1089,7 @@ function reqd_user_files(){                      __function_boundary_in__
 
   case "${#array_mt_pts[@]}" in
     0 )
-      : "${C_CmntSub} Zero matches ${C_AttrOff}"
+      : "${C_SubComent} Zero matches ${C_AttrOff}"
       ## Note, "plugged in and not mounted" means the LABEL would still be visible, if there is one, the USB
       #+  drive or the filesystem holding the data could change, and either change would rewrite the PARTUUID
       local pttn_label
@@ -1104,19 +1104,19 @@ function reqd_user_files(){                      __function_boundary_in__
       unset pttn_label
       ;; #
     1 )
-      : "${C_CmntSub} One match ${C_AttrOff}"
+      : "${C_SubComent} One match ${C_AttrOff}"
       mount_pt="${array_mt_pts[*]}"
       data_dir="${mount_pt}/${datadir_basenm}"
       is_mounted=yes
       ;; #
     * )
-      : "${C_CmntSub} Multiple matches ${C_AttrOff}"
+      : "${C_SubComent} Multiple matches ${C_AttrOff}"
       __die__ "The target partition is mounted in multiple places"
       ;; #
   esac
   unset array_mt_pts
 
-  : "${C_CmntSub} FS mounting must be restricted to root and/or liveuser ${C_AttrOff}"
+  : "${C_SubComent} FS mounting must be restricted to root and/or liveuser ${C_AttrOff}"
   local mount_user
   mount_user="${mount_pt%/*}" mount_user="${mount_user##*/}"
   [[ ${mount_user} = @(root|liveuser) ]] || {
@@ -1124,7 +1124,7 @@ function reqd_user_files(){                      __function_boundary_in__
   }
   unset mount_user
 
-  : "${C_CmntSub} USB drive must be mounted ${C_AttrOff}"
+  : "${C_SubComent} USB drive must be mounted ${C_AttrOff}"
   if [[ ${is_mounted} = "no" ]]
   then
     if ! [[ -d "${mount_pt}" ]]
@@ -1150,25 +1150,25 @@ function reqd_user_files(){                      __function_boundary_in__
     sync -f
   fi
 
-  : "${C_CmntSub} Directories from mount-username directory to mount point must be readable via ACL, but not writeable ${C_AttrOff}"
+  : "${C_SubComent} Directories from mount-username directory to mount point must be readable via ACL, but not writeable ${C_AttrOff}"
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${mount_pt%/*}"
   sudo -- setfacl --remove-all --remove-default -- "${mount_pt}"
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${mount_pt}"
 
-  : "${C_CmntSub} Data directory must already exist ${C_AttrOff}"
+  : "${C_SubComent} Data directory must already exist ${C_AttrOff}"
   if  ! [[ -d ${data_dir} ]] ||
       [[ -L ${data_dir} ]]
   then
     __die__
   fi
 
-  : "${C_CmntSub} Data directory must be readable via ACL, but not writeable ${C_AttrOff}"
+  : "${C_SubComent} Data directory must be readable via ACL, but not writeable ${C_AttrOff}"
   sudo -- setfacl --remove-all --remove-default --recursive --physical -- "${data_dir}"
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${data_dir}"
   sudo -- find "${data_dir}" -type d -execdir setfacl --modify="u:${LOGNAME}:rx" --recursive --physical '{}' \; #
   sudo -- find "${data_dir}" -type f -execdir setfacl --modify="u:${LOGNAME}:r" '{}' \; #
 
-  : "${C_CmntSub} Data directory verification info must be correct ${C_AttrOff}"
+  : "${C_SubComent} Data directory verification info must be correct ${C_AttrOff}"
   local ZZ
   ZZ=$(
     sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" |
@@ -1187,14 +1187,14 @@ function reqd_user_files(){                      __function_boundary_in__
   fi
   unset ZZ
 
-  : "${C_CmntSub} Capture previous umask and set a new one ${C_AttrOff}"
+  : "${C_SubComent} Capture previous umask and set a new one ${C_AttrOff}"
   local prev_umask
   read -r -a prev_umask < <(
     umask -p
   )
   umask 177
 
-  : "${C_CmntSub} For each array of conf files and/or directories ${C_AttrOff}"
+  : "${C_SubComent} For each array of conf files and/or directories ${C_AttrOff}"
   local AA
   local -n QQ
   ## Note, It isn\t strictly necessary to declare QQ as a nameref here, since unsetting QQ (see below) removes
@@ -1205,7 +1205,7 @@ function reqd_user_files(){                      __function_boundary_in__
   do
     #: 'Loop A - open \\\ '
 
-    : "${C_CmntSub} Vars ${C_AttrOff}"
+    : "${C_SubComent} Vars ${C_AttrOff}"
     ## Note, if I declare a local nameref, `local -n foo`, then on the next line just assign to the nameref
     #+  directly, `foo=bar`, then on the second loop `local -p QQ` prints the former value of QQ. Perhaps
     #+  the second assignment statement, ie, `foo=bar` without `local -n` is global?
@@ -1214,25 +1214,25 @@ function reqd_user_files(){                      __function_boundary_in__
     local -n QQ
     local -n QQ="${AA}"   ## good code
 
-    : "${C_CmntSub} For each conf file or dir ${C_AttrOff}"
+    : "${C_SubComent} For each conf file or dir ${C_AttrOff}"
     local BB
 
-    : "${C_CmntSub} If the target conf file/dir does not exist ${C_AttrOff}"
+    : "${C_SubComent} If the target conf file/dir does not exist ${C_AttrOff}"
     for BB in "${!QQ[@]}"
     do
       #: '    Loop A:1 - open \\\ '
       if ! [[ -e ${QQ[BB]} ]]
       then
 
-        : "${C_CmntSub} Vars ${C_AttrOff}"
+        : "${C_SubComent} Vars ${C_AttrOff}"
         local source_file
         source_file="${data_dir}/${QQ[BB]#~/}"
 
-        : "${C_CmntSub} If the source conf file/dir does not exist, then find it ${C_AttrOff}"
+        : "${C_SubComent} If the source conf file/dir does not exist, then find it ${C_AttrOff}"
         if ! [[ -e ${source_file} ]]
         then
 
-          : "${C_CmntSub} If the partition is not mounted which holds the data directory, then mount it ${C_AttrOff}"
+          : "${C_SubComent} If the partition is not mounted which holds the data directory, then mount it ${C_AttrOff}"
           if [[ ${is_mounted} = no ]]
           then
 
@@ -1247,7 +1247,7 @@ function reqd_user_files(){                      __function_boundary_in__
             fi
           fi
 
-          : "${C_CmntSub} If the source conf file/dir still does not exist, then throw an error ${C_AttrOff}"
+          : "${C_SubComent} If the source conf file/dir still does not exist, then throw an error ${C_AttrOff}"
           if ! [[ -e "${source_file}" ]]
           then
             __die__ "${QQ[BB]}" "${source_file}"
@@ -1273,7 +1273,7 @@ function reqd_user_files(){                      __function_boundary_in__
   unset pttn_device_path
   #: "Loops A - complete === "
 
-  : "${C_CmntSub} Restore previous umask ${C_AttrOff}"
+  : "${C_SubComent} Restore previous umask ${C_AttrOff}"
   builtin "${prev_umask[@]}"
   unset prev_umask
                                                  __function_boundary_out_0__
@@ -1282,7 +1282,7 @@ function reqd_user_files(){                      __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define rsync_install_if_missing() ${C_AttrOff}"
+: "${C_SubComent} Define rsync_install_if_missing() ${C_AttrOff}"
 function rsync_install_if_missing(){             __function_boundary_in__
 
     # <>
@@ -1344,7 +1344,7 @@ function rsync_install_if_missing(){             __function_boundary_in__
     }
   fi
 
-  : "${C_CmntSub} Unset a local variable defined and assigned in only this function, and not any variables by the same name... ${C_AttrOff}"
+  : "${C_SubComent} Unset a local variable defined and assigned in only this function, and not any variables by the same name... ${C_AttrOff}"
   #+  from any other scope
   [[ ${unset_local_var_rand5791:=} = "yes" ]] &&
     unset unset_local_var_rand5791 data_dir
@@ -1356,17 +1356,17 @@ function rsync_install_if_missing(){             __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_bashrc() ${C_AttrOff}"
+: "${C_SubComent} Define setup_bashrc() ${C_AttrOff}"
 function setup_bashrc(){                         __function_boundary_in__
 
-  : "${C_CmntSub} bashrc -- Do some backups ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Do some backups ${C_AttrOff}"
   files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
 
   for WW in "${files_for_use_with_bash[@]}"
   do
     hash -r
 
-    : "${C_CmntSub} bashrc -- RC File must exist ${C_AttrOff}"
+    : "${C_SubComent} bashrc -- RC File must exist ${C_AttrOff}"
     if ! sudo -- "$(type -P test)" -f "${WW}"
     then
       __die__ "${WW}"
@@ -1374,7 +1374,7 @@ function setup_bashrc(){                         __function_boundary_in__
 
     ## Note, chmod changes the ctime, even with no change of DAC\s
 
-    : "${C_CmntSub} bashrc -- ...of the array files_for_use_with_bash ${C_AttrOff}"
+    : "${C_SubComent} bashrc -- ...of the array files_for_use_with_bash ${C_AttrOff}"
     if ! sudo -- "$(type -P test)" -e "${WW}.orig"
     then
       sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}.orig"
@@ -1398,16 +1398,16 @@ function setup_bashrc(){                         __function_boundary_in__
       unset BB
     fi
 
-    : "${C_CmntSub} bashrc -- ...per-script-execution file backup ${C_AttrOff}"
+    : "${C_SubComent} bashrc -- ...per-script-execution file backup ${C_AttrOff}"
     sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}~" || {
       __die__ "${WW}"
     }
   done
   unset WW
 
-  : "${C_CmntSub} bashrc -- Env parameters for bashrc ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Env parameters for bashrc ${C_AttrOff}"
 
-  : "${C_CmntSub} bashrc -- PS0 -- Assign color code and duck xtrace ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- PS0 -- Assign color code and duck xtrace ${C_AttrOff}"
   ## Note,  set [-|-x] , letting xtrace expand this  tput  command alters all xtrace colorization
   if [[ -o xtrace ]]
   then
@@ -1422,7 +1422,7 @@ function setup_bashrc(){                         __function_boundary_in__
     )
   fi
 
-  : "${C_CmntSub} bashrc -- PROMPT_COMMAND -- Variables dependency -- level 1 -- ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- PROMPT_COMMAND -- Variables dependency -- level 1 -- ${C_AttrOff}"
   pc_regx="not found"$
   # shellcheck disable=SC2034
   prompt_colors_reset=$(
@@ -1433,11 +1433,11 @@ function setup_bashrc(){                         __function_boundary_in__
   #+    man() { "$( type -P man )" --nh --nj "$@"; }
   #+    export TMOUT=15
 
-  : "${C_CmntSub} bashrc -- PROMPT_COMMAND -- Variables dependency -- level 2 -- ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- PROMPT_COMMAND -- Variables dependency -- level 2 -- ${C_AttrOff}"
   # shellcheck disable=SC2016
   prompt_cmd_0='printf "%b" "${prompt_colors_reset}"'
 
-  : "${C_CmntSub} bashrc -- PROMPT_COMMAND -- Variables dependency -- level 3 -- ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- PROMPT_COMMAND -- Variables dependency -- level 3 -- ${C_AttrOff}"
   ## Note, PROMPT_COMMAND could have been inherited as a string variable
   unset PROMPT_COMMAND
   declare -a PROMPT_COMMAND
@@ -1448,7 +1448,7 @@ function setup_bashrc(){                         __function_boundary_in__
     PROMPT_COMMAND+=( __vte_prompt_command )
   fi
 
-  : "${C_CmntSub} bashrc -- Other parameters ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Other parameters ${C_AttrOff}"
   # shellcheck disable=SC2034
   {
     PS1="[\\u@\\h]\\\$ "
@@ -1461,11 +1461,11 @@ function setup_bashrc(){                         __function_boundary_in__
     )
   }
 
-  : "${C_CmntSub} bashrc -- Append user variables and functions into .bashrc ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Append user variables and functions into .bashrc ${C_AttrOff}"
   ## Note, these arrays include some command substitutions which depend on some function definitions, which in
   #+  turn must be defined prior to defining these arrays
 
-  : "${C_CmntSub} bashrc -- Define lists of parameters to be appended into bashrc ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Define lists of parameters to be appended into bashrc ${C_AttrOff}"
   ## Note, there are multiple lists for variables due to layers of dependencies. Later in this procedure,
   #+  each of these groups is relayed using associative arrays, which do not reliably maintain their internal
   #+  ordering, so, some consistent ordering must be imposed here.
@@ -1483,10 +1483,10 @@ function setup_bashrc(){                         __function_boundary_in__
     ## ToDo, write lists of how the data is to be written in bashrc, and of how the data exists originally,
     #+  then with those endpoints, chart how to transform the strings from a simple list to output in bashrc
 
-  : "${C_CmntSub} bashrc -- Variables ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Variables ${C_AttrOff}"
   missing_vars_and_fns=()
 
-  : "${C_CmntSub} Note, test for whether the reqd variables are defined in the script#s current execution environment ${C_AttrOff}"
+  : "${C_SubComent} Note, test for whether the reqd variables are defined in the script#s current execution environment ${C_AttrOff}"
   for QQ in "${vars_for_bashrc_1[@]}" "${vars_for_bashrc_2[@]}" "${vars_for_bashrc_3[@]}"
   do
     if [[ $( declare -p "${QQ}" 2>&1 ) =~ ${pc_regx} ]]
@@ -1496,7 +1496,7 @@ function setup_bashrc(){                         __function_boundary_in__
   done
   unset QQ
 
-  : "${C_CmntSub} bashrc -- Functions ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Functions ${C_AttrOff}"
   for UU in "${fcns_for_bashrc_1[@]}"
   do
     if [[ $( declare -pF "${UU}" 2>&1 ) =~ ${pc_regx} ]]
@@ -1506,21 +1506,21 @@ function setup_bashrc(){                         __function_boundary_in__
   done
   unset UU
 
-  : "${C_CmntSub} bashrc -- Test for any missing parameters ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Test for any missing parameters ${C_AttrOff}"
   if (( ${#missing_vars_and_fns[@]} > 0 ))
   then
     __die__ "${missing_vars_and_fns[@]}"
   fi
 
-  : "${C_CmntSub} bashrc -- Create Associative arrays of required parameters ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Create Associative arrays of required parameters ${C_AttrOff}"
 
-  : "${C_CmntSub} bashrc -- Define Aa_bashrc_strngs_* ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Define Aa_bashrc_strngs_* ${C_AttrOff}"
   ## Note, you want for these array elements to represent just one parameter or function each.  ...what does this mean?
   local -a bashrc_Assoc_arrays
   local -a bashrc_Assoc_arrays=( Aa_bashrc_strngs_F1   Aa_bashrc_strngs_V1   Aa_bashrc_strngs_V2   Aa_bashrc_strngs_V3 )
   local -A "${bashrc_Assoc_arrays[@]}"
 
-  : "${C_CmntSub} bashrc -- Variables ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Variables ${C_AttrOff}"
   ## Note, three temp vars are used here because of the correspondence of numbers, ie, 1 and 1, 2 and 2, etc
   #+  between the names of the respective indexed and associative arrays. In effect, this is the clearest and
   #+  shortest way to write it in bash (5.2), for the intended purpose, to the best of my knowledge.
@@ -1553,7 +1553,7 @@ function setup_bashrc(){                         __function_boundary_in__
   done
   unset XX YY ZZ
 
-  : "${C_CmntSub} bashrc -- Functions (a.k.a. \"subroutines\") ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Functions (a.k.a. \"subroutines\") ${C_AttrOff}"
   local AA
   for AA in "${fcns_for_bashrc_1[@]}"
   do
@@ -1565,7 +1565,7 @@ function setup_bashrc(){                         __function_boundary_in__
   done
   unset AA
 
-  : "${C_CmntSub} bashrc -- Write functions and variable definitions into bashrc files ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Write functions and variable definitions into bashrc files ${C_AttrOff}"
   local KK
   for KK in "${!bashrc_Assoc_arrays[@]}"
   do
@@ -1573,7 +1573,7 @@ function setup_bashrc(){                         __function_boundary_in__
   done
   unset KK
 
-  : "${C_CmntSub} bashrc -- Clean up ${C_AttrOff}"
+  : "${C_SubComent} bashrc -- Clean up ${C_AttrOff}"
   unset pc_regx prompt_cmd_0
   unset files_for_use_with_bash
   unset -f write_bashrc_strings
@@ -1585,13 +1585,13 @@ function setup_bashrc(){                         __function_boundary_in__
 
 ## Bug, setup_dnf is too long and too complicated
 
-: "${C_CmntSub} Define setup_dnf() ${C_AttrOff}"
+: "${C_SubComent} Define setup_dnf() ${C_AttrOff}"
 function setup_dnf(){                           __function_boundary_in__
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
 
-    : "${C_CmntSub} Beginning section on DNF ${C_AttrOff}"
+    : "${C_SubComent} Beginning section on DNF ${C_AttrOff}"
 
   ## Note, CUPS cannot be safely removed; too many dependencies
   ## Note, For some unknown reason, even when  dnf  doesn\t change any programs,  dnf
@@ -1609,29 +1609,29 @@ function setup_dnf(){                           __function_boundary_in__
       cut --delimiter=' ' --fields=1
   )
 
-  : "${C_CmntSub} Define filename for record of previous hash..B ${C_AttrOff}"
+  : "${C_SubComent} Define filename for record of previous hash..B ${C_AttrOff}"
   local hash_f hash_of_installed_pkgs_B_prev
   hash_f=/tmp/setup_dnf__hash_of_installed_pkgs_B_prev
   hash_of_installed_pkgs_B_prev=""
 
-  : "${C_CmntSub} If the record already exists... ${C_AttrOff}"
+  : "${C_SubComent} If the record already exists... ${C_AttrOff}"
   if [[ -f ${hash_f} ]]
   then
 
-    : "${C_CmntSub}...then read it in ${C_AttrOff}"
+    : "${C_SubComent}...then read it in ${C_AttrOff}"
     read -r hash_of_installed_pkgs_B_prev < "${hash_f}"
 
-    : "${C_CmntSub} If the old hash...B matches the new hash...A, then return from this function ${C_AttrOff}"
+    : "${C_SubComent} If the old hash...B matches the new hash...A, then return from this function ${C_AttrOff}"
     if [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B_prev}" ]]
     then
       return
     fi
   fi
 
-  : "${C_CmntSub} Removals for disk space ${C_AttrOff}"
+  : "${C_SubComent} Removals for disk space ${C_AttrOff}"
   pkg_nms_for_removal=( google-noto-sans-cjk-vf-fonts mint-x-icons mint-y-icons transmission )
 
-  : "${C_CmntSub} Removals for security ${C_AttrOff}"
+  : "${C_SubComent} Removals for security ${C_AttrOff}"
   #pkg_nms_for_removal+=( blueman bluez )
 
   ## Note, xfce4-terminal -- hardcoded WM ...can be used w/o XFCE....
@@ -1685,7 +1685,7 @@ function setup_dnf(){                           __function_boundary_in__
     # addl_pkgs+=( ${for_security:=}      orca protonvpn-cli xsecurelock )
   }
 
-  : "${C_CmntSub} Start with removing any unnecessary RPMs ${C_AttrOff}"
+  : "${C_SubComent} Start with removing any unnecessary RPMs ${C_AttrOff}"
 
   if [[ -n ${pkg_nms_for_removal:0:8} ]]
   then
@@ -1698,7 +1698,7 @@ function setup_dnf(){                           __function_boundary_in__
       rpm --all --query | grep --ignore-case --extended-regexp "${grep_args[@]}"
     )
 
-    : "${C_CmntSub} Keep a list, just in case an rpm removal accidentally erases something vital ${C_AttrOff}"
+    : "${C_SubComent} Keep a list, just in case an rpm removal accidentally erases something vital ${C_AttrOff}"
     if [[ -n ${removable_pkgs[*]:0:8} ]]
     then
       for QQ in "${!removable_pkgs[@]}"
@@ -1729,7 +1729,7 @@ function setup_dnf(){                           __function_boundary_in__
     fi
   fi
 
-  : "${C_CmntSub} Then do a blanket security upgrade ${C_AttrOff}"
+  : "${C_SubComent} Then do a blanket security upgrade ${C_AttrOff}"
 
   ## Note, the problem with this "blanket security upgrade" is how it
   #+   includes kernel and firmware. Better to capture list of rpms in
@@ -1740,7 +1740,7 @@ function setup_dnf(){                           __function_boundary_in__
   while true
   do
 
-    : "${C_CmntSub} Get full list of rpms to upgrade, in an array; exit on non-zero ${C_AttrOff}"
+    : "${C_SubComent} Get full list of rpms to upgrade, in an array; exit on non-zero ${C_AttrOff}"
     readarray -d "" -t pkgs_for_upgrade < <(
       sudo -- dnf --assumeno --security --bugfix upgrade 2>/dev/null |
         awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' |
@@ -1758,13 +1758,13 @@ function setup_dnf(){                           __function_boundary_in__
     done
     unset HH
 
-    : "${C_CmntSub} If count of upgradeable rpms is 0, then break loop ${C_AttrOff}"
+    : "${C_SubComent} If count of upgradeable rpms is 0, then break loop ${C_AttrOff}"
     if [[ ${#pkgs_for_upgrade[@]} -eq 0 ]]
     then
       break
     fi
 
-    : "${C_CmntSub} Upgrade the RPM\s one at a time ${C_AttrOff}"
+    : "${C_SubComent} Upgrade the RPM\s one at a time ${C_AttrOff}"
     for II in "${!pkgs_for_upgrade[@]}"
     do
       if sudo -- dnf --assumeyes --security upgrade -- "${pkgs_for_upgrade[II]}"
@@ -1793,7 +1793,7 @@ function setup_dnf(){                           __function_boundary_in__
 
   pause_to_check "${nL}" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
 
-  : "${C_CmntSub} Find out whether an RPM is installed, one by one ${C_AttrOff}"
+  : "${C_SubComent} Find out whether an RPM is installed, one by one ${C_AttrOff}"
   for UU in "${!addl_pkgs[@]}"
   do
     if rpm --query --quiet -- "${addl_pkgs[UU]}"
@@ -1808,7 +1808,7 @@ function setup_dnf(){                           __function_boundary_in__
 
   ## Bug, this section should upgrade rpms one by one
 
-  : "${C_CmntSub} Upgrade any installed RPMs from the main list, en masse ${C_AttrOff}"
+  : "${C_SubComent} Upgrade any installed RPMs from the main list, en masse ${C_AttrOff}"
   if [[ -n ${pkgs_installed[*]: -1:1} ]]
   then
     sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade "${pkgs_installed[@]}" || {
@@ -1818,7 +1818,7 @@ function setup_dnf(){                           __function_boundary_in__
 
     pause_to_check "${nL}" $'From the \x24addl_pkgs array, install the remainder' # <>
 
-  : "${C_CmntSub} Install any as yet uninstalled RPMs from the main list as necessary ${C_AttrOff}"
+  : "${C_SubComent} Install any as yet uninstalled RPMs from the main list as necessary ${C_AttrOff}"
   not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
 
   if [[ -n ${not_yet_installed_pkgs[*]: -1:1} ]]
@@ -1852,7 +1852,7 @@ function setup_dnf(){                           __function_boundary_in__
           ps aux |
             awk --assign "CC=${a_pids[WW]}" '$2 ~ CC { print }'
 
-          : "${C_CmntSub} Ensure a process is still running before trying to kill it ${C_AttrOff}"
+          : "${C_SubComent} Ensure a process is still running before trying to kill it ${C_AttrOff}"
 
           ## Note, some strings from /proc/[pid]/cmdline include "[]" brackets; `pgrep -f` parses these as
           #+  ERE's and cannot parse fixed strings, so a Parameter Expansion is necessary in order to render
@@ -1863,9 +1863,9 @@ function setup_dnf(){                           __function_boundary_in__
           #+  "/proc/${a_pids[WW]}/cmdline" would not exist.
           sleep 1
 
-          : "${C_CmntSub} Most existing processes have some commandline information available ${C_AttrOff}"
+          : "${C_SubComent} Most existing processes have some commandline information available ${C_AttrOff}"
           :
-          : "${C_CmntSub} If the /proc/PID/cmdline FSO exists and is a file, then... ${C_AttrOff}"
+          : "${C_SubComent} If the /proc/PID/cmdline FSO exists and is a file, then... ${C_AttrOff}"
           if [[ -f /proc/${a_pids[WW]}/cmdline ]]
           then
             ## Note, these files are in _PROC_! Of course they have a zero filesize!!
@@ -1873,13 +1873,13 @@ function setup_dnf(){                           __function_boundary_in__
             ## Bug, the bash(ism) `[[` keyword cannot accept a leading or internal "2>/dev/null", though
             #+  `test` and `[` can.
 
-            : "${C_CmntSub} If the /proc/PID/cmdline FSO also has a size greater than zero... ${C_AttrOff}"
+            : "${C_SubComent} If the /proc/PID/cmdline FSO also has a size greater than zero... ${C_AttrOff}"
             if [[ -n "$( tr -d '\0' < "/proc/${a_pids[WW]}/cmdline" )" ]]
             then
               local -a array_of_PIDs_cmdline
               local string_of_PIDs_cmdline
 
-              : "${C_CmntSub} Load the cmdline into an array ${C_AttrOff}"
+              : "${C_SubComent} Load the cmdline into an array ${C_AttrOff}"
               readarray -d '' -t array_of_PIDs_cmdline < <(
                 cat "/proc/${a_pids[WW]}/cmdline"
               )
@@ -1891,7 +1891,7 @@ function setup_dnf(){                           __function_boundary_in__
                 continue
               fi
 
-              : "${C_CmntSub} If the commandline cannot be found in ps output, then move on to the next loop ${C_AttrOff}"
+              : "${C_SubComent} If the commandline cannot be found in ps output, then move on to the next loop ${C_AttrOff}"
               string_of_PIDs_cmdline=( "${array_of_PIDs_cmdline[@]//\[/\\[}" )
 
               if ! pgrep -f "${string_of_PIDs_cmdline[*]}" >/dev/null
@@ -1916,7 +1916,7 @@ function setup_dnf(){                           __function_boundary_in__
             continue
           fi
 
-          : "${C_CmntSub} Kill a particular process ${C_AttrOff}"
+          : "${C_SubComent} Kill a particular process ${C_AttrOff}"
           hash -r
           sudo -- "$(type -P kill)" \
             --timeout 1000 HUP \
@@ -1938,7 +1938,7 @@ function setup_dnf(){                           __function_boundary_in__
   unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
   unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
-  : "${C_CmntSub} Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs ${C_AttrOff}"
+  : "${C_SubComent} Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs ${C_AttrOff}"
   get_pids_for_restarting
 
   : $'Get new hash of installed packages, ie, \x24{hash..B}'
@@ -1953,11 +1953,11 @@ function setup_dnf(){                           __function_boundary_in__
   local hash_of_installed_pkgs_B_prev
   hash_of_installed_pkgs_B_prev="${hash_of_installed_pkgs_B}"
 
-  : "${C_CmntSub} If the target file exists ${C_AttrOff}"
+  : "${C_SubComent} If the target file exists ${C_AttrOff}"
   if [[ -f ${hash_f} ]]
   then
 
-    : "${C_CmntSub} If the target file is immutable ${C_AttrOff}"
+    : "${C_SubComent} If the target file is immutable ${C_AttrOff}"
     local has_immutable
     has_immutable=$(
       lsattr -l "${hash_f}" |
@@ -1967,22 +1967,22 @@ function setup_dnf(){                           __function_boundary_in__
     if [[ ${has_immutable} = "Yes" ]]
     then
 
-      : "${C_CmntSub}...then remove the immutable flag ${C_AttrOff}"
+      : "${C_SubComent}...then remove the immutable flag ${C_AttrOff}"
       sudo chattr -i "${hash_f}"
     fi
 
-  : "${C_CmntSub} if the target file does not exist ${C_AttrOff}"
+  : "${C_SubComent} if the target file does not exist ${C_AttrOff}"
   else
 
-    : "${C_CmntSub} then create it ${C_AttrOff}"
+    : "${C_SubComent} then create it ${C_AttrOff}"
     touch "${hash_f}"
   fi
 
-  : "${C_CmntSub} Make sure the file is writeable ${C_AttrOff}"
+  : "${C_SubComent} Make sure the file is writeable ${C_AttrOff}"
   [[ -w "${hash_f}" ]] ||
     chmod u+w "${hash_f}"
 
-  : "${C_CmntSub} State, the file exists and is writeable ${C_AttrOff}"
+  : "${C_SubComent} State, the file exists and is writeable ${C_AttrOff}"
 
   : $'Write \x24{hash..B} to disk, and make it RO and immutable'
   printf '%s\n' "${hash_of_installed_pkgs_B_prev}" |
@@ -2009,13 +2009,13 @@ function setup_dnf(){                           __function_boundary_in__
         II=0
         XX="${#a_pids[@]}"
 
-        : "${C_CmntSub} Print some info and wait for it to be read ${C_AttrOff}"
+        : "${C_SubComent} Print some info and wait for it to be read ${C_AttrOff}"
         ## Note, "\x60" is a grace accent used as a single quote
         printf '\n  %b for restarting, count, %d \n\n' 'PID\x60s' "${XX}"
 
           sleep 1 # <>
 
-        : "${C_CmntSub} for each signal and for each PID... ${C_AttrOff}"
+        : "${C_SubComent} for each signal and for each PID... ${C_AttrOff}"
         for YY in "${!a_pids[@]}"
         do
           ## Note, readability
@@ -2029,16 +2029,16 @@ function setup_dnf(){                           __function_boundary_in__
           for AA in HUP USR1 TERM KILL
           do
 
-              : "${C_CmntSub} To kill PID ${ZZ} with signal ${AA} ${C_AttrOff}"
+              : "${C_SubComent} To kill PID ${ZZ} with signal ${AA} ${C_AttrOff}"
 
             sync --file-system
 
               wait -f # <>
 
-            : "${C_CmntSub}...if the PID is still running... ${C_AttrOff}"
+            : "${C_SubComent}...if the PID is still running... ${C_AttrOff}"
             if  ps --no-headers --quick-pid "${ZZ}"
             then
-              : "${C_CmntSub} Evidently, I need to give the system a little time for processing ${C_AttrOff}"
+              : "${C_SubComent} Evidently, I need to give the system a little time for processing ${C_AttrOff}"
               sleep 1
 
               ## Bug?? all of the `type -P` commands s\b consolidated into a set of variables ...?
@@ -2048,10 +2048,10 @@ function setup_dnf(){                           __function_boundary_in__
               #+ than whether the  kill  operation succeeded, per  info kill .
               sudo -- "$( type -P kill )" --signal "${AA}" -- "${ZZ}"
 
-              : "${C_CmntSub} Evidently, I need to give the system a little MORE time for processing ${C_AttrOff}"
+              : "${C_SubComent} Evidently, I need to give the system a little MORE time for processing ${C_AttrOff}"
               sleep 1
 
-              : "${C_CmntSub}...and if the PID in question no longer exists then unset the current array index number ${C_AttrOff}"
+              : "${C_SubComent}...and if the PID in question no longer exists then unset the current array index number ${C_AttrOff}"
               if  ps --no-headers --quick-pid "${ZZ}" |
                     grep -qv defunct
               then
@@ -2062,7 +2062,7 @@ function setup_dnf(){                           __function_boundary_in__
 
                 if [[ ${is_pid_a_zombie} = Z ]]
                 then
-                  : "${C_CmntSub} Process is a zombie; unsetting ${C_AttrOff}"
+                  : "${C_SubComent} Process is a zombie; unsetting ${C_AttrOff}"
                   unset "a_pids[YY]"
                   break 1
                 else
@@ -2092,10 +2092,10 @@ function setup_dnf(){                           __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_gh_cli() ${C_AttrOff}"
+: "${C_SubComent} Define setup_gh_cli() ${C_AttrOff}"
 function setup_gh_cli(){                        __function_boundary_in__
 
-  : "${C_CmntSub} GH -- set config key-value pairs ${C_AttrOff}"
+  : "${C_SubComent} GH -- set config key-value pairs ${C_AttrOff}"
   local -A github_configs
   local gh_config_list_out
   github_configs+=( [editor]=vim )
@@ -2125,7 +2125,7 @@ function setup_gh_cli(){                        __function_boundary_in__
 
     #gh auth status ## <>
 
-  : "${C_CmntSub} GH -- Login to github ${C_AttrOff}"
+  : "${C_SubComent} GH -- Login to github ${C_AttrOff}"
   ## Note, this command actually works as desired, neither pipefail nor the ERR trap are triggered
   printf -v count_gh_auth_checkmarks "%s" "$(
     gh auth status |&
@@ -2147,7 +2147,7 @@ function setup_gh_cli(){                        __function_boundary_in__
   ## Bug, when `gh ssh-key list` fails, then after gh_auth_login_command() executes, `gh ssh-key list` is
   #+  not executed again, when it should be
 
-  : "${C_CmntSub} GH -- Get SSH & GPG keys ${C_AttrOff}"
+  : "${C_SubComent} GH -- Get SSH & GPG keys ${C_AttrOff}"
   for QQ in ssh-key gpg-key
   do
     if ! gh "${QQ}" list > /dev/null 2>&1
@@ -2157,7 +2157,7 @@ function setup_gh_cli(){                        __function_boundary_in__
   done
   unset QQ
 
-  : "${C_CmntSub} GH -- Use GitHub CLI as a credential helper ${C_AttrOff}"
+  : "${C_SubComent} GH -- Use GitHub CLI as a credential helper ${C_AttrOff}"
   gh auth setup-git --hostname github.com
                                                  __function_boundary_out_0__
 }
@@ -2165,7 +2165,7 @@ function setup_gh_cli(){                        __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_git() ${C_AttrOff}"
+: "${C_SubComent} Define setup_git() ${C_AttrOff}"
 function setup_git(){                           __function_boundary_in__
 
   ## Note, git ui colors: normal black red green yellow blue magenta cyan white
@@ -2175,19 +2175,19 @@ function setup_git(){                           __function_boundary_in__
   ## Bug? in vim, when quoting "EOF", $tmp_dir changes color, but bash still expands the redirection
   #+ destination file.
 
-  : "${C_CmntSub} Git -- parameters, dependency level 1 ${C_AttrOff}"
+  : "${C_SubComent} Git -- parameters, dependency level 1 ${C_AttrOff}"
   local git_conf_global_f git_ignr git_mesg
   git_conf_global_f=~/.gitconfig
   git_ignr=~/.gitignore
   git_mesg=~/.gitmessage
 
-  : "${C_CmntSub} Paramters with globs ${C_AttrOff}"
+  : "${C_SubComent} Paramters with globs ${C_AttrOff}"
   ## Note, use of globs. The RE pattern must match all of the patterns in the array assignments
   local git_files_a git_regexp
   git_files_a=( /etc/git* /etc/.git* ~/.git* )
   git_regexp="git*"
 
-  : "${C_CmntSub} Git -- parameters, dependency level 2 ${C_AttrOff}"
+  : "${C_SubComent} Git -- parameters, dependency level 2 ${C_AttrOff}"
   if [[ -f ${git_conf_global_f} ]]
   then
     local git_cnf_glob_list
@@ -2217,13 +2217,13 @@ function setup_git(){                           __function_boundary_in__
   git_keys+=( [user.name]="${user_real_name}" )
   git_keys+=( [user.signingkey]="${user_github_gpg_key}" )
 
-  : "${C_CmntSub} Git -- Files must exist and Permissions ${C_AttrOff}"
+  : "${C_SubComent} Git -- Files must exist and Permissions ${C_AttrOff}"
   read -r -a prev_umask < <(
     umask -p
   )
   umask 133
 
-  : "${C_CmntSub} Remove any unmatched glob patterns ${C_AttrOff}"
+  : "${C_SubComent} Remove any unmatched glob patterns ${C_AttrOff}"
   local ZZ
 
   for ZZ in "${!git_files_a[@]}"
@@ -2243,41 +2243,41 @@ function setup_git(){                           __function_boundary_in__
     sudo -- [ -e "${AA}" ] ||
       sudo -- touch "${AA}"
     sudo -- chmod 0600 "${ver__[@]}" "${AA}"
-    : "${C_CmntSub} Loop B - shut ///  ${C_AttrOff}"
+    : "${C_SubComent} Loop B - shut ///  ${C_AttrOff}"
   done
   unset AA
-  : "${C_CmntSub} Loops B - complete ===  ${C_AttrOff}"
+  : "${C_SubComent} Loops B - complete ===  ${C_AttrOff}"
 
   builtin "${prev_umask[@]}"
 
-  : "${C_CmntSub} Git -- remove a particular configuration key/value pair if present ${C_AttrOff}"
+  : "${C_SubComent} Git -- remove a particular configuration key/value pair if present ${C_AttrOff}"
   if  printf '%s\n' "${git_cnf_glob_list[@]}" |
         grep gpg.format "${qui__[@]}"
   then
     git config --global --unset gpg.format
   fi
 
-  : "${C_CmntSub} Git -- setup configuration - Loop C ${C_AttrOff}"
+  : "${C_SubComent} Git -- setup configuration - Loop C ${C_AttrOff}"
   local BB
   for BB in "${!git_keys[@]}"
   do
     : '  Loop C - open \\\ '
 
-      : "${C_CmntSub} BB:${BB} ${C_AttrOff}"
+      : "${C_SubComent} BB:${BB} ${C_AttrOff}"
 
     if ! grep -e "${BB#*.} = ${git_keys[${BB}]}" "${qui__[@]}" "${git_conf_global_f}"
     then
       git config --global "${BB}" "${git_keys[${BB}]}"
     fi
-    : "${C_CmntSub} Loop C - shut ///  ${C_AttrOff}"
+    : "${C_SubComent} Loop C - shut ///  ${C_AttrOff}"
   done
   unset BB
-  : "${C_CmntSub} Loops C - complete ===  ${C_AttrOff}"
+  : "${C_SubComent} Loops C - complete ===  ${C_AttrOff}"
 
-  : "${C_CmntSub} Git -- gitmessage (global) ${C_AttrOff}"
+  : "${C_SubComent} Git -- gitmessage (global) ${C_AttrOff}"
   if ! [[ -f ${git_mesg} ]]
   then
-    : "${C_CmntSub} Heredoc, gitmessage ${C_AttrOff}"
+    : "${C_SubComent} Heredoc, gitmessage ${C_AttrOff}"
     cat <<- "EOF" > "${tmp_dir}/msg"
 		Subject line (try to keep under 50 characters)
 
@@ -2297,11 +2297,11 @@ function setup_git(){                           __function_boundary_in__
     }
   fi
 
-  : "${C_CmntSub} Git -- gitignore (global) ${C_AttrOff}"
+  : "${C_SubComent} Git -- gitignore (global) ${C_AttrOff}"
   if  ! [[ -f ${git_ignr} ]] ||
       ! grep swp "${qui__[@]}" "${git_ignr}"
   then
-    : "${C_CmntSub} Heredoc, gitignore ${C_AttrOff}"
+    : "${C_SubComent} Heredoc, gitignore ${C_AttrOff}"
     cat <<- \EOF > "${tmp_dir}/ign"
 		*~
 		.*.swp
@@ -2335,7 +2335,7 @@ function setup_git(){                           __function_boundary_in__
   done
   unset HH
 
-  : "${C_CmntSub} Clean up after section, Git ${C_AttrOff}"
+  : "${C_SubComent} Clean up after section, Git ${C_AttrOff}"
   unset git_files_a git_conf_global_f git_mesg git_ignr git_keys
                                                  __function_boundary_out_0__
 }
@@ -2343,19 +2343,19 @@ function setup_git(){                           __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_git_user_dirs() ${C_AttrOff}"
+: "${C_SubComent} Define setup_git_user_dirs() ${C_AttrOff}"
 function setup_git_user_dirs(){                 __function_boundary_in__
 
   ## Note, in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
   #+   popd
 
-  : "${C_CmntSub} Variables -- global, for use for entire script ${C_AttrOff}"
+  : "${C_SubComent} Variables -- global, for use for entire script ${C_AttrOff}"
   dev_d1=~/MYPROJECTS
   dev_d2=~/OTHERSPROJECTS
   readonly dev_d1
   readonly dev_d2
 
-  : "${C_CmntSub} Make dirs ${C_AttrOff}"
+  : "${C_SubComent} Make dirs ${C_AttrOff}"
   local UU
   for UU in "${dev_d1}" "${dev_d2}"
   do
@@ -2368,7 +2368,7 @@ function setup_git_user_dirs(){                 __function_boundary_in__
   done
   unset UU
 
-  : "${C_CmntSub} Change dirs ${C_AttrOff}"
+  : "${C_SubComent} Change dirs ${C_AttrOff}"
   pushd "${dev_d1}" > /dev/null || {
     __die__
   }
@@ -2378,10 +2378,10 @@ function setup_git_user_dirs(){                 __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_gpg() ${C_AttrOff}"
+: "${C_SubComent} Define setup_gpg() ${C_AttrOff}"
 function setup_gpg(){                           __function_boundary_in__
 
-  : "${C_CmntSub} If any files in ~/.gnupg are not owned by either USER or root, then error out and exit ${C_AttrOff}"
+  : "${C_SubComent} If any files in ~/.gnupg are not owned by either USER or root, then error out and exit ${C_AttrOff}"
   local -a problem_files
   problem_files=()
   readarray -d "" -t problem_files < <(
@@ -2409,7 +2409,7 @@ function setup_gpg(){                           __function_boundary_in__
   find -- ~/.gnupg -xdev -type f \! -perm 600  -execdir \
     chmod 600 "${ver__[@]}" \{\} \; #
 
-  : "${C_CmntSub} GPG -- If a gpg-agent daemon is running, or not, then, either way say so ${C_AttrOff}"
+  : "${C_SubComent} GPG -- If a gpg-agent daemon is running, or not, then, either way say so ${C_AttrOff}"
   # shellcheck disable=SC2009
   if ps aux | grep -q --extended-regexp "[g]pg-a.*daemon" "${qui__[@]}"
   then
@@ -2433,7 +2433,7 @@ function setup_gpg(){                           __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_network() ${C_AttrOff}"
+: "${C_SubComent} Define setup_network() ${C_AttrOff}"
 function setup_network(){                       __function_boundary_in__
   #__enable_local_xtrace__
 
@@ -2446,23 +2446,23 @@ function setup_network(){                       __function_boundary_in__
   then
     printf '\n%s, Attempting to connect to the internet... \n\n' "${scr_nm}"
 
-    : "${C_CmntSub} Try to get NetworkManager up and running ${C_AttrOff}"
+    : "${C_SubComent} Try to get NetworkManager up and running ${C_AttrOff}"
     sudo -- nice --adjustment=-20 -- systemctl start -- NetworkManager.service
     wait -f
 
-    : "${C_CmntSub} Turn on networking ${C_AttrOff}"
+    : "${C_SubComent} Turn on networking ${C_AttrOff}"
     sudo -- nmcli n on
 
-    : "${C_CmntSub} Turn on WiFi ${C_AttrOff}"
+    : "${C_SubComent} Turn on WiFi ${C_AttrOff}"
     sudo -- nmcli r wifi on
 
-    : "${C_CmntSub} Get interface name(s) ${C_AttrOff}"
+    : "${C_SubComent} Get interface name(s) ${C_AttrOff}"
     readarray -d "" -t ifaces < <(
       nmcli --terse c |
         awk --field-separator : '$1 !~ /lo/ { printf "%s\0", $1 }'
     )
 
-    : "${C_CmntSub} Connect the interface ${C_AttrOff}"
+    : "${C_SubComent} Connect the interface ${C_AttrOff}"
     case "${#ifaces[@]}" in
       0 )
         __die__ "No network device available"
@@ -2485,7 +2485,7 @@ function setup_network(){                       __function_boundary_in__
     fi
   fi
 
-  : "${C_CmntSub} Clean up from Network ${C_AttrOff}"
+  : "${C_SubComent} Clean up from Network ${C_AttrOff}"
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
                                                  __function_boundary_out_0__
@@ -2494,7 +2494,7 @@ function setup_network(){                       __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_ssh() ${C_AttrOff}"
+: "${C_SubComent} Define setup_ssh() ${C_AttrOff}"
 function setup_ssh(){                           __function_boundary_in__
   #__enable_local_xtrace__
 
@@ -2504,7 +2504,7 @@ function setup_ssh(){                           __function_boundary_in__
   ssh_usr_conf_dir=~/.ssh/
   ssh_user_conf_file=~/.ssh/config
 
-  : "${C_CmntSub} Make sure the SSH config directory and file for USER exist ${C_AttrOff}"
+  : "${C_SubComent} Make sure the SSH config directory and file for USER exist ${C_AttrOff}"
   [[ -d ${ssh_usr_conf_dir} ]] ||
     mkdir -m 0700 "${ssh_usr_conf_dir}" || {
       __die__
@@ -2551,19 +2551,19 @@ function setup_ssh(){                           __function_boundary_in__
 
   ## Bug? not necc to restart ssh-agent if both of these vars exist?
 
-    : "${C_CmntSub}${SSH_AUTH_SOCK:=}" "${SSH_AGENT_PID:=} ${C_AttrOff}"
+    : "${C_SubComent}${SSH_AUTH_SOCK:=}" "${SSH_AGENT_PID:=} ${C_AttrOff}"
     declare -p SSH_AUTH_SOCK SSH_AGENT_PID # <>
 
     __pause2ck__ # <>
 
-  : "${C_CmntSub} Get the PID of any running SSH Agents -- there may be more than one ${C_AttrOff}"
+  : "${C_SubComent} Get the PID of any running SSH Agents -- there may be more than one ${C_AttrOff}"
   local -a ssh_agent_pids
   readarray -t ssh_agent_pids < <(
     ps h -C 'ssh-agent -s' -o pid |
       tr -d ' '
   )
 
-  : "${C_CmntSub} Make sure ssh daemon is running (?) ${C_AttrOff}"
+  : "${C_SubComent} Make sure ssh daemon is running (?) ${C_AttrOff}"
   if  [[ -z ${SSH_AUTH_SOCK:-} ]] ||
       [[ -z ${SSH_AGENT_PID:-} ]] ||
       [[ -z ${ssh_agent_pids[*]:-} ]]
@@ -2577,7 +2577,7 @@ function setup_ssh(){                           __function_boundary_in__
     eval "${HH}"
     unset HH
 
-    : "${C_CmntSub}...and try again to get the PID of the SSH Agent ${C_AttrOff}"
+    : "${C_SubComent}...and try again to get the PID of the SSH Agent ${C_AttrOff}"
     readarray -t ssh_agent_pids < <(
       ps h -C 'ssh-agent -s' -o pid |
         tr -d ' '
@@ -2601,7 +2601,7 @@ function setup_ssh(){                           __function_boundary_in__
     * )
         ## ToDo, _kill_ should be an alias?
 
-        : "${C_CmntSub} If more than one ssh-agent is running, then keep the first and kill the rest ${C_AttrOff}"
+        : "${C_SubComent} If more than one ssh-agent is running, then keep the first and kill the rest ${C_AttrOff}"
         local II
         for II in "${!ssh_agent_pids[@]}"
         do
@@ -2644,7 +2644,7 @@ function setup_ssh(){                           __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_temp_dirs() ${C_AttrOff}"
+: "${C_SubComent} Define setup_temp_dirs() ${C_AttrOff}"
 function setup_temp_dirs(){                     __function_boundary_in__
   #__enable_local_xtrace__
 
@@ -2665,7 +2665,7 @@ function setup_temp_dirs(){                     __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_time() ${C_AttrOff}"
+: "${C_SubComent} Define setup_time() ${C_AttrOff}"
 function setup_time(){                          __function_boundary_in__
   #__enable_local_xtrace__
 
@@ -2681,11 +2681,11 @@ function setup_time(){                          __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define setup_vim() ${C_AttrOff}"
+: "${C_SubComent} Define setup_vim() ${C_AttrOff}"
 function setup_vim(){                           __function_boundary_in__
   #__enable_local_xtrace__
 
-  : "${C_CmntSub} Heredoc of vim-conf-text ${C_AttrOff}"
+  : "${C_SubComent} Heredoc of vim-conf-text ${C_AttrOff}"
   cat <<- \EOF | tee -- "${tmp_dir}/vim-conf-text" > /dev/null
 		" ~/.vimrc
 
@@ -2740,31 +2740,31 @@ function setup_vim(){                           __function_boundary_in__
     sudo -- touch -- "${strng_vrc}" # <> set-e
   fi
 
-  : "${C_CmntSub} Write .vimrc ${C_AttrOff}"
+  : "${C_SubComent} Write .vimrc ${C_AttrOff}"
   if  (( ${#arr_vrc[@]} == 0 )) ||
       ! [[ ${WW} = "${YY}" ]]
   then
     : $'Test returned \x22true,\x22 the number didn\x60t match, so write to .vimrc'
 
-    : "${C_CmntSub} Set the umask ${C_AttrOff}"
+    : "${C_SubComent} Set the umask ${C_AttrOff}"
     read -ra umask_prior < <(
       umask -p
     )
     umask 177
 
-    : "${C_CmntSub} Write the root file ${C_AttrOff}"
+    : "${C_SubComent} Write the root file ${C_AttrOff}"
     sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || {
       __die__
     }
 
-    : "${C_CmntSub} Copy the root file to ${HOME}"$' and repair DAC\x60s on '"${USER}"$'\x60s copy'
+    : "${C_SubComent} Copy the root file to ${HOME}"$' and repair DAC\x60s on '"${USER}"$'\x60s copy'
     sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc || {
       __die__
     }
     sudo -- chown "${UID}:${UID}" -- ~/.vimrc
     chmod 0400 -- ~/.vimrc
 
-    : "${C_CmntSub} Reset the umask ${C_AttrOff}"
+    : "${C_SubComent} Reset the umask ${C_AttrOff}"
     builtin "${umask_prior[@]}"
   fi
   unset arr_vrc strng_vrc WW YY umask_prior
@@ -2774,7 +2774,7 @@ function setup_vim(){                           __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define test_dns() ${C_AttrOff}"
+: "${C_SubComent} Define test_dns() ${C_AttrOff}"
 function test_dns(){                            __function_boundary_in__
   #__enable_local_xtrace__
 
@@ -2786,7 +2786,7 @@ function test_dns(){                            __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define test_os() ${C_AttrOff}"
+: "${C_SubComent} Define test_os() ${C_AttrOff}"
 function test_os(){                             __function_boundary_in__
   #__enable_local_xtrace__
 
@@ -2807,7 +2807,7 @@ function test_os(){                             __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define trap_err() ${C_AttrOff}"
+: "${C_SubComent} Define trap_err() ${C_AttrOff}"
 function trap_err(){                            __function_boundary_in__
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
@@ -2822,7 +2822,7 @@ function trap_err(){                            __function_boundary_in__
 ## Bug, these var assignments $prev_cmd_exit_code and $lineno only fail when they\re on line number >=2
 #+  of  trap  "args section" ??
 
-: "${C_CmntSub} Define trap_exit() ${C_AttrOff}"
+: "${C_SubComent} Define trap_exit() ${C_AttrOff}"
 ## Note, these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
 function trap_exit(){                           __function_boundary_in__
@@ -2830,7 +2830,7 @@ function trap_exit(){                           __function_boundary_in__
 
   trap - EXIT
 
-  : "${C_CmntSub} Remove temporary directory, if one exists ${C_AttrOff}"
+  : "${C_SubComent} Remove temporary directory, if one exists ${C_AttrOff}"
   [[ -d ${tmp_dir:=} ]] &&
     "$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${ver__[@]}" "${tmp_dir}"
 
@@ -2841,11 +2841,11 @@ function trap_exit(){                           __function_boundary_in__
 
 
 
-: "${C_CmntSub} Define write_bashrc_strings() ${C_AttrOff}"
+: "${C_SubComent} Define write_bashrc_strings() ${C_AttrOff}"
 function write_bashrc_strings(){                __function_boundary_in__
   #__enable_local_xtrace__
 
-  : "${C_CmntSub} Certain parameters must be defined and have non-zero values ${C_AttrOff}"
+  : "${C_SubComent} Certain parameters must be defined and have non-zero values ${C_AttrOff}"
   (( ${#files_for_use_with_bash[@]} == 0 )) && {
     __die__
   }
@@ -2856,7 +2856,7 @@ function write_bashrc_strings(){                __function_boundary_in__
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
 
-  : "${C_CmntSub} For each set of strings to append into bashrc"
+  : "${C_SubComent} For each set of strings to append into bashrc"
   for JJ
   do
     : 'Loop D - open \\\ '
@@ -2864,47 +2864,47 @@ function write_bashrc_strings(){                __function_boundary_in__
     unset -n fn_nameref
     local -n fn_nameref="${JJ}"
 
-    : "${C_CmntSub} For each .bashrc"
+    : "${C_SubComent} For each .bashrc"
     for file_x in "${files_for_use_with_bash[@]}"
     do
       : 'Loop D:1 - open \\\ '
 
-      : "${C_CmntSub} file_x, ${file_x} ${C_AttrOff}"
+      : "${C_SubComent} file_x, ${file_x} ${C_AttrOff}"
 
-      : "${C_CmntSub} For each definition (function or parameter)"
+      : "${C_SubComent} For each definition (function or parameter)"
       for Aa_index in "${!fn_nameref[@]}"
       do
         : 'Loop D:1:a - open \\\ '
 
-        : "${C_CmntSub} Aa_index, ${Aa_index} ${C_AttrOff}"
+        : "${C_SubComent} Aa_index, ${Aa_index} ${C_AttrOff}"
         Aa_element="${fn_nameref[${Aa_index}]}"
 
-        : "${C_CmntSub}(1) If the definition is not yet written into the file... ${C_AttrOff}"
+        : "${C_SubComent}(1) If the definition is not yet written into the file... ${C_AttrOff}"
         if ! sudo -- grep --quiet --fixed-strings "## ${Aa_index}" -- "${file_x}"
         then
 
-          : "${C_CmntSub} Then write the function definition into the file ${C_AttrOff}"
+          : "${C_SubComent} Then write the function definition into the file ${C_AttrOff}"
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" |
             sudo -- tee --append -- "${file_x}" > /dev/null || {
               __die__
             }
         else
-          : "${C_CmntSub} Definition exists, skipping ${C_AttrOff}"
+          : "${C_SubComent} Definition exists, skipping ${C_AttrOff}"
         fi
 
         ## Bug, what if it\s a multiline alias?
 
         ## Question, can `sed` take variable assignments the way `awk` can?
 
-        : "${C_CmntSub}(2) If there is an alias by the same name, then delete it from the bashrc file at hand... ${C_AttrOff}"
+        : "${C_SubComent}(2) If there is an alias by the same name, then delete it from the bashrc file at hand... ${C_AttrOff}"
         sudo -- sed --in-place "/^alias ${Aa_index##* }=/d" -- "${file_x}"
 
-        : "${C_CmntSub} Loop D:1:a - shut /// "
+        : "${C_SubComent} Loop D:1:a - shut /// "
       done
       unset Aa_element
-      : "${C_CmntSub} Loops D:1:a - complete === "
+      : "${C_SubComent} Loops D:1:a - complete === "
 
-      : "${C_CmntSub} For each file, if absent add a newline at EOF ${C_AttrOff}"
+      : "${C_SubComent} For each file, if absent add a newline at EOF ${C_AttrOff}"
       if  sudo -- tail --lines 1 -- "${file_x}" |
             grep --quiet --extended-regexp "[[:graph:]]"
       then
@@ -2912,18 +2912,18 @@ function write_bashrc_strings(){                __function_boundary_in__
           sudo -- tee --append -- "${file_x}" > /dev/null
       fi
 
-      : "${C_CmntSub} Loop D:1 - shut /// "
+      : "${C_SubComent} Loop D:1 - shut /// "
     done
-    : "${C_CmntSub} Loops D:1 - complete === "
+    : "${C_SubComent} Loops D:1 - complete === "
 
-    : "${C_CmntSub} Reset for the next loop, assuming there is one ${C_AttrOff}"
+    : "${C_SubComent} Reset for the next loop, assuming there is one ${C_AttrOff}"
     ## Note, ?? use  unset  so that values from previous loops will not interfere with the current loop
     shift
 
-    : "${C_CmntSub} Loop D - shut /// "
+    : "${C_SubComent} Loop D - shut /// "
   done
   unset JJ
-  : "${C_CmntSub} Loops D - complete === "
+  : "${C_SubComent} Loops D - complete === "
                                                  __function_boundary_out_0__
 }
 
@@ -2946,7 +2946,7 @@ function write_ssh_conf(){                      __function_boundary_in__
                                                  __function_boundary_out_0__
 }
 
-: "${C_CmntSub} Line ${nL}, Functions Complete ${C_AttrOff}"
+: "${C_SubComent} Line ${nL}, Functions Complete ${C_AttrOff}"
 
   ## <>
   #__debug_break__
