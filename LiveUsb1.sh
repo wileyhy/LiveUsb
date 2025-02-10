@@ -222,7 +222,7 @@ function _fn_enable_debug_aliases_(){
   #+  _als_debug_break_
   #+  _als_enble_locl_xtrce_
   #+  _als_enble_globl_xtrce_
-  #+  __function_boundary_in__
+  #+  _als_fnction_boundary_in_
   #+  __function_boundary_out_0__
   #+  __function_boundary_out_1__
   #+  __pause2ck__
@@ -328,22 +328,22 @@ function _fn_enable_debug_aliases_(){
 
 
   ##
-  : "${Color_SubComent} Define alias __function_boundary_in__ ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_fnction_boundary_in_ ${Color_AttributesOff}"
   ## Note, s\b all one line
   # shellcheck disable=SC2142
   unset als_fn_bdry_in__def_lineno
         als_fn_bdry_in__def_lineno="$((nameref_Lineno+1))"
 
-  alias __function_boundary_in__='
+  alias _als_fnction_boundary_in_='
     _="${C_FnctionBoundry} ${_var_fnction_boundry_long} function ${FUNCNAME[0]}() BEGINS ${_var_function_boundary_short} ${fn_lvl} to $(( ++fn_lvl )) ${C_AliasFunctionBoundary}"
-    _="${C_AliasFunctionBoundary} alias __function_boundary_in__, begin"
+    _="${C_AliasFunctionBoundary} alias _als_fnction_boundary_in_, begin"
     als_fn_bndry_in__call_line=${nameref_Lineno}
     als_def_line="${als_fn_bdry_in__def_lineno}"
     fn_call_lineno=$(( ${als_cl_fn__call_line:-} +1))
     fn_def_lineno="${nameref_Lineno:-}"
     local_hyphn="$-"
     prev_cmd_exit_code="${EC:-$?}"
-    : alias __function_boundary_in__, end "${Color_AttributesOff}"'
+    : alias _als_fnction_boundary_in_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -441,7 +441,7 @@ function enable_debug_functions(){
 
 
   : "${Color_SubComent} Define enable_git_debug_settings() ${Color_AttributesOff}"
-  function enable_git_debug_settings(){    __function_boundary_in__
+  function enable_git_debug_settings(){    _als_fnction_boundary_in_
 
     : "${Color_SubComent} Variables -- Global git debug settings ${Color_AttributesOff}"
     # shellcheck disable=SC2034
@@ -466,7 +466,7 @@ function enable_debug_functions(){
 
   : "${Color_SubComent} Define pause_to_check() ${Color_AttributesOff}"
   ## Usage,   pause_to_check "${nameref_Lineno}"
-  function pause_to_check(){                __function_boundary_in__
+  function pause_to_check(){                _als_fnction_boundary_in_
 
     local -I EC=101 ## Q, Why inherit attributes and values when you assign values anyway?
 
@@ -503,7 +503,7 @@ function enable_debug_functions(){
   }
 
   : "${Color_SubComent} Define set() ${Color_AttributesOff}"
-  function set(){                                  __function_boundary_in__
+  function set(){                                  _als_fnction_boundary_in_
     ## The global variable $fn_lvl is pulled in from the global scope and is set to effect the global
     #+  scope as well
     local -Ig fn_lvl
@@ -532,7 +532,7 @@ enable_debug_functions
   builtin set -x
 
 : "${Color_SubComent} Define setup_variables() ${Color_AttributesOff}"
-function setup_variables(){ __function_boundary_in__
+function setup_variables(){ _als_fnction_boundary_in_
   :
   : "${Color_Comment} Line ${nameref_Lineno}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
   :
@@ -715,7 +715,7 @@ _als_call_fncton \
   #+  write_ssh_conf()
 
 : "${Color_SubComent} Define clone_repo() ${Color_AttributesOff}"
-function clone_repo(){                           __function_boundary_in__
+function clone_repo(){                           _als_fnction_boundary_in_
 
   [[ ${PWD} = "${dev_d1}" ]] || {
     _als_die_
@@ -743,7 +743,7 @@ function clone_repo(){                           __function_boundary_in__
 
 
 : "${Color_SubComent} Define _fn_error_and_exit_() ${Color_AttributesOff}"
-function _fn_error_and_exit_(){                       __function_boundary_in__
+function _fn_error_and_exit_(){                       _als_fnction_boundary_in_
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] &&
@@ -778,7 +778,7 @@ function _fn_error_and_exit_(){                       __function_boundary_in__
 ## ToDo: add a "get_distro()" function
 
 : "${Color_SubComent} Define get_pids_for_restarting() ${Color_AttributesOff}"
-function get_pids_for_restarting(){              __function_boundary_in__
+function get_pids_for_restarting(){              _als_fnction_boundary_in_
 
   # shellcheck disable=SC2034
   local dnf_o
@@ -844,7 +844,7 @@ function get_pids_for_restarting(){              __function_boundary_in__
 
 
 : "${Color_SubComent} Define gh_auth_login_command() ${Color_AttributesOff}"
-function gh_auth_login_command(){                __function_boundary_in__
+function gh_auth_login_command(){                _als_fnction_boundary_in_
 
   if gh auth status >/dev/null 2>&1
   then
@@ -865,7 +865,7 @@ function gh_auth_login_command(){                __function_boundary_in__
 
 
 : "${Color_SubComent} Define increase_disk_space() ${Color_AttributesOff}"
-function increase_disk_space(){                  __function_boundary_in__
+function increase_disk_space(){                  _als_fnction_boundary_in_
   builtin set -x # []
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
@@ -1004,7 +1004,7 @@ function increase_disk_space(){                  __function_boundary_in__
 
 
 : "${Color_SubComent} Define min_necc_packages() ${Color_AttributesOff}"
-function min_necc_packages(){                    __function_boundary_in__
+function min_necc_packages(){                    _als_fnction_boundary_in_
 
   local XX
 
@@ -1029,7 +1029,7 @@ function min_necc_packages(){                    __function_boundary_in__
 
 
 : "${Color_SubComent} Define must_be_root() ${Color_AttributesOff}"
-function must_be_root(){                         __function_boundary_in__
+function must_be_root(){                         _als_fnction_boundary_in_
 
   if (( UID == 0 ))
   then
@@ -1047,7 +1047,7 @@ function must_be_root(){                         __function_boundary_in__
   builtin set -x #<>
 
 : "${Color_SubComent} Define reqd_user_files() ${Color_AttributesOff}"
-function reqd_user_files(){                      __function_boundary_in__
+function reqd_user_files(){                      _als_fnction_boundary_in_
   _als_enble_locl_xtrce_
 
   ## Note, QQ must be declared as local before unsetting it inside the
@@ -1290,7 +1290,7 @@ function reqd_user_files(){                      __function_boundary_in__
 
 
 : "${Color_SubComent} Define rsync_install_if_missing() ${Color_AttributesOff}"
-function rsync_install_if_missing(){             __function_boundary_in__
+function rsync_install_if_missing(){             _als_fnction_boundary_in_
 
     # <>
     if [[ -z $(declare -p data_dir) ]]
@@ -1364,7 +1364,7 @@ function rsync_install_if_missing(){             __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_bashrc() ${Color_AttributesOff}"
-function setup_bashrc(){                         __function_boundary_in__
+function setup_bashrc(){                         _als_fnction_boundary_in_
 
   : "${Color_SubComent} bashrc -- Do some backups ${Color_AttributesOff}"
   files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
@@ -1593,7 +1593,7 @@ function setup_bashrc(){                         __function_boundary_in__
 ## Bug, setup_dnf is too long and too complicated
 
 : "${Color_SubComent} Define setup_dnf() ${Color_AttributesOff}"
-function setup_dnf(){                           __function_boundary_in__
+function setup_dnf(){                           _als_fnction_boundary_in_
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
@@ -2100,7 +2100,7 @@ function setup_dnf(){                           __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_gh_cli() ${Color_AttributesOff}"
-function setup_gh_cli(){                        __function_boundary_in__
+function setup_gh_cli(){                        _als_fnction_boundary_in_
 
   : "${Color_SubComent} GH -- set config key-value pairs ${Color_AttributesOff}"
   local -A github_configs
@@ -2173,7 +2173,7 @@ function setup_gh_cli(){                        __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_git() ${Color_AttributesOff}"
-function setup_git(){                           __function_boundary_in__
+function setup_git(){                           _als_fnction_boundary_in_
 
   ## Note, git ui colors: normal black red green yellow blue magenta cyan white
   #+  git ui attributes: bold dim ul (underline blink reverse)
@@ -2351,7 +2351,7 @@ function setup_git(){                           __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_git_user_dirs() ${Color_AttributesOff}"
-function setup_git_user_dirs(){                 __function_boundary_in__
+function setup_git_user_dirs(){                 _als_fnction_boundary_in_
 
   ## Note, in order to clone into any repo, and keep multiple repos separate,  cd  is required, or  pushd  /
   #+   popd
@@ -2386,7 +2386,7 @@ function setup_git_user_dirs(){                 __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_gpg() ${Color_AttributesOff}"
-function setup_gpg(){                           __function_boundary_in__
+function setup_gpg(){                           _als_fnction_boundary_in_
 
   : "${Color_SubComent} If any files in ~/.gnupg are not owned by either USER or root, then error out and exit ${Color_AttributesOff}"
   local -a problem_files
@@ -2441,7 +2441,7 @@ function setup_gpg(){                           __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_network() ${Color_AttributesOff}"
-function setup_network(){                       __function_boundary_in__
+function setup_network(){                       _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   dns_srv_1=8.8.8.8
@@ -2502,7 +2502,7 @@ function setup_network(){                       __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_ssh() ${Color_AttributesOff}"
-function setup_ssh(){                           __function_boundary_in__
+function setup_ssh(){                           _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   ## Bug? hardcoded filenames? ...yes, I know it#s mis-spelled.
@@ -2639,7 +2639,7 @@ function setup_ssh(){                           __function_boundary_in__
 
 
 #: "setup_systemd()"
-#function setup_systemd(){                      __function_boundary_in__
+#function setup_systemd(){                      _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
   ### Note, services to disable and mask
   ##+  ModemManager.service
@@ -2652,7 +2652,7 @@ function setup_ssh(){                           __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_temp_dirs() ${Color_AttributesOff}"
-function setup_temp_dirs(){                     __function_boundary_in__
+function setup_temp_dirs(){                     _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   tmp_dir=$(
@@ -2673,7 +2673,7 @@ function setup_temp_dirs(){                     __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_time() ${Color_AttributesOff}"
-function setup_time(){                          __function_boundary_in__
+function setup_time(){                          _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   sudo -- timedatectl set-local-rtc 0
@@ -2689,7 +2689,7 @@ function setup_time(){                          __function_boundary_in__
 
 
 : "${Color_SubComent} Define setup_vim() ${Color_AttributesOff}"
-function setup_vim(){                           __function_boundary_in__
+function setup_vim(){                           _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   : "${Color_SubComent} Heredoc of vim-conf-text ${Color_AttributesOff}"
@@ -2782,7 +2782,7 @@ function setup_vim(){                           __function_boundary_in__
 
 
 : "${Color_SubComent} Define test_dns() ${Color_AttributesOff}"
-function test_dns(){                            __function_boundary_in__
+function test_dns(){                            _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
@@ -2794,7 +2794,7 @@ function test_dns(){                            __function_boundary_in__
 
 
 : "${Color_SubComent} Define test_os() ${Color_AttributesOff}"
-function test_os(){                             __function_boundary_in__
+function test_os(){                             _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   local kern_rel
@@ -2815,7 +2815,7 @@ function test_os(){                             __function_boundary_in__
 
 
 : "${Color_SubComent} Define trap_err() ${Color_AttributesOff}"
-function trap_err(){                            __function_boundary_in__
+function trap_err(){                            _als_fnction_boundary_in_
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
@@ -2832,7 +2832,7 @@ function trap_err(){                            __function_boundary_in__
 : "${Color_SubComent} Define trap_exit() ${Color_AttributesOff}"
 ## Note, these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){                           __function_boundary_in__
+function trap_exit(){                           _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   trap - EXIT
@@ -2849,7 +2849,7 @@ function trap_exit(){                           __function_boundary_in__
 
 
 : "${Color_SubComent} Define write_bashrc_strings() ${Color_AttributesOff}"
-function write_bashrc_strings(){                __function_boundary_in__
+function write_bashrc_strings(){                _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   : "${Color_SubComent} Certain parameters must be defined and have non-zero values ${Color_AttributesOff}"
@@ -2940,7 +2940,7 @@ function write_bashrc_strings(){                __function_boundary_in__
 ## ToDo, look at how each conf file is defined and written, each one's a little different. Make them
 #+  uniform with each other, since the purpose of each section is the same in each case.
 
-function write_ssh_conf(){                      __function_boundary_in__
+function write_ssh_conf(){                      _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   ## Bug? $ssh_user_conf_file defined in a different function, setup_ssh()
