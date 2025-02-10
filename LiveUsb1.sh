@@ -703,10 +703,10 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_error_and_exit_()
   #+  _fn_get_pids_for_restarting_()
   #+  _fn_gh_auth_login_command_()
-  #+  _fn_increase_disk_space_()
+  #+  _fn__fn_increase_disk_space__()
   #+  _fn_min_necc_packages_()
   #+  _fn_must_be_root_()
-  #+  reqd_user_files()
+  #+  _fn_reqd_user_files_()
   #+  rsync_install_if_missing()
   #+  setup_bashrc()
   #+  setup_dnf()
@@ -884,8 +884,8 @@ function _fn_gh_auth_login_command_(){                _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define _fn_increase_disk_space_() ${Color_AttributesOff}"
-function _fn_increase_disk_space_(){                  _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn__fn_increase_disk_space__() ${Color_AttributesOff}"
+function _fn__fn_increase_disk_space__(){                  _als_fnction_boundary_in_
   builtin set -x # []
 
   ## Note, such as...   /usr/lib/locale /usr/share/i18n/locales /usr/share/locale /usr/share/X11/locale , etc.
@@ -1071,8 +1071,8 @@ function _fn_must_be_root_(){                         _als_fnction_boundary_in_
 
   builtin set -x #<>
 
-: "${Color_SubComent} Define reqd_user_files() ${Color_AttributesOff}"
-function reqd_user_files(){                      _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_reqd_user_files_() ${Color_AttributesOff}"
+function _fn_reqd_user_files_(){                      _als_fnction_boundary_in_
   _als_enble_locl_xtrce_
 
   ## Note, QQ must be declared as local before unsetting it inside the
@@ -1345,7 +1345,7 @@ function rsync_install_if_missing(){             _als_fnction_boundary_in_
     unset fn_umask
   fi
 
-  ## Bug, variable $data_dir is defined in a different function, reqd_user_files().
+  ## Bug, variable $data_dir is defined in a different function, _fn_reqd_user_files_().
   #+ See <> test above, ~line 812
 
   if [[ -z ${data_dir} ]]
@@ -3014,7 +3014,7 @@ test_os
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Certain files must have been installed from off-disk ${Color_AttributesOff}"
-reqd_user_files
+_fn_reqd_user_files_
 
   #_als_debug_break_
 
@@ -3049,7 +3049,7 @@ setup_bashrc
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Increase disk space ${Color_AttributesOff}"
-_fn_increase_disk_space_
+_fn__fn_increase_disk_space__
 
   #_als_debug_break_
 
