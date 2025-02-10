@@ -722,9 +722,9 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_setup_vim()
   #+  _fn_test_dns()
   #+  _fn_test_os()
-  #+  trap_err()
-  #+  trap_exit()
-  #+  trap_return()
+  #+  _fn_trap_err()
+  #+  _fn_trap_exit()
+  #+  _fn_trap_return()
   #+  write_bashrc_strings()
   #+  write_ssh_conf()
 
@@ -2839,8 +2839,8 @@ function _fn_test_os(){                             _als_fnction_boundary_in_
 
 
 
-: "${Color_SubComent} Define trap_err() ${Color_AttributesOff}"
-function trap_err(){                            _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_trap_err() ${Color_AttributesOff}"
+function _fn_trap_err(){                            _als_fnction_boundary_in_
 
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
@@ -2854,10 +2854,10 @@ function trap_err(){                            _als_fnction_boundary_in_
 ## Bug, these var assignments $prev_cmd_exit_code and $lineno only fail when they\re on line number >=2
 #+  of  trap  "args section" ??
 
-: "${Color_SubComent} Define trap_exit() ${Color_AttributesOff}"
+: "${Color_SubComent} Define _fn_trap_exit() ${Color_AttributesOff}"
 ## Note, these variable assignments must be on the 1st line of the funtion in order to capture correct data
 # shellcheck disable=SC2317
-function trap_exit(){                           _als_fnction_boundary_in_
+function _fn_trap_exit(){                           _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
   trap - EXIT
@@ -2993,10 +2993,10 @@ function write_ssh_conf(){                      _als_fnction_boundary_in_
 
 
 : "${Color_Comment} Line ${nameref_Lineno}, Define trap on ERR ${Color_AttributesOff}"
-trap trap_err ERR
+trap _fn_trap_err ERR
 
 : "${Color_Comment} Line ${nameref_Lineno}, Define trap on EXIT ${Color_AttributesOff}"
-trap trap_exit EXIT
+trap _fn_trap_exit EXIT
 
 
 : "${Color_Comment} Line ${nameref_Lineno}, Regular users with sudo, only ${Color_AttributesOff}"
