@@ -219,7 +219,7 @@ function _fn_enable_debug_aliases_(){
   : "${Color_SubComent} Line ${nameref_Lineno}, Aliases, debug - TOC ${Color_AttributesOff}"
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  _als_call_fncton
-  #+  __debug_break__
+  #+  _als_debug_break_
   #+  __enable_local_xtrace__
   #+  __enable_global_xtrace__
   #+  __function_boundary_in__
@@ -247,13 +247,13 @@ function _fn_enable_debug_aliases_(){
 
 
   ##
-  : "${Color_SubComent} Define alias __debug_break__ ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_debug_break_ ${Color_AttributesOff}"
   ## Note, this alias is in intended to function as a
   unset als_dbg_brk__def_lineno
         als_dbg_brk__def_lineno="$((nameref_Lineno+1))"
 
-  alias __debug_break__='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}
+  alias _als_debug_break_='
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_debug_break_, begin, def Line ${als_dbg_brk__def_lineno}
 
     : If xtrace is already enabled, then disable xtrace and exit the script
 
@@ -263,11 +263,11 @@ function _fn_enable_debug_aliases_(){
       EC=101
       main_lineno="${nameref_Lineno}" exit
     else
-      printf "%b\n" "${C_XtraceOfAlias} Line ${nameref_Lineno}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}"
+      printf "%b\n" "${C_XtraceOfAlias} Line ${nameref_Lineno}, alias _als_debug_break_, begin, def Line ${als_dbg_brk__def_lineno}"
       __enable_global_xtrace__
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __debug_break__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_debug_break_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -2956,7 +2956,7 @@ function write_ssh_conf(){                      __function_boundary_in__
 : "${Color_SubComent} Line ${nameref_Lineno}, Functions Complete ${Color_AttributesOff}"
 
   ## <>
-  #__debug_break__
+  #_als_debug_break_
   #: 'hyphen,' "$-"
 
 ## ToDo, perhaps there should be a "main()" function.
@@ -2986,52 +2986,52 @@ must_be_root
 : "${Color_Comment} Line ${nameref_Lineno}, Test OS ${Color_AttributesOff}"
 test_os
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Certain files must have been installed from off-disk ${Color_AttributesOff}"
 reqd_user_files
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Network ${Color_AttributesOff}"
 setup_network
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Time ${Color_AttributesOff}"
 setup_time
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Temporary directory ${Color_AttributesOff}"
 setup_temp_dirs
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Minimum necessary rpms ${Color_AttributesOff}"
 min_necc_packages
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Vim ${Color_AttributesOff}"
 setup_vim
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Bash ${Color_AttributesOff}"
 setup_bashrc
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Increase disk space ${Color_AttributesOff}"
 increase_disk_space
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Dnf ${Color_AttributesOff}"
 setup_dnf
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Restart NetworkManager if necessary ${Color_AttributesOff}"
 
@@ -3051,17 +3051,17 @@ unset BB
 : "${Color_Comment} Line ${nameref_Lineno}, SSH ${Color_AttributesOff}"
 setup_ssh
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, GPG ${Color_AttributesOff}"
 setup_gpg
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Make and change into directories ${Color_AttributesOff}"
 setup_git_user_dirs
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "Git debug settings"
 #enable_git_debug_settings
@@ -3069,17 +3069,17 @@ setup_git_user_dirs
 : "${Color_Comment} Line ${nameref_Lineno}, Git ${Color_AttributesOff}"
 setup_git
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, GH -- github CLI configuration ${Color_AttributesOff}"
 setup_gh_cli
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Clone repo ${Color_AttributesOff}"
 clone_repo
 
-  #__debug_break__
+  #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Remind user of commands for the interactive shell ${Color_AttributesOff}"
 
