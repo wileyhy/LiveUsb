@@ -451,6 +451,7 @@ function _fn_enable_debug_functions_ ()
     #+  _fn_set_
 
 
+  ##
   : "${Color_SubComent} Define _fn_enable_git_debug_settings_ ${Color_AttributesOff}"
   function _fn_enable_git_debug_settings_ ()
   {    _als_fnction_boundary_in_
@@ -476,6 +477,7 @@ function _fn_enable_debug_functions_ ()
   }
 
 
+  ##
   : "${Color_SubComent} Define _fn_pause_to_check_ ${Color_AttributesOff}"
   ## Usage,   _fn_pause_to_check_ ${nameref_Lineno}
   function _fn_pause_to_check_ ()
@@ -515,6 +517,8 @@ function _fn_enable_debug_functions_ ()
     _als_fnction_boundary_out_0_
   }
 
+
+  ##
   : "${Color_SubComent} Define _fn_set_ ${Color_AttributesOff}"
   function _fn_set_ ()
   {                                  _als_fnction_boundary_in_
@@ -542,6 +546,8 @@ function _fn_enable_debug_functions_ ()
     _als_fnction_boundary_out_0_
   }
 
+
+  ##
   : "${Color_Comment} Line ${nameref_Lineno}, Functions, Debug - Complete ${Color_AttributesOff}"
 }
 _fn_enable_debug_functions_
@@ -736,6 +742,8 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_write_bashrc_strings_
   #+  _fn_write_ssh_conf_
 
+
+##
 : "${Color_SubComent} Define _fn_clone_repo_ ${Color_AttributesOff}"
 function _fn_clone_repo_ ()
 {                           _als_fnction_boundary_in_
@@ -763,8 +771,7 @@ function _fn_clone_repo_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_error_and_exit_ ${Color_AttributesOff}"
 function _fn_error_and_exit_ ()
 {                       _als_fnction_boundary_in_
@@ -803,10 +810,10 @@ function _fn_error_and_exit_ ()
 }
 
 
-
-
 ## ToDo: add a \get_distro\ function
 
+
+##
 : "${Color_SubComent} Define _fn_get_pids_for_restarting_ ${Color_AttributesOff}"
 function _fn_get_pids_for_restarting_ ()
 {              _als_fnction_boundary_in_
@@ -872,8 +879,7 @@ function _fn_get_pids_for_restarting_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_gh_auth_login_command_ ${Color_AttributesOff}"
 function _fn_gh_auth_login_command_ ()
 {                _als_fnction_boundary_in_
@@ -894,8 +900,7 @@ function _fn_gh_auth_login_command_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_increase_disk_space_ ${Color_AttributesOff}"
 function _fn_increase_disk_space_ ()
 {                  _als_fnction_boundary_in_
@@ -1039,8 +1044,7 @@ function _fn_increase_disk_space_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_min_necc_packages_ ${Color_AttributesOff}"
 function _fn_min_necc_packages_ ()
 {                    _als_fnction_boundary_in_
@@ -1065,8 +1069,7 @@ function _fn_min_necc_packages_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_must_be_root_ ${Color_AttributesOff}"
 function _fn_must_be_root_ ()
 {                         _als_fnction_boundary_in_
@@ -1086,6 +1089,8 @@ function _fn_must_be_root_ ()
 
   builtin set -x #<>
 
+
+##
 : "${Color_SubComent} Define _fn_reqd_user_files_ ${Color_AttributesOff}"
 function _fn_reqd_user_files_ ()
 {                      _als_fnction_boundary_in_
@@ -1328,8 +1333,7 @@ function _fn_reqd_user_files_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_rsync_install_if_missing_ ${Color_AttributesOff}"
 function _fn_rsync_install_if_missing_ ()
 {             _als_fnction_boundary_in_
@@ -1403,8 +1407,7 @@ function _fn_rsync_install_if_missing_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_bashrc_ ${Color_AttributesOff}"
 function _fn_setup_bashrc_ ()
 {                         _als_fnction_boundary_in_
@@ -1633,8 +1636,9 @@ function _fn_setup_bashrc_ ()
 }
 
 
-## Bug, _fn_setup_dnf_ is too long and too complicated
 
+##
+#! Bug, _fn_setup_dnf_ is too long and too complicated
 : "${Color_SubComent} Define _fn_setup_dnf_ ${Color_AttributesOff}"
 function _fn_setup_dnf_ ()
 {                           _als_fnction_boundary_in_
@@ -2141,8 +2145,7 @@ function _fn_setup_dnf_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_gh_cli_ ${Color_AttributesOff}"
 function _fn_setup_gh_cli_ ()
 {                        _als_fnction_boundary_in_
@@ -2215,8 +2218,7 @@ function _fn_setup_gh_cli_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_git_ ${Color_AttributesOff}"
 function _fn_setup_git_ ()
 {                           _als_fnction_boundary_in_
@@ -2394,8 +2396,7 @@ function _fn_setup_git_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_gti_user_dirs_ ${Color_AttributesOff}"
 function _fn_setup_gti_user_dirs_ ()
 {                 _als_fnction_boundary_in_
@@ -2430,8 +2431,7 @@ function _fn_setup_gti_user_dirs_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_gpg_ ${Color_AttributesOff}"
 function _fn_setup_gpg_ ()
 {                           _als_fnction_boundary_in_
@@ -2486,8 +2486,7 @@ function _fn_setup_gpg_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_network_ ${Color_AttributesOff}"
 function _fn_setup_network_ ()
 {                       _als_fnction_boundary_in_
@@ -2548,8 +2547,7 @@ function _fn_setup_network_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_ssh_ ${Color_AttributesOff}"
 function _fn_setup_ssh_ ()
 {                           _als_fnction_boundary_in_
@@ -2686,8 +2684,7 @@ function _fn_setup_ssh_ ()
 }
 
 
-
-
+##
 #: "setup_systemd"
 #function _fn_setup_systemd_ ()
 #{                      _als_fnction_boundary_in_
@@ -2700,8 +2697,7 @@ function _fn_setup_ssh_ ()
 #}
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_temp_dirs_ ${Color_AttributesOff}"
 function _fn_setup_temp_dirs_ ()
 {                     _als_fnction_boundary_in_
@@ -2722,8 +2718,7 @@ function _fn_setup_temp_dirs_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_time_ ${Color_AttributesOff}"
 function _fn_setup_time_ ()
 {                          _als_fnction_boundary_in_
@@ -2739,8 +2734,7 @@ function _fn_setup_time_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_setup_vim_ ${Color_AttributesOff}"
 function _fn_setup_vim_ ()
 {                           _als_fnction_boundary_in_
@@ -2833,8 +2827,7 @@ function _fn_setup_vim_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_test_dns_ ${Color_AttributesOff}"
 function _fn_test_dns_ ()
 {                            _als_fnction_boundary_in_
@@ -2846,8 +2839,7 @@ function _fn_test_dns_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_test_os_ ${Color_AttributesOff}"
 function _fn_test_os_ ()
 {                             _als_fnction_boundary_in_
@@ -2868,8 +2860,7 @@ function _fn_test_os_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_trap_err_ ${Color_AttributesOff}"
 function _fn_trap_err_ ()
 {                            _als_fnction_boundary_in_
@@ -2882,9 +2873,9 @@ function _fn_trap_err_ ()
 
 
 
-
-## Bug, these var assignments $prev_cmd_exit_code and $lineno only fail when they\re on line number >=2
-#+  of  trap  "args section" ??
+##
+#! Bug, these var assignments $prev_cmd_exit_code and $lineno only fail when they\re on line number >=2
+#!  of  trap  "args section" ??
 
 : "${Color_SubComent} Define _fn_trap_exit_ ${Color_AttributesOff}"
 ## Note, these variable assignments must be on the 1st line of the funtion in order to capture correct data
@@ -2904,8 +2895,7 @@ function _fn_trap_exit_ ()
 }
 
 
-
-
+##
 : "${Color_SubComent} Define _fn_write_bashrc_strings_ ${Color_AttributesOff}"
 function _fn_write_bashrc_strings_ ()
 {                _als_fnction_boundary_in_
@@ -2994,16 +2984,16 @@ function _fn_write_bashrc_strings_ ()
 }
 
 
+#! ToDo, look at how each conf file is defined and written, each one's a little different. Make them
+#!  uniform with each other, since the purpose of each section is the same in each case.
 
 
-## ToDo, look at how each conf file is defined and written, each one's a little different. Make them
-#+  uniform with each other, since the purpose of each section is the same in each case.
-
+##
 function _fn_write_ssh_conf_ ()
 {                      _als_fnction_boundary_in_
   #_als_enble_locl_xtrce_
 
-  ## Bug? $ssh_user_conf_file defined in a different function, _fn_setup_ssh_
+  #! Bug? $ssh_user_conf_file defined in a different function, _fn_setup_ssh_
 
   cat <<- \EOF > "${ssh_user_conf_file}"
 	Host github.com
@@ -3013,19 +3003,19 @@ function _fn_write_ssh_conf_ ()
                                                  _als_fnction_boundary_out_0_
 }
 
+
+##
 : "${Color_SubComent} Line ${nameref_Lineno}, Functions Complete ${Color_AttributesOff}"
 
-  ## <>
-  #_als_debug_break_
-  #: 'hyphen,' "$-"
-
-## ToDo, perhaps there should be a "main" function.
+#! ToDo, perhaps there should be a "main" function.
 
 
-
-
-
-
+##
+#! Note, traps:
+#!   EXIT -- for exiting
+#!   HUP USR1 TERM KILL -- for restarting processes
+#!   INT QUIT USR2 -- for stopping logging
+#!   For starting logging ?
 
 : "${Color_Comment} Line ${nameref_Lineno}, Define trap on ERR ${Color_AttributesOff}"
 trap _fn_trap_err_ ERR
@@ -3034,68 +3024,84 @@ trap _fn_trap_err_ ERR
 trap _fn_trap_exit_ EXIT
 
 
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Regular users with sudo, only ${Color_AttributesOff}"
 _fn_must_be_root_
 
-## Note, traps
-# EXIT -- for exiting
-# HUP USR1 TERM KILL -- for restarting processes
-# INT QUIT USR2 -- for stopping logging
-# for starting logging ?
 
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Test OS ${Color_AttributesOff}"
 _fn_test_os_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Certain files must have been installed from off-disk ${Color_AttributesOff}"
 _fn_reqd_user_files_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Network ${Color_AttributesOff}"
 _fn_setup_network_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Time ${Color_AttributesOff}"
 _fn_setup_time_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Temporary directory ${Color_AttributesOff}"
 _fn_setup_temp_dirs_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Minimum necessary rpms ${Color_AttributesOff}"
 _fn_min_necc_packages_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Vim ${Color_AttributesOff}"
 _fn_setup_vim_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Bash ${Color_AttributesOff}"
 _fn_setup_bashrc_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Increase disk space ${Color_AttributesOff}"
 _fn_increase_disk_space_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Dnf ${Color_AttributesOff}"
 _fn_setup_dnf_
 
   #_als_debug_break_
 
-: "${Color_Comment} Line ${nameref_Lineno}, Restart NetworkManager if necessary ${Color_AttributesOff}"
 
-## ToDo: use written function here
+##
+: "${Color_Comment} Line ${nameref_Lineno}, Restart NetworkManager if necessary ${Color_AttributesOff}"
+#! ToDo: use written function here
 for BB in "${dns_srv_A}" "${dns_srv_1}"
 do
   if ! ping -4qc1 -- "${BB}" > /dev/null 2>&1
@@ -3108,45 +3114,62 @@ done
 unset BB
 
 
+##
 : "${Color_Comment} Line ${nameref_Lineno}, SSH ${Color_AttributesOff}"
 _fn_setup_ssh_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, GPG ${Color_AttributesOff}"
 _fn_setup_gpg_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Make and change into directories ${Color_AttributesOff}"
 _fn_setup_gti_user_dirs_
 
   #_als_debug_break_
 
+
+##
 : "Git debug settings"
 #_fn_enable_git_debug_settings_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Git ${Color_AttributesOff}"
 _fn_setup_git_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, GH -- github CLI configuration ${Color_AttributesOff}"
 _fn_setup_gh_cli_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Clone repo ${Color_AttributesOff}"
 _fn_clone_repo_
 
   #_als_debug_break_
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Remind user of commands for the interactive shell ${Color_AttributesOff}"
 
 popd > /dev/null || {
   _als_die_
 }
 
+
+##
 if ! [[ ${PWD} = ${dev_d1}/${scr_repo_nm} ]]
 then
   printf '\n  Now run this command: \n'
@@ -3155,6 +3178,8 @@ fi
 
   set -v ## <>
 
+
+##
 : "${Color_Comment} Line ${nameref_Lineno}, Clean up & exit ${Color_AttributesOff}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 exti_code=00
