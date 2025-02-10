@@ -53,9 +53,9 @@
 #!           --timeout 1000 HUP \
 #!           --timeout 1000 USR1 \
 #!           --timeout 1000 TERM \
-#+           --timeout 1000 KILL -- "$WW"
-#+
-#+     Otherwise, it would be useful, IMO, if `kill --help` showed the
+#!           --timeout 1000 KILL -- "$WW"
+#!
+#!     Otherwise, it would be useful, IMO, if `kill --help` showed the
 #!   help file for /bin/kill, since using that syntax most likely
 #!   indicates that intention  :-\
 #!
@@ -70,8 +70,6 @@
 
 ## Start the script
 function start_script(){
-  #__function_boundary_in__
-  #__enable_local_xtrace__
 
   ## Get & print script start time
   script_start_time=$( date +%H:%M:%S )
@@ -84,15 +82,8 @@ function start_script(){
   hash -r
   shopt -s expand_aliases
   umask 077
-  #__function_boundary_out_0__
 }
 start_script
-
-  # <>
-  #exit $LINENO
-  #set -x
-
-
 
 function setup_aliases(){
   : "${C_Comment} Line ${nL}, Aliases, non-debugg ${C_AttrOff}"
@@ -114,19 +105,11 @@ function setup_aliases(){
 }
 setup_aliases
 
-  # <>
-  #exit "$LINENO"
-  #set -x
-
-
-
-
 ## <> Enable debugging (ie, "debugging")
 function enable_debugg_params(){
 
   ## Set up debugg shell options
   local -
-  #builtin set -x
   : "$( tput setaf 12 ) Debugging $( tput sgr0   )"
   # shellcheck disable=SC1001
   #! Note, this assignment is repeated here; originally it\s located
@@ -141,11 +124,6 @@ function enable_debugg_params(){
     set -e # <>   Err + exit
     set -o pipefail # <>
   }
-
-    # <>
-    #exit "$LINENO"
-    #set -x
-
 
   ## Set up debugg colors
   [[ -o xtrace ]] &&
@@ -180,52 +158,27 @@ function enable_debugg_params(){
 
   for II in "${!aa_colors[@]}"
   do
-      # <>
-      #declare -p II # <>
-      #echo 'II:' "$II"  'aa_colors[$II]:' "${aa_colors[$II]}" # <>
-
     unset -n NN
       declare -n NN="C_${II}"
     unset DD
       DD="$( awk '{ print $1 }' <<< "${aa_colors[$II]}" )"
-
-      # <>
-      #declare -p DD # <>
-      #declare -p NN
 
     # shellcheck disable=SC2034
     printf -v NN '%b' "$( tput setaf "${DD}" )"
     readonly C_"${II}"
     tput sgr0
 
-      # <>
-      #exit $nL
-      #unset TT; TT="$( awk '{ print $2 }' <<< "${aa_colors[$II]}" )"; printf '%b %d \t %s \t %s %b\n' "${NN}" "${DD}" "${II}" "${TT}" "${C_AttrOff}"
-
   done
   unset -n NN
   unset II DD aa_colors
-
-    # <>
-    #readonly
-    #declare -p C_AlsFnBndry C_Comment C_Errors C_CmntSub C_CmntSubSub C_TechCmnt C_FnBndry C_XtrAls C_AttrOff
-    #exit "$LINENO"
-    #set -x
-
 
   : "${C_Comment} Variables, Function boundary parameters ${C_AttrOff}"
   fn_bndry_sh=" ~~~ ~~~ ~~~ "
   fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
   readonly fn_bndry_sh fn_bndry_lo
   fn_lvl=0
-  #print_function_boundaries=do_prFnBndrys
 }
 enable_debugg_params
-
-    # <>
-    #exit "$LINENO"
-    #set -x
-
 
 function enable_debugg_aliases(){
   : "${C_Comment} Line ${nL}, Aliases, debugg ${C_AttrOff}"
@@ -398,41 +351,14 @@ function enable_debugg_aliases(){
 
     : "${C_XtrAls}" Line ${nL}, alias __xtr_restore__, end "${C_AttrOff}"'
 
-
-    ## <> Testing global and local xtrace
-    #builtin set -x
-    #alias __enable_local_xtrace__ __enable_global_xtrace__
-    ## Note, if global xtrace is enabled, then from within a function local xtrace can also be enabled without any negative effects.
-    #__enable_global_xtrace__
-    #: "baz"
-    #builtin exit "$nL"
-    #: "Define fn_test()"
-    #function fn_test(){
-      #__enable_local_xtrace__
-      #: "inside function fn_test foo"
-      ## Note, from within a function, global xtrace cannot be enabled if local xtrace has been previously enabled in the same function.
-      #__enable_global_xtrace__
-      #: "inside function fn_test bar"
-      #: "exiting function"
-    #}
-    #: "outside and before function call"
-    #fn_test
-    #: "outside and after function call"
-    #: "quux"
-    #builtin exit "$nL"
-    ## <> End
   : "${C_CmntSub} Line ${nL}, Aliases, Debugg -  Complete ${C_AttrOff}"
 }
 enable_debugg_aliases
 
-    # <>
-    #exit "$LINENO"
-    #set -x
-
-
 function enable_debugg_functions(){
   : "${C_Comment} Line ${nL}, Functions, Debugg ${C_AttrOff}"
   : "${C_CmntSub} Line ${nL}, Functions, Debugg -  TOC ${C_AttrOff}"
+
     ##  Function name
     #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #+  enable_git_debugg_settings()
@@ -442,7 +368,6 @@ function enable_debugg_functions(){
 
   : "${C_CmntSub} Define enable_git_debugg_settings() ${C_AttrOff}"
   function enable_git_debugg_settings(){           __function_boundary_in__
-    #__enable_local_xtrace__
 
     : "${C_CmntSub} Variables -- Global git debugg settings ${C_AttrOff}"
     # shellcheck disable=SC2034
@@ -467,11 +392,9 @@ function enable_debugg_functions(){
   : "${C_CmntSub} Define pause_to_check() ${C_AttrOff}"
   ## Usage,   pause_to_check "${nL}"
   function pause_to_check(){                       __function_boundary_in__
-    #__enable_local_xtrace__
 
     local -I EC=101 ## Q, Why inherit attributes and values when you assign values anyway?
 
-    #shift
     local -a KK=( "$@" )
     local reply
 
@@ -504,31 +427,16 @@ function enable_debugg_functions(){
     __function_boundary_out_0__
   }
 
-    # <>
-    #exit "$LINENO"
-    #set -x
-
-
   : "${C_CmntSub} Define set() ${C_AttrOff}"
   function set(){                                  __function_boundary_in__
     ## The global variable $fn_lvl is pulled in from the global scope and is set to effect the global
     #+  scope as well
     local -Ig fn_lvl
-
-    #: "${C_TechCmnt}" $'This \x60set\x60 effects global scope' "${C_AttrOff}"
-    #builtin set "$@"
-
-    #: "${C_TechCmnt}" $'This \x60set\x60 effects local scope' "${C_AttrOff}"
-    #local -
-    #builtin set -x
-
     local local_hyphn
       local_hyphn="${local_hyphn:-"$-"}"
     local -aIg qui__ ver__
       qui__=("${qui__[@]}")
       ver__=("${ver__[@]}")
-
-      #declare -p global_hyphn local_hyphn qui__ ver__
 
     if [[ -o xtrace ]]
     then
@@ -542,39 +450,14 @@ function enable_debugg_functions(){
     __function_boundary_out_0__
   }
 
-
-  ## Buggy?
-  #: "${C_CmntSub} Define xtr_duck() ${C_AttrOff}"
-  #function xtr_duck(){                              __function_boundary_in__
-    #__enable_local_xtrace__
-    ### Turns xtrace off after recording previous state
-    #[[ -o xtrace ]] &&
-      #xon=yes &&
-      #builtin set +x &&
-      #__function_boundary_out_0__ &&
-      #return
-    ### Turns xtrace on after recording previous state
-    #[[ ${xon:=} = yes ]] &&
-      #builtin set -x &&
-      #__function_boundary_out_0__ &&
-      #return
-  #}
-
   : "${C_Comment} Line ${nL}, Functions, Debugg - Complete ${C_AttrOff}"
 }
 enable_debugg_functions
 
-  # <>
-  #set -x
-  #exit "$LINENO"
   builtin set -x
-
-
-
 
 : "${C_CmntSub} Define setup_variables() ${C_AttrOff}"
 function setup_variables(){ __function_boundary_in__
-  #__enable_local_xtrace__
   :
   : "${C_Comment} Line ${nL}, Variables ...likely to change or early-definition required ${C_AttrOff}"
   :
@@ -589,8 +472,6 @@ function setup_variables(){ __function_boundary_in__
   [[ -v C_TechCmnt ]]   || C_TechCmnt="${C_TechCmnt:=}"
   [[ -v C_XtrAls ]]     || C_XtrAls="${C_XtrAls:=}"
   :
-    # <>
-    #exit "$nL"
     builtin set -x
   :
   : "${C_CmntSub} Variables, Error handling ${C_AttrOff}"
@@ -628,8 +509,6 @@ function setup_variables(){ __function_boundary_in__
   then
     login_gid=$( id -g "$( logname )" )
   fi
-  #saved_SUDO_UID=$( sudo printenv SUDO_UID )
-  #saved_SUDO_GID=$( sudo printenv SUDO_GID )
   :
   # shellcheck disable=SC2034
   {
@@ -727,6 +606,7 @@ __call_fn__ \
 : "${C_Comment} Line ${nL}, Functions ${C_AttrOff}"
 
 : "${C_CmntSub} Line ${nL}, Functions TOC ${C_AttrOff}"
+
   ##  Function name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  __vte_osc7()
@@ -760,43 +640,8 @@ __call_fn__ \
   #+  write_bashrc_strings()
   #+  write_ssh_conf()
 
-
-#: "Define __vte_osc7() -- for bashrc only"
-# shellcheck disable=SC2317
-#function __vte_osc7(){                          __function_boundary_in__
-  #__enable_local_xtrace__
-  #local cmd urlencode_o
-  #cmd=$( PATH="${PATH}:/usr/libexec:/usr/lib:/usr/lib64" command -v vte-urlencode-cwd )
-  #[[ -n ${cmd} ]] || return
-  #urlencode_o=$( "${cmd}" )
-  #printf 'file://%s%s\n' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
-  #printf '\033]7;file://%s%s\033' "${HOSTNAME}" "${urlencode_o:-"${PWD}"}"
-#}
-
-
-
-
-#: "Define __vte_prompt_command() -- for bashrc only"
-# shellcheck disable=SC2317
-#function __vte_prompt_command(){                __function_boundary_in__
-    #__enable_local_xtrace__
-    #local fn_pwd
-    #fn_pwd=~
-    #if ! [[ ${PWD} = ~ ]]; then
-        #fn_pwd="${fn_pwd//[[:cntrl:]]}"
-        #fn_pwd="${PWD/#"${HOME}"\//\~\/}"
-    #fi
-    #printf '\033[m\033]7;%s@%s:%s\033' "${USER}" "${HOSTNAME%%.*}" "${fn_pwd}"
-    #printf '%s@%s:%s\n' "${USER}" "${HOSTNAME%%.*}" "${fn_pwd}"
-    #__vte_osc7
-#}
-
-
-
-
 : "${C_CmntSub} Define clone_repo() ${C_AttrOff}"
 function clone_repo(){                           __function_boundary_in__
-  #__enable_local_xtrace__
 
   [[ ${PWD} = "${dev_d1}" ]] || {
     __die__
@@ -825,11 +670,6 @@ function clone_repo(){                           __function_boundary_in__
 
 : "${C_CmntSub} Define error_and_exit() ${C_AttrOff}"
 function error_and_exit(){                       __function_boundary_in__
-  #__enable_local_xtrace__
-
-    #declare -p local_hyphn
-    #declare -p local_lineno
-    #declare -p prev_cmd_exit_code
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] &&
@@ -865,7 +705,6 @@ function error_and_exit(){                       __function_boundary_in__
 
 : "${C_CmntSub} Define get_pids_for_restarting() ${C_AttrOff}"
 function get_pids_for_restarting(){              __function_boundary_in__
-  #__enable_local_xtrace__
 
   # shellcheck disable=SC2034
   local dnf_o
@@ -932,7 +771,6 @@ function get_pids_for_restarting(){              __function_boundary_in__
 
 : "${C_CmntSub} Define gh_auth_login_command() ${C_AttrOff}"
 function gh_auth_login_command(){                __function_boundary_in__
-  #__enable_local_xtrace__
 
   if gh auth status >/dev/null 2>&1
   then
@@ -1093,13 +931,10 @@ function increase_disk_space(){                  __function_boundary_in__
 
 : "${C_CmntSub} Define min_necc_packages() ${C_AttrOff}"
 function min_necc_packages(){                    __function_boundary_in__
-  #__enable_local_xtrace__
 
   local XX
 
   ## Question? how many $a_pids arrays are there, and are they ever misused?
-
-  #local -a a_pids
 
   for XX in "${list_of_minimum_reqd_rpms[@]}"
   do
@@ -1108,8 +943,6 @@ function min_necc_packages(){                    __function_boundary_in__
       sudo -- dnf --assumeyes install "${XX}"
 
       ## TODO, comment out this use of $a_pids, re declaring and unsetting
-      #unset -v a_pids
-      #local -a a_pids=()
       get_pids_for_restarting
 
     fi
@@ -1123,7 +956,6 @@ function min_necc_packages(){                    __function_boundary_in__
 
 : "${C_CmntSub} Define must_be_root() ${C_AttrOff}"
 function must_be_root(){                         __function_boundary_in__
-  #__enable_local_xtrace__
 
   if (( UID == 0 ))
   then
@@ -1138,94 +970,7 @@ function must_be_root(){                         __function_boundary_in__
                                                  __function_boundary_out_0__
 }
 
-
-
-
-
   builtin set -x #<>
-  #pttn_device_path=/dev/sda1 #<>
-  #builtin unset -f setup_aliases #<>
-
-#: 'Define function \setup_aliases\'
-#function setup_aliases(){
-  #builtin local -; builtin set -x
-  #builtin local -gnx nL=L\INENO
-  #als_di__def_lineno="$((nL+1))"
-#
-    #builtin declare -p C_AlsFnBndry nL als_di__def_lineno || builtin exit "${LINENO}"
-#
-  #: error, line "${LINENO}"
-  #builtin alias __die__='{ builtin : "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}; error_and_exit "${nL}" "$@";}'
-#
-  #: error, line "${LINENO}"
-  ##alias __die__=': "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}; error_and_exit "${nL}" "$@"'
-#
-  #: no error, line "${LINENO}"
-  #alias __die__='error_and_exit "${nL}" "$@"'
-#
-  #: error, line "${LINENO}"
-  #alias __die__=': "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}; error_and_exit "${nL}" "$@"'
-#
-    #: "${C_AlsFnBndry}" Line ${nL}, alias __die__, end "${C_AttrOff}"'
-#}
-  #builtin declare -pf setup_aliases error_and_exit #<>
-
-#setup_aliases
-
-#: Note, error, line "${LINENO}"
-#[[ -n ${pttn_device_path} ]] || #{
-  #: nonprinting
-  #: ec: $?
-  #: "${C_AlsFnBndry}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}; error_and_exit "${nL}" $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
-#}
-#
-#: Note, error, line "${LINENO}"
-#[[ -n ${pttn_device_path} ]] ||
-  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
-#
-#: Note, no error, line "${LINENO}"
-#[[ -n ${pttn_device_path} ]] || {
-  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
-  #}
-#
-#: Note, error, line "${LINENO}"
-#[[ -n ${pttn_device_path} ]] ||
-  #__die__
-
-#: Note, no error, line "${LINENO}"
-#[[ -n ${pttn_device_path} ]] || {
-  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
-  #}
-
-#: Note, error, line "${LINENO}"
-#[[ -n ${pttn_device_path} ]] || #{ echo ec:$?
-  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
-#  }
-#
-#: Note, no error, line "${LINENO}"
-#if [[ -n ${pttn_device_path} ]]
-#then
-  #echo OKAY
-  #exit "${LINENO}"
-  #echo '\{C_AlsFnBndry}:' "${C_AlsFnBndry}"
-  #echo '\{nL}:' "${nL}"
-  #echo '\{als_di__def_lineno}:' "${als_di__def_lineno}"
-  #declare -pF error_and_exit
-  #alias __die__
-  #echo '\{C_AttrOff}:' "${C_AttrOff}"
-#else
-  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
-#fi
-
-#: Note, error, line "${LINENO}"
-#[[ -n ${pttn_device_path} ]] ||
-  #__die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
-
-#: Note, error, line "${LINENO}"
-#[[ -n ${pttn_device_path} ]] || __die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
-#
-  #exit 101 #<>
-
 
 : "${C_CmntSub} Define reqd_user_files() ${C_AttrOff}"
 function reqd_user_files(){                      __function_boundary_in__
@@ -1285,9 +1030,7 @@ function reqd_user_files(){                      __function_boundary_in__
         lsblk --noheadings --output label "${pttn_device_path}"
       )
       pttn_label="${pttn_label:=live_usb_tmplabel}"
-      #mount_base__debian=""
       mount_base__fedora="/run/media/root"
-      #mount_base__suse=""
       mount_pt="${mount_base__fedora}/${pttn_label}"
       data_dir="${mount_pt}/${datadir_basenm}"
       is_mounted=no
@@ -1403,7 +1146,6 @@ function reqd_user_files(){                      __function_boundary_in__
     #unset -n QQ
     local -n QQ
     local -n QQ="${AA}"   ## good code
-    #QQ="${AA}"           ## baaad code
 
     : "${C_CmntSub} For each conf file or dir ${C_AttrOff}"
     local BB
@@ -1426,14 +1168,6 @@ function reqd_user_files(){                      __function_boundary_in__
           : "${C_CmntSub} If the partition is not mounted which holds the data directory, then mount it ${C_AttrOff}"
           if [[ ${is_mounted} = no ]]
           then
-
-            ## Duplicated above
-            #: "Mountpoint must exist"
-            #if ! [[ -d ${mount_pt} ]]
-            #then
-            #  sudo -- mkdir --parents -- "${mount_pt}" ||
-            #     __die__
-            #fi
 
             sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || {
               __die__
@@ -1475,9 +1209,6 @@ function reqd_user_files(){                      __function_boundary_in__
   : "${C_CmntSub} Restore previous umask ${C_AttrOff}"
   builtin "${prev_umask[@]}"
   unset prev_umask
-
-    # <>
-    #__debug_break__
                                                  __function_boundary_out_0__
 }
 
@@ -1486,7 +1217,6 @@ function reqd_user_files(){                      __function_boundary_in__
 
 : "${C_CmntSub} Define rsync_install_if_missing() ${C_AttrOff}"
 function rsync_install_if_missing(){             __function_boundary_in__
-  #__enable_local_xtrace__
 
     # <>
     if [[ -z $(declare -p data_dir) ]]
@@ -1561,7 +1291,6 @@ function rsync_install_if_missing(){             __function_boundary_in__
 
 : "${C_CmntSub} Define setup_bashrc() ${C_AttrOff}"
 function setup_bashrc(){                         __function_boundary_in__
-  #__enable_local_xtrace__
 
   : "${C_CmntSub} bashrc -- Do some backups ${C_AttrOff}"
   files_for_use_with_bash=( /root/.bashrc ~/.bashrc )
@@ -1724,23 +1453,6 @@ function setup_bashrc(){                         __function_boundary_in__
   local -a bashrc_Assoc_arrays=( Aa_bashrc_strngs_F1   Aa_bashrc_strngs_V1   Aa_bashrc_strngs_V2   Aa_bashrc_strngs_V3 )
   local -A "${bashrc_Assoc_arrays[@]}"
 
-  # for AA in bashrc_Assoc_arrays
-  #
-  #     bashrc_Assoc_arrays === Aa_bashrc_strngs_F1   Aa_bashrc_strngs_V1 ...
-  #
-  #   if AA = *_V{ number } # ie, is for variables
-  #
-  #       AA === Aa_bashrc_strngs_V1
-  #
-  #     for BB in !vars_for_bashrc_{ number }
-  #
-  #         vars_for_bashrc_{ number __1__ }[BB] === vars_for_bashrc_1
-  #
-  #       for XX in  vars_for_bashrc_{ number __1__ }[BB]
-  #
-  #       local -A Aa_bashrc_strngs_V{ number }[$AA] = [def parm BB]=$( declare -p BB)
-  #
-
   : "${C_CmntSub} bashrc -- Variables ${C_AttrOff}"
   ## Note, three temp vars are used here because of the correspondence of numbers, ie, 1 and 1, 2 and 2, etc
   #+  between the names of the respective indexed and associative arrays. In effect, this is the clearest and
@@ -1804,13 +1516,10 @@ function setup_bashrc(){                         __function_boundary_in__
 }
 
 
-
-
 ## Bug, setup_dnf is too long and too complicated
 
 : "${C_CmntSub} Define setup_dnf() ${C_AttrOff}"
 function setup_dnf(){                           __function_boundary_in__
-  #__enable_local_xtrace__
 
   ## Bug, there should be a n\eeds-restarting loop between each install/upgrade
   ## Bug, the --security upgrade should be done rpm by rpm
@@ -2056,7 +1765,6 @@ function setup_dnf(){                           __function_boundary_in__
         __die__
       }
 
-      #a_pids=()
       get_pids_for_restarting
 
       ## BUG, killing NetworkManager or firewalld stops the systemd service process, and neither restart
@@ -2145,7 +1853,6 @@ function setup_dnf(){                           __function_boundary_in__
           fi
 
           : "${C_CmntSub} Kill a particular process ${C_AttrOff}"
-          #sudo -- "$(type -P kill)" --timeout 1000 HUP --timeout 1000 USR1 --timeout 1000 TERM --timeout 1000 KILL "${ver__[@]}"  "${a_pids[WW]}"
           hash -r
           sudo -- "$(type -P kill)" \
             --timeout 1000 HUP \
@@ -2155,8 +1862,6 @@ function setup_dnf(){                           __function_boundary_in__
           sleep 3
           ps aux |
             awk --assign "DD=${a_pids[WW]}" '$2 ~ DD { print }'
-
-            #pause_to_check "${nL}" "Now do you need to manually restart anything?" # <>
 
         done
         unset WW
@@ -2169,18 +1874,8 @@ function setup_dnf(){                           __function_boundary_in__
   unset for_{linting,lockfile,os_dnlds,strings,term_tests,unicode}
   unset grep_args removable_pkgs rr pkgs_installed not_yet_installed_pkgs
 
-    # <>
-    #__debug_break__
-
-    # <>
-    #pause_to_check "${nL}" "Begin section on restarting processes?"
-
   : "${C_CmntSub} Restart any processes that may need to be restarted. Begin by getting a list of any such PIDs ${C_AttrOff}"
-  #a_pids=()
   get_pids_for_restarting
-
-    # <>
-    #__debug_break__
 
   : $'Get new hash of installed packages, ie, \x24{hash..B}'
   hash_of_installed_pkgs_B=$(
@@ -2267,15 +1962,11 @@ function setup_dnf(){                           __function_boundary_in__
             continue 001
           sleep 1
 
-            #pause_to_check "${nL}" "" # <>
-
           for AA in HUP USR1 TERM KILL
           do
 
               : "${C_CmntSub} To kill PID ${ZZ} with signal ${AA} ${C_AttrOff}"
-              #pause_to_check "${nL}" # <>
 
-            #sleep 1
             sync --file-system
 
               wait -f # <>
@@ -2339,7 +2030,6 @@ function setup_dnf(){                           __function_boundary_in__
 
 : "${C_CmntSub} Define setup_gh_cli() ${C_AttrOff}"
 function setup_gh_cli(){                        __function_boundary_in__
-  #__enable_local_xtrace__
 
   : "${C_CmntSub} GH -- set config key-value pairs ${C_AttrOff}"
   local -A github_configs
@@ -2413,7 +2103,6 @@ function setup_gh_cli(){                        __function_boundary_in__
 
 : "${C_CmntSub} Define setup_git() ${C_AttrOff}"
 function setup_git(){                           __function_boundary_in__
-  #__enable_local_xtrace__
 
   ## Note, git ui colors: normal black red green yellow blue magenta cyan white
   #+  git ui attributes: bold dim ul (underline blink reverse)
@@ -2424,9 +2113,7 @@ function setup_git(){                           __function_boundary_in__
 
   : "${C_CmntSub} Git -- parameters, dependency level 1 ${C_AttrOff}"
   local git_conf_global_f git_ignr git_mesg
-  #local git_system_conf_file
   git_conf_global_f=~/.gitconfig
-  #git_system_conf_file=/etc/gitconfig
   git_ignr=~/.gitignore
   git_mesg=~/.gitmessage
 
