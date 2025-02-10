@@ -716,7 +716,7 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_must_be_root_()
   #+  _fn_reqd_user_files_()
   #+  _fn_rsync_install_if_missing_()
-  #+  _fn_setup_bashrc()
+  #+  _fn_setup_bashrc_()
   #+  _fn_setup_dnf()
   #+  _fn_setup_gh_cli()
   #+  _fn_setup_git()
@@ -1405,8 +1405,8 @@ function _fn_rsync_install_if_missing_ ()
 
 
 
-: "${Color_SubComent} Define _fn_setup_bashrc() ${Color_AttributesOff}"
-function _fn_setup_bashrc ()
+: "${Color_SubComent} Define _fn_setup_bashrc_() ${Color_AttributesOff}"
+function _fn_setup_bashrc_ ()
 {                         _als_fnction_boundary_in_
 
   : "${Color_SubComent} bashrc -- Do some backups ${Color_AttributesOff}"
@@ -3079,7 +3079,7 @@ _fn_setup_vim
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Bash ${Color_AttributesOff}"
-_fn_setup_bashrc
+_fn_setup_bashrc_
 
   #_als_debug_break_
 
