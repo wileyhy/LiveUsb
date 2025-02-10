@@ -542,7 +542,7 @@ function setup_variables(){ _als_fnction_boundary_in_
   [[ -v Color_SubComent ]]    || Color_SubComent="${Color_SubComent:=}"
   [[ -v Color_SubSbComent ]] || Color_SubSbComent="${Color_SubSbComent:=}"
   [[ -v Color_Comment ]]    || Color_Comment="${Color_Comment:=}"
-  [[ -v C_Errors ]]     || C_Errors="${C_Error:=}"
+  [[ -v Color_Errors ]]     || Color_Errors="${Color_Error:=}"
   [[ -v Color_FnctionBoundry ]]    || Color_FnctionBoundry="${Color_FnctionBoundry:=}"
   [[ -v Color_TechCmnt ]]   || Color_TechCmnt="${Color_TechCmnt:=}"
   [[ -v Color_XtraceOfAlias ]]     || Color_XtraceOfAlias="${Color_XtraceOfAlias:=}"
@@ -752,7 +752,7 @@ function _fn_error_and_exit_(){                       _als_fnction_boundary_in_
   ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_() is called
   if ! [[ $1 = [0-9]* ]]
   then
-    printf '\n%b:: %s :: %s' "${C_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
+    printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
     printf '\n:: Error :: first positional parameter must be a line number %b\n\n' "${Color_AttributesOff}"
     return 2
   fi
@@ -761,7 +761,7 @@ function _fn_error_and_exit_(){                       _als_fnction_boundary_in_
   local_lineno="$1"
   shift
 
-  printf '%b%s, Error, line %d, %s%b\n' "${C_Errors}" "${scr_nm}" "${local_lineno}" "$*" "${Color_AttributesOff}" >&2
+  printf '%b%s, Error, line %d, %s%b\n' "${Color_Errors}" "${scr_nm}" "${local_lineno}" "$*" "${Color_AttributesOff}" >&2
 
   [[ ${prev_cmd_exit_code} = 0 ]] &&
     prev_cmd_exit_code="01"
