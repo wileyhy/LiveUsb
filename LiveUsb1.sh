@@ -1625,9 +1625,9 @@ function setup_dnf(){                           _als_fnction_boundary_in_
   #+  needs-restarting  decides it needs to restart all available Firefox processes, which crashes all of
   #+  my tabs.  (Burg?)  So, I\m adding in a few  rpm -qa | wc -l s to only run  dnf
   #+  needs-restarting  in the event that any files on disk may actually have been changed.
-  ## Note, these PE\s (for_admin, for_bash, etc.) have been tested and should "disappear" by virtue of
+  ## Note, these PE\s (for_admin, for_bash, etc.) have been tested and should \disappear\ by virtue of
   #+  whichever expansion does that, leaving just the regular strings as the elements of the array
-  ## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that "shellcheck disable" will
+  ## Note, this brace grouping (all together of for_admin, for_bash, etc.) is so that \shellcheck disable\ will
   #+  apply to the entire block
 
   hash_of_installed_pkgs_A=$(
@@ -1758,7 +1758,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
 
   : "${Color_SubComent} Then do a blanket security upgrade ${Color_AttributesOff}"
 
-  ## Note, the problem with this "blanket security upgrade" is how it
+  ## Note, the problem with this \blanket security upgrade\ is how it
   #+   includes kernel and firmware. Better to capture list of rpms in
   #+   a no-op cmd, filter out impractical (for a LiveUsb) rpms, then
   #+   upgrade the rest one by one
@@ -1864,7 +1864,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
       ## BUG, killing NetworkManager or firewalld stops the systemd service process, and neither restart
       #+  automatically
 
-      ## Question, how is it possible to know from `ps aux` output whether a process was started by a
+      ## Question, how is it possible to know from \ps aux\ output whether a process was started by a
       #+  systemd service?  ...grepping /usr/lib/systemd/system for the cmdline?
       #
       #{ for XX in /proc/[0-9]*/cmdline; do if [[ -n $XX ]]; then readarray -d "" -t array_cmdln < <( cat "$XX" ); string_cmdln="${array_cmdln[@]}"; if [[ -z ${array_cmdln[*]} ]] || [[ -z $string_cmdln ]]; then continue; fi; if grep -rilqe "$string_cmdln" /usr/lib/systemd/system; then printf 'yes\t'; else printf 'no\t'; fi; printf '%s\n' "${string_cmdln}"; fi; done; } | head -n20
@@ -1881,13 +1881,13 @@ function setup_dnf(){                           _als_fnction_boundary_in_
 
           : "${Color_SubComent} Ensure a process is still running before trying to kill it ${Color_AttributesOff}"
 
-          ## Note, some strings from /proc/[pid]/cmdline include "[]" brackets; `pgrep -f` parses these as
-          #+  ERE's and cannot parse fixed strings, so a Parameter Expansion is necessary in order to render
-          #+  any opening bracket "[" as non-special for ERE syntax.
+          ## Note, some strings from /proc/[pid]/cmdline include \[]\ brackets; \pgrep -f\ parses these as
+          #+  ERE\s and cannot parse fixed strings, so a Parameter Expansion is necessary in order to render
+          #+  any opening bracket \[\ as non-special for ERE syntax.
           ## Note, subprocesses, killing a daemon, for example, avahi, might also kill some other processes
-          #+  which were avahi's child processes, so when the for loop, looping through PID\s to be restarted,
+          #+  which were avahi\s child processes, so when the for loop, looping through PID\s to be restarted,
           #+  gets to those child processes, then those child processes are no longer active, and
-          #+  "/proc/${a_pids[WW]}/cmdline" would not exist.
+          #+  \/proc/${a_pids[WW]}/cmdline\ would not exist.
           sleep 1
 
           : "${Color_SubComent} Most existing processes have some commandline information available ${Color_AttributesOff}"
@@ -1897,11 +1897,11 @@ function setup_dnf(){                           _als_fnction_boundary_in_
           then
             ## Note, these files are in /proc - of course they have a zero filesize!!
 
-            ## Bug, the bash(ism) `[[` keyword cannot accept a leading or internal "2>/dev/null", though
-            #+  `test` and `[` can.
+            ## Bug, the bash(ism) \[[\ keyword cannot accept a leading or internal \2>/dev/null\, though
+            #+  \test\ and \[\ can.
 
             : "${Color_SubComent} If the /proc/PID/cmdline FSO also has a size greater than zero... ${Color_AttributesOff}"
-            if [[ -n "$( tr -d '\0' < "/proc/${a_pids[WW]}/cmdline" )" ]]
+            if [[ -n $( tr -d '\0' < "/proc/${a_pids[WW]}/cmdline" ) ]]
             then
               local -a array_of_PIDs_cmdline
               local string_of_PIDs_cmdline
@@ -1938,7 +1938,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
               continue
             fi
           else
-            "If the /proc/PID/cmdline FSO does not exist, then begin the next loop"
+            : "If the /proc/PID/cmdline FSO does not exist, then begin the next loop"
             unset "a_pids[WW]" string_of_PIDs_cmdline
             continue
           fi
@@ -2011,7 +2011,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
 
   : "${Color_SubComent} State, the file exists and is writeable ${Color_AttributesOff}"
 
-  : $'Write \x24{hash..B} to disk, and make it RO and immutable'
+  : $'Write \x24{hash..B} to disk, and make it RO and immutable.'
   printf '%s\n' "${hash_of_installed_pkgs_B_prev}" |
     tee "${hash_f}"
   chmod 400 "${ver__[@]}" "${hash_f}"
@@ -2020,7 +2020,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
 
   ## ToDo: change temp-vars (II, XX, etc) to fully named vars
 
-  if  ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] ||
+  if  ! [[ ${hash_of_installed_pkgs_A} = ${hash_of_installed_pkgs_B} ]] ||
       [[ ${#a_pids[@]} -gt 0 ]]
   then
 
@@ -2028,13 +2028,13 @@ function setup_dnf(){                           _als_fnction_boundary_in_
     do
 
       ## Note,  [[ ... = , this second test,  [[ ${a_pids[*]} = 1 ]]  is correct. This means, do not use
-      #+  ((...)) , and "=" is intended to that "1" on RHS is matched as in Pattern Matching, ie, as "PID 1."
+      #+  ((...)) , and \=\ is intended to that \1\ on RHS is matched as in Pattern Matching, ie, as \PID 1.\
       : $'if any PID\x60s were found... ...and if there are any PID\x60s other than PID 1...'
       if  [[ -n ${a_pids[*]: -1:1} ]] &&
           ! [[ ${a_pids[*]} = 1 ]]
       then
         II=0
-        XX="${#a_pids[@]}"
+        XX=${#a_pids[@]}
 
         : "${Color_SubComent} Print some info and wait for it to be read ${Color_AttributesOff}"
         ## Note, "\x60" is a grace accent used as a single quote
@@ -2048,7 +2048,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
           ## Note, readability
           : $'\x60kill\x60'" loop $(( ++II )) of ${XX}"
 
-          ZZ="${a_pids[YY]}"
+          ZZ=${a_pids[YY]}
           (( ZZ == 1 )) &&
             continue 001
           sleep 1
@@ -2068,7 +2068,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
               : "${Color_SubComent} Evidently, I need to give the system a little time for processing ${Color_AttributesOff}"
               sleep 1
 
-              ## Bug?? all of the `type -P` commands s\b consolidated into a set of variables ...?
+              ## Bug?? all of the \type -P\ commands s\b consolidated into a set of variables ...?
 
               : $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
               ## Note, the exit codes for  kill  only indicate whether or not the target PIDs existed, rather
@@ -2136,7 +2136,7 @@ function setup_gh_cli(){                        _als_fnction_boundary_in_
 
   for KK in "${!github_configs[@]}"
   do
-    ## Note, "SC2076 (warning): Remove quotes from right-hand side of =~ to match as a regex rather than literally."
+    ## Note, \SC2076 (warning): Remove quotes from right-hand side of =~ to match as a regex rather than literally.\
     if ! [[ ${gh_config_list_out} =~ ${KK}=${github_configs[${KK}]} ]]
     then
       gh config set "${KK}" "${github_configs[${KK}]}"
@@ -2148,7 +2148,7 @@ function setup_gh_cli(){                        _als_fnction_boundary_in_
     wait -f # <>
     hash -r
 
-  ## Bug, `gh auth status` is executed too many (ie, 3) times. Both the checkmarks and the exit code are used
+  ## Bug, \gh auth status\ is executed too many (ie, 3) times. Both the checkmarks and the exit code are used
 
     #gh auth status ## <>
 
@@ -2171,7 +2171,7 @@ function setup_gh_cli(){                        _als_fnction_boundary_in_
     fi
   fi
 
-  ## Bug, when `gh ssh-key list` fails, then after gh_auth_login_command() executes, `gh ssh-key list` is
+  ## Bug, when \gh ssh-key list\ fails, then after gh_auth_login_command() executes, \gh ssh-key list\ is
   #+  not executed again, when it should be
 
   : "${Color_SubComent} GH -- Get SSH & GPG keys ${Color_AttributesOff}"
@@ -2197,9 +2197,9 @@ function setup_git(){                           _als_fnction_boundary_in_
 
   ## Note, git ui colors: normal black red green yellow blue magenta cyan white
   #+  git ui attributes: bold dim ul (underline blink reverse)
-  ## Note, In vim, since "expandtab" is set in .vimrc, to make some actual tabs, press Ctrl-v-[tab]
+  ## Note, In vim, since \expandtab\ is set in .vimrc, to make some actual tabs, press Ctrl-v-[tab]
 
-  ## Bug? in vim, when quoting "EOF", $tmp_dir changes color, but bash still expands the redirection
+  ## Bug? in vim, when quoting \EOF\, $tmp_dir changes color, but bash still expands the redirection
   #+ destination file.
 
   : "${Color_SubComent} Git -- parameters, dependency level 1 ${Color_AttributesOff}"
@@ -2212,7 +2212,7 @@ function setup_git(){                           _als_fnction_boundary_in_
   ## Note, use of globs. The RE pattern must match all of the patterns in the array assignments
   local git_files_a git_regexp
   git_files_a=( /etc/git* /etc/.git* ~/.git* )
-  git_regexp="git*"
+  git_regexp=git"*"
 
   : "${Color_SubComent} Git -- parameters, dependency level 2 ${Color_AttributesOff}"
   if [[ -f ${git_conf_global_f} ]]
@@ -2228,21 +2228,21 @@ function setup_git(){                           _als_fnction_boundary_in_
 
   local -A git_keys
   git_keys+=( [color.diff]=always )
-  git_keys+=( [color.diff.meta]="blue black bold" )
+  git_keys+=( [color.diff.meta]=blue\ black\ bold )
   git_keys+=( [color.interactive]=always )
   git_keys+=( [color.ui]=true )
   git_keys+=( [commit.gpgsign]=true )
-  git_keys+=( [commit.template]="${git_mesg}" )
+  git_keys+=( [commit.template]=${git_mesg} )
   git_keys+=( [core.editor]=vim )
-  git_keys+=( [core.excludesfile]="${git_ignr}" )
-  git_keys+=( [core.pager]="$( type -P less )" )
-  git_keys+=( [credential.helper]="cache --timeout=3600" )
-  git_keys+=( [gpg.program]="$( type -P gpg2 )" )
+  git_keys+=( [core.excludesfile]=${git_ignr} )
+  git_keys+=( [core.pager]=$( type -P less ) )
+  git_keys+=( [credential.helper]=cache\ --timeout=3600 )
+  git_keys+=( [gpg.program]=$( type -P gpg2 ) )
   git_keys+=( [help.autocorrect]=prompt )
   git_keys+=( [init.defaultBranch]=main )
-  git_keys+=( [user.email]="${user_github_email_address}" )
-  git_keys+=( [user.name]="${user_real_name}" )
-  git_keys+=( [user.signingkey]="${user_github_gpg_key}" )
+  git_keys+=( [user.email]=${user_github_email_address} )
+  git_keys+=( [user.name]=${user_real_name} )
+  git_keys+=( [user.signingkey]=${user_github_gpg_key} )
 
   : "${Color_SubComent} Git -- Files must exist and Permissions ${Color_AttributesOff}"
   read -r -a prev_umask < <(
