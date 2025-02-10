@@ -1875,7 +1875,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
           : "${Color_SubComent} If the /proc/PID/cmdline FSO exists and is a file, then... ${Color_AttributesOff}"
           if [[ -f /proc/${a_pids[WW]}/cmdline ]]
           then
-            ## Note, these files are in _PROC_! Of course they have a zero filesize!!
+            ## Note, these files are in /proc - of course they have a zero filesize!!
 
             ## Bug, the bash(ism) `[[` keyword cannot accept a leading or internal "2>/dev/null", though
             #+  `test` and `[` can.
