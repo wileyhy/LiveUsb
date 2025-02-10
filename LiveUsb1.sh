@@ -335,7 +335,7 @@ function _fn_enable_debug_aliases_(){
         als_fn_bdry_in__def_lineno="$((nameref_Lineno+1))"
 
   alias _als_fnction_boundary_in_='
-    _="${C_FnctionBoundry} ${_var_fnction_boundry_long} function ${FUNCNAME[0]}() BEGINS ${_var_function_boundary_short} ${fn_lvl} to $(( ++fn_lvl )) ${C_AliasFunctionBoundary}"
+    _="${Color_FnctionBoundry} ${_var_fnction_boundry_long} function ${FUNCNAME[0]}() BEGINS ${_var_function_boundary_short} ${fn_lvl} to $(( ++fn_lvl )) ${C_AliasFunctionBoundary}"
     _="${C_AliasFunctionBoundary} alias _als_fnction_boundary_in_, begin"
     als_fn_bndry_in__call_line=${nameref_Lineno}
     als_def_line="${als_fn_bdry_in__def_lineno}"
@@ -355,7 +355,7 @@ function _fn_enable_debug_aliases_(){
   alias _als_fnction_boundary_out_0_='
     _="${C_AliasFunctionBoundary} alias _als_fnction_boundary_out_0_ begin" als_call_line=$nameref_Lineno als_def_line=${als_fn_bdry_out_0__def_lineno}
     _="alias _als_fnction_boundary_out_0_, end"
-    _="${C_FnctionBoundry} ${_var_fnction_boundry_long} function ${FUNCNAME[0]}()  ENDS  ${_var_function_boundary_short} ${fn_lvl} to $(( --fn_lvl )) ${Color_AttributesOff}"
+    _="${Color_FnctionBoundry} ${_var_fnction_boundry_long} function ${FUNCNAME[0]}()  ENDS  ${_var_function_boundary_short} ${fn_lvl} to $(( --fn_lvl )) ${Color_AttributesOff}"
     '
   #! \end alias definition\
 
@@ -543,7 +543,7 @@ function setup_variables(){ _als_fnction_boundary_in_
   [[ -v C_SubSbComent ]] || C_SubSbComent="${C_SubSbComent:=}"
   [[ -v Color_Comment ]]    || Color_Comment="${Color_Comment:=}"
   [[ -v C_Errors ]]     || C_Errors="${C_Error:=}"
-  [[ -v C_FnctionBoundry ]]    || C_FnctionBoundry="${C_FnctionBoundry:=}"
+  [[ -v Color_FnctionBoundry ]]    || Color_FnctionBoundry="${Color_FnctionBoundry:=}"
   [[ -v Color_TechCmnt ]]   || Color_TechCmnt="${Color_TechCmnt:=}"
   [[ -v Color_XtraceOfAlias ]]     || Color_XtraceOfAlias="${Color_XtraceOfAlias:=}"
   :
