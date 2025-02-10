@@ -773,7 +773,7 @@ function _fn_error_and_exit_(){                       _als_fnction_boundary_in_
   fi
 
   local local_lineno
-  local_lineno=$1
+        local_lineno=$1
   shift
 
   printf '%b%s, Error, line %d, %s%b\n' \
