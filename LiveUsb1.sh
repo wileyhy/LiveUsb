@@ -442,14 +442,14 @@ function _fn_enable_debug_functions_(){
 
     ##  Function name
     #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #+  enable_git_debug_settings()
+    #+  _fn_enable_git_debug_settings_()
     #+  pause_to_check()
     #+  set()
     #+  xtr_duck()
 
 
-  : "${Color_SubComent} Define enable_git_debug_settings() ${Color_AttributesOff}"
-  function enable_git_debug_settings(){    _als_fnction_boundary_in_
+  : "${Color_SubComent} Define _fn_enable_git_debug_settings_() ${Color_AttributesOff}"
+  function _fn_enable_git_debug_settings_(){    _als_fnction_boundary_in_
 
     : "${Color_SubComent} Variables -- Global git debug settings ${Color_AttributesOff}"
     # shellcheck disable=SC2034
@@ -3081,7 +3081,7 @@ setup_git_user_dirs
   #_als_debug_break_
 
 : "Git debug settings"
-#enable_git_debug_settings
+#_fn_enable_git_debug_settings_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Git ${Color_AttributesOff}"
 setup_git
