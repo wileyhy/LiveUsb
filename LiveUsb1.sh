@@ -719,7 +719,7 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_setup_bashrc_()
   #+  _fn_setup_dnf_()
   #+  _fn_setup_gh_cli_()
-  #+  _fn_setup_git()
+  #+  _fn_setup_git_()
   #+  _fn_setup_gti_user_dirs_()
   #+  _fn_setup_gpg()
   #+  _fn_setup_network()
@@ -2217,8 +2217,8 @@ function _fn_setup_gh_cli_()
 
 
 
-: "${Color_SubComent} Define _fn_setup_git() ${Color_AttributesOff}"
-function _fn_setup_git()
+: "${Color_SubComent} Define _fn_setup_git_() ${Color_AttributesOff}"
+function _fn_setup_git_()
 {                           _als_fnction_boundary_in_
 
   ## Note, git ui colors: normal black red green yellow blue magenta cyan white
@@ -3127,7 +3127,7 @@ _fn_setup_gti_user_dirs_
 #_fn_enable_git_debug_settings_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Git ${Color_AttributesOff}"
-_fn_setup_git
+_fn_setup_git_
 
   #_als_debug_break_
 
