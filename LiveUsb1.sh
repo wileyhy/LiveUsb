@@ -4,7 +4,7 @@
 ## LiveUsb1
 #+ version 1.2
 
-#! Note, Putting a `LN="$nL"` (LINENO) or `main_lineno="$nL"` assignment
+#! Note, Putting a `LN="$nameref_Lineno"` (LINENO) or `main_lineno="$nameref_Lineno"` assignment
 #!   preceding an `exit` command lets the value of LN or main_lineno
 #!   match the line number of the `exit` command.
 #! Note, idempotent script
@@ -89,25 +89,25 @@ _fn_start_script_
 
 ##
 function _fn_setup_aliases_(){
-  : "${Color_Comment} Line ${nL}, Aliases, non-debug ${Color_AttributesOff}"
-  unset       nL
-  unset -n    nL
-  local -gnx  nL=L\INENO
+  : "${Color_Comment} Line ${nameref_Lineno}, Aliases, non-debug ${Color_AttributesOff}"
+  unset       nameref_Lineno
+  unset -n    nameref_Lineno
+  local -gnx  nameref_Lineno=L\INENO
 
-  : "${Color_SubComent} Line ${nL}, Aliases TOC, non-debug ${Color_AttributesOff}"
+  : "${Color_SubComent} Line ${nameref_Lineno}, Aliases TOC, non-debug ${Color_AttributesOff}"
 
   ##  Alias name
   #+  ~~~~~~~~~~
   #+  __die__
 
   : "${Color_SubComent} Define alias __die__ onto function error_and_exit() ${Color_AttributesOff}"
-  unset als_di__def_lineno
-        als_di__def_lineno="$((nL+1))"
-  alias __die__=': "${C_AliasFunctionBoundary}" Line ${nL}, alias __die__, begin, def Line ${als_di__def_lineno}
+  unset lineno__defin_of_alias_die
+        lineno__defin_of_alias_die="$((nameref_Lineno+1))"
+  alias __die__=': "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias __die__, begin, def Line ${lineno__defin_of_alias_die}
 
-      error_and_exit "${nL}"
+      error_and_exit "${nameref_Lineno}"
 
-      : "${C_AliasFunctionBoundary}" Line ${nL}, alias __die__, end "${Color_AttributesOff}"'
+      : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias __die__, end "${Color_AttributesOff}"'
 }
 _fn_setup_aliases_
 
@@ -122,9 +122,9 @@ function enable_debug_params(){
   # shellcheck disable=SC1001
   #! Note, this assignment is repeated here; originally it\s located
   #!   in setup_vars()
-  unset       nL
-  unset -n    nL
-  local -gnx  nL=L\INENO
+  unset       nameref_Lineno
+  unset -n    nameref_Lineno
+  local -gnx  nameref_Lineno=L\INENO
   # shellcheck disable=SC2218
   {
     set -a # <>   All export
@@ -202,14 +202,14 @@ enable_debug_params
 function enable_debug_aliases(){
 
   ##
-  : "${Color_Comment} Line ${nL}, Aliases, debug ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nameref_Lineno}, Aliases, debug ${Color_AttributesOff}"
 
   #! Bug, separate alias definitions to a subsection above function
   #!   definitions. Defining of alias B can occur before the defining
   #!   of function A which is contained within in (alias B).
 
   ##  Aliases, TOC
-  : "${Color_SubComent} Line ${nL}, Aliases, debug - TOC ${Color_AttributesOff}"
+  : "${Color_SubComent} Line ${nameref_Lineno}, Aliases, debug - TOC ${Color_AttributesOff}"
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  __call_fn__
   #+  __debug_break__
@@ -233,9 +233,9 @@ function enable_debug_aliases(){
   #+                -|    [function name]
   #+   Reason: so that the alias can be added to a script via sed/awk.
   unset als_cl_fn__def_lineno
-        als_cl_fn__def_lineno="$((nL+1))"
+        als_cl_fn__def_lineno="$((nameref_Lineno+1))"
 
-  alias __call_fn__='_="${C_XtraceOfAlias} alias __call_fn__, begin" als_cl_fn__call_line="$nL" als_def_line="${als_cl_fn__def_lineno}" _="alias __call_fn__, end ${Color_AttributesOff}" '
+  alias __call_fn__='_="${C_XtraceOfAlias} alias __call_fn__, begin" als_cl_fn__call_line="$nameref_Lineno" als_def_line="${als_cl_fn__def_lineno}" _="alias __call_fn__, end ${Color_AttributesOff}" '
   #! \end alias definition\
 
 
@@ -243,10 +243,10 @@ function enable_debug_aliases(){
   : "${Color_SubComent} Define alias __debug_break__ ${Color_AttributesOff}"
   ## Note, this alias is in intended to function as a
   unset als_dbg_brk__def_lineno
-        als_dbg_brk__def_lineno="$((nL+1))"
+        als_dbg_brk__def_lineno="$((nameref_Lineno+1))"
 
   alias __debug_break__='
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}
 
     : If xtrace is already enabled, then disable xtrace and exit the script
 
@@ -254,13 +254,13 @@ function enable_debug_aliases(){
     then
       builtin set - && printf "%b\n" "${Color_AttributesOff}"
       EC=101
-      main_lineno="${nL}" exit
+      main_lineno="${nameref_Lineno}" exit
     else
-      printf "%b\n" "${C_XtraceOfAlias} Line ${nL}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}"
+      printf "%b\n" "${C_XtraceOfAlias} Line ${nameref_Lineno}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}"
       __enable_global_xtrace__
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __debug_break__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __debug_break__, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -268,37 +268,37 @@ function enable_debug_aliases(){
   : "${Color_SubComent} Define alias __enable_global_xtrace__ ${Color_AttributesOff}"
   ## Note, this alias is in intended to function as a
   unset als_enbl_glbl_xtr__def_lineno
-        als_enbl_glbl_xtr__def_lineno="$((nL+1))"
+        als_enbl_glbl_xtr__def_lineno="$((nameref_Lineno+1))"
 
   alias __enable_global_xtrace__='
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
 
     : If xtrace is already enabled, then exit the script
 
     if ! [[ -o xtrace ]]
     then
-      printf "%b\n" "${C_XtraceOfAlias} Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
+      printf "%b\n" "${C_XtraceOfAlias} Line ${nameref_Lineno}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}"
 
       print_function_boundaries=do_prFnctionBoundrys
       export print_function_boundaries
 
-      printf "%b Line %d, Enabling global xtrace %b\n" "${C_TechCmnt}" "${nL}" "${Color_AttributesOff}"
+      printf "%b Line %d, Enabling global xtrace %b\n" "${C_TechCmnt}" "${nameref_Lineno}" "${Color_AttributesOff}"
 
       builtin set -x
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_global_xtrace__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_global_xtrace__, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
   ##
   : "${Color_SubComent} Define alias __enable_local_xtrace__ ${Color_AttributesOff}"
   unset als_enbl_loc_xtr__def_lineno
-        als_enbl_loc_xtr__def_lineno="$((nL+1))"
+        als_enbl_loc_xtr__def_lineno="$((nameref_Lineno+1))"
 
   alias __enable_local_xtrace__='
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}
-    #fn_def_lineno="${nL:-}"
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}
+    #fn_def_lineno="${nameref_Lineno:-}"
 
     if ! [[ -o xtrace ]]
     then
@@ -309,14 +309,14 @@ function enable_debug_aliases(){
       local -
       builtin set -x
 
-      : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}, end
+      : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}, end
       : "${C_XtraceOfAlias}" Line $fn_def_lineno, function definition: "${FUNCNAME[0]}()"
       : fn_lvl: ${fn_lvl}
       : local_hyphn: $local_hyphn
       : prev_cmd_exit_code: $prev_cmd_exit_code
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __enable_local_xtrace__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __enable_local_xtrace__, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -325,15 +325,15 @@ function enable_debug_aliases(){
   ## Note, s\b all one line
   # shellcheck disable=SC2142
   unset als_fn_bdry_in__def_lineno
-        als_fn_bdry_in__def_lineno="$((nL+1))"
+        als_fn_bdry_in__def_lineno="$((nameref_Lineno+1))"
 
   alias __function_boundary_in__='
     _="${C_FnctionBoundry} ${fn_bndry_lo} function ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl )) ${C_AliasFunctionBoundary}"
     _="${C_AliasFunctionBoundary} alias __function_boundary_in__, begin"
-    als_fn_bndry_in__call_line=${nL}
+    als_fn_bndry_in__call_line=${nameref_Lineno}
     als_def_line="${als_fn_bdry_in__def_lineno}"
     fn_call_lineno=$(( ${als_cl_fn__call_line:-} +1))
-    fn_def_lineno="${nL:-}"
+    fn_def_lineno="${nameref_Lineno:-}"
     local_hyphn="$-"
     prev_cmd_exit_code="${EC:-$?}"
     : alias __function_boundary_in__, end "${Color_AttributesOff}"'
@@ -343,10 +343,10 @@ function enable_debug_aliases(){
   ##
   : "${Color_SubComent} Define alias __function_boundary_out_0__ ${Color_AttributesOff}"
   unset als_fn_bdry_out_0__def_lineno
-        als_fn_bdry_out_0__def_lineno="$((nL+1))"
+        als_fn_bdry_out_0__def_lineno="$((nameref_Lineno+1))"
 
   alias __function_boundary_out_0__='
-    _="${C_AliasFunctionBoundary} alias __function_boundary_out_0__ begin" als_call_line=$nL als_def_line=${als_fn_bdry_out_0__def_lineno}
+    _="${C_AliasFunctionBoundary} alias __function_boundary_out_0__ begin" als_call_line=$nameref_Lineno als_def_line=${als_fn_bdry_out_0__def_lineno}
     _="alias __function_boundary_out_0__, end"
     _="${C_FnctionBoundry} ${fn_bndry_lo} function ${FUNCNAME[0]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl )) ${Color_AttributesOff}"
     '
@@ -356,24 +356,24 @@ function enable_debug_aliases(){
   ##
   : "${Color_SubComent} Define alias __pause2ck__ ${Color_AttributesOff}"
   unset als_ps2ck__def_lineno
-        als_ps2ck__def_lineno="$((nL+1))"
+        als_ps2ck__def_lineno="$((nameref_Lineno+1))"
 
   alias __pause2ck__='
-    : "${C_AliasFunctionBoundary}" Line ${nL}, alias __pause2ck__, begin, def Line ${als_ps2ck__def_lineno}
+    : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias __pause2ck__, begin, def Line ${als_ps2ck__def_lineno}
 
-    pause_to_check "${nL}"
+    pause_to_check "${nameref_Lineno}"
 
-    : "${C_AliasFunctionBoundary}" Line ${nL}, alias __pause2ck__, end "${Color_AttributesOff}"'
+    : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias __pause2ck__, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
   ##
   : "${Color_SubComent} Define alias __xtr_read_and_on__ ${Color_AttributesOff}"
   unset als_xtr_read_on__def_lineno
-        als_xtr_read_on__def_lineno="$((nL+1))"
+        als_xtr_read_on__def_lineno="$((nameref_Lineno+1))"
 
   alias __xtr_read_and_on__='
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __xtr_read_and_on__, begin, def Line ${als_xtr_read_on__def_lineno}
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __xtr_read_and_on__, begin, def Line ${als_xtr_read_on__def_lineno}
 
     if [[ $- == *x* ]]
     then
@@ -385,7 +385,7 @@ function enable_debug_aliases(){
 
     builtin set -x
 
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __xtr_read_and_on__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __xtr_read_and_on__, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -393,10 +393,10 @@ function enable_debug_aliases(){
   : "${Color_SubComent} Define alias __xtr_restore__ ${Color_AttributesOff}"
   # shellcheck disable=SC2154
   unset als_xtr_rstr__def_lineno
-        als_xtr_rstr__def_lineno="$((nL+1))"
+        als_xtr_rstr__def_lineno="$((nameref_Lineno+1))"
 
   alias __xtr_restore__='
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __xtr_restore__, begin, def Line ${als_xtr_rstr__def_lineno}
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __xtr_restore__, begin, def Line ${als_xtr_rstr__def_lineno}
     local -
     builtin set +x
 
@@ -411,19 +411,19 @@ function enable_debug_aliases(){
       __die__
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nL}, alias __xtr_restore__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __xtr_restore__, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
-  : "${Color_SubComent} Line ${nL}, Aliases, Debug -  Complete ${Color_AttributesOff}"
+  : "${Color_SubComent} Line ${nameref_Lineno}, Aliases, Debug -  Complete ${Color_AttributesOff}"
 }
 enable_debug_aliases
 
 
 ##
 function enable_debug_functions(){
-  : "${Color_Comment} Line ${nL}, Functions, Debug ${Color_AttributesOff}"
-  : "${Color_SubComent} Line ${nL}, Functions, Debug -  TOC ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nameref_Lineno}, Functions, Debug ${Color_AttributesOff}"
+  : "${Color_SubComent} Line ${nameref_Lineno}, Functions, Debug -  TOC ${Color_AttributesOff}"
 
     ##  Function name
     #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -458,7 +458,7 @@ function enable_debug_functions(){
 
 
   : "${Color_SubComent} Define pause_to_check() ${Color_AttributesOff}"
-  ## Usage,   pause_to_check "${nL}"
+  ## Usage,   pause_to_check "${nameref_Lineno}"
   function pause_to_check(){                __function_boundary_in__
 
     local -I EC=101 ## Q, Why inherit attributes and values when you assign values anyway?
@@ -518,7 +518,7 @@ function enable_debug_functions(){
     __function_boundary_out_0__
   }
 
-  : "${Color_Comment} Line ${nL}, Functions, Debug - Complete ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nameref_Lineno}, Functions, Debug - Complete ${Color_AttributesOff}"
 }
 enable_debug_functions
 
@@ -527,7 +527,7 @@ enable_debug_functions
 : "${Color_SubComent} Define setup_variables() ${Color_AttributesOff}"
 function setup_variables(){ __function_boundary_in__
   :
-  : "${Color_Comment} Line ${nL}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nameref_Lineno}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
   :
   : "${Color_SubComent} Variables, colors, non-debug ${Color_AttributesOff}"
   [[ -v C_AliasFunctionBoundary ]] || C_AliasFunctionBoundary="${C_AliasFunctionBoundary:=}"
@@ -543,10 +543,10 @@ function setup_variables(){ __function_boundary_in__
     builtin set -x
   :
   : "${Color_SubComent} Variables, Error handling ${Color_AttributesOff}"
-  ## Bug, only way to export namerefs?  `declare -nx nL=...`
+  ## Bug, only way to export namerefs?  `declare -nx nameref_Lineno=...`
   ## Note, variable assignments, backslash escape bc  sed -i
   # shellcheck disable=SC1001
-  local -gnx nL=L\INENO
+  local -gnx nameref_Lineno=L\INENO
   :
   : "${Color_SubComent} Variables, PATH ${Color_AttributesOff}"
   PATH="/usr/bin:/usr/sbin"
@@ -612,7 +612,7 @@ function setup_variables(){ __function_boundary_in__
                                    [5]="vim-enhanced" )
     readonly list_of_minimum_reqd_rpms
     :
-    : "${Color_Comment} Line ${nL}, Files, Required files lists ${Color_AttributesOff}"
+    : "${Color_Comment} Line ${nameref_Lineno}, Files, Required files lists ${Color_AttributesOff}"
     :
     ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more
     #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and
@@ -659,20 +659,20 @@ function setup_variables(){ __function_boundary_in__
   __function_boundary_out_0__
 }
 
-: "${Color_Comment} Line ${nL}, Variables ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Variables ${Color_AttributesOff}"
 __call_fn__ \
     setup_variables
 
-: "${Color_Comment} Line ${nL}, # Testing testing testing ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, # Testing testing testing ${Color_AttributesOff}"
 
   builtin set -x #<>
 
 
 
 
-: "${Color_Comment} Line ${nL}, Functions ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Functions ${Color_AttributesOff}"
 
-: "${Color_SubComent} Line ${nL}, Functions TOC ${Color_AttributesOff}"
+: "${Color_SubComent} Line ${nameref_Lineno}, Functions TOC ${Color_AttributesOff}"
 
   ##  Function name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1791,7 +1791,7 @@ function setup_dnf(){                           __function_boundary_in__
 
   done
 
-  pause_to_check "${nL}" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
+  pause_to_check "${nameref_Lineno}" $'Which packages in the \x24addl_pkgs array are already installed?' # <>
 
   : "${Color_SubComent} Find out whether an RPM is installed, one by one ${Color_AttributesOff}"
   for UU in "${!addl_pkgs[@]}"
@@ -1804,7 +1804,7 @@ function setup_dnf(){                           __function_boundary_in__
   done
   unset UU
 
-    pause_to_check "${nL}" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
+    pause_to_check "${nameref_Lineno}" $'Upgrade any pre-intstalled packages from the \x24addl_pkgs array' # <>
 
   ## Bug, this section should upgrade rpms one by one
 
@@ -1816,7 +1816,7 @@ function setup_dnf(){                           __function_boundary_in__
     }
   fi
 
-    pause_to_check "${nL}" $'From the \x24addl_pkgs array, install the remainder' # <>
+    pause_to_check "${nameref_Lineno}" $'From the \x24addl_pkgs array, install the remainder' # <>
 
   : "${Color_SubComent} Install any as yet uninstalled RPMs from the main list as necessary ${Color_AttributesOff}"
   not_yet_installed_pkgs=( "${addl_pkgs[@]}" )
@@ -2139,7 +2139,7 @@ function setup_gh_cli(){                        __function_boundary_in__
     then
       firefox --browser 2>/dev/null 1>&2 &
       sleep 5
-      pause_to_check "${nL}" $'Waiting till browser is open before running \x60gh auth\x60 command'
+      pause_to_check "${nameref_Lineno}" $'Waiting till browser is open before running \x60gh auth\x60 command'
       gh_auth_login_command
     fi
   fi
@@ -2946,7 +2946,7 @@ function write_ssh_conf(){                      __function_boundary_in__
                                                  __function_boundary_out_0__
 }
 
-: "${Color_SubComent} Line ${nL}, Functions Complete ${Color_AttributesOff}"
+: "${Color_SubComent} Line ${nameref_Lineno}, Functions Complete ${Color_AttributesOff}"
 
   ## <>
   #__debug_break__
@@ -2960,14 +2960,14 @@ function write_ssh_conf(){                      __function_boundary_in__
 
 
 
-: "${Color_Comment} Line ${nL}, Define trap on ERR ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Define trap on ERR ${Color_AttributesOff}"
 trap trap_err ERR
 
-: "${Color_Comment} Line ${nL}, Define trap on EXIT ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Define trap on EXIT ${Color_AttributesOff}"
 trap trap_exit EXIT
 
 
-: "${Color_Comment} Line ${nL}, Regular users with sudo, only ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Regular users with sudo, only ${Color_AttributesOff}"
 must_be_root
 
 ## Note, traps
@@ -2976,57 +2976,57 @@ must_be_root
 # INT QUIT USR2 -- for stopping logging
 # for starting logging ?
 
-: "${Color_Comment} Line ${nL}, Test OS ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Test OS ${Color_AttributesOff}"
 test_os
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Certain files must have been installed from off-disk ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Certain files must have been installed from off-disk ${Color_AttributesOff}"
 reqd_user_files
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Network ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Network ${Color_AttributesOff}"
 setup_network
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Time ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Time ${Color_AttributesOff}"
 setup_time
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Temporary directory ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Temporary directory ${Color_AttributesOff}"
 setup_temp_dirs
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Minimum necessary rpms ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Minimum necessary rpms ${Color_AttributesOff}"
 min_necc_packages
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Vim ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Vim ${Color_AttributesOff}"
 setup_vim
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Bash ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Bash ${Color_AttributesOff}"
 setup_bashrc
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Increase disk space ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Increase disk space ${Color_AttributesOff}"
 increase_disk_space
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Dnf ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Dnf ${Color_AttributesOff}"
 setup_dnf
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Restart NetworkManager if necessary ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Restart NetworkManager if necessary ${Color_AttributesOff}"
 
 ## ToDo: use written function here
 for BB in "${dns_srv_A}" "${dns_srv_1}"
@@ -3041,17 +3041,17 @@ done
 unset BB
 
 
-: "${Color_Comment} Line ${nL}, SSH ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, SSH ${Color_AttributesOff}"
 setup_ssh
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, GPG ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, GPG ${Color_AttributesOff}"
 setup_gpg
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Make and change into directories ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Make and change into directories ${Color_AttributesOff}"
 setup_git_user_dirs
 
   #__debug_break__
@@ -3059,22 +3059,22 @@ setup_git_user_dirs
 : "Git debug settings"
 #enable_git_debug_settings
 
-: "${Color_Comment} Line ${nL}, Git ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Git ${Color_AttributesOff}"
 setup_git
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, GH -- github CLI configuration ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, GH -- github CLI configuration ${Color_AttributesOff}"
 setup_gh_cli
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Clone repo ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Clone repo ${Color_AttributesOff}"
 clone_repo
 
   #__debug_break__
 
-: "${Color_Comment} Line ${nL}, Remind user of commands for the interactive shell ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Remind user of commands for the interactive shell ${Color_AttributesOff}"
 
 popd > /dev/null || {
   __die__
@@ -3088,8 +3088,8 @@ fi
 
   set -v ## <>
 
-: "${Color_Comment} Line ${nL}, Clean up & exit ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nameref_Lineno}, Clean up & exit ${Color_AttributesOff}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 EC=00
-main_lineno="${nL}" exit
+main_lineno="${nameref_Lineno}" exit
 
