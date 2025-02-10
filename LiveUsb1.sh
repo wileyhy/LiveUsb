@@ -223,7 +223,7 @@ function _fn_enable_debug_aliases_(){
   #+  _als_enble_locl_xtrce_
   #+  _als_enble_globl_xtrce_
   #+  _als_fnction_boundary_in_
-  #+  __function_boundary_out_0__
+  #+  _als_fnction_boundary_out_0_
   #+  __function_boundary_out_1__
   #+  __pause2ck__
   #+  __xtr_read_and_on__
@@ -348,13 +348,13 @@ function _fn_enable_debug_aliases_(){
 
 
   ##
-  : "${Color_SubComent} Define alias __function_boundary_out_0__ ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_fnction_boundary_out_0_ ${Color_AttributesOff}"
   unset als_fn_bdry_out_0__def_lineno
         als_fn_bdry_out_0__def_lineno="$((nameref_Lineno+1))"
 
-  alias __function_boundary_out_0__='
-    _="${C_AliasFunctionBoundary} alias __function_boundary_out_0__ begin" als_call_line=$nameref_Lineno als_def_line=${als_fn_bdry_out_0__def_lineno}
-    _="alias __function_boundary_out_0__, end"
+  alias _als_fnction_boundary_out_0_='
+    _="${C_AliasFunctionBoundary} alias _als_fnction_boundary_out_0_ begin" als_call_line=$nameref_Lineno als_def_line=${als_fn_bdry_out_0__def_lineno}
+    _="alias _als_fnction_boundary_out_0_, end"
     _="${C_FnctionBoundry} ${_var_fnction_boundry_long} function ${FUNCNAME[0]}()  ENDS  ${_var_function_boundary_short} ${fn_lvl} to $(( --fn_lvl )) ${Color_AttributesOff}"
     '
   #! \end alias definition\
@@ -460,7 +460,7 @@ function enable_debug_functions(){
       git config --global --list --show-origin --show-scope |
       cat -n
 
-                                            __function_boundary_out_0__
+                                            _als_fnction_boundary_out_0_
   }
 
 
@@ -499,7 +499,7 @@ function enable_debug_functions(){
     #local bndry_cmd
     #if [[ $hyphn =~ x ]]; then bndry_cmd="echo"; else bndry_cmd="true"; fi
     #"${bndry_cmd}"  "${fn_bndry} ${FUNCNAME[0]}()  ENDS  ${fn_bndry} ${fn_lvl} to $(( --fn_lvl ))"
-    __function_boundary_out_0__
+    _als_fnction_boundary_out_0_
   }
 
   : "${Color_SubComent} Define set() ${Color_AttributesOff}"
@@ -522,7 +522,7 @@ function enable_debug_functions(){
       ver__=( [0]="--" )
     fi
     export qui__ ver__
-    __function_boundary_out_0__
+    _als_fnction_boundary_out_0_
   }
 
   : "${Color_Comment} Line ${nameref_Lineno}, Functions, Debug - Complete ${Color_AttributesOff}"
@@ -663,7 +663,7 @@ function setup_variables(){ _als_fnction_boundary_in_
     : "${Color_SubComent}   End of Files lists ${Color_AttributesOff}"
     :
   }
-  __function_boundary_out_0__
+  _als_fnction_boundary_out_0_
 }
 
 : "${Color_Comment} Line ${nameref_Lineno}, Variables ${Color_AttributesOff}"
@@ -736,7 +736,7 @@ function clone_repo(){                           _als_fnction_boundary_in_
     }
   fi
   unset AA
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -769,7 +769,7 @@ function _fn_error_and_exit_(){                       _als_fnction_boundary_in_
     ## <>
     EC="${prev_cmd_exit_code}"
     LN="${local_lineno}" builtin exit
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -837,7 +837,7 @@ function get_pids_for_restarting(){              _als_fnction_boundary_in_
   then
     return 0
   fi
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -858,7 +858,7 @@ function gh_auth_login_command(){                _als_fnction_boundary_in_
   gh auth login -p ssh -h github.com -s admin:public_key,read:gpg_key,admin:ssh_signing_key -w || {
     _als_die_
   }
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -997,7 +997,7 @@ function increase_disk_space(){                  _als_fnction_boundary_in_
     done
   fi
   unset dirs1 dirs2 fsos3 fsos4 Aa_fsos5 AA HH II JJ KK yes_or_no
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -1022,7 +1022,7 @@ function min_necc_packages(){                    _als_fnction_boundary_in_
     fi
   done
   unset XX
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -1041,7 +1041,7 @@ function must_be_root(){                         _als_fnction_boundary_in_
     : validation failed
     _als_die_
   fi
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
   builtin set -x #<>
@@ -1283,7 +1283,7 @@ function reqd_user_files(){                      _als_fnction_boundary_in_
   : "${Color_SubComent} Restore previous umask ${Color_AttributesOff}"
   builtin "${prev_umask[@]}"
   unset prev_umask
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -1357,7 +1357,7 @@ function rsync_install_if_missing(){             _als_fnction_boundary_in_
     unset unset_local_var_rand5791 data_dir
 
   unset fn_source_var fn_target_dir
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -1586,7 +1586,7 @@ function setup_bashrc(){                         _als_fnction_boundary_in_
   unset -f write_bashrc_strings
   unset "${bashrc_Assoc_arrays[@]}"
   unset bashrc_Assoc_arrays
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2093,7 +2093,7 @@ function setup_dnf(){                           _als_fnction_boundary_in_
     done
     unset II XX a_pids is_pid_a_zombie
   fi
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2166,7 +2166,7 @@ function setup_gh_cli(){                        _als_fnction_boundary_in_
 
   : "${Color_SubComent} GH -- Use GitHub CLI as a credential helper ${Color_AttributesOff}"
   gh auth setup-git --hostname github.com
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2344,7 +2344,7 @@ function setup_git(){                           _als_fnction_boundary_in_
 
   : "${Color_SubComent} Clean up after section, Git ${Color_AttributesOff}"
   unset git_files_a git_conf_global_f git_mesg git_ignr git_keys
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2379,7 +2379,7 @@ function setup_git_user_dirs(){                 _als_fnction_boundary_in_
   pushd "${dev_d1}" > /dev/null || {
     _als_die_
   }
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2434,7 +2434,7 @@ function setup_gpg(){                           _als_fnction_boundary_in_
 
   GPG_TTY=$( tty )
   export GPG_TTY
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2495,7 +2495,7 @@ function setup_network(){                       _als_fnction_boundary_in_
   : "${Color_SubComent} Clean up from Network ${Color_AttributesOff}"
   ## Note, dns_srv_A will be used at the end of the script
   unset -f test_dns
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2632,7 +2632,7 @@ function setup_ssh(){                           _als_fnction_boundary_in_
 
   ## Note,  ssh -T  is "disable pseudo-terminal allocation."
   #ssh -T git@github.com ## Note, returns exit code 1; why is this command here exectly?
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2666,7 +2666,7 @@ function setup_temp_dirs(){                     _als_fnction_boundary_in_
     _als_die_
   }
   readonly tmp_dir
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2682,7 +2682,7 @@ function setup_time(){                          _als_fnction_boundary_in_
     _als_die_
   }
   sudo -- chronyc makestep > /dev/null
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2775,7 +2775,7 @@ function setup_vim(){                           _als_fnction_boundary_in_
     builtin "${umask_prior[@]}"
   fi
   unset arr_vrc strng_vrc WW YY umask_prior
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2787,7 +2787,7 @@ function test_dns(){                            _als_fnction_boundary_in_
 
   ping -c 1 -W 15 -- "$1" > /dev/null 2>&1
   return "$?"
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2808,7 +2808,7 @@ function test_os(){                             _als_fnction_boundary_in_
     _als_die_ "OS is not Fedora"
   fi
   unset kern_rel
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2820,7 +2820,7 @@ function trap_err(){                            _als_fnction_boundary_in_
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS BASH_COMMAND BASH_LINENO
   declare -p BASH_REMATCH BASH_SOURCE BASH_SUBSHELL BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS
   declare -p LC_ALL LINENO PATH PIPESTATUS PPID PWD SHELL SHELLOPTS SHLVL UID
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2842,7 +2842,7 @@ function trap_exit(){                           _als_fnction_boundary_in_
     "$( type -P rm )" --force --one-file-system --preserve-root=all --recursive "${ver__[@]}" "${tmp_dir}"
 
   builtin exit "${prev_cmd_exit_code}"
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2931,7 +2931,7 @@ function write_bashrc_strings(){                _als_fnction_boundary_in_
   done
   unset JJ
   : "${Color_SubComent} Loops D - complete === "
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 
@@ -2950,7 +2950,7 @@ function write_ssh_conf(){                      _als_fnction_boundary_in_
 	ForwardAgent yes
 
 	EOF
-                                                 __function_boundary_out_0__
+                                                 _als_fnction_boundary_out_0_
 }
 
 : "${Color_SubComent} Line ${nameref_Lineno}, Functions Complete ${Color_AttributesOff}"
