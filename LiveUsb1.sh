@@ -1661,7 +1661,7 @@ function setup_dnf(){                           __function_boundary_in__
     # addl_pkgs+=( ${for_careful_A:=}     systemd )
     # addl_pkgs+=( ${for_careful_B:=}     sssd{,-{ad,client,common{,-pac},ipa,kcm,krb5{,-common},ldap,nfs-idmap,proxy}} )
     # addl_pkgs+=( ${for_db_ish:=}        libreoffice-calc )
-    # addl_pkgs+=( ${for_bugg_rpts:=}     inxi zsh dash mksh )
+    # addl_pkgs+=( ${for_bug_rpts:=}     inxi zsh dash mksh )
     # addl_pkgs+=( ${for_char_sets:=}     enca moreutils uchardet )
       addl_pkgs+=( ${for_duh:=}           info plocate lynx )
     # addl_pkgs+=( ${for_duh:=}           pdfgrep wdiff )
