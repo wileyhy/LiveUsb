@@ -711,7 +711,7 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_error_and_exit_()
   #+  _fn_get_pids_for_restarting_()
   #+  _fn_gh_auth_login_command_()
-  #+  _fn__fn_increase_disk_space__()
+  #+  _fn_increase_disk_space_()
   #+  _fn_min_necc_packages_()
   #+  _fn_must_be_root_()
   #+  _fn_reqd_user_files_()
@@ -896,8 +896,8 @@ function _fn_gh_auth_login_command_ ()
 
 
 
-: "${Color_SubComent} Define _fn__fn_increase_disk_space__() ${Color_AttributesOff}"
-function _fn__fn_increase_disk_space__ ()
+: "${Color_SubComent} Define _fn_increase_disk_space_() ${Color_AttributesOff}"
+function _fn_increase_disk_space_ ()
 {                  _als_fnction_boundary_in_
   builtin set -x # []
 
@@ -3084,7 +3084,7 @@ _fn_setup_bashrc
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Increase disk space ${Color_AttributesOff}"
-_fn__fn_increase_disk_space__
+_fn_increase_disk_space_
 
   #_als_debug_break_
 
