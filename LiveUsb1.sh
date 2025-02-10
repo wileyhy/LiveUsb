@@ -118,7 +118,7 @@ function enable_debug_params(){
   ## Set up debug shell options
   local -
 
-  : "$( tput setaf 12 ) Debugging $( tput sgr0   )"
+  : "$( tput setaf 12 ) Debugging $( tput sgr0 )"
   # shellcheck disable=SC1001
   #! Note, this assignment is repeated here; originally it\s located
   #!   in setup_vars()
