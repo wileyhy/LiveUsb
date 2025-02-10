@@ -227,7 +227,7 @@ function _fn_enable_debug_aliases_(){
   #+  _als_fnction_boundry_out_1_
   #+  _als_pause_to_check_
   #+  _als_read_xtrce_state_and_enable_
-  #+  __xtr_restore__
+  #+  _als_restore_xtrce_state_
 
   #! Note, as I recall, these variable assignments all need to be on
   #!   the first line of this array.
@@ -397,13 +397,13 @@ function _fn_enable_debug_aliases_(){
 
 
   ##
-  : "${Color_SubComent} Define alias __xtr_restore__ ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_restore_xtrce_state_ ${Color_AttributesOff}"
   # shellcheck disable=SC2154
   unset als_xtr_rstr__def_lineno
         als_xtr_rstr__def_lineno="$((nameref_Lineno+1))"
 
-  alias __xtr_restore__='
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __xtr_restore__, begin, def Line ${als_xtr_rstr__def_lineno}
+  alias _als_restore_xtrce_state_='
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_restore_xtrce_state_, begin, def Line ${als_xtr_rstr__def_lineno}
     local -
     builtin set +x
 
@@ -418,7 +418,7 @@ function _fn_enable_debug_aliases_(){
       _als_die_
     fi
 
-    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __xtr_restore__, end "${Color_AttributesOff}"'
+    : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_restore_xtrce_state_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
