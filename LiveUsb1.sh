@@ -543,8 +543,8 @@ _fn_enable_debug_functions_
 
 
 ##
-: "${Color_SubComent} Define setup_variables() ${Color_AttributesOff}"
-function setup_variables(){ _als_fnction_boundary_in_
+: "${Color_SubComent} Define _fn_setup_variables_() ${Color_AttributesOff}"
+function _fn_setup_variables_(){ _als_fnction_boundary_in_
   :
   : "${Color_Comment} Line ${nameref_Lineno}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
   :
@@ -680,7 +680,7 @@ function setup_variables(){ _als_fnction_boundary_in_
 
 : "${Color_Comment} Line ${nameref_Lineno}, Variables ${Color_AttributesOff}"
 _als_call_fncton_ \
-    setup_variables
+    _fn_setup_variables_
 
 : "${Color_Comment} Line ${nameref_Lineno}, # Testing testing testing ${Color_AttributesOff}"
 
