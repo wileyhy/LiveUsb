@@ -541,6 +541,8 @@ _fn_enable_debug_functions_
 
   _fn_set_ -x
 
+
+##
 : "${Color_SubComent} Define setup_variables() ${Color_AttributesOff}"
 function setup_variables(){ _als_fnction_boundary_in_
   :
