@@ -2,13 +2,13 @@
 ## LiveUsb1
 ##    #!/bin/env -iS bash
 
-## Note, Putting a `LN="$nL"` (LINENO) or `main_lineno="$nL"` assignment
+#! Note, Putting a `LN="$nL"` (LINENO) or `main_lineno="$nL"` assignment
 #!   preceding an `exit` command lets the value of LN or main_lineno
 #!   match the line number of the `exit` command.
-## Note, idempotent script
-## Note, the symbol "<>" marks code as for debugging purpoeses only
-## Note, ...undocumented feature??
-#+     Use `env -i` or else the script\s execution environment will
+#! Note, idempotent script
+#! Note, the symbol "<>" marks code as for debugging purpoeses only
+#! Note, ...undocumented feature??
+#!     Use `env -i` or else the script\s execution environment will
 #!   inherit any exported anything, including and especially functions,
 #!   from its caller, e.g., any locally defined functions (such as `rm`)
 #!   which might be intended to shadow any builtins or commands or to
@@ -18,35 +18,52 @@
 #!   environment get printed above the script\s shebang in xtrace when
 #!   xtrace and vebose are both enabled on the shebang line. ...but
 #!   exported variables do not print.
-#+     ...also, using `env` messes up vim\s default bash-colorizations
-## Note, style, function definition syntax, "(){ :" makes plain xtrace
+#!     ...also, using `env` messes up vim\s default bash-colorizations
+#! Note, style, function definition syntax, "(){ :" makes plain xtrace
 #!   easier to read.
-## Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas
+#! Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas
 #!   "[[ ! -e" does, and yet, for `grep`.....
-## Note, timestamps, `find`, `stat` and `[[` (and `ls`) don\t effect
+#! Note, timestamps, `find`, `stat` and `[[` (and `ls`) don\t effect
 #!   ext4 timestamps, as tested, but idempotent `chown` and `chmod` do,
 #!   and of course `touch` does; if there\s no change in the file,
 #!   `rsync` doesn\t, but if the file changes, it does. Also, "btime"
 #!   on ext4 still isn\t consistent. `grep` has no effect on times.
 #!   `cp -a` effects "ctimes" even if file contents do not change.
-
-## Reportable bugg.
-#!   `command -p kill "$AA"` executes the bash builtin, judging by the
-#!   output of `command -p kill` without any operands. The output of `$( type -P kill )"` without operands is the same as the output of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points. `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what is intended is, "...suppressing shell function lookup, but still allowing builtins to be executed," and possibly also aliases and keywords, though I haven\t tested those. The description of the "-p" option is particularly misleading: "use a default value for PATH that is guaranteed to find all of the standard utilities." That "guarantee" sounds as if use of the "-p" option "shall" (using the POSIX defition of the word) result in a binary utility being used, when actually that is not the case.
-#+     Binary `kill` has a few options not available with the builtin, such as "--timeout", which can be used to avoid writing an extra for loop...
-#+
-#+       sudo -- "$( type -P kill )" --verbose \
-#+           --timeout 1000 HUP \
-#+           --timeout 1000 USR1 \
-#+           --timeout 1000 TERM \
+#!
+#! Reportable bugg.
+#!     `command -p kill "$AA"` executes the bash builtin, judging by the
+#!   output of `command -p kill` without any operands. The output of
+#!   `$( type -P kill )"` without operands is the same as the output of
+#!   /usr/bin/kill without operands. The documentation is ...somewhat
+#!   unclear on these points. `help command`: "Runs COMMAND with ARGS
+#!   suppressing shell function lookup...." It seems that what is
+#!   intended is, "...suppressing shell function lookup, but still
+#!   allowing builtins to be executed," and possibly also aliases and
+#!   keywords, though I haven\t tested those. The description of the
+#!   "-p" option is particularly misleading: "use a default value for
+#!   PATH that is guaranteed to find all of the standard utilities."
+#!   That "guarantee" sounds as if use of the "-p" option "shall"
+#!   (using the POSIX defition of the word) result in a binary utility
+#!   being used, when actually that is not the case.
+#!     Binary `kill` has a few options not available with the builtin,
+#!   such as "--timeout", which can be used to avoid writing an extra
+#!   for loop...
+#!
+#!       sudo -- "$( type -P kill )" --verbose \
+#!           --timeout 1000 HUP \
+#!           --timeout 1000 USR1 \
+#!           --timeout 1000 TERM \
 #+           --timeout 1000 KILL -- "$WW"
 #+
-#+     Otherwise, it would be useful, IMO, if `kill --help` showed the help file for /bin/kill, since using that syntax most likely indicates that intention  :-\
-
-## TODO, lock file, bc ^z
-## TODO, add colors to xtrace comments
-## TODO, systemd services to disable, bluetooth, cups, [ systemd-resolved ? ]
-## TODO, systemd services to possibly enable, sshd, sssd
+#+     Otherwise, it would be useful, IMO, if `kill --help` showed the
+#!   help file for /bin/kill, since using that syntax most likely
+#!   indicates that intention  :-\
+#!
+#! TODO, lock file, bc ^z
+#! TODO, add colors to xtrace comments
+#! TODO, systemd services to disable, bluetooth, cups,
+#!   [ systemd-resolved ? ]
+#! TODO, systemd services to possibly enable, sshd, sssd
 
 
 
@@ -112,7 +129,8 @@ function enable_debugg_params(){
   #builtin set -x
   : "$( tput setaf 12 ) Debugging $( tput sgr0   )"
   # shellcheck disable=SC1001
-  ## <> Note, this assignment is repeated here; originally it\s located in setup_vars()
+  #! Note, this assignment is repeated here; originally it\s located
+  #!   in setup_vars()
   local -gnx nL=L\INENO
   # shellcheck disable=SC2218
   {
@@ -138,16 +156,27 @@ function enable_debugg_params(){
   unset II aa_colors
   declare -A aa_colors
 
-    ## Array nm  ## Var sub-name   ## Digit Color      ## Execution of code regarding...
-    #################################################################################################
-       aa_colors+=( ["Comment"]="     12  blue"        ##    Explanatory comments, per major sections
-                    ["CmntSub"]="     10  light_green" ##    Explanatory comments, per-subsection
-                    ["CmntSubSub"]="  226 yellow"      ##    Explanatory comments, per-sub-subsection
-                    ["AlsFnBndry"]="  14  light_blue"  ##    Aliases at function boundaries
-                    ["FnBndry"]="     11  orange"      ##    Function boundary lines in xtrace
-                    ["XtrAls"]="      3   brown"       ##    Aliases in xtrace
-                    ["TechCmnt"]="    4   purple"      ##    Technical comments
-                    ["Errors"]="      8   brick_red" ) ##    Errors
+    ## Digit Color      ## Execution of code regarding...
+    ##################################################################
+    # "12  blue"        ##    Explanatory comments, per major sections
+    # "10  light_green" ##    Explanatory comments, per-subsection
+    # "226 yellow"      ##    Explanatory comments, per-sub-subsection
+    # "14  light_blue"  ##    Aliases at function boundaries
+    # "11  orange"      ##    Function boundary lines in xtrace
+    # "3   brown"       ##    Aliases in xtrace
+    # "4   purple"      ##    Technical comments
+    # "8   brick_red" ) ##    Errors
+
+    ## Array nm  ## Var sub-name   ## Digit Color      
+    ##################################################
+       aa_colors+=( ["Comment"]="     12  blue"       
+                    ["CmntSub"]="     10  light_green"
+                    ["CmntSubSub"]="  226 yellow"     
+                    ["AlsFnBndry"]="  14  light_blue" 
+                    ["FnBndry"]="     11  orange"     
+                    ["XtrAls"]="      3   brown"      
+                    ["TechCmnt"]="    4   purple"     
+                    ["Errors"]="      8   brick_red" )
 
   for II in "${!aa_colors[@]}"
   do
@@ -185,8 +214,6 @@ function enable_debugg_params(){
 
 
   : "${C_Comment} Variables, Function boundary parameters ${C_AttrOff}"
-  #fn_bndry_sh="${C_FnBndry} ~~~ ~~~ ~~~  ${C_AttrOff}"
-  #fn_bndry_lo="${C_FnBndry} ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ${C_AttrOff}"
   fn_bndry_sh=" ~~~ ~~~ ~~~ "
   fn_bndry_lo=" ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~  ~~~ ~~~ ~~~ "
   readonly fn_bndry_sh fn_bndry_lo
@@ -203,8 +230,9 @@ enable_debugg_params
 function enable_debugg_aliases(){
   : "${C_Comment} Line ${nL}, Aliases, debugg ${C_AttrOff}"
 
-  ## Bug, separate alias definitions to a subsection above function definitions. Defining of alias B can
-  #+ occur before the defining of function A which is contained within in (alias B)
+  #! Bug, separate alias definitions to a subsection above function
+  #!   definitions. Defining of alias B can occur before the defining
+  #!   of function A which is contained within in (alias B).
 
   : "${C_CmntSub} Line ${nL}, Aliases, debugg - TOC ${C_AttrOff}"
   ##  Alias name
@@ -220,7 +248,8 @@ function enable_debugg_aliases(){
   #+  __xtr_read_and_on__
   #+  __xtr_restore__
 
-  ## Note, as I recall, these variable assignments all need to be on the first line of this array
+  #! Note, as I recall, these variable assignments all need to be on
+  #!   the first line of this array.
 
   : "${C_CmntSub} Define alias __call_fn__ ${C_AttrOff}"
   ## Note, Usage:   -|__call_fn__ \
