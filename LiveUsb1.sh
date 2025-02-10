@@ -98,16 +98,16 @@ function _fn_setup_aliases_(){
 
   ##  Alias name
   #+  ~~~~~~~~~~
-  #+  __die__
+  #+  _als_die_
 
-  : "${Color_SubComent} Define alias __die__ onto function error_and_exit() ${Color_AttributesOff}"
+  : "${Color_SubComent} Define alias _als_die_ onto function error_and_exit() ${Color_AttributesOff}"
   unset lineno__defin_of_alias_die
         lineno__defin_of_alias_die="$((nameref_Lineno+1))"
-  alias __die__=': "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias __die__, begin, def Line ${lineno__defin_of_alias_die}
+  alias _als_die_=': "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, begin, def Line ${lineno__defin_of_alias_die}
 
       error_and_exit "${nameref_Lineno}"
 
-      : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias __die__, end "${Color_AttributesOff}"'
+      : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, end "${Color_AttributesOff}"'
 }
 _fn_setup_aliases_
 
@@ -402,13 +402,13 @@ function enable_debug_aliases(){
 
     if [[ -z ${xtr_state} ]]
     then
-      __die__ Some state must have been established
+      _als_die_ Some state must have been established
     elif [[ ${xtr_state} == on ]]
     then
       builtin set -x
     elif ! [[ ${xtr_state} == off ]]
     then
-      __die__
+      _als_die_
     fi
 
     : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias __xtr_restore__, end "${Color_AttributesOff}"'
@@ -711,7 +711,7 @@ __call_fn__ \
 function clone_repo(){                           __function_boundary_in__
 
   [[ ${PWD} = "${dev_d1}" ]] || {
-    __die__
+    _als_die_
   }
 
   local AA
@@ -725,7 +725,7 @@ function clone_repo(){                           __function_boundary_in__
       ! [[ ${AA} == "${sha256_of_repo_readme}" ]]
   then
     git clone --origin github "https://github.com/wileyhy/${scr_repo_nm}" || {
-      __die__
+      _als_die_
     }
   fi
   unset AA
@@ -794,7 +794,7 @@ function get_pids_for_restarting(){              __function_boundary_in__
 
   readarray -t dnf_o < <(
     sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || {
-      __die__
+      _als_die_
     }
   )
   if [[ ${#dnf_o[@]} -eq 0 ]]
@@ -849,7 +849,7 @@ function gh_auth_login_command(){                __function_boundary_in__
   ## Note, do not break this line with any backslashed newlines or it will fail and you\ll have to
   #+  refresh auth manually; using short options for just this reason
   gh auth login -p ssh -h github.com -s admin:public_key,read:gpg_key,admin:ssh_signing_key -w || {
-    __die__
+    _als_die_
   }
                                                  __function_boundary_out_0__
 }
@@ -962,7 +962,7 @@ function increase_disk_space(){                  __function_boundary_in__
                     unset "Aa_fsos5[${AA}]"
                     break 1
                   else
-                    __die__ "Unknown error"
+                    _als_die_ "Unknown error"
                   fi
                 ;; #
             n | f )
@@ -1026,13 +1026,13 @@ function must_be_root(){                         __function_boundary_in__
 
   if (( UID == 0 ))
   then
-    __die__ "Must be a regular user and use sudo"
+    _als_die_ "Must be a regular user and use sudo"
   elif sudo --validate
   then
     : validation succeeded
   else
     : validation failed
-    __die__
+    _als_die_
   fi
                                                  __function_boundary_out_0__
 }
@@ -1069,7 +1069,7 @@ function reqd_user_files(){                      __function_boundary_in__
 
   #! Note, error
   [[ -n ${pttn_device_path} ]] || {
-    __die__ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
+    _als_die_ $'Necessary USB drive isn\t plugged in or its filesystem has changed.'
   }
 
   : "${Color_SubComent} Vars, get mountpoints and label ${Color_AttributesOff}"
@@ -1111,7 +1111,7 @@ function reqd_user_files(){                      __function_boundary_in__
       ;; #
     * )
       : "${Color_SubComent} Multiple matches ${Color_AttributesOff}"
-      __die__ "The target partition is mounted in multiple places"
+      _als_die_ "The target partition is mounted in multiple places"
       ;; #
   esac
   unset array_mt_pts
@@ -1120,7 +1120,7 @@ function reqd_user_files(){                      __function_boundary_in__
   local mount_user
   mount_user="${mount_pt%/*}" mount_user="${mount_user##*/}"
   [[ ${mount_user} = @(root|liveuser) ]] || {
-    __die__
+    _als_die_
   }
   unset mount_user
 
@@ -1130,12 +1130,12 @@ function reqd_user_files(){                      __function_boundary_in__
     if ! [[ -d "${mount_pt}" ]]
     then
       sudo -- mkdir --parents -- "${mount_pt}" || {
-        __die__
+        _als_die_
       }
     fi
 
     sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || {
-      __die__
+      _als_die_
     }
     is_mounted=yes
     sync -f
@@ -1159,7 +1159,7 @@ function reqd_user_files(){                      __function_boundary_in__
   if  ! [[ -d ${data_dir} ]] ||
       [[ -L ${data_dir} ]]
   then
-    __die__
+    _als_die_
   fi
 
   : "${Color_SubComent} Data directory must be readable via ACL, but not writeable ${Color_AttributesOff}"
@@ -1178,12 +1178,12 @@ function reqd_user_files(){                      __function_boundary_in__
   if  ! [[ -f "${data_dir}/${datdir_idfile}" ]] ||
       [[ -L "${data_dir}/${datdir_idfile}" ]]
   then
-    __die__
+    _als_die_
   fi
 
   if ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]
   then
-    __die__
+    _als_die_
   fi
   unset ZZ
 
@@ -1237,7 +1237,7 @@ function reqd_user_files(){                      __function_boundary_in__
           then
 
             sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || {
-              __die__
+              _als_die_
             }
 
             if  mount |
@@ -1250,7 +1250,7 @@ function reqd_user_files(){                      __function_boundary_in__
           : "${Color_SubComent} If the source conf file/dir still does not exist, then throw an error ${Color_AttributesOff}"
           if ! [[ -e "${source_file}" ]]
           then
-            __die__ "${QQ[BB]}" "${source_file}"
+            _als_die_ "${QQ[BB]}" "${source_file}"
           fi
         fi
 
@@ -1300,7 +1300,7 @@ function rsync_install_if_missing(){             __function_boundary_in__
   then
     if ! [[ -d ${fn_target_dir} ]]
     then
-      __die__ "${fn_target_dir}"
+      _als_die_ "${fn_target_dir}"
     fi
   else
     local fn_umask
@@ -1340,7 +1340,7 @@ function rsync_install_if_missing(){             __function_boundary_in__
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
     rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || {
-      __die__ "${fn_target_dir}"
+      _als_die_ "${fn_target_dir}"
     }
   fi
 
@@ -1369,7 +1369,7 @@ function setup_bashrc(){                         __function_boundary_in__
     : "${Color_SubComent} bashrc -- RC File must exist ${Color_AttributesOff}"
     if ! sudo -- "$(type -P test)" -f "${WW}"
     then
-      __die__ "${WW}"
+      _als_die_ "${WW}"
     fi
 
     ## Note, chmod changes the ctime, even with no change of DAC\s
@@ -1400,7 +1400,7 @@ function setup_bashrc(){                         __function_boundary_in__
 
     : "${Color_SubComent} bashrc -- ...per-script-execution file backup ${Color_AttributesOff}"
     sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}~" || {
-      __die__ "${WW}"
+      _als_die_ "${WW}"
     }
   done
   unset WW
@@ -1509,7 +1509,7 @@ function setup_bashrc(){                         __function_boundary_in__
   : "${Color_SubComent} bashrc -- Test for any missing parameters ${Color_AttributesOff}"
   if (( ${#missing_vars_and_fns[@]} > 0 ))
   then
-    __die__ "${missing_vars_and_fns[@]}"
+    _als_die_ "${missing_vars_and_fns[@]}"
   fi
 
   : "${Color_SubComent} bashrc -- Create Associative arrays of required parameters ${Color_AttributesOff}"
@@ -1721,7 +1721,7 @@ function setup_dnf(){                           __function_boundary_in__
         then
           unset "removable_pkgs[QQ]"
         else
-          __die__ "${removable_pkgs[QQ]}"
+          _als_die_ "${removable_pkgs[QQ]}"
         fi
         unset DD exp_dt dnf_cmd
       done
@@ -1812,7 +1812,7 @@ function setup_dnf(){                           __function_boundary_in__
   if [[ -n ${pkgs_installed[*]: -1:1} ]]
   then
     sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet upgrade "${pkgs_installed[@]}" || {
-      __die__
+      _als_die_
     }
   fi
 
@@ -1829,7 +1829,7 @@ function setup_dnf(){                           __function_boundary_in__
     for VV in "${not_yet_installed_pkgs[@]}"
     do
       sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install "${VV}" || {
-        __die__
+        _als_die_
       }
 
       get_pids_for_restarting
@@ -2290,10 +2290,10 @@ function setup_git(){                           __function_boundary_in__
 
     # shellcheck disable=SC2024 #(info): sudo does not affect redirects. Use sudo cat file | ..
     tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || {
-      __die__
+      _als_die_
     }
     chmod 0644 "${ver__[@]}" "${git_mesg}" || {
-      __die__
+      _als_die_
     }
   fi
 
@@ -2311,10 +2311,10 @@ function setup_git(){                           __function_boundary_in__
 
     # shellcheck disable=SC2024
     tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || {
-      __die__
+      _als_die_
     }
     chmod 0644 "${ver__[@]}" "${git_ignr}" || {
-      __die__
+      _als_die_
     }
   fi
 
@@ -2362,7 +2362,7 @@ function setup_git_user_dirs(){                 __function_boundary_in__
     if ! [[ -d ${UU} ]]
     then
       mkdir --mode=0700 "${ver__[@]}" "${UU}" || {
-        __die__
+        _als_die_
       }
     fi
   done
@@ -2370,7 +2370,7 @@ function setup_git_user_dirs(){                 __function_boundary_in__
 
   : "${Color_SubComent} Change dirs ${Color_AttributesOff}"
   pushd "${dev_d1}" > /dev/null || {
-    __die__
+    _als_die_
   }
                                                  __function_boundary_out_0__
 }
@@ -2392,7 +2392,7 @@ function setup_gpg(){                           __function_boundary_in__
         \)  -print0 \
   )
   [[ -n ${problem_files[*]} ]] && {
-    __die__ Incorrect ownership on -- "${problem_files[@]}"
+    _als_die_ Incorrect ownership on -- "${problem_files[@]}"
   }
   unset problem_files
 
@@ -2400,7 +2400,7 @@ function setup_gpg(){                           __function_boundary_in__
   sudo -- \
     find -- ~/.gnupg -xdev \( -uid 0 -o -gid 0 \) -execdir \
       chown "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; || {
-        __die__
+        _als_die_
       }
 
   : $'If any dir perms aren\x60t 700 or any file perms aren\x60t 600, then make them so'
@@ -2465,14 +2465,14 @@ function setup_network(){                       __function_boundary_in__
     : "${Color_SubComent} Connect the interface ${Color_AttributesOff}"
     case "${#ifaces[@]}" in
       0 )
-        __die__ "No network device available"
+        _als_die_ "No network device available"
         ;; #
       1 )
         nmcli c up "${ifaces[*]}"
         sleep 5
         ;; #
       * )
-        __die__ "Multiple network devices available"
+        _als_die_ "Multiple network devices available"
         ;; #
     esac
 
@@ -2507,11 +2507,11 @@ function setup_ssh(){                           __function_boundary_in__
   : "${Color_SubComent} Make sure the SSH config directory and file for USER exist ${Color_AttributesOff}"
   [[ -d ${ssh_usr_conf_dir} ]] ||
     mkdir -m 0700 "${ssh_usr_conf_dir}" || {
-      __die__
+      _als_die_
     }
   [[ -f ${ssh_user_conf_file} ]] ||
     write_ssh_conf || {
-      __die__
+      _als_die_
     }
     __pause2ck__ # <>
 
@@ -2540,7 +2540,7 @@ function setup_ssh(){                           __function_boundary_in__
             \! -gid "${login_gid}"  \
         \) -execdir \
           chown -- "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; || {
-            __die__
+            _als_die_
           }
     find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir \
       chmod 700 "${ver__[@]}" \{\} \; #
@@ -2588,7 +2588,7 @@ function setup_ssh(){                           __function_boundary_in__
 
   case "${#ssh_agent_pids[@]}" in
     0 )
-        __die__ "ssh-agent failed to start"
+        _als_die_ "ssh-agent failed to start"
       ;; #
     1 )
         if [[ -z ${SSH_AGENT_PID:-} ]]
@@ -2651,12 +2651,12 @@ function setup_temp_dirs(){                     __function_boundary_in__
   tmp_dir=$(
     if ! TMPDIR="" mktemp --directory --suffix=-LiveUsb 2>&1
     then
-      __die__
+      _als_die_
     fi
   )
 
   [[ -d ${tmp_dir} ]] || {
-    __die__
+    _als_die_
   }
   readonly tmp_dir
                                                  __function_boundary_out_0__
@@ -2672,7 +2672,7 @@ function setup_time(){                          __function_boundary_in__
   sudo -- timedatectl set-local-rtc 0
   sudo -- timedatectl set-timezone America/Vancouver
   sudo -- systemctl start chronyd.service || {
-    __die__
+    _als_die_
   }
   sudo -- chronyc makestep > /dev/null
                                                  __function_boundary_out_0__
@@ -2723,7 +2723,7 @@ function setup_vim(){                           __function_boundary_in__
     *)
         printf '\n  Multiple .vimrc files found, please edit the filesystem.\n' >&2
         printf '\t%s\n' "${arr_vrc[@]}" >&2
-        __die__
+        _als_die_
       ;; #
   esac
 
@@ -2754,12 +2754,12 @@ function setup_vim(){                           __function_boundary_in__
 
     : "${Color_SubComent} Write the root file ${Color_AttributesOff}"
     sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || {
-      __die__
+      _als_die_
     }
 
     : "${Color_SubComent} Copy the root file to ${HOME}"$' and repair DAC\x60s on '"${USER}"$'\x60s copy'
     sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc || {
-      __die__
+      _als_die_
     }
     sudo -- chown "${UID}:${UID}" -- ~/.vimrc
     chmod 0400 -- ~/.vimrc
@@ -2798,7 +2798,7 @@ function test_os(){                             __function_boundary_in__
   ## Note, test of $kern_rel is a test for whether the OS is Fedora (ie, "fc38" or "Fedora Core 38")
   if ! [[ ${kern_rel} =~ \.fc[0-9]{2}\. ]]
   then
-    __die__ "OS is not Fedora"
+    _als_die_ "OS is not Fedora"
   fi
   unset kern_rel
                                                  __function_boundary_out_0__
@@ -2847,10 +2847,10 @@ function write_bashrc_strings(){                __function_boundary_in__
 
   : "${Color_SubComent} Certain parameters must be defined and have non-zero values ${Color_AttributesOff}"
   (( ${#files_for_use_with_bash[@]} == 0 )) && {
-    __die__
+    _als_die_
   }
   (( $# == 0 )) && {
-    __die__
+    _als_die_
   }
 
   local JJ file_x Aa_index Aa_element
@@ -2886,7 +2886,7 @@ function write_bashrc_strings(){                __function_boundary_in__
           : "${Color_SubComent} Then write the function definition into the file ${Color_AttributesOff}"
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" |
             sudo -- tee --append -- "${file_x}" > /dev/null || {
-              __die__
+              _als_die_
             }
         else
           : "${Color_SubComent} Definition exists, skipping ${Color_AttributesOff}"
@@ -3034,7 +3034,7 @@ do
   if ! ping -4qc1 -- "${BB}" > /dev/null 2>&1
   then
     sudo -- nice --adjustment=-20 -- systemctl restart -- NetworkManager.service || {
-      __die__
+      _als_die_
     }
   fi
 done
@@ -3077,7 +3077,7 @@ clone_repo
 : "${Color_Comment} Line ${nameref_Lineno}, Remind user of commands for the interactive shell ${Color_AttributesOff}"
 
 popd > /dev/null || {
-  __die__
+  _als_die_
 }
 
 if ! [[ ${PWD} = ${dev_d1}/${scr_repo_nm} ]]
