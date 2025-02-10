@@ -618,11 +618,11 @@ function _fn_setup_variables_ ()
     export global_hyphn
     :
     : "${Color_SubComent} Variables, Repo info ${Color_AttributesOff}"
-    scr_repo_nm=LiveUsb
+    script__repo_name=LiveUsb
     scr_nm=LiveUsb1.sh
     datadir_basenm=skel-LiveUsb
-    datdir_idfile=.${scr_repo_nm}_id-key
-    readonly scr_repo_nm scr_nm datadir_basenm datdir_idfile
+    datdir_idfile=.${script__repo_name}_id-key
+    readonly script__repo_name scr_nm datadir_basenm datdir_idfile
     :
     : "${Color_SubComent} Variables, File and partition data and metadata ${Color_AttributesOff}"
     sha256_of_repo_readme=67e18b59ecd9140079503836e2dda1315b8799395b8da67693479b3d970f0a1
@@ -754,15 +754,15 @@ function _fn_clone_repo_ ()
 
   local AA
     AA=$(
-      sha256sum "${dev_d1}/${scr_repo_nm}/README.md" |
+      sha256sum "${dev_d1}/${script__repo_name}/README.md" |
         cut --delimiter=" " --fields=1
     )
 
-  if  ! [[ -d ./${scr_repo_nm} ]] ||
-      ! [[ -f ./${scr_repo_nm}/README.md ]] ||
+  if  ! [[ -d ./${script__repo_name} ]] ||
+      ! [[ -f ./${script__repo_name}/README.md ]] ||
       ! [[ ${AA} == "${sha256_of_repo_readme}" ]]
   then
-    git clone --origin github "https://github.com/wileyhy/${scr_repo_nm}" || {
+    git clone --origin github "https://github.com/wileyhy/${script__repo_name}" || {
       _als_die_
     }
   fi
@@ -3170,10 +3170,10 @@ popd > /dev/null || {
 
 
 ##
-if ! [[ ${PWD} = ${dev_d1}/${scr_repo_nm} ]]
+if ! [[ ${PWD} = ${dev_d1}/${script__repo_name} ]]
 then
   printf '\n  Now run this command: \n'
-  printf '\n\t cd "%s/%s" ; git status \n\n' "${dev_d1}" "${scr_repo_nm}"
+  printf '\n\t cd "%s/%s" ; git status \n\n' "${dev_d1}" "${script__repo_name}"
 fi
 
   set -v ## <>
