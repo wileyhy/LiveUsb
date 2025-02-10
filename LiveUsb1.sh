@@ -445,7 +445,6 @@ function _fn_enable_debug_functions_(){
     #+  _fn_enable_git_debug_settings_()
     #+  _fn_pause_to_check_()
     #+  set()
-    #+  xtr_duck()
 
 
   : "${Color_SubComent} Define _fn_enable_git_debug_settings_() ${Color_AttributesOff}"
