@@ -106,11 +106,11 @@ function _fn_setup_aliases_ ()
   unset lineno__defin_of_alias_die
         lineno__defin_of_alias_die="$((nameref_Lineno+1))"
 
-  alias _als_die_=': "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, begin, def Line ${lineno__defin_of_alias_die}
+  alias _als_die_=': "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, begin, def Line ${lineno__defin_of_alias_die}
 
       _fn_error_and_exit_ "${nameref_Lineno}"
 
-      : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, end "${Color_AttributesOff}"'
+      : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, end "${Color_AttributesOff}"'
 }
 _fn_setup_aliases_
 
@@ -335,8 +335,8 @@ function _fn_enable_debug_aliases_(){
         als_fn_bdry_in__def_lineno="$((nameref_Lineno+1))"
 
   alias _als_fnction_boundary_in_='
-    _="${Color_FnctionBoundry} ${_var_fnction_boundry_long} function ${FUNCNAME[0]}() BEGINS ${_var_function_boundary_short} ${fn_lvl} to $(( ++fn_lvl )) ${C_AliasFunctionBoundary}"
-    _="${C_AliasFunctionBoundary} alias _als_fnction_boundary_in_, begin"
+    _="${Color_FnctionBoundry} ${_var_fnction_boundry_long} function ${FUNCNAME[0]}() BEGINS ${_var_function_boundary_short} ${fn_lvl} to $(( ++fn_lvl )) ${Color_AliasFunctionBoundary}"
+    _="${Color_AliasFunctionBoundary} alias _als_fnction_boundary_in_, begin"
     als_fn_bndry_in__call_line=${nameref_Lineno}
     als_def_line="${als_fn_bdry_in__def_lineno}"
     fn_call_lineno=$(( ${als_cl_fn__call_line:-} +1))
@@ -353,7 +353,7 @@ function _fn_enable_debug_aliases_(){
         als_fn_bdry_out_0__def_lineno="$((nameref_Lineno+1))"
 
   alias _als_fnction_boundary_out_0_='
-    _="${C_AliasFunctionBoundary} alias _als_fnction_boundary_out_0_ begin" als_call_line=$nameref_Lineno als_def_line=${als_fn_bdry_out_0__def_lineno}
+    _="${Color_AliasFunctionBoundary} alias _als_fnction_boundary_out_0_ begin" als_call_line=$nameref_Lineno als_def_line=${als_fn_bdry_out_0__def_lineno}
     _="alias _als_fnction_boundary_out_0_, end"
     _="${Color_FnctionBoundry} ${_var_fnction_boundry_long} function ${FUNCNAME[0]}()  ENDS  ${_var_function_boundary_short} ${fn_lvl} to $(( --fn_lvl )) ${Color_AttributesOff}"
     '
@@ -366,11 +366,11 @@ function _fn_enable_debug_aliases_(){
         als_ps2ck__def_lineno="$((nameref_Lineno+1))"
 
   alias _als_pause_to_check_='
-    : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_pause_to_check_, begin, def Line ${als_ps2ck__def_lineno}
+    : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_pause_to_check_, begin, def Line ${als_ps2ck__def_lineno}
 
     pause_to_check "${nameref_Lineno}"
 
-    : "${C_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_pause_to_check_, end "${Color_AttributesOff}"'
+    : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_pause_to_check_, end "${Color_AttributesOff}"'
   #! \end alias definition\
 
 
@@ -537,7 +537,7 @@ function setup_variables(){ _als_fnction_boundary_in_
   : "${Color_Comment} Line ${nameref_Lineno}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
   :
   : "${Color_SubComent} Variables, colors, non-debug ${Color_AttributesOff}"
-  [[ -v C_AliasFunctionBoundary ]] || C_AliasFunctionBoundary="${C_AliasFunctionBoundary:=}"
+  [[ -v Color_AliasFunctionBoundary ]] || Color_AliasFunctionBoundary="${Color_AliasFunctionBoundary:=}"
   [[ -v Color_AttributesOff ]]    || Color_AttributesOff="${Color_AttributesOff:=}"
   [[ -v Color_SubComent ]]    || Color_SubComent="${Color_SubComent:=}"
   [[ -v C_SubSbComent ]] || C_SubSbComent="${C_SubSbComent:=}"
