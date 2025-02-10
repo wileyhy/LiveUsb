@@ -2,38 +2,38 @@
 ## LiveUsb1
 ##    #!/bin/env -iS bash
 
-## Note, Putting a `LN="$nL"` (LINENO) or `main_lineno="$nL"` assignment preceding an `exit` command lets
-#+ the value of LN or main_lineno match the line number of the `exit` command.
+## Note, Putting a `LN="$nL"` (LINENO) or `main_lineno="$nL"` assignment
+#!   preceding an `exit` command lets the value of LN or main_lineno
+#!   match the line number of the `exit` command.
 ## Note, idempotent script
 ## Note, the symbol "<>" marks code as for debugging purpoeses only
 ## Note, ...undocumented feature??
-#+     Use `env -i` or else the script\s execution environment will inherit any exported anything,
-#+   including and especially functions, from its caller, e.g., any locally defined functions (such as `rm`)
-#+   which might be intended to shadow any builtins or commands or to supplant any of the aliases which some
-#+   of the various Linux distributions often define and provide for users\ convenience.  These exported
-#+   functions which are received from the caller\s environment get printed above the script\s shebang in
-#+   xtrace when xtrace and vebose are both enabled on the shebang line. ...but exported variables do not
-#+   print.
+#+     Use `env -i` or else the script\s execution environment will
+#!   inherit any exported anything, including and especially functions,
+#!   from its caller, e.g., any locally defined functions (such as `rm`)
+#!   which might be intended to shadow any builtins or commands or to
+#!   supplant any of the aliases which some of the various Linux
+#!   distributions often define and provide for users\ convenience.
+#!   These exported functions which are received from the caller\s
+#!   environment get printed above the script\s shebang in xtrace when
+#!   xtrace and vebose are both enabled on the shebang line. ...but
+#!   exported variables do not print.
 #+     ...also, using `env` messes up vim\s default bash-colorizations
-## Note, style, function definition syntax, "(){ :" makes plain xtrace easier to read
-## Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas "[[ ! -e" does, and yet, for `grep`.....
-## Note, timestamps, `find`, `stat` and `[[` (and `ls`) don\t effect ext4 timestamps, as tested, but
-#+   idempotent `chown` and `chmod` do, and of course `touch` does; if there\s no change in the file,
-#+   `rsync` doesn\t, but if the file changes, it does. Also, "btime" on ext4 still isn\t consistent.
-#+   `grep` has no effect on times; `cp -a` effects "ctimes" even if file contents do not change.
+## Note, style, function definition syntax, "(){ :" makes plain xtrace
+#!   easier to read.
+## Note, style, "! [[ -e" doesn\t show the "!" in xtrace, whereas
+#!   "[[ ! -e" does, and yet, for `grep`.....
+## Note, timestamps, `find`, `stat` and `[[` (and `ls`) don\t effect
+#!   ext4 timestamps, as tested, but idempotent `chown` and `chmod` do,
+#!   and of course `touch` does; if there\s no change in the file,
+#!   `rsync` doesn\t, but if the file changes, it does. Also, "btime"
+#!   on ext4 still isn\t consistent. `grep` has no effect on times.
+#!   `cp -a` effects "ctimes" even if file contents do not change.
 
-## Reportable bugg. `command -p kill "$AA"` executes the bash builtin, judging by the output of `command
-#+   -p kill` without any operands. The output of `$( type -P kill )"` without operands is the same as the
-#+   output of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points.
-#+     `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what
-#+   is intended is, "...suppressing shell function lookup, but still allowing builtins to be executed,"
-#+   and possibly also aliases and keywords, though I haven\t tested those. The description of the "-p"
-#+   option is particularly misleading: "use a default value for PATH that is guaranteed to find all of
-#+   the standard utilities." That "guarantee" sounds as if use of the "-p" option "shall" (using the
-#+   POSIX defition of the word) result in a binary utility being used, when actually that is not the
-#+   case.
-#+     Binary `kill` has a few options not available with the builtin, such as "--timeout", which can be
-#+   used to avoid writing an extra for loop...
+## Reportable bugg.
+#!   `command -p kill "$AA"` executes the bash builtin, judging by the
+#!   output of `command -p kill` without any operands. The output of `$( type -P kill )"` without operands is the same as the output of /usr/bin/kill without operands. The documentation is ...somewhat unclear on these points. `help command`: "Runs COMMAND with ARGS suppressing shell function lookup...." It seems that what is intended is, "...suppressing shell function lookup, but still allowing builtins to be executed," and possibly also aliases and keywords, though I haven\t tested those. The description of the "-p" option is particularly misleading: "use a default value for PATH that is guaranteed to find all of the standard utilities." That "guarantee" sounds as if use of the "-p" option "shall" (using the POSIX defition of the word) result in a binary utility being used, when actually that is not the case.
+#+     Binary `kill` has a few options not available with the builtin, such as "--timeout", which can be used to avoid writing an extra for loop...
 #+
 #+       sudo -- "$( type -P kill )" --verbose \
 #+           --timeout 1000 HUP \
@@ -41,8 +41,7 @@
 #+           --timeout 1000 TERM \
 #+           --timeout 1000 KILL -- "$WW"
 #+
-#+     Otherwise, it would be useful, IMO, if `kill --help` showed the help file for /bin/kill, since
-#+   using that syntax most likely indicates that intention  :-\
+#+     Otherwise, it would be useful, IMO, if `kill --help` showed the help file for /bin/kill, since using that syntax most likely indicates that intention  :-\
 
 ## TODO, lock file, bc ^z
 ## TODO, add colors to xtrace comments
@@ -210,7 +209,7 @@ function enable_debugg_aliases(){
   : "${C_CmntSub} Line ${nL}, Aliases, debugg - TOC ${C_AttrOff}"
   ##  Alias name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #+  __call_fn__ 
+  #+  __call_fn__
   #+  __debug_break__
   #+  __enable_local_xtrace__
   #+  __enable_global_xtrace__
@@ -275,7 +274,7 @@ function enable_debugg_aliases(){
   als_enbl_loc_xtr__def_lineno="$((nL+1))"
   alias __enable_local_xtrace__='
     : "${C_XtrAls}" Line ${nL}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}
-    #fn_def_lineno="${nL:-}" 
+    #fn_def_lineno="${nL:-}"
 
     if ! [[ -o xtrace ]]
     then
@@ -302,13 +301,13 @@ function enable_debugg_aliases(){
   als_fn_bdry_in__def_lineno="$((nL+1))"
   alias __function_boundary_in__='
     _="${C_FnBndry} ${fn_bndry_lo} function ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl )) ${C_AlsFnBndry}"
-    _="${C_AlsFnBndry} alias __function_boundary_in__, begin" 
-    als_fn_bndry_in__call_line=${nL} 
+    _="${C_AlsFnBndry} alias __function_boundary_in__, begin"
+    als_fn_bndry_in__call_line=${nL}
     als_def_line="${als_fn_bdry_in__def_lineno}"
     fn_call_lineno=$(( ${als_cl_fn__call_line:-} +1))
-    fn_def_lineno="${nL:-}" 
-    local_hyphn="$-" 
-    prev_cmd_exit_code="${EC:-$?}"; 
+    fn_def_lineno="${nL:-}"
+    local_hyphn="$-"
+    prev_cmd_exit_code="${EC:-$?}"
     : alias __function_boundary_in__, end "${C_AttrOff}"'
 
 
@@ -324,7 +323,7 @@ function enable_debugg_aliases(){
   #: "${C_CmntSub} Define alias __function_boundary_out_1__ ${C_AttrOff}"
   #als_fn_bdry_out_1__def_lineno="$((nL+1))"
   #alias __function_boundary_out_1__='
-    #: "${C_AlsFnBndry}" Line ${nL}, alias __function_boundary_out_1__, begin, def Line ${als_fn_bdry_out_1__def_lineno} "${C_FnBndry}";
+    #: "${C_AlsFnBndry}" Line ${nL}, alias __function_boundary_out_1__, begin, def Line ${als_fn_bdry_out_1__def_lineno} "${C_FnBndry}"
     ##[[ $print_function_boundaries == do_prFnBndrys ]] &&
       ##builtin set -x &&
       #_="${fn_bndry_lo} function ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"
@@ -1120,7 +1119,7 @@ function must_be_root(){                         __function_boundary_in__
     __die__
   fi
                                                  __function_boundary_out_0__
-} 
+}
 
 
 
