@@ -160,14 +160,16 @@ function _fn_enable_debug_parameters_(){
   ###########################################################
   unset       assoc_arr_Colors
   declare -A  assoc_arr_Colors
-              assoc_arr_Colors+=( ["Comment"]="               12 blue"
-                           ["SubComent"]="             10 light_green"
-                           ["SubSbComent"]="          226 yellow"
-                           ["AliasFunctionBoundary"]=" 14 light_blue"
-                           ["FnctionBoundry"]="        11 orange"
-                           ["XtraceOfAlias"]="          3 brown"
-                           ["TechCmnt"]="               4 purple"
-                           ["Errors"]="                 8 brick_red" )
+              assoc_arr_Colors+=(
+                            ["Comment"]="               12 blue"
+                            ["SubComent"]="             10 light_green"
+                            ["SubSbComent"]="          226 yellow"
+                            ["AliasFunctionBoundary"]=" 14 light_blue"
+                            ["FnctionBoundry"]="        11 orange"
+                            ["XtraceOfAlias"]="          3 brown"
+                            ["TechCmnt"]="               4 purple"
+                            ["Errors"]="                 8 brick_red"
+  )
 
   unset II
   for   II in "${!assoc_arr_Colors[@]}"
