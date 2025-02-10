@@ -718,7 +718,7 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_rsync_install_if_missing_()
   #+  _fn_setup_bashrc_()
   #+  _fn_setup_dnf_()
-  #+  _fn_setup_gh_cli()
+  #+  _fn_setup_gh_cli_()
   #+  _fn_setup_git()
   #+  _fn_setup_git_user_dirs()
   #+  _fn_setup_gpg()
@@ -2143,8 +2143,8 @@ function _fn_setup_dnf_()
 
 
 
-: "${Color_SubComent} Define _fn_setup_gh_cli() ${Color_AttributesOff}"
-function _fn_setup_gh_cli()
+: "${Color_SubComent} Define _fn_setup_gh_cli_() ${Color_AttributesOff}"
+function _fn_setup_gh_cli_()
 {                        _als_fnction_boundary_in_
 
   : "${Color_SubComent} GH -- s\et config key-value pairs ${Color_AttributesOff}"
@@ -3132,7 +3132,7 @@ _fn_setup_git
   #_als_debug_break_
 
 : "${Color_Comment} Line ${nameref_Lineno}, GH -- github CLI configuration ${Color_AttributesOff}"
-_fn_setup_gh_cli
+_fn_setup_gh_cli_
 
   #_als_debug_break_
 
