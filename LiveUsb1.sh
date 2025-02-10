@@ -240,7 +240,7 @@ function _fn_enable_debug_aliases_(){
   #+                -|    [function name]
   #+   Reason: so that the alias can be added to a script via sed/awk.
   unset als_cl_fn__def_lineno
-        als_cl_fn__def_lineno="$((nameref_Lineno+1))"
+        als_cl_fn__def_lineno="$((  nameref_Lineno + 2  ))"
 
   alias _als_call_fncton_='_="${C_XtraceOfAlias} alias _als_call_fncton_, begin" als_cl_fn__call_line="$nameref_Lineno" als_def_line="${als_cl_fn__def_lineno}" _="alias _als_call_fncton_, end ${Color_AttributesOff}" '
   #! \end alias definition\
@@ -250,7 +250,7 @@ function _fn_enable_debug_aliases_(){
   : "${Color_SubComent} Define alias _als_debug_break_ ${Color_AttributesOff}"
   ## Note, this alias is in intended to function as a
   unset als_dbg_brk__def_lineno
-        als_dbg_brk__def_lineno="$((nameref_Lineno+1))"
+        als_dbg_brk__def_lineno="$((  nameref_Lineno + 2  ))"
 
   alias _als_debug_break_='
     : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_debug_break_, begin, def Line ${als_dbg_brk__def_lineno}
@@ -275,7 +275,7 @@ function _fn_enable_debug_aliases_(){
   : "${Color_SubComent} Define alias _als_enble_globl_xtrce_ ${Color_AttributesOff}"
   ## Note, this alias is in intended to function as a
   unset als_enbl_glbl_xtr__def_lineno
-        als_enbl_glbl_xtr__def_lineno="$((nameref_Lineno+1))"
+        als_enbl_glbl_xtr__def_lineno="$((  nameref_Lineno + 2  ))"
 
   alias _als_enble_globl_xtrce_='
     : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_globl_xtrce_, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
@@ -301,7 +301,7 @@ function _fn_enable_debug_aliases_(){
   ##
   : "${Color_SubComent} Define alias _als_enble_locl_xtrce_ ${Color_AttributesOff}"
   unset als_enbl_loc_xtr__def_lineno
-        als_enbl_loc_xtr__def_lineno="$((nameref_Lineno+1))"
+        als_enbl_loc_xtr__def_lineno="$(( nameref_Lineno + 2  ))"
 
   alias _als_enble_locl_xtrce_='
     : "${C_XtraceOfAlias}" Line ${nameref_Lineno}, alias _als_enble_locl_xtrce_, begin, def Line ${als_enbl_loc_xtr__def_lineno}
