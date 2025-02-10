@@ -181,9 +181,7 @@ function enable_debug_params(){
 
   done
   unset -n      NN
-  unset         DD
-  unset         II
-  unset         aa_colors
+  unset         DD II aa_colors
 
 
   : "${C_Comment} Variables, Function boundary parameters ${C_AttrOff}"
@@ -199,16 +197,19 @@ function enable_debug_params(){
 }
 enable_debug_params
 
+
+##
 function enable_debug_aliases(){
+  
+  ##
   : "${C_Comment} Line ${nL}, Aliases, debugg ${C_AttrOff}"
 
   #! Bug, separate alias definitions to a subsection above function
   #!   definitions. Defining of alias B can occur before the defining
   #!   of function A which is contained within in (alias B).
 
+  ##  Aliases, TOC
   : "${C_CmntSub} Line ${nL}, Aliases, debugg - TOC ${C_AttrOff}"
-
-  ##  Alias name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  __call_fn__
   #+  __debug_break__
@@ -224,6 +225,8 @@ function enable_debug_aliases(){
   #! Note, as I recall, these variable assignments all need to be on
   #!   the first line of this array.
 
+
+  ##
   : "${C_CmntSub} Define alias __call_fn__ ${C_AttrOff}"
 
   ## Note, Usage:   -|__call_fn__ \
@@ -231,13 +234,17 @@ function enable_debug_aliases(){
   #+   Reason: so that the alias can be added to a script via sed/awk.
   unset als_cl_fn__def_lineno
         als_cl_fn__def_lineno="$((nL+1))"
+
   alias __call_fn__='_="${C_XtrAls} alias __call_fn__, begin" als_cl_fn__call_line="$nL" als_def_line="${als_cl_fn__def_lineno}" _="alias __call_fn__, end ${C_AttrOff}" '
+  #! \end alias definition\
 
 
+  ##
   : "${C_CmntSub} Define alias __debug_break__ ${C_AttrOff}"
   ## Note, this alias is in intended to function as a
   unset als_dbg_brk__def_lineno
         als_dbg_brk__def_lineno="$((nL+1))"
+
   alias __debug_break__='
     : "${C_XtrAls}" Line ${nL}, alias __debug_break__, begin, def Line ${als_dbg_brk__def_lineno}
 
@@ -257,10 +264,12 @@ function enable_debug_aliases(){
   #! \end alias definition\
 
 
+  ##
   : "${C_CmntSub} Define alias __enable_global_xtrace__ ${C_AttrOff}"
   ## Note, this alias is in intended to function as a
   unset als_enbl_glbl_xtr__def_lineno
         als_enbl_glbl_xtr__def_lineno="$((nL+1))"
+
   alias __enable_global_xtrace__='
     : "${C_XtrAls}" Line ${nL}, alias __enable_global_xtrace__, begin, def Line ${als_enbl_glbl_xtr__def_lineno}
 
@@ -279,10 +288,14 @@ function enable_debug_aliases(){
     fi
 
     : "${C_XtrAls}" Line ${nL}, alias __enable_global_xtrace__, end "${C_AttrOff}"'
+  #! \end alias definition\
 
 
+  ##
   : "${C_CmntSub} Define alias __enable_local_xtrace__ ${C_AttrOff}"
-  als_enbl_loc_xtr__def_lineno="$((nL+1))"
+  unset als_enbl_loc_xtr__def_lineno
+        als_enbl_loc_xtr__def_lineno="$((nL+1))"
+
   alias __enable_local_xtrace__='
     : "${C_XtrAls}" Line ${nL}, alias __enable_local_xtrace__, begin, def Line ${als_enbl_loc_xtr__def_lineno}
     #fn_def_lineno="${nL:-}"
@@ -307,10 +320,13 @@ function enable_debug_aliases(){
   #! \end alias definition\
 
 
+  ##
   : "${C_CmntSub} Define alias __function_boundary_in__ ${C_AttrOff}"
   ## Note, s\b all one line
   # shellcheck disable=SC2142
-  als_fn_bdry_in__def_lineno="$((nL+1))"
+  unset als_fn_bdry_in__def_lineno
+        als_fn_bdry_in__def_lineno="$((nL+1))"
+
   alias __function_boundary_in__='
     _="${C_FnBndry} ${fn_bndry_lo} function ${FUNCNAME[0]}() BEGINS ${fn_bndry_sh} ${fn_lvl} to $(( ++fn_lvl )) ${C_AlsFnBndry}"
     _="${C_AlsFnBndry} alias __function_boundary_in__, begin"
@@ -324,8 +340,11 @@ function enable_debug_aliases(){
   #! \end alias definition\
 
 
+  ##
   : "${C_CmntSub} Define alias __function_boundary_out_0__ ${C_AttrOff}"
-  als_fn_bdry_out_0__def_lineno="$((nL+1))"
+  unset als_fn_bdry_out_0__def_lineno
+        als_fn_bdry_out_0__def_lineno="$((nL+1))"
+
   alias __function_boundary_out_0__='
     _="${C_AlsFnBndry} alias __function_boundary_out_0__ begin" als_call_line=$nL als_def_line=${als_fn_bdry_out_0__def_lineno}
     _="alias __function_boundary_out_0__, end"
@@ -334,8 +353,11 @@ function enable_debug_aliases(){
   #! \end alias definition\
 
 
+  ##
   : "${C_CmntSub} Define alias __pause2ck__ ${C_AttrOff}"
-  als_ps2ck__def_lineno="$((nL+1))"
+  unset als_ps2ck__def_lineno
+        als_ps2ck__def_lineno="$((nL+1))"
+
   alias __pause2ck__='
     : "${C_AlsFnBndry}" Line ${nL}, alias __pause2ck__, begin, def Line ${als_ps2ck__def_lineno}
 
@@ -345,8 +367,11 @@ function enable_debug_aliases(){
   #! \end alias definition\
 
 
+  ##
   : "${C_CmntSub} Define alias __xtr_read_and_on__ ${C_AttrOff}"
-  als_xtr_read_on__def_lineno="$((nL+1))"
+  unset als_xtr_read_on__def_lineno
+        als_xtr_read_on__def_lineno="$((nL+1))"
+  
   alias __xtr_read_and_on__='
     : "${C_XtrAls}" Line ${nL}, alias __xtr_read_and_on__, begin, def Line ${als_xtr_read_on__def_lineno}
 
@@ -364,9 +389,12 @@ function enable_debug_aliases(){
   #! \end alias definition\
 
 
+  ##
   : "${C_CmntSub} Define alias __xtr_restore__ ${C_AttrOff}"
   # shellcheck disable=SC2154
-  als_xtr_rstr__def_lineno="$((nL+1))"
+  unset als_xtr_rstr__def_lineno
+        als_xtr_rstr__def_lineno="$((nL+1))"
+
   alias __xtr_restore__='
     : "${C_XtrAls}" Line ${nL}, alias __xtr_restore__, begin, def Line ${als_xtr_rstr__def_lineno}
     local -
@@ -404,8 +432,9 @@ function enable_debug_functions(){
     #+  set()
     #+  xtr_duck()
 
+
   : "${C_CmntSub} Define enable_git_debugg_settings() ${C_AttrOff}"
-  function enable_git_debugg_settings(){           __function_boundary_in__
+  function enable_git_debugg_settings(){    __function_boundary_in__
 
     : "${C_CmntSub} Variables -- Global git debugg settings ${C_AttrOff}"
     # shellcheck disable=SC2034
@@ -423,13 +452,14 @@ function enable_debug_functions(){
     [[ -f ~/.gitconfig ]] &&
       git config --global --list --show-origin --show-scope |
       cat -n
-    __function_boundary_out_0__
+    
+                                            __function_boundary_out_0__
   }
 
 
   : "${C_CmntSub} Define pause_to_check() ${C_AttrOff}"
   ## Usage,   pause_to_check "${nL}"
-  function pause_to_check(){                       __function_boundary_in__
+  function pause_to_check(){                __function_boundary_in__
 
     local -I EC=101 ## Q, Why inherit attributes and values when you assign values anyway?
 
