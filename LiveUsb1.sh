@@ -349,17 +349,6 @@ function enable_debugg_aliases(){
     '
 
 
-  #: "${C_CmntSub} Define alias __function_boundary_out_1__ ${C_AttrOff}"
-  #als_fn_bdry_out_1__def_lineno="$((nL+1))"
-  #alias __function_boundary_out_1__='
-    #: "${C_AlsFnBndry}" Line ${nL}, alias __function_boundary_out_1__, begin, def Line ${als_fn_bdry_out_1__def_lineno} "${C_FnBndry}"
-    ##[[ $print_function_boundaries == do_prFnBndrys ]] &&
-      ##builtin set -x &&
-      #_="${fn_bndry_lo} function ${FUNCNAME[1]}()  ENDS  ${fn_bndry_sh} ${fn_lvl} to $(( --fn_lvl ))"
-    ##builtin set -
-    #: "${C_AlsFnBndry}" Line ${nL}, alias __function_boundary_out_1__, end "${C_AttrOff}"'
-
-
   : "${C_CmntSub} Define alias __pause2ck__ ${C_AttrOff}"
   als_ps2ck__def_lineno="$((nL+1))"
   alias __pause2ck__='
