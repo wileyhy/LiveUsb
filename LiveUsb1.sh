@@ -69,7 +69,7 @@
 
 
 ## Start the script
-function start_script(){
+function _fn_start_script_(){
 
   ## Get & print script start time
   unset     script_start_time
@@ -84,7 +84,7 @@ function start_script(){
   shopt -s expand_aliases
   umask 077
 }
-start_script
+_fn_start_script_
 
 
 ##
