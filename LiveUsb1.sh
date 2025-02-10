@@ -89,7 +89,7 @@ _fn_start_script_
 
 ##
 function _fn_setup_aliases_(){
-  : "${C_Comment} Line ${nL}, Aliases, non-debug ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nL}, Aliases, non-debug ${Color_AttributesOff}"
   unset       nL
   unset -n    nL
   local -gnx  nL=L\INENO
@@ -184,7 +184,7 @@ function enable_debug_params(){
   unset         DD II aa_colors
 
 
-  : "${C_Comment} Variables, Function boundary parameters ${Color_AttributesOff}"
+  : "${Color_Comment} Variables, Function boundary parameters ${Color_AttributesOff}"
   unset     fn_bndry_sh
             fn_bndry_sh=" ~~~ ~~~ ~~~ "
   readonly  fn_bndry_sh
@@ -202,7 +202,7 @@ enable_debug_params
 function enable_debug_aliases(){
 
   ##
-  : "${C_Comment} Line ${nL}, Aliases, debug ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nL}, Aliases, debug ${Color_AttributesOff}"
 
   #! Bug, separate alias definitions to a subsection above function
   #!   definitions. Defining of alias B can occur before the defining
@@ -422,7 +422,7 @@ enable_debug_aliases
 
 ##
 function enable_debug_functions(){
-  : "${C_Comment} Line ${nL}, Functions, Debug ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nL}, Functions, Debug ${Color_AttributesOff}"
   : "${Color_SubComent} Line ${nL}, Functions, Debug -  TOC ${Color_AttributesOff}"
 
     ##  Function name
@@ -518,7 +518,7 @@ function enable_debug_functions(){
     __function_boundary_out_0__
   }
 
-  : "${C_Comment} Line ${nL}, Functions, Debug - Complete ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nL}, Functions, Debug - Complete ${Color_AttributesOff}"
 }
 enable_debug_functions
 
@@ -527,14 +527,14 @@ enable_debug_functions
 : "${Color_SubComent} Define setup_variables() ${Color_AttributesOff}"
 function setup_variables(){ __function_boundary_in__
   :
-  : "${C_Comment} Line ${nL}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
+  : "${Color_Comment} Line ${nL}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
   :
   : "${Color_SubComent} Variables, colors, non-debug ${Color_AttributesOff}"
   [[ -v C_AliasFunctionBoundary ]] || C_AliasFunctionBoundary="${C_AliasFunctionBoundary:=}"
   [[ -v Color_AttributesOff ]]    || Color_AttributesOff="${Color_AttributesOff:=}"
   [[ -v Color_SubComent ]]    || Color_SubComent="${Color_SubComent:=}"
   [[ -v C_SubSbComent ]] || C_SubSbComent="${C_SubSbComent:=}"
-  [[ -v C_Comment ]]    || C_Comment="${C_Comment:=}"
+  [[ -v Color_Comment ]]    || Color_Comment="${Color_Comment:=}"
   [[ -v C_Errors ]]     || C_Errors="${C_Error:=}"
   [[ -v C_FnctionBoundry ]]    || C_FnctionBoundry="${C_FnctionBoundry:=}"
   [[ -v C_TechCmnt ]]   || C_TechCmnt="${C_TechCmnt:=}"
@@ -612,7 +612,7 @@ function setup_variables(){ __function_boundary_in__
                                    [5]="vim-enhanced" )
     readonly list_of_minimum_reqd_rpms
     :
-    : "${C_Comment} Line ${nL}, Files, Required files lists ${Color_AttributesOff}"
+    : "${Color_Comment} Line ${nL}, Files, Required files lists ${Color_AttributesOff}"
     :
     ## Note, the "indexed array," $arrays_of_conf_files , is a meta-array containing a list of names of more
     #+  "indexed arrays." The array names, $files_for_use_with_github_depth_* , each have the same format and
@@ -659,18 +659,18 @@ function setup_variables(){ __function_boundary_in__
   __function_boundary_out_0__
 }
 
-: "${C_Comment} Line ${nL}, Variables ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Variables ${Color_AttributesOff}"
 __call_fn__ \
     setup_variables
 
-: "${C_Comment} Line ${nL}, # Testing testing testing ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, # Testing testing testing ${Color_AttributesOff}"
 
   builtin set -x #<>
 
 
 
 
-: "${C_Comment} Line ${nL}, Functions ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Functions ${Color_AttributesOff}"
 
 : "${Color_SubComent} Line ${nL}, Functions TOC ${Color_AttributesOff}"
 
@@ -2960,14 +2960,14 @@ function write_ssh_conf(){                      __function_boundary_in__
 
 
 
-: "${C_Comment} Line ${nL}, Define trap on ERR ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Define trap on ERR ${Color_AttributesOff}"
 trap trap_err ERR
 
-: "${C_Comment} Line ${nL}, Define trap on EXIT ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Define trap on EXIT ${Color_AttributesOff}"
 trap trap_exit EXIT
 
 
-: "${C_Comment} Line ${nL}, Regular users with sudo, only ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Regular users with sudo, only ${Color_AttributesOff}"
 must_be_root
 
 ## Note, traps
@@ -2976,57 +2976,57 @@ must_be_root
 # INT QUIT USR2 -- for stopping logging
 # for starting logging ?
 
-: "${C_Comment} Line ${nL}, Test OS ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Test OS ${Color_AttributesOff}"
 test_os
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Certain files must have been installed from off-disk ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Certain files must have been installed from off-disk ${Color_AttributesOff}"
 reqd_user_files
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Network ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Network ${Color_AttributesOff}"
 setup_network
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Time ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Time ${Color_AttributesOff}"
 setup_time
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Temporary directory ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Temporary directory ${Color_AttributesOff}"
 setup_temp_dirs
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Minimum necessary rpms ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Minimum necessary rpms ${Color_AttributesOff}"
 min_necc_packages
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Vim ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Vim ${Color_AttributesOff}"
 setup_vim
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Bash ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Bash ${Color_AttributesOff}"
 setup_bashrc
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Increase disk space ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Increase disk space ${Color_AttributesOff}"
 increase_disk_space
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Dnf ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Dnf ${Color_AttributesOff}"
 setup_dnf
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Restart NetworkManager if necessary ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Restart NetworkManager if necessary ${Color_AttributesOff}"
 
 ## ToDo: use written function here
 for BB in "${dns_srv_A}" "${dns_srv_1}"
@@ -3041,17 +3041,17 @@ done
 unset BB
 
 
-: "${C_Comment} Line ${nL}, SSH ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, SSH ${Color_AttributesOff}"
 setup_ssh
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, GPG ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, GPG ${Color_AttributesOff}"
 setup_gpg
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Make and change into directories ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Make and change into directories ${Color_AttributesOff}"
 setup_git_user_dirs
 
   #__debug_break__
@@ -3059,22 +3059,22 @@ setup_git_user_dirs
 : "Git debug settings"
 #enable_git_debug_settings
 
-: "${C_Comment} Line ${nL}, Git ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Git ${Color_AttributesOff}"
 setup_git
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, GH -- github CLI configuration ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, GH -- github CLI configuration ${Color_AttributesOff}"
 setup_gh_cli
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Clone repo ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Clone repo ${Color_AttributesOff}"
 clone_repo
 
   #__debug_break__
 
-: "${C_Comment} Line ${nL}, Remind user of commands for the interactive shell ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Remind user of commands for the interactive shell ${Color_AttributesOff}"
 
 popd > /dev/null || {
   __die__
@@ -3088,7 +3088,7 @@ fi
 
   set -v ## <>
 
-: "${C_Comment} Line ${nL}, Clean up & exit ${Color_AttributesOff}"
+: "${Color_Comment} Line ${nL}, Clean up & exit ${Color_AttributesOff}"
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 EC=00
 main_lineno="${nL}" exit
