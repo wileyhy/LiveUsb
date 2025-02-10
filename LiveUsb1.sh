@@ -3009,7 +3009,7 @@ _fn_must_be_root_
 # for starting logging ?
 
 : "${Color_Comment} Line ${nameref_Lineno}, Test OS ${Color_AttributesOff}"
-test_os
+_fn_test_os
 
   #_als_debug_break_
 
