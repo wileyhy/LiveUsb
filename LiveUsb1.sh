@@ -224,7 +224,7 @@ function _fn_enable_debug_aliases_(){
   #+  _als_enble_globl_xtrce_
   #+  _als_fnction_boundary_in_
   #+  _als_fnction_boundary_out_0_
-  #+  __function_boundary_out_1__
+  #+  _als_fnction_boundry_out_1_
   #+  __pause2ck__
   #+  __xtr_read_and_on__
   #+  __xtr_restore__
