@@ -116,7 +116,8 @@ _fn_setup_aliases_
 
 
 ## Enable debugging
-function _fn_enable_debug_parameters_(){
+function _fn_enable_debug_parameters_ ()
+{
 
   ## Set up debug shell options
   local -
@@ -207,7 +208,7 @@ _fn_enable_debug_parameters_
 
 
 ##
-function _fn_enable_debug_aliases_()
+function _fn_enable_debug_aliases_ ()
 {
 
   ##
@@ -438,7 +439,7 @@ _fn_enable_debug_aliases_
 
 
 ##
-function _fn_enable_debug_functions_()
+function _fn_enable_debug_functions_ ()
 {
   : "${Color_Comment} Line ${nameref_Lineno}, Functions, Debug ${Color_AttributesOff}"
   : "${Color_SubComent} Line ${nameref_Lineno}, Functions, Debug -  TOC ${Color_AttributesOff}"
@@ -451,7 +452,7 @@ function _fn_enable_debug_functions_()
 
 
   : "${Color_SubComent} Define _fn_enable_git_debug_settings_() ${Color_AttributesOff}"
-  function _fn_enable_git_debug_settings_()
+  function _fn_enable_git_debug_settings_ ()
   {    _als_fnction_boundary_in_
 
     : "${Color_SubComent} Variables -- Global git debug settings ${Color_AttributesOff}"
@@ -477,7 +478,7 @@ function _fn_enable_debug_functions_()
 
   : "${Color_SubComent} Define _fn_pause_to_check_() ${Color_AttributesOff}"
   ## Usage,   _fn_pause_to_check_ ${nameref_Lineno}
-  function _fn_pause_to_check_()
+  function _fn_pause_to_check_ ()
   {                _als_fnction_boundary_in_
 
     local -I exti_code=101 ## Q, Why inherit attributes and values when you assign values anyway?
@@ -550,7 +551,7 @@ _fn_enable_debug_functions_
 
 ##
 : "${Color_SubComent} Define _fn_setup_variables_() ${Color_AttributesOff}"
-function _fn_setup_variables_()
+function _fn_setup_variables_ ()
 {            _als_fnction_boundary_in_
   :
   : "${Color_Comment} Line ${nameref_Lineno}, Variables ...likely to change or early-definition required ${Color_AttributesOff}"
@@ -736,7 +737,7 @@ _als_call_fncton_ _fn_setup_variables_
   #+  _fn_write_ssh_conf()
 
 : "${Color_SubComent} Define _fn_clone_repo_() ${Color_AttributesOff}"
-function _fn_clone_repo_()
+function _fn_clone_repo_ ()
 {                           _als_fnction_boundary_in_
 
   [[ ${PWD} = "${dev_d1}" ]] || {
@@ -765,7 +766,7 @@ function _fn_clone_repo_()
 
 
 : "${Color_SubComent} Define _fn_error_and_exit_() ${Color_AttributesOff}"
-function _fn_error_and_exit_()
+function _fn_error_and_exit_ ()
 {                       _als_fnction_boundary_in_
 
   ## Some positional parameters must exist
@@ -807,7 +808,7 @@ function _fn_error_and_exit_()
 ## ToDo: add a \get_distro()\ function
 
 : "${Color_SubComent} Define _fn_get_pids_for_restarting_() ${Color_AttributesOff}"
-function _fn_get_pids_for_restarting_()
+function _fn_get_pids_for_restarting_ ()
 {              _als_fnction_boundary_in_
 
   # shellcheck disable=SC2034
@@ -874,7 +875,7 @@ function _fn_get_pids_for_restarting_()
 
 
 : "${Color_SubComent} Define _fn_gh_auth_login_command_() ${Color_AttributesOff}"
-function _fn_gh_auth_login_command_()
+function _fn_gh_auth_login_command_ ()
 {                _als_fnction_boundary_in_
 
   if gh auth status >/dev/null 2>&1
@@ -896,7 +897,7 @@ function _fn_gh_auth_login_command_()
 
 
 : "${Color_SubComent} Define _fn__fn_increase_disk_space__() ${Color_AttributesOff}"
-function _fn__fn_increase_disk_space__()
+function _fn__fn_increase_disk_space__ ()
 {                  _als_fnction_boundary_in_
   builtin set -x # []
 
