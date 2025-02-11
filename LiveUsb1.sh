@@ -3047,7 +3047,7 @@ _fn_test_os_
 : "${Color_Comment} Line ${nameref_Lineno}, Certain files must have been installed from off-disk ${Color_AttributesOff}"
 _fn_reqd_user_files_
 
-  #_als_debug_break_
+  _als_debug_break_
 
 
 ##
