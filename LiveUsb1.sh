@@ -59,21 +59,21 @@
 #!
 #!     Otherwise, it would be useful, IMO, if \kill --help\ showed the
 #!   help file for /bin/kill, since using that syntax most likely
-#!   indicates that intention  :-\
+#!   indicates that intention  :-\ .
 #!
-#! ToDo, lock file, bc ^z
-#! ToDo, add colors to xtrace comments
+#! ToDo, lock file, bc [Ctrl-Z].
+#! ToDo, add colors to xtrace comments.
 #! ToDo, systemd services to disable, bluetooth, cups,
-#!   [ systemd-resolved ? ]
-#! ToDo, systemd services to possibly enable, sshd, sssd
+#!   [ systemd-resolved ? ].
+#! ToDo, systemd services to possibly enable, sshd, sssd.
 
 
-## Start the script
+## Start the script.
 function _fn_start_script_ ()
 {
   : "$( tput setaf 12 ) Start the script; fn exec\d at line $1; fn def\d at line $((  LINENO - 3  )).$( tput sgr0 )"
 
-  ## Get & print script start time
+  ## Get & print script start time.
   unset     script_start_time
             script_start_time=$( date +%H:%M:%S )
   readonly  script_start_time
@@ -81,9 +81,13 @@ function _fn_start_script_ ()
   ## Print script start time
   printf '%s - Executing %s \n' "${script_start_time}" "$0"
 
-  ## Set up non-debug shell options
+  ## Set up non-debug shell options.
   hash -r
   umask 077
+
+  # Variables.
+  scr_nm=LiveUsb1.sh
+  
 }
 
   set -x
@@ -103,6 +107,9 @@ function _fn_error_and_exit_ ()
   ## Some positional parameters must exist
   if [[ $# -lt 1 ]]
   then
+    # Previous code.
+    #return 1
+
     printf '_fn_error_and_exit_ executed at line %d\n' "$1"
     builtin exit "${LINENO}"
   fi
@@ -110,9 +117,11 @@ function _fn_error_and_exit_ ()
   ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
   if ! [[ $1 = ^[0-9]*$ ]]
   then
-    printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
+    printf '\n%b:: %s :: %s' "${Color_Errors:="$( tput setaf 8 )"}" "${scr_nm}" "${FUNCNAME[@]}"
     printf '\n:: Error :: first positional parameter must be a line number %b\n\n' \
       "${Color_AttributesOff}"
+
+    # Previous code.
     return 2
   fi
 
