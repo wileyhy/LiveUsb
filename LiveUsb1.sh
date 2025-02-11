@@ -173,7 +173,7 @@ function _fn_setup_regular_aliases_ ()
 {
   : "${Color_Comment} Setup regular aliases; fn exec\d at" \
     "line ${1:-"${LINENO}"}; fn def\d at" \
-    "line $((  LINENO - 5  )).${Color_AttributesOff}" >&2
+    "line $((  LINENO - 3  )).${Color_AttributesOff}" >&2
   unset       nameref_Lineno
   unset -n    nameref_Lineno
   local -gnx  nameref_Lineno=L\INENO
