@@ -91,6 +91,7 @@ function _fn_start_script_ ()
 
 _fn_start_script_
 
+  exit "${LINENO}"
 
 ##
 function _fn_setup_regular_aliases_ ()
