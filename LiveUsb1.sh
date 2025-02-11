@@ -105,7 +105,7 @@ function _fn_error_and_exit_ ()
     return 1
 
   ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
-  if ! [[ $1 = [0-9]* ]]
+  if ! [[ $1 = ^[0-9]*$ ]]
   then
     printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
     printf '\n:: Error :: first positional parameter must be a line number %b\n\n' \
