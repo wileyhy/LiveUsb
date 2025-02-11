@@ -68,6 +68,8 @@
 #!   [ systemd-resolved ? ].
 #! ToDo, systemd services to possibly enable, sshd, sssd.
 
+  #set -x #<>
+
 
 ## Start the script.
 function _fn_start_script_ ()
@@ -96,8 +98,6 @@ function _fn_start_script_ ()
   prev_cmd_exit_code=0
 
 }
-
-  set -x #<>
 
 _fn_start_script_ "${LINENO}"
 
@@ -164,33 +164,37 @@ function _fn_error_and_exit_ ()
     _als_fnction_boundary_out_0_
 }
 
-  _fn_error_and_exit_ "${LINENO}" #<>
+  #_fn_error_and_exit_ "${LINENO}" #<>
+  set -x #<>
 
 
 ##
 function _fn_setup_regular_aliases_ ()
 {
-  : "$( tput setaf 12 ) Setup regular aliases; fn exec\d at line $1; fn def\d at line $((  LINENO - 3  )).$( tput sgr0 )"
+  : "${Color_Comment} Setup regular aliases; fn exec\d at" \
+    "line ${1:-"${LINENO}"}; fn def\d at" \
+    "line $((  LINENO - 5  )).${Color_AttributesOff}" >&2
   unset       nameref_Lineno
   unset -n    nameref_Lineno
   local -gnx  nameref_Lineno=L\INENO
 
-  : "$( tput setaf 10 ) Aliases TOC, line ${nameref_Lineno}.$( tput sgr0 )"
-
-  ##  Alias name
-  #+  ~~~~~~~~~~
-  #+  _als_die_
-
-  : "$( tput setaf 10 ) Define alias _als_die_ onto function _fn_error_and_exit_ $( tput sgr0 )"
+  : "${Color_Comment} Define alias _als_die_ onto function" \
+    "_fn_error_and_exit_.${Color_AttributesOff}" >&2
   unset       lineno__defin_of_alias_die
               lineno__defin_of_alias_die=$(( nameref_Lineno + 3  ))
 
   shopt -s expand_aliases
-  alias _als_die_=': "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, begin, def Line ${lineno__defin_of_alias_die}
+  Color_AliasFunctionBoundary=$( tput setaf 14 )
+  
+  alias _als_die_=': "${Color_AliasFunctionBoundary}" \
+    Line ${nameref_Lineno}, alias _als_die_, begin, def \
+    Line ${lineno__defin_of_alias_die}
 
       _fn_error_and_exit_ ${nameref_Lineno}
 
-      : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, end "${Color_AttributesOff}" '
+      : "${Color_AliasFunctionBoundary}" \
+        Line ${nameref_Lineno}, alias _als_die_, \
+      end."${Color_AttributesOff}" '
 }
 _fn_setup_regular_aliases_ "${LINENO}"
 
