@@ -120,8 +120,8 @@ function _fn_setup_regular_aliases_ ()
 }
 _fn_setup_regular_aliases_ "${LINENO}"
 
+  _als_die_ "${LINENO}"
   exit "${LINENO}"
-
 
 ## Enable debugging.
 function _fn_enable_debug_parameters_ ()
