@@ -71,7 +71,7 @@
 ## Start the script
 function _fn_start_script_ ()
 {
-  : "$( tput setaf 12 ) Start the script; fn exec\d at line $1; FN def\d at line $((  LINENO - 3  )).$( tput sgr0 )"
+  : "$( tput setaf 12 ) Start the script; fn exec\d at line $1; fn def\d at line $((  LINENO - 3  )).$( tput sgr0 )"
 
   ## Get & print script start time
   unset     script_start_time
@@ -90,17 +90,18 @@ function _fn_start_script_ ()
 
 _fn_start_script_ "${LINENO}"
 
-  declare -p script_start_time
+  #declare -p script_start_time #<>
+
 
 ##
 function _fn_setup_regular_aliases_ ()
 {
-  : "$( tput setaf 12 ) Line ${LINENO}, Aliases, non-debug $( tput sgr0 )"
+  : "$( tput setaf 12 ) Setup regular aliases; fn exec\d at line $1; fn def\d at line $((  LINENO - 3  )).$( tput sgr0 )"
   unset       nameref_Lineno
   unset -n    nameref_Lineno
   local -gnx  nameref_Lineno=L\INENO
 
-  : "$( tput setaf 10 ) Line ${nameref_Lineno}, Aliases TOC, non-debug $( tput sgr0 )"
+  : "$( tput setaf 10 ) Aliases TOC, line ${nameref_Lineno}.$( tput sgr0 )"
 
   ##  Alias name
   #+  ~~~~~~~~~~
@@ -108,7 +109,7 @@ function _fn_setup_regular_aliases_ ()
 
   : "$( tput setaf 10 ) Define alias _als_die_ onto function _fn_error_and_exit_ $( tput sgr0 )"
   unset       lineno__defin_of_alias_die
-              lineno__defin_of_alias_die=$(( nameref_Lineno + 2  ))
+              lineno__defin_of_alias_die=$(( nameref_Lineno + 3  ))
 
   shopt -s expand_aliases
   alias _als_die_=': "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, begin, def Line ${lineno__defin_of_alias_die}
@@ -117,7 +118,7 @@ function _fn_setup_regular_aliases_ ()
 
       : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, end "${Color_AttributesOff}" '
 }
-_fn_setup_regular_aliases_
+_fn_setup_regular_aliases_ "${LINENO}"
 
   exit "${LINENO}"
 
