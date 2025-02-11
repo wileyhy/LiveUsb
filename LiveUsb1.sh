@@ -71,7 +71,7 @@
 ## Start the script
 function _fn_start_script_ ()
 {
-  : "$( tput setaf 12 ) Line ${nameref_Lineno}, Start the script.$( tput sgr0 )"
+  : "$( tput setaf 12 ) Line ${LINENO}, Start the script.$( tput sgr0 )"
 
   ## Get & print script start time
   unset     script_start_time
@@ -91,12 +91,11 @@ function _fn_start_script_ ()
 
 _fn_start_script_
 
-  exit "${LINENO}"
 
 ##
 function _fn_setup_regular_aliases_ ()
 {
-  : "$( tput setaf 12 ) Line ${nameref_Lineno}, Aliases, non-debug $( tput sgr0 )"
+  : "$( tput setaf 12 ) Line ${LINENO}, Aliases, non-debug $( tput sgr0 )"
   unset       nameref_Lineno
   unset -n    nameref_Lineno
   local -gnx  nameref_Lineno=L\INENO
@@ -118,6 +117,8 @@ function _fn_setup_regular_aliases_ ()
       : "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, end "${Color_AttributesOff}" '
 }
 _fn_setup_regular_aliases_
+
+  exit "${LINENO}"
 
 
 ## Enable debugging.
