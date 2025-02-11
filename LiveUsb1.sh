@@ -71,7 +71,7 @@
 ## Start the script
 function _fn_start_script_ ()
 {
-  : "$( tput setaf 12 ) Start the script; fn exec\d at line $1; FN def\d at line $((  LINENO - 2  )).$( tput sgr0 )"
+  : "$( tput setaf 12 ) Start the script; fn exec\d at line $1; FN def\d at line $((  LINENO - 3  )).$( tput sgr0 )"
 
   ## Get & print script start time
   unset     script_start_time
@@ -83,7 +83,6 @@ function _fn_start_script_ ()
 
   ## Set up non-debug shell options
   hash -r
-  shopt -s expand_aliases
   umask 077
 }
 
@@ -91,6 +90,7 @@ function _fn_start_script_ ()
 
 _fn_start_script_ "${LINENO}"
 
+  declare -p script_start_time
 
 ##
 function _fn_setup_regular_aliases_ ()
@@ -110,6 +110,7 @@ function _fn_setup_regular_aliases_ ()
   unset       lineno__defin_of_alias_die
               lineno__defin_of_alias_die=$(( nameref_Lineno + 2  ))
 
+  shopt -s expand_aliases
   alias _als_die_=': "${Color_AliasFunctionBoundary}" Line ${nameref_Lineno}, alias _als_die_, begin, def Line ${lineno__defin_of_alias_die}
 
       _fn_error_and_exit_ ${nameref_Lineno}
