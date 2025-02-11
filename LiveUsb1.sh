@@ -79,7 +79,7 @@ function _fn_start_script_ ()
   readonly  script_start_time
 
   ## Print script start time
-  printf '%s - Executing %s \n' "${script_start_time}" "$0"
+  : "$( printf '%s - Executing %s \n' "${script_start_time}" "$0" )"
 
   ## Set up non-debug shell options.
   hash -r
