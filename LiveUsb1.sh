@@ -71,7 +71,7 @@
 ## Start the script.
 function _fn_start_script_ ()
 {
-  : "$( tput setaf 12 ) Start the script; fn exec\d at line $1; fn def\d at line $((  LINENO - 3  )).$( tput sgr0 )"
+  : "$( tput setaf 12 ) Start the script; fn exec\d, line ${1:-"${LINENO}"}; fn def\d, line $((  LINENO - 3  )).$( tput sgr0 )"
 
   ## Get & print script start time.
   unset     script_start_time
