@@ -4,9 +4,10 @@
 ## LiveUsb1
 #+ version 1.2
 
-#! Note, Putting a \LN=$nameref_Lineno\, ie, LINENO or \main_lineno=$nameref_Lineno\ assignment
-#!   preceding an \exit\ command lets the value of LN or main_lineno
-#!   match the line number of the \exit\ command.
+#! Note, Putting a \LN=$nameref_Lineno\, ie, LINENO or
+#!   \main_lineno=$nameref_Lineno\ assignment preceding an \exit\
+#!   command lets the value of LN or main_lineno match the line number
+#!   of the \exit\ command.
 #! Note, idempotent script
 #! Note, the symbol \<>\ marks code as for debugging purpoeses only
 #! Note, ...undocumented feature??
@@ -71,7 +72,9 @@
 ## Start the script.
 function _fn_start_script_ ()
 {
-  : "$( tput setaf 12 ) Start the script; fn exec\d, line ${1:-"${LINENO}"}; fn def\d, line $((  LINENO - 3  )).$( tput sgr0 )"
+  : "$( tput setaf 12 ) Start the script; fn exec\d," \
+    "line ${1:-"${LINENO}"}; fn def\d," \
+    "line $((  LINENO - 3  )).$( tput sgr0 )"
 
   ## Get & print script start time.
   unset     script_start_time
@@ -106,7 +109,9 @@ _fn_start_script_ "${LINENO}"
 function _fn_error_and_exit_ ()
 {
   _als_fnction_boundary_in_ 2> /dev/null ||
-    : "${Color_Comment} Error and exit; fn exec\d, line $1; fn def\d, line $((  LINENO - 5  )).${Color_AttributesOff}"
+    : "${Color_Comment} Error and exit; fn exec\d," \
+      "line ${1:-"${LINENO}"}; fn def\d," \
+      "line $((  LINENO - 5  )).${Color_AttributesOff}"
 
   local -; set -x #<>
   local local_lineno
@@ -127,7 +132,8 @@ function _fn_error_and_exit_ ()
     #return 1
     builtin exit "${LINENO}"
 
-  ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
+  ## The first positional parameter must be a digit, and should be the
+  #+   LINENO from where _fn_error_and_exit_ is called
   elif ! [[ $local_lineno = +([[:digit:]]) ]]
   then
     printf '%b%s, Error, line %d, %s%b\n' \
