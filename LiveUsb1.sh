@@ -164,7 +164,7 @@ function _fn_error_and_exit_ ()
     _als_fnction_boundary_out_0_
 }
 
-  _fn_error_and_exit_ "${LINENO}"a #<>
+  _fn_error_and_exit_ "${LINENO}" #<>
 
 
 ##
