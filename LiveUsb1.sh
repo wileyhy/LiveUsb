@@ -87,7 +87,11 @@ function _fn_start_script_ ()
 
   # Variables.
   scr_nm=LiveUsb1.sh
-  
+  Color_Comment=$( tput setaf 12 )
+  Color_Errors=$( tput setaf 8 )
+  Color_AttributesOff=$( tput sgr0 )
+  prev_cmd_exit_code=0
+
 }
 
   set -x
@@ -98,38 +102,38 @@ _fn_start_script_ "${LINENO}"
 
 
 ##
-: "${Color_SubComent} Define _fn_error_and_exit_ ${Color_AttributesOff}"
+: "${Color_Comment} Define _fn_error_and_exit_ ${Color_AttributesOff}"
 function _fn_error_and_exit_ ()
 {
   _als_fnction_boundary_in_ ||
     : "$( tput setaf 12 ) Error and exit; fn exec\d at line $1; fn def\d at line $((  LINENO - 5  )).$( tput sgr0 )"
 
-  ## Some positional parameters must exist
-  if [[ $# -lt 1 ]]
-  then
-    # Previous code.
-    #return 1
-
-    printf '_fn_error_and_exit_ executed at line %d\n' "$1"
-    builtin exit "${LINENO}"
-  fi
-
-  ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
-  if ! [[ $1 = ^[0-9]*$ ]]
-  then
-    printf '\n%b:: %s :: %s' "${Color_Errors:="$( tput setaf 8 )"}" "${scr_nm}" "${FUNCNAME[@]}"
-    printf '\n:: Error :: first positional parameter must be a line number %b\n\n' \
-      "${Color_AttributesOff:="$( tput sgr0 )"}"
-
-    # Previous code.
-    #return 2
-    printf '_fn_error_and_exit_ executed at line %d\n' "$1"
-    builtin exit "${LINENO}"
-  fi
-
   local local_lineno
         local_lineno=$1
   shift
+
+  ## Some positional parameters must exist
+  if [[ -z $local_lineno ]]
+  then
+    printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
+    printf '\n:: Error :: one positional parameter must exist and be a line number %b\n\n' "${Color_AttributesOff}"
+    printf '_fn_error_and_exit_ executed at line %d\n' "$local_lineno"
+
+    # Previous code.
+    #return 1
+    builtin exit "${LINENO}"
+
+  ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
+  elif ! [[ $1 = ^[0-9]*$ ]]
+  then
+    printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
+    printf '\n:: Error :: first positional parameter must be a line number %b\n\n' "${Color_AttributesOff}"
+    printf '_fn_error_and_exit_ executed at line %d\n' "$local_lineno"
+
+    # Previous code.
+    #return 2
+    builtin exit "${LINENO}"
+  fi
 
   printf '%b%s, Error, line %d, %s%b\n' \
     "${Color_Errors}" \
