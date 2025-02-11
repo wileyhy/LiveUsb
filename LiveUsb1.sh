@@ -1747,7 +1747,7 @@ function _fn_setup_dnf_ ()
   # shellcheck disable=SC2206
   {
       addl_pkgs=(  ${for_admin:=}         ncdu pwgen )
-      addl_pkgs+=( ${for_bash:=}          bash bash-completion )
+      addl_pkgs+=( ${for_bash:=}          bash bash-doc )
       addl_pkgs+=( ${for_bashdb:=}        bash-devel make autoconf )
       addl_pkgs+=( ${for_critical_A:=}    libsss_sudo sudo{,-python-plugin} )
       addl_pkgs+=( ${for_critical_B:=}    nss{,-{mdns,softokn{,-freebl},sysinit,util}} )
