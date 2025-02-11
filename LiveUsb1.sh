@@ -101,8 +101,11 @@ function _fn_error_and_exit_ ()
     : "$( tput setaf 12 ) Error and exit; fn exec\d at line $1; fn def\d at line $((  LINENO - 5  )).$( tput sgr0 )"
 
   ## Some positional parameters must exist
-  [[ $# -lt 1 ]] &&
-    return 1
+  if [[ $# -lt 1 ]]
+  then
+    printf '_fn_error_and_exit_ executed at line %d\n' "$1"
+    builtin exit "${LINENO}"
+  fi
 
   ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
   if ! [[ $1 = ^[0-9]*$ ]]
