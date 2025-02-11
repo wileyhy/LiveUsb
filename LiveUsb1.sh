@@ -142,20 +142,19 @@ function _fn_error_and_exit_ ()
     builtin exit "${LINENO}"
   fi
 
-  printf '%b%s, Error, line %d, %s%b\n' \
-    "${Color_Errors}" \
-    "${scr_nm}" \
-    "${local_lineno}" \
-    "$*" \
-    "${Color_AttributesOff}" >&2
+  { 
+    printf '%b%s, Error, line %d' "${Color_Errors}" "${scr_nm}" \
+      "${local_lineno}"
+    [[ -n "$*" ]] && printf ', %s' "$*"
+    printf '%b\n' "${Color_AttributesOff}"
+  } >&2
 
-  [[ ${prev_cmd_exit_code} = 0 ]] &&
-    prev_cmd_exit_code=01
+  [[ ${prev_cmd_exit_code} = 0 ]] && prev_cmd_exit_code=01
 
-    ## <>
     exti_code=${prev_cmd_exit_code}
     LN=${local_lineno} builtin exit "${exti_code}"
-                                                 _als_fnction_boundary_out_0_
+
+    _als_fnction_boundary_out_0_
 }
 
   _fn_error_and_exit_ "${LINENO}"
