@@ -105,7 +105,7 @@ _fn_start_script_ "${LINENO}"
 : "${Color_Comment} Define _fn_error_and_exit_ ${Color_AttributesOff}"
 function _fn_error_and_exit_ ()
 {
-  _als_fnction_boundary_in_ ||
+  _als_fnction_boundary_in_ 2> /dev/null ||
     : "${Color_Comment} Error and exit; fn exec\d, line $1; fn def\d, line $((  LINENO - 5  )).${Color_AttributesOff}"
 
   local local_lineno
@@ -115,9 +115,12 @@ function _fn_error_and_exit_ ()
   ## Some positional parameters must exist
   if [[ -z $local_lineno ]]
   then
-    printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
-    printf '\n:: Error :: one positional parameter must exist and be a line number %b\n\n' "${Color_AttributesOff}"
-    printf '_fn_error_and_exit_ executed at line %d\n' "$local_lineno"
+    printf '%b%s, Error, line %d, %s%b\n' \
+      "${Color_Errors}" \
+      "${scr_nm}" \
+      "$local_lineno" \
+      "One positional parameter must exist." \
+      "${Color_AttributesOff}" >&2
 
     # Previous code.
     #return 1
@@ -126,9 +129,12 @@ function _fn_error_and_exit_ ()
   ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
   elif ! [[ $local_lineno = ^[0-9]*$ ]]
   then
-    printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
-    printf '\n:: Error :: first positional parameter must be a line number %b\n\n' "${Color_AttributesOff}"
-    printf '_fn_error_and_exit_ executed at line %d\n' "$local_lineno"
+    printf '%b%s, Error, line %d, %s%b\n' \
+      "${Color_Errors}" \
+      "${scr_nm}" \
+      "$local_lineno" \
+      "First positional parameter must be a line number." \
+      "${Color_AttributesOff}" >&2
 
     # Previous code.
     #return 2
@@ -147,7 +153,7 @@ function _fn_error_and_exit_ ()
 
     ## <>
     exti_code=${prev_cmd_exit_code}
-    LN=${local_lineno} builtin exit
+    LN=${local_lineno} builtin exit "${exti_code}"
                                                  _als_fnction_boundary_out_0_
 }
 
