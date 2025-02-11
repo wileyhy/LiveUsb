@@ -86,6 +86,9 @@ function _fn_start_script_ ()
   shopt -s expand_aliases
   umask 077
 }
+
+  set -x
+
 _fn_start_script_
 
 
