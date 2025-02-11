@@ -94,6 +94,47 @@ _fn_start_script_ "${LINENO}"
 
 
 ##
+: "${Color_SubComent} Define _fn_error_and_exit_ ${Color_AttributesOff}"
+function _fn_error_and_exit_ ()
+{                       _als_fnction_boundary_in_
+
+  ## Some positional parameters must exist
+  [[ $# -lt 1 ]] &&
+    return 1
+
+  ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
+  if ! [[ $1 = [0-9]* ]]
+  then
+    printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
+    printf '\n:: Error :: first positional parameter must be a line number %b\n\n' \
+      "${Color_AttributesOff}"
+    return 2
+  fi
+
+  local local_lineno
+        local_lineno=$1
+  shift
+
+  printf '%b%s, Error, line %d, %s%b\n' \
+    "${Color_Errors}" \
+    "${scr_nm}" \
+    "${local_lineno}" \
+    "$*" \
+    "${Color_AttributesOff}" >&2
+
+  [[ ${prev_cmd_exit_code} = 0 ]] &&
+    prev_cmd_exit_code=01
+
+    ## <>
+    exti_code=${prev_cmd_exit_code}
+    LN=${local_lineno} builtin exit
+                                                 _als_fnction_boundary_out_0_
+}
+
+  _fn_error_and_exit_ "${LINENO}"
+
+
+##
 function _fn_setup_regular_aliases_ ()
 {
   : "$( tput setaf 12 ) Setup regular aliases; fn exec\d at line $1; fn def\d at line $((  LINENO - 3  )).$( tput sgr0 )"
@@ -775,45 +816,6 @@ function _fn_clone_repo_ ()
     }
   fi
   unset AA
-                                                 _als_fnction_boundary_out_0_
-}
-
-
-##
-: "${Color_SubComent} Define _fn_error_and_exit_ ${Color_AttributesOff}"
-function _fn_error_and_exit_ ()
-{                       _als_fnction_boundary_in_
-
-  ## Some positional parameters must exist
-  [[ $# -lt 1 ]] &&
-    return 1
-
-  ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
-  if ! [[ $1 = [0-9]* ]]
-  then
-    printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
-    printf '\n:: Error :: first positional parameter must be a line number %b\n\n' \
-      "${Color_AttributesOff}"
-    return 2
-  fi
-
-  local local_lineno
-        local_lineno=$1
-  shift
-
-  printf '%b%s, Error, line %d, %s%b\n' \
-    "${Color_Errors}" \
-    "${scr_nm}" \
-    "${local_lineno}" \
-    "$*" \
-    "${Color_AttributesOff}" >&2
-
-  [[ ${prev_cmd_exit_code} = 0 ]] &&
-    prev_cmd_exit_code=01
-
-    ## <>
-    exti_code=${prev_cmd_exit_code}
-    LN=${local_lineno} builtin exit
                                                  _als_fnction_boundary_out_0_
 }
 
