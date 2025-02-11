@@ -128,7 +128,7 @@ function _fn_error_and_exit_ ()
     builtin exit "${LINENO}"
 
   ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
-  elif ! [[ $local_lineno = ^[0-9]*$ ]]
+  elif ! [[ $local_lineno = +([[:digit:]]) ]]
   then
     printf '%b%s, Error, line %d, %s%b\n' \
       "${Color_Errors}" \
