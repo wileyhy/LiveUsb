@@ -94,7 +94,7 @@ function _fn_start_script_ ()
 
 }
 
-  set -x
+  #set -x #<>
 
 _fn_start_script_ "${LINENO}"
 
@@ -106,7 +106,7 @@ _fn_start_script_ "${LINENO}"
 function _fn_error_and_exit_ ()
 {
   _als_fnction_boundary_in_ ||
-    : "$( tput setaf 12 ) Error and exit; fn exec\d at line $1; fn def\d at line $((  LINENO - 5  )).$( tput sgr0 )"
+    : "${Color_Comment} Error and exit; fn exec\d, line $1; fn def\d, line $((  LINENO - 5  )).${Color_AttributesOff}"
 
   local local_lineno
         local_lineno=$1
@@ -124,7 +124,7 @@ function _fn_error_and_exit_ ()
     builtin exit "${LINENO}"
 
   ## The first positional parameter must be a digit, and should be the LINENO from where _fn_error_and_exit_ is called
-  elif ! [[ $1 = ^[0-9]*$ ]]
+  elif ! [[ $local_lineno = ^[0-9]*$ ]]
   then
     printf '\n%b:: %s :: %s' "${Color_Errors}" "${scr_nm}" "${FUNCNAME[@]}"
     printf '\n:: Error :: first positional parameter must be a line number %b\n\n' "${Color_AttributesOff}"
