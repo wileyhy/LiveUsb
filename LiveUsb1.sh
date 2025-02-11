@@ -108,7 +108,7 @@ function _fn_error_and_exit_ ()
   _als_fnction_boundary_in_ 2> /dev/null ||
     : "${Color_Comment} Error and exit; fn exec\d, line $1; fn def\d, line $((  LINENO - 5  )).${Color_AttributesOff}"
 
-  local -; set -x #<>
+  #local -; set -x #<>
   local local_lineno
         local_lineno=$1
   shift
