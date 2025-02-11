@@ -96,7 +96,9 @@ _fn_start_script_ "${LINENO}"
 ##
 : "${Color_SubComent} Define _fn_error_and_exit_ ${Color_AttributesOff}"
 function _fn_error_and_exit_ ()
-{                       _als_fnction_boundary_in_
+{
+  _als_fnction_boundary_in_ ||
+    : "$( tput setaf 12 ) Error and exit; fn exec\d at line $1; fn def\d at line $((  LINENO - 5  )).$( tput sgr0 )"
 
   ## Some positional parameters must exist
   [[ $# -lt 1 ]] &&
