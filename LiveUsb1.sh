@@ -119,10 +119,12 @@ function _fn_error_and_exit_ ()
   then
     printf '\n%b:: %s :: %s' "${Color_Errors:="$( tput setaf 8 )"}" "${scr_nm}" "${FUNCNAME[@]}"
     printf '\n:: Error :: first positional parameter must be a line number %b\n\n' \
-      "${Color_AttributesOff}"
+      "${Color_AttributesOff:="$( tput sgr0 )"}"
 
     # Previous code.
-    return 2
+    #return 2
+    printf '_fn_error_and_exit_ executed at line %d\n' "$1"
+    builtin exit "${LINENO}"
   fi
 
   local local_lineno
@@ -178,6 +180,10 @@ _fn_setup_regular_aliases_ "${LINENO}"
   _als_die_ "${LINENO}"
   exit "${LINENO}"
 
+
+
+
+  
 ## Enable debugging.
 function _fn_enable_debug_parameters_ ()
 {
@@ -268,6 +274,8 @@ function _fn_enable_debug_parameters_ ()
                 fn_lvl=0
 }
 _fn_enable_debug_parameters_
+
+
 
 
 ##
