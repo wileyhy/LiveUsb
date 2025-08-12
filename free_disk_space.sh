@@ -170,10 +170,10 @@ if 	[[ -f ${ff_ListRecorded} ]] \
       && [[ -s ${ff_ListRecorded} ]]
 then
 	: 'y'
-  wc_c_o=$( wc -c "${ff_ListRecorded}" )
-  wc_c_0=${wc_c_o%% *}
+  wc_w_o=$( wc -w "${ff_ListRecorded}" )
+  wc_w_0=${wc_w_o%% *}
 
-  if ((  wc_c_o = 0  ))
+  if ((  wc_w_o = 0  ))
   then
     rm -fv "${ff_ListRecorded}"
   fi
