@@ -22,7 +22,6 @@ unset list_actual
 unset ff_ListActual
       ff_ListActual="./Array__List_Pkgs_Actual"
 unset count_actual 
-      count_actual="${#list_actual[@]}"
 
 unset ff_ListRecorded
       ff_ListRecorded="./Array__List_Pkgs_Recorded"
@@ -33,7 +32,7 @@ unset count_saved_state list_saved_state
 unset ff_Err ff_ProbProtect_pkgs renew_data
       ff_Err="./List__Err_pkgs"
       ff_ProbProtect_pkgs="./List__Protect_pkgs"
-      #renew_data=yes
+      renew_data=yes
 
 unset ff_Indices indices
       ff_Indices=Array__Indices
@@ -122,6 +121,7 @@ mapfile -t list_actual < <(
 
 
 : "${C1}...and record that data.${C0}"
+count_actual="${#list_actual[@]}"
 
 
 : "${C1}If the List Actual file already exists...${C0}"
