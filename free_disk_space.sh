@@ -23,8 +23,8 @@ C1=$( tput setaf 4 )
 
 : "Variables"
                    scr_nm="free-disk-space.sh"
-
                   dd_data="/dev/shm/${scr_nm//./-}.d"
+
                 file_Apps="${dd_data}/List__Saved_Applications"
 	                 dnf_ff="${dd_data}/dnf-list-installed.txt"
             ff_ListActual="${dd_data}/Array__List_Pkgs_Actual"
