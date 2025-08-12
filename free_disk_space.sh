@@ -300,15 +300,21 @@ then
     printf 'Do you want to remove this package? [y|n]\n\n'
     read -r rm_yn 
 
-    if [[ ${rm_yn} == n ]]
-    then
-      printf 'Do you want to include this package in the save-list? [y|n]\n\n'
-      read -r save_yn 
+    case ${rm_yn} in
+      n|N )
+        printf 'Do you want to include this package in the save-list? [y|n]\n\n'
+        read -r save_yn 
 
-      if [[ ${save_yn} == y ]]
-      then
-        printf '$s\n' "${pkgs[II]}" >> "${file_Apps}"
-
+        if [[ ${save_yn} == y ]]
+        then
+          : 'y'
+          printf '$s\n' "${pkgs[II]}" >> "${file_Apps}"
+        else
+          : 'n'
+        fi
+        ;;
+      y|Y )
+        sudo dnf remove "${pkgs[II]}"
 
 		# Create array #space_err# and edit data
 		mapfile -O "${II}" -t space_err < <(
