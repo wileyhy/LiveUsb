@@ -81,7 +81,7 @@ write_array_saved_state_pkgnms() {
 : "${C1}Require a list of any applications which should be saved${C0}"
 if 	[[ -f ${file_Apps} ]]
 then	: 'y'
-	mapfile -t array-user-selected-protected-apps < "${file_Apps}"
+	mapfile -t array_user_selected_protected_apps < "${file_Apps}"
 else	: 'n'
 	touch "${file_Apps}"
 	cat <<- EOF | tee /dev/stderr >/dev/null
@@ -98,9 +98,9 @@ else	: 'n'
 	exit "${LINENO}"
 fi
 
-[[ -n ${array-user-selected-protected-apps[0]:0:16} ]] || exit "${LINENO}"
+[[ -n ${array_user_selected_protected_apps[0]:0:16} ]] || exit "${LINENO}"
 
-	#declare -p array-user-selected-protected-apps
+	#declare -p array_user_selected_protected_apps
 	set -x
 	#exit "${LINENO}"
 
