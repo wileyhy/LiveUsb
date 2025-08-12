@@ -95,9 +95,9 @@ then
 	: "${C1}...then hash the datas...${C0}"
 	unset hash_Actual hash_ListAct
 	      hash_Actual=$( tr '\n' ' ' <<< "${list_actual[@]}" | sha256sum )
-        hash_Actual="${hash_Actual# *}"
+        hash_Actual="${hash_Actual%% *}"
 	      hash_ListAct=$( tr '\n' ' ' < "${ff_ListActual}" | sha256sum  )
-        hash_ListAct="${hash_ListAct# *}"
+        hash_ListAct="${hash_ListAct%% *}"
 
 	: "${C1}...if the hashes match...${C0}"
 	if	[[ ${hash_Actual} == "${hash_ListAct}" ]]
