@@ -11,18 +11,18 @@ C0=$( tput sgr0 )
 C1=$( tput setaf 4 )
 
 : "${C1}Require a list of any applications which should be saved${C0}"
-unset ff_Apps
-      ff_Apps="./List__Saved_Applications"
+unset file_Apps
+      file_Apps="./List__Saved_Applications"
 
-if 	[[ -f ${ff_Apps} ]]
+if 	[[ -f ${file_Apps} ]]
 
 then	: 'y'
 	unset apps
 
-	mapfile -t apps < "${ff_Apps}"
+	mapfile -t apps < "${file_Apps}"
 
 else	: 'n'
-	touch "${ff_Apps}"
+	touch "${file_Apps}"
 
 	cat <<- EOF | tee /dev/stderr >/dev/null
 
@@ -35,10 +35,10 @@ else	: 'n'
 
 	EOF
 
-	ls --color=auto -Ghl "${ff_Apps}" 1>&2
+	ls --color=auto -Ghl "${file_Apps}" 1>&2
 	exit "${LINENO}"
 fi
-unset ff_Apps
+unset file_Apps
 
 [[ -n ${apps[0]:0:16} ]] || exit "${LINENO}"
 
