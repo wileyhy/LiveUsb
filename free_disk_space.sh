@@ -272,6 +272,7 @@ then
 		echo "${space_err[II]}"
 	done
 	unset II
+fi
 
 : "${C1}The two counts of indices must be the same.${C0}"
 unset ff_Indices indices
