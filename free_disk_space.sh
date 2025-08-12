@@ -162,6 +162,9 @@ write_list_recorded() {
 	#renew__space__err="yes"
 }
 
+  ls -alhFi "${ff_ListRecorded}"
+  exit "${LINENO}"
+
 : "${C1}If a file List Recorded exists on disk...()${C0}"
 if 	[[ -f ${ff_ListRecorded} ]]
 then
