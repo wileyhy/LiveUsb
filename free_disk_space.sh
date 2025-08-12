@@ -84,6 +84,8 @@ write_list_actual() {
 		exit "${LINENO}"
 }
 
+
+
 : "${C1}If the List Actual file already exists...${C0}"
 if 	[[ -f ${ff_ListActual} ]]
 then
@@ -93,7 +95,9 @@ then
 	: "${C1}...then hash the datas...${C0}"
 	unset hash_Actual hash_ListAct
 	      hash_Actual=$( tr '\n' ' ' <<< "${list_actual[@]}" | sha256sum )
+        hash_Actual="${hash_Actual# *}"
 	      hash_ListAct=$( tr '\n' ' ' < "${ff_ListActual}" | sha256sum  )
+        hash_ListAct="${hash_ListAct# *}"
 
 	: "${C1}...if the hashes match...${C0}"
 	if	[[ ${hash_Actual} == "${hash_ListAct}" ]]
