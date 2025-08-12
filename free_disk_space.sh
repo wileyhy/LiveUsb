@@ -173,7 +173,7 @@ then
   wc_w_o=$( wc -w "${ff_ListRecorded}" )
   wc_w_0=${wc_w_o%% *}
 
-  if ((  wc_w_o = 0  ))
+  if ((  wc_w_o == 0  ))
   then
     rm -fv "${ff_ListRecorded}"
   fi
