@@ -166,6 +166,13 @@ write_list_recorded() {
   exit "${LINENO}"
 
 : "${C1}If a file List Recorded exists on disk...()${C0}"
+if 	[[ -f ${ff_ListRecorded} ]] \
+      && [[ -s ${ff_ListRecorded} ]]
+then
+	: 'y'
+  wc_c_o=$( wc -c "${ff_ListRecorded}" )
+  wc_c_0=${wc_c_o%% *}
+  
 if 	[[ -f ${ff_ListRecorded} ]]
 then
 	: 'y'
