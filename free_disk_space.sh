@@ -68,16 +68,6 @@ unset ff_ListActual
 unset count_actual 
       count_actual="${#list_actual[@]}"
 
-: "${C1}Define function error_symlink${C0}"
-error_symlink() {
-	[[ -e $1 ]] || return 1
-	[[ -L $1 ]] && {
-		echo "${C1}Error, file is a symlink. Exiting.${C0}"
-		return 1
-	}
-	return 0
-}
-
 : "${C1}Define function write_list_actual${C0}"
 write_list_actual() {
 	printf '%s\n' "${list_actual[@]}" | tee "${ff_ListActual}" >/dev/null || 
@@ -90,7 +80,6 @@ write_list_actual() {
 if 	[[ -f ${ff_ListActual} ]]
 then
 	: 'y'
-	error_symlink "${ff_ListActual}" || exit "${LINENO}"
 		
 	: "${C1}...then hash the datas...${C0}"
 	unset hash_Actual hash_ListAct
@@ -185,7 +174,6 @@ if 	[[ -f ${ff_ListRecorded} ]]
 then
 	: 'y'
 	: "${C1}...then read the data in. The reading must have succeeded${C0}"
-	error_symlink "${ff_ListRecorded}" || exit "${LINENO}"
 	read_list_recorded
 else
 	: 'n'
@@ -209,7 +197,6 @@ define_count_recorded
 if 	[[ ${count_actual} == "${count_recorded}" ]]
 then
 	: 'y'
-	error_symlink "${ff_ListRecorded}" || exit "${LINENO}"
 
 	: "${C1}...then make sure the contents of the lists are the same${C0}"
 	# ...by getting and comparing some cryptographic hashes of each array...
@@ -227,7 +214,6 @@ then
 	else
 		: 'n'
 		: "${C1}...then remove the existing on-disk list, for pkgs recorded as installed...${C0}"
-		error_symlink "${ff_ListRecorded}" || exit "${LINENO}"
 		rm -f "${ff_ListRecorded}"
 
 		: "${C1}...write a new file...${C0}"
@@ -240,7 +226,6 @@ else
 	: 'n'
 	: "${C1}...then the data in the file List Recorded should be corrected...${C0}"
 	define_list_recorded
-	error_symlink "${ff_ListRecorded}" || exit "${LINENO}"
 	write_list_recorded
 	define_count_recorded
 fi
