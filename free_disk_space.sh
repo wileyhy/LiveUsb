@@ -315,7 +315,8 @@ then
         fi
         ;;
       y|Y )
-        sudo dnf remove "${pkgs[II]}"
+        sudo dnf remove "${pkgs[II]}" || exit "${LINENO}"
+        write_list_actual
         ;;
     esac
     
