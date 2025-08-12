@@ -151,7 +151,7 @@ write_list_recorded() {
 		exit "${LINENO}"
 
 	: "${C1}...and make a note to renew the #space_err# array (see below)${C0}"
-	renew__space__err="yes"
+	#renew__space__err="yes"
 }
 
 : "${C1}If a file List Recorded exists on disk...()${C0}"
@@ -159,7 +159,7 @@ if 	[[ -f ${ff_ListRecorded} ]]
 then
 	: 'y'
 	: "${C1}...then read the data in. The reading must have succeeded${C0}"
-	error_symlink "${ff_ListRecorded}" || exit "${SYMLINK}"
+	error_symlink "${ff_ListRecorded}" || exit "${LINENO}"
 	read_list_recorded
 else
 	: 'n'
@@ -180,7 +180,7 @@ define_count_recorded
 
 	
 : "${C1}if the actual and recorded counts are the same (of software packages)...${C0}"
-if 	[[ "${count_actual}" == ${count_recorded} ]]
+if 	[[ ${count_actual} == "${count_recorded}" ]]
 then
 	: 'y'
 	error_symlink "${ff_ListRecorded}" || exit "${LINENO}"
