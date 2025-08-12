@@ -56,6 +56,8 @@ mapfile -t list_actual < <(
 	awk '$1 ~ /\.x86_64|\.noarch|\.i686/ && $1 !~ /^Installed/ { print $1 }'
 )
 
+  declare -p PIPESTATUS
+  exit "${LINENO}"
 
 
 : "${C1}...and record that data.${C0}"
