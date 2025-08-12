@@ -92,7 +92,7 @@ if 	[[ -f ${file_Apps} ]]
 then	: 'y'
 	mapfile -t array_user_selected_protected_apps < "${file_Apps}"
 else	: 'n'
-	touch "${file_Apps}"
+	echo bash > "${file_Apps}"
 	cat <<- EOF | tee /dev/stderr >/dev/null
 
 		fds:    A list of user-protected applications is required.
