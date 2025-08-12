@@ -98,9 +98,9 @@ else	: 'n'
 		fds:    A list of user-protected applications is required.
 		        A blank list has been created.
 		        To proceed with an empty list, execute this program
-		    again. To save any applications, add them to the list
-		    one per line, using basenames without version infor-
-		    mation. Exiting.
+	    	    again. To save any applications, add them to the list
+		        one per line, using basenames without version infor-
+		        mation. Exiting.
 
 	EOF
 	ls --color=auto -Ghl "${file_Apps}" 1>&2
