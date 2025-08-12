@@ -28,7 +28,7 @@ C1=$( tput setaf 4 )
                 file_Apps="${dd_data}/List__Saved_Applications"
 	                 dnf_ff="${dd_data}/dnf-list-installed.txt"
             ff_ListActual="${dd_data}/Array__List_Pkgs_Actual"
-        ff_ListSavedState="${dd_data}/Array__List_Pkgs_Recorded"
+        ff_ListSavedState="${dd_data}/Array__List_PkgsSavedState"
       ff_ProbProtect_pkgs="${dd_data}/List__Protect_pkgs"
                    ff_Err="${dd_data}/List__Err_pkgs"
 
@@ -160,14 +160,14 @@ fi
 
 
 #: "${C1}${C0}"
-: "${C1}From disk, of pkgs prev recorded as installed, if a list from a prev run of this script is available...${C0}"
+: "${C1}From disk, re List-Saved-State, if a list from a prev run of this script is available...${C0}"
   ls -alhFi "${ff_ListSavedState}" #<>
   #exit "${LINENO}" #<>
 
 
 
   
-: "${C1}If a file List Recorded exists on disk...${C0}"
+: "${C1}If a file List-Saved-State exists on disk...${C0}"
 if 	[[ -f ${ff_ListSavedState} ]] \
       && [[ -s ${ff_ListSavedState} ]]
 then
@@ -206,7 +206,7 @@ define_count_saved_state
 
 
 	
-: "${C1}if the actual and recorded counts are the same (of software packages)...${C0}"
+: "${C1}if the actual and saved-state counts are the same (of software packages)...${C0}"
 if 	[[ ${count_actual} == "${count_saved_state}" ]]
 then
 	: 'y'
@@ -218,14 +218,14 @@ then
 	      hash_ListAct=$( sha256sum < "${ff_ListActual}" )
 	      hash_ListRec=$( sha256sum < "${ff_ListSavedState}" )
 
-	: "${C1}If the actual and recorded lists are the same..${C0}"
+	: "${C1}If the actual and saved-state lists are the same..${C0}"
 	if 	[[ ${hash_ListAct} == "${hash_ListRec}" ]]
 	then
 		: 'y'
 		: "${C1}...then move on to next section${C0}"
 	else
 		: 'n'
-		: "${C1}...then remove the existing on-disk list, for pkgs recorded as installed...${C0}"
+		: "${C1}...then remove the existing on-disk Saved-State list...${C0}"
 		rm -f "${ff_ListSavedState}"
 
 		: "${C1}...write a new file...${C0}"
