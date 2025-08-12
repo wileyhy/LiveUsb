@@ -16,35 +16,20 @@
 	set -euo pipefail
 
 : "Colors"
-unset C0 C1
 C0=$( tput sgr0 )
 C1=$( tput setaf 4 )
 
 
 
 : "Variables"
-unset file_Apps
       file_Apps="./List__Saved_Applications"
-unset list_actual
-
-	dnf_ff=./dnf-list-installed.txt
-
-unset ff_ListActual
+	    dnf_ff=./dnf-list-installed.txt
       ff_ListActual="./Array__List_Pkgs_Actual"
-unset count_actual 
-
-unset ff_ListRecorded
       ff_ListRecorded="./Array__List_Pkgs_Recorded"
-unset renew__space__err
       renew__space__err="no"
-unset count_saved_state list_saved_state
-
-unset ff_Err ff_ProbProtect_pkgs renew_data
       ff_Err="./List__Err_pkgs"
       ff_ProbProtect_pkgs="./List__Protect_pkgs"
       renew_data=yes
-
-unset ff_Indices indices
       ff_Indices=Array__Indices
 
 
@@ -92,7 +77,6 @@ write_list_saved_state() {
 : "${C1}Require a list of any applications which should be saved${C0}"
 if 	[[ -f ${file_Apps} ]]
 then	: 'y'
-	unset apps
 	mapfile -t apps < "${file_Apps}"
 else	: 'n'
 	touch "${file_Apps}"
@@ -109,7 +93,6 @@ else	: 'n'
 	ls --color=auto -Ghl "${file_Apps}" 1>&2
 	exit "${LINENO}"
 fi
-unset file_Apps
 
 [[ -n ${apps[0]:0:16} ]] || exit "${LINENO}"
 
@@ -140,7 +123,6 @@ then
 	: 'y'
 		
 	: "${C1}...then hash the datas...${C0}"
-	unset hash_Actual hash_ListAct
 	      hash_Actual=$( tr '\n' ' ' <<< "${list_actual[@]}" | sha256sum )
         hash_Actual="${hash_Actual%% *}"
 	      hash_ListAct=$( tr '\n' ' ' < "${ff_ListActual}" | sha256sum  )
@@ -162,8 +144,6 @@ else
 	: "${C1}...if there is no such file, then write data to disk${C0}"
 	write_list_actual
 fi
-unset -f write_list_actual
-unset hash_Actual hash_ListAct
 
 [[ -f ${ff_ListActual} ]] || exit "${LINENO}"
 
@@ -231,7 +211,6 @@ then
 	# ...by getting and comparing some cryptographic hashes of each array...
 	#+ because the package counts can be the same, but the contents of each
 	#+ list can differ.
-	unset hash_ListAct hash_ListRec
 	      hash_ListAct=$( sha256sum < "${ff_ListActual}" )
 	      hash_ListRec=$( sha256sum < "${ff_ListRecorded}" )
 
@@ -250,7 +229,6 @@ then
 		write_list_saved_state
 		define_count_saved_state
 	fi
-	unset hash_ListAct hash_ListRec
 else
 	: 'n'
 	: "${C1}...then the data in the file List Recorded should be corrected...${C0}"
@@ -290,7 +268,6 @@ then
 		: 'n'
 	fi
 
-	unset II pkgs space_err
 
 	: "${C1}Find whether attempted removal of the pkg would cause an error or free some disk space${C0}"
 	for II in "${!pkgs[@]}"
@@ -353,7 +330,6 @@ then
 		printf '\n%s\t' "${pkgs[II]}"
 		#echo "${space_err[II]}"
 	done
-	unset II
 fi
 
   exit "${LINENO}"
@@ -391,7 +367,6 @@ fi
 		#: 'n'
 	#fi
 #done
-#unset EE
 
 #: "${C1}Save array${C0}"
 #declare -p errors | tee array__errors >/dev/null
