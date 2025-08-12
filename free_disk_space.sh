@@ -68,7 +68,7 @@ unset ff_ListActual
 unset count_actual 
       count_actual="${#list_actual[@]}"
 
-: "${C1}Define function error_symlink()${C0}"
+: "${C1}Define function error_symlink${C0}"
 error_symlink() {
 	[[ -e $1 ]] || return 1
 	[[ -L $1 ]] && {
@@ -78,7 +78,7 @@ error_symlink() {
 	return 0
 }
 
-: "${C1}Define function write_list_actual()${C0}"
+: "${C1}Define function write_list_actual${C0}"
 write_list_actual() {
 	printf '%s\n' "${list_actual[@]}" | tee "${ff_ListActual}" >/dev/null || 
 		exit "${LINENO}"
@@ -136,24 +136,24 @@ unset renew__space__err
       renew__space__err="no"
 unset count_recorded list_recorded
 
-: "${C1}Define function define_count_recorded()${C0}"
+: "${C1}Define function define_count_recorded${C0}"
 define_count_recorded() {
 	: "${C1}...and the integer in in the variable #count_recorded# should be defined${C0}"
 	count_recorded="${#list_recorded[@]}"
 }
 
-: "${C1}Define function define_list_recorded()${C0}"
+: "${C1}Define function define_list_recorded${C0}"
 define_list_recorded() {
 	list_recorded=( "${list_actual[@]}" )
 }
 
-: "${C1}Define function read_list_recorded()${C0}"
+: "${C1}Define function read_list_recorded${C0}"
 read_list_recorded() {
 	{ mapfile -t list_recorded < "${ff_ListRecorded}" && [[ -n ${list_recorded[*]:0:1} ]]; } || 
 		exit "${LINENO}"
 }
 
-: "${C1}Define function write_list_recorded()${C0}"
+: "${C1}Define function write_list_recorded${C0}"
 write_list_recorded() {
 	printf '%s\n' "${list_recorded[@]}" | tee "${ff_ListRecorded}" >/dev/null || 
 		exit "${LINENO}"
@@ -165,7 +165,7 @@ write_list_recorded() {
   ls -alhFi "${ff_ListRecorded}" #<>
   #exit "${LINENO}" #<>
 
-: "${C1}If a file List Recorded exists on disk...()${C0}"
+: "${C1}If a file List Recorded exists on disk...${C0}"
 if 	[[ -f ${ff_ListRecorded} ]] \
       && [[ -s ${ff_ListRecorded} ]]
 then
