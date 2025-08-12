@@ -72,7 +72,7 @@ unset count_actual
 error_symlink() {
 	[[ -e $1 ]] || return 1
 	[[ -L $1 ]] && {
-		echo "Error, file is a symlink. Exiting."
+		echo "${C1}Error, file is a symlink. Exiting.${C0}"
 		return 1
 	}
 	return 0
