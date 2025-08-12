@@ -50,10 +50,12 @@ unset ff_Apps
 
 : "${C1}From OS, get count of pkgs actually installed...${C0}"
 unset list_actual
+dnf_ff=./dnf-list-installed.txt
+
+dnf list --installed > "${dnf_ff}" || exit "${LINENO}"
 
 mapfile -t list_actual < <(
-	dnf list --installed |
-	awk '$1 ~ /\.x86_64|\.noarch|\.i686/ && $1 !~ /^Installed/ { print $1 }'
+	awk '$1 ~ /\.x86_64|\.noarch|\.i686/ && $1 !~ /^Installed/ { print $1 }' < "${dnf_ff}"
 )
 
   declare -p PIPESTATUS
