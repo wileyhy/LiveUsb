@@ -201,7 +201,7 @@ define_count_recorded
 	#echo "${#list_recorded[@]}" #<>
 	#ls -lh "${ff_ListRecorded}" #<>
 	set -x #<>
-	exit "${LINENO}" #<>
+	#exit "${LINENO}" #<>
 
 
 	
