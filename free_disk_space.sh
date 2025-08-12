@@ -15,15 +15,11 @@ unset file_Apps
       file_Apps="./List__Saved_Applications"
 
 if 	[[ -f ${file_Apps} ]]
-
 then	: 'y'
 	unset apps
-
 	mapfile -t apps < "${file_Apps}"
-
 else	: 'n'
 	touch "${file_Apps}"
-
 	cat <<- EOF | tee /dev/stderr >/dev/null
 
 		fds:    A list of user-protected applications is required.
@@ -34,7 +30,6 @@ else	: 'n'
 		    mation. Exiting.
 
 	EOF
-
 	ls --color=auto -Ghl "${file_Apps}" 1>&2
 	exit "${LINENO}"
 fi
@@ -126,30 +121,28 @@ unset ff_ListRecorded
       ff_ListRecorded="./Array__List_Pkgs_Recorded"
 unset renew__space__err
       renew__space__err="no"
-unset count_recorded list_recorded
+unset count_saved_state list_saved_state
 
-: "${C1}Define function define_count_recorded${C0}"
-define_count_recorded() {
-	: "${C1}...and the integer in in the variable #count_recorded# should be defined${C0}"
-	count_recorded="${#list_recorded[@]}"
+: "${C1}Define function define_count_saved_state${C0}"
+define_count_saved_state() {
+	: "${C1}...and the integer in in the variable #count_saved_state# should be defined${C0}"
+	count_saved_state="${#list_saved_state[@]}"
 }
 
-## Bug, list_recorded is defined in two different ways
-
-: "${C1}Define function copy_list_as_recorded${C0}"
-copy_list_as_recorded() {
-	list_recorded=( "${list_actual[@]}" )
+: "${C1}Define function copy_list_as_saved_state${C0}"
+copy_list_as_saved_state() {
+	list_saved_state=( "${list_actual[@]}" )
 }
 
-: "${C1}Define function read_in_list_recorded${C0}"
-read_in_list_recorded() {
-	{ mapfile -t list_recorded < "${ff_ListRecorded}" && [[ -n ${list_recorded[*]:0:1} ]]; } || 
+: "${C1}Define function read_in_list_saved_state${C0}"
+read_in_list_saved_state() {
+	{ mapfile -t list_saved_state < "${ff_ListRecorded}" && [[ -n ${list_saved_state[*]:0:1} ]]; } || 
 		exit "${LINENO}"
 }
 
-: "${C1}Define function write_list_recorded${C0}"
-write_list_recorded() {
-	printf '%s\n' "${list_recorded[@]}" | tee "${ff_ListRecorded}" >/dev/null || 
+: "${C1}Define function write_list_saved_state${C0}"
+write_list_saved_state() {
+	printf '%s\n' "${list_saved_state[@]}" | tee "${ff_ListRecorded}" >/dev/null || 
 		exit "${LINENO}"
 
 	: "${C1}...and make a note to renew the #space_err# array (see below)${C0}"
@@ -159,6 +152,9 @@ write_list_recorded() {
   ls -alhFi "${ff_ListRecorded}" #<>
   #exit "${LINENO}" #<>
 
+
+
+  
 : "${C1}If a file List Recorded exists on disk...${C0}"
 if 	[[ -f ${ff_ListRecorded} ]] \
       && [[ -s ${ff_ListRecorded} ]]
@@ -179,19 +175,19 @@ if 	[[ -f ${ff_ListRecorded} ]]
 then
 	: 'y'
 	: "${C1}...then read the data in. The reading must have succeeded${C0}"
-	read_in_list_recorded
+	read_in_list_saved_state
 else
 	: 'n'
 	: "${C1}...then make one${C0}"
-	copy_list_as_recorded
-	write_list_recorded
+	copy_list_as_saved_state
+	write_list_saved_state
 fi
-define_count_recorded
+define_count_saved_state
 
 [[ -f ${ff_ListRecorded} ]] || exit "${LINENO}"
 
-	#declare -p count_recorded #<>
-	#echo "${#list_recorded[@]}" #<>
+	#declare -p count_saved_state #<>
+	#echo "${#list_saved_state[@]}" #<>
 	#ls -lh "${ff_ListRecorded}" #<>
 	set -x #<>
 	#exit "${LINENO}" #<>
@@ -199,7 +195,7 @@ define_count_recorded
 
 	
 : "${C1}if the actual and recorded counts are the same (of software packages)...${C0}"
-if 	[[ ${count_actual} == "${count_recorded}" ]]
+if 	[[ ${count_actual} == "${count_saved_state}" ]]
 then
 	: 'y'
 
@@ -222,23 +218,23 @@ then
 		rm -f "${ff_ListRecorded}"
 
 		: "${C1}...write a new file...${C0}"
-		copy_list_as_recorded
-		write_list_recorded
-		define_count_recorded
+		copy_list_as_saved_state
+		write_list_saved_state
+		define_count_saved_state
 	fi
 	unset hash_ListAct hash_ListRec
 else
 	: 'n'
 	: "${C1}...then the data in the file List Recorded should be corrected...${C0}"
-	copy_list_as_recorded
-	write_list_recorded
-	define_count_recorded
+	copy_list_as_saved_state
+	write_list_saved_state
+	define_count_saved_state
 fi
 	
 	set -x
 	: "${C1}<> Debug: All data created thus far must exist${C0}"
 	if	[[ -n ${count_actual} ]] \
-        && [[ -n ${count_recorded} ]] \
+        && [[ -n ${count_saved_state} ]] \
         && [[ -f ${ff_ListActual} ]] \
         && [[ -f ${ff_ListRecorded} ]]
 	then
