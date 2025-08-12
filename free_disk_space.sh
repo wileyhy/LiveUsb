@@ -52,7 +52,7 @@ unset file_Apps
 unset list_actual
 dnf_ff=./dnf-list-installed.txt
 
-dnf list --installed > "${dnf_ff}" || exit "${LINENO}"
+sudo dnf list --installed > "${dnf_ff}" || exit "${LINENO}"
 
 mapfile -t list_actual < <(
 	awk '$1 ~ /\.x86_64|\.noarch|\.i686/ && $1 !~ /^Installed/ { print $1 }' < "${dnf_ff}"
