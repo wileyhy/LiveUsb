@@ -162,8 +162,8 @@ write_list_recorded() {
 	#renew__space__err="yes"
 }
 
-  ls -alhFi "${ff_ListRecorded}"
-  exit "${LINENO}"
+  ls -alhFi "${ff_ListRecorded}" #<>
+  #exit "${LINENO}" #<>
 
 : "${C1}If a file List Recorded exists on disk...()${C0}"
 if 	[[ -f ${ff_ListRecorded} ]] \
@@ -197,11 +197,11 @@ define_count_recorded
 
 [[ -f ${ff_ListRecorded} ]] || exit "${LINENO}"
 
-	#declare -p count_recorded
-	#echo "${#list_recorded[@]}"
-	#ls -lh "${ff_ListRecorded}"
-	set -x
-	#exit "${LINENO}"
+	#declare -p count_recorded #<>
+	#echo "${#list_recorded[@]}" #<>
+	#ls -lh "${ff_ListRecorded}" #<>
+	set -x #<>
+	exit "${LINENO}" #<>
 
 
 	
