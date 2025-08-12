@@ -233,8 +233,8 @@ fi
 	fi
 	exit "${LINENO}"
 
-	# AJAX
-
+	echo AJAX
+  exit "${LINENO}"
 
 
 : "${C1}Get data if necessary -- array #space_err# -- SLOW${C0}"
