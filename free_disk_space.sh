@@ -221,10 +221,10 @@ fi
 	
 	set -x
 	: "${C1}<> Debug: All data created thus far must exist${C0}"
-	if	[[ -n ${count_actual} ]] &&
-		[[ -n ${count_recorded} ]] &&
-		[[ -f ${ff_ListActual} ]] &&
-		[[ -f ${ff_ListRecorded} ]]
+	if	[[ -n ${count_actual} ]] \
+        && [[ -n ${count_recorded} ]] \
+        && [[ -f ${ff_ListActual} ]] \
+        && [[ -f ${ff_ListRecorded} ]]
 	then
 		: 'y'
 	else
