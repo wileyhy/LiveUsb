@@ -115,6 +115,10 @@ fi
 
 
 
+# execution of \list --installed\ could depend on time of last dnf
+# history tx and mtime of target file
+
+
 : "${C1}From OS, get count of pkgs actually installed...${C0}"
 sudo dnf list --installed > "${dnf_ff}" || exit "${LINENO}"
 
