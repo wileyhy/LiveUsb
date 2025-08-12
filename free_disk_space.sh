@@ -172,6 +172,14 @@ then
 	: 'y'
   wc_c_o=$( wc -c "${ff_ListRecorded}" )
   wc_c_0=${wc_c_o%% *}
+
+  if ((  wc_c_o = 0  ))
+  then
+    rm -fv "${ff_ListRecorded}"
+  fi
+else
+  : 'n'
+fi
   
 if 	[[ -f ${ff_ListRecorded} ]]
 then
