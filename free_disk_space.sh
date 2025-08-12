@@ -40,7 +40,7 @@ else	: 'n'
 fi
 unset ff_Apps
 
-[[ -n ${apps[@]:0:1} ]] || exit "${LINENO}"
+[[ -n ${apps[-1]} ]] || exit "${LINENO}"
 
 	#declare -p apps
 	set -x
