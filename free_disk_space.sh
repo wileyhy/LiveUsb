@@ -78,6 +78,15 @@ write_array_saved_state_pkgnms() {
 
 
 
+: "${C1} Create working directory ${C0}"
+if [[ ! -d ${dd_data} ]]
+then
+  mkdir -m 0700 "${dd_data}" || exit "${LINENO}"
+fi
+
+
+
+
 : "${C1}Require a list of any applications which should be saved${C0}"
 if 	[[ -f ${file_Apps} ]]
 then	: 'y'
