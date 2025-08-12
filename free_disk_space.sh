@@ -171,7 +171,7 @@ if 	[[ -f ${ff_ListRecorded} ]] \
 then
 	: 'y'
   wc_w_o=$( wc -w "${ff_ListRecorded}" )
-  wc_w_0=${wc_w_o%% *}
+  wc_w_o=${wc_w_o%% *}
 
   if [[ ${wc_w_o} -le 0 ]]
   then
