@@ -283,6 +283,33 @@ then
 	: "${C1}Find whether attempted removal of the pkg would cause an error or free some disk space${C0}"
 	for II in "${!pkgs[@]}"
 	do
+    dnf_rm_n_o=$(	sudo dnf --assumeno remove "${pkgs[II]}" )
+
+    if grep -ie Error -e Problem -e protected <<< "${dnf_rm_n_o}"
+    then
+      continue
+    elif
+      grep -ie Freed <<< "${dnf_rm_n_o}"
+    then
+      awk_o__size=$( awk '/[Ff]reed/ { print $4, $5 }' <<< "${dnf_rm_n_o}" )
+    else
+      continue
+    fi
+
+    printf '\n\nPackage =\t%s\n\n' "${pkgs[II]}"
+    printf 'Do you want to remove this package? [y|n]\n\n'
+    read -r rm_yn 
+
+    if [[ ${rm_yn} == n ]]
+    then
+      printf 'Do you want to include this package in the save-list? [y|n]\n\n'
+      read -r save_yn 
+
+      if [[ ${save_yn} == y ]]
+      then
+        printf '$s\n' "${pkgs[II]}" >> "${file_Apps}"
+
+
 		# Create array #space_err# and edit data
 		mapfile -O "${II}" -t space_err < <(
 			sudo dnf --assumeno remove "${pkgs[II]}" |&
