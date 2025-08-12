@@ -315,20 +315,22 @@ then
         ;;
       y|Y )
         sudo dnf remove "${pkgs[II]}"
+        ;;
+    esac
+    
+		## Create array #space_err# and edit data
+		#mapfile -O "${II}" -t space_err < <(
+			#sudo dnf --assumeno remove "${pkgs[II]}" |&
+			#grep -e ^"Freed space: " -e ^"Error:"
+		#)
+		#mapfile -O "${II}" -t space_err < <(
+			#echo "${space_err[II]}" |
+			#awk '$1 ~ /^Freed/ { print $3, $4 }'
+		#)
 
-		# Create array #space_err# and edit data
-		mapfile -O "${II}" -t space_err < <(
-			sudo dnf --assumeno remove "${pkgs[II]}" |&
-			grep -e ^"Freed space: " -e ^"Error:"
-		)
-		mapfile -O "${II}" -t space_err < <(
-			echo "${space_err[II]}" |
-			awk '$1 ~ /^Freed/ { print $3, $4 }'
-		)
-
-		# Print results to terminal
+		## Print results to terminal
 		printf '\n%s\t' "${pkgs[II]}"
-		echo "${space_err[II]}"
+		#echo "${space_err[II]}"
 	done
 	unset II
 fi
