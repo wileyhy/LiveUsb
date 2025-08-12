@@ -2,6 +2,16 @@
 # free disk space: fds.sh
 
 
+## Next step - this script is buggy, but the next step is to figure
+#+   out an sqlite cli command to get from rpm/dnf the list of 
+#+   packages installed, their size, their protected status, etc.
+#+   Remove the protected pkgs from the list, sort it by pkg size
+#+   and ask the user to remove the largest packages first.
+#+     Because as it's written now, the list is alphabetical with no
+#+   size data, which is super slow.
+
+
+
 	set -x
 	set -euo pipefail
 
