@@ -141,8 +141,8 @@ copy_list_as_recorded() {
 	list_recorded=( "${list_actual[@]}" )
 }
 
-: "${C1}Define function read_list_recorded${C0}"
-read_list_recorded() {
+: "${C1}Define function read_in_list_recorded${C0}"
+read_in_list_recorded() {
 	{ mapfile -t list_recorded < "${ff_ListRecorded}" && [[ -n ${list_recorded[*]:0:1} ]]; } || 
 		exit "${LINENO}"
 }
@@ -179,7 +179,7 @@ if 	[[ -f ${ff_ListRecorded} ]]
 then
 	: 'y'
 	: "${C1}...then read the data in. The reading must have succeeded${C0}"
-	read_list_recorded
+	read_in_list_recorded
 else
 	: 'n'
 	: "${C1}...then make one${C0}"
