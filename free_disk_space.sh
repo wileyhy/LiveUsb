@@ -21,7 +21,7 @@ C1=$( tput setaf 4 )
 
 
 
-: "Variables"
+: "${C1} Variables ${C0}"
                    scr_nm="free-disk-space.sh"
                   dd_data="/dev/shm/${scr_nm//./-}.d"
 
@@ -40,7 +40,7 @@ C1=$( tput setaf 4 )
 
 
 
-: "Functions"
+: "${C1} Functions ${C0}"
 
 : "${C1}Define function write_list_actual${C0}"
 write_list_actual() {
