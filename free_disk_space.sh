@@ -10,10 +10,77 @@ unset C0 C1
 C0=$( tput sgr0 )
 C1=$( tput setaf 4 )
 
-: "${C1}Require a list of any applications which should be saved${C0}"
+
+
+: "Variables"
 unset file_Apps
       file_Apps="./List__Saved_Applications"
+unset list_actual
 
+	dnf_ff=./dnf-list-installed.txt
+
+unset ff_ListActual
+      ff_ListActual="./Array__List_Pkgs_Actual"
+unset count_actual 
+      count_actual="${#list_actual[@]}"
+
+unset ff_ListRecorded
+      ff_ListRecorded="./Array__List_Pkgs_Recorded"
+unset renew__space__err
+      renew__space__err="no"
+unset count_saved_state list_saved_state
+
+unset ff_Err ff_ProbProtect_pkgs renew_data
+      ff_Err="./List__Err_pkgs"
+      ff_ProbProtect_pkgs="./List__Protect_pkgs"
+      #renew_data=yes
+
+unset ff_Indices indices
+      ff_Indices=Array__Indices
+
+
+
+
+
+: "Functions"
+
+: "${C1}Define function write_list_actual${C0}"
+write_list_actual() {
+	#printf '%s\n' "${list_actual[@]}" | tee "${ff_ListActual}" >/dev/null || 
+		#exit "${LINENO}"
+  declare -p list_actual > "${ff_ListActual}"
+}
+
+: "${C1}Define function define_count_saved_state${C0}"
+define_count_saved_state() {
+	: "${C1}...and the integer in in the variable #count_saved_state# should be defined${C0}"
+	count_saved_state="${#list_saved_state[@]}"
+}
+
+: "${C1}Define function copy_list_as_saved_state${C0}"
+copy_list_as_saved_state() {
+	list_saved_state=( "${list_actual[@]}" )
+}
+
+: "${C1}Define function read_in_list_saved_state${C0}"
+read_in_list_saved_state() {
+	{ mapfile -t list_saved_state < "${ff_ListRecorded}" && [[ -n ${list_saved_state[*]:0:1} ]]; } || 
+		exit "${LINENO}"
+}
+
+: "${C1}Define function write_list_saved_state${C0}"
+write_list_saved_state() {
+	printf '%s\n' "${list_saved_state[@]}" | tee "${ff_ListRecorded}" >/dev/null || 
+		exit "${LINENO}"
+
+	: "${C1}...and make a note to renew the #space_err# array (see below)${C0}"
+	#renew__space__err="yes"
+}
+
+
+
+
+: "${C1}Require a list of any applications which should be saved${C0}"
 if 	[[ -f ${file_Apps} ]]
 then	: 'y'
 	unset apps
@@ -44,9 +111,6 @@ unset file_Apps
 
 
 : "${C1}From OS, get count of pkgs actually installed...${C0}"
-unset list_actual
-dnf_ff=./dnf-list-installed.txt
-
 sudo dnf list --installed > "${dnf_ff}" || exit "${LINENO}"
 
 mapfile -t list_actual < <(
@@ -58,20 +122,6 @@ mapfile -t list_actual < <(
 
 
 : "${C1}...and record that data.${C0}"
-unset ff_ListActual
-      ff_ListActual="./Array__List_Pkgs_Actual"
-unset count_actual 
-      count_actual="${#list_actual[@]}"
-
-
-
-: "${C1}Define function write_list_actual${C0}"
-write_list_actual() {
-	#printf '%s\n' "${list_actual[@]}" | tee "${ff_ListActual}" >/dev/null || 
-		#exit "${LINENO}"
-  declare -p list_actual > "${ff_ListActual}"
-}
-
 
 
 : "${C1}If the List Actual file already exists...${C0}"
@@ -117,38 +167,6 @@ unset hash_Actual hash_ListAct
 
 #: "${C1}${C0}"
 : "${C1}From disk, of pkgs prev recorded as installed, if a list from a prev run of this script is available...${C0}"
-unset ff_ListRecorded
-      ff_ListRecorded="./Array__List_Pkgs_Recorded"
-unset renew__space__err
-      renew__space__err="no"
-unset count_saved_state list_saved_state
-
-: "${C1}Define function define_count_saved_state${C0}"
-define_count_saved_state() {
-	: "${C1}...and the integer in in the variable #count_saved_state# should be defined${C0}"
-	count_saved_state="${#list_saved_state[@]}"
-}
-
-: "${C1}Define function copy_list_as_saved_state${C0}"
-copy_list_as_saved_state() {
-	list_saved_state=( "${list_actual[@]}" )
-}
-
-: "${C1}Define function read_in_list_saved_state${C0}"
-read_in_list_saved_state() {
-	{ mapfile -t list_saved_state < "${ff_ListRecorded}" && [[ -n ${list_saved_state[*]:0:1} ]]; } || 
-		exit "${LINENO}"
-}
-
-: "${C1}Define function write_list_saved_state${C0}"
-write_list_saved_state() {
-	printf '%s\n' "${list_saved_state[@]}" | tee "${ff_ListRecorded}" >/dev/null || 
-		exit "${LINENO}"
-
-	: "${C1}...and make a note to renew the #space_err# array (see below)${C0}"
-	#renew__space__err="yes"
-}
-
   ls -alhFi "${ff_ListRecorded}" #<>
   #exit "${LINENO}" #<>
 
@@ -250,11 +268,6 @@ fi
 
 
 : "${C1}Get data if necessary -- array #space_err# -- SLOW${C0}"
-unset ff_Err ff_ProbProtect_pkgs renew_data
-      ff_Err="./List__Err_pkgs"
-      ff_ProbProtect_pkgs="./List__Protect_pkgs"
-      #renew_data=yes
-
 
 if 	[[ ${renew_data} == "yes" ]]
 then
@@ -333,42 +346,44 @@ then
 	unset II
 fi
 
-: "${C1}The two counts of indices must be the same.${C0}"
-unset ff_Indices indices
-      ff_Indices=Array__Indices
-
-if [[ ${#pkgs[@]} == "${#space_err[@]}" ]]
-then
-	: 'y'
-	indices=( "${!pkgs[@]}" )
-else
-	: 'n'
-	echo "Indices do not match"
-	exit "${LINENO}"
-fi
-
-: "${C1}Save arrays${C0}"
-declare -p indices | tee array__indices >/dev/null
-declare -p pkgs | tee "${ff_Pkgs}" >/dev/null
-declare -p space_err | tee "${ff_SpaceErr}" >/dev/null
+  exit "${LINENO}"
 
 
-: "${C1}When output if dnf(1) is an error, unset both arrays #pkgs# and #space_err#${C0}"
-unset EE errors
-for EE in "${indices[@]}"
-do
-	if [[ "${space_err[EE]}" == 'Error: ' ]]
-	then
-		: 'y'
-		mapfile -O "${EE}" -t errors <<< "${pkgs[EE]}"
-		unset "pkgs[EE]" "space_err[EE]"
-	else
-		: 'n'
-	fi
-done
-unset EE
 
-: "${C1}Save array${C0}"
-declare -p errors | tee array__errors >/dev/null
+#: "${C1}The two counts of indices must be the same.${C0}"
+
+#if [[ ${#pkgs[@]} == "${#space_err[@]}" ]]
+#then
+	#: 'y'
+	#indices=( "${!pkgs[@]}" )
+#else
+	#: 'n'
+	#echo "Indices do not match"
+	#exit "${LINENO}"
+#fi
+
+#: "${C1}Save arrays${C0}"
+#declare -p indices | tee array__indices >/dev/null
+#declare -p pkgs | tee "${ff_Pkgs}" >/dev/null
+#declare -p space_err | tee "${ff_SpaceErr}" >/dev/null
+
+
+#: "${C1}When output if dnf(1) is an error, unset both arrays #pkgs# and #space_err#${C0}"
+#unset EE errors
+#for EE in "${indices[@]}"
+#do
+	#if [[ "${space_err[EE]}" == 'Error: ' ]]
+	#then
+		#: 'y'
+		#mapfile -O "${EE}" -t errors <<< "${pkgs[EE]}"
+		#unset "pkgs[EE]" "space_err[EE]"
+	#else
+		#: 'n'
+	#fi
+#done
+#unset EE
+
+#: "${C1}Save array${C0}"
+#declare -p errors | tee array__errors >/dev/null
 
 
