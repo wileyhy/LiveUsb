@@ -2,7 +2,7 @@
 # free disk space: fds.sh
 
 
-	#set -x
+	set -x
 	set -euo pipefail
 
 : "Colors"
