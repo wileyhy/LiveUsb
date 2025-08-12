@@ -52,23 +52,23 @@ write_list_actual() {
 : "${C1}Define function define_count_saved_state${C0}"
 define_count_saved_state() {
 	: "${C1}...and the integer in in the variable #count_saved_state# should be defined${C0}"
-	count_saved_state="${#list_saved_state[@]}"
+	count_saved_state="${#array_saved_state_pkgnms[@]}"
 }
 
 : "${C1}Define function copy_list_as_saved_state${C0}"
 copy_list_as_saved_state() {
-	list_saved_state=( "${list_actual[@]}" )
+	array_saved_state_pkgnms=( "${list_actual[@]}" )
 }
 
-: "${C1}Define function read_in_list_saved_state${C0}"
-read_in_list_saved_state() {
-	{ mapfile -t list_saved_state < "${ff_ListSavedState}" && [[ -n ${list_saved_state[*]:0:1} ]]; } || 
+: "${C1}Define function read_in_array_saved_state_pkgnms${C0}"
+read_in_array_saved_state_pkgnms() {
+	{ mapfile -t array_saved_state_pkgnms < "${ff_ListSavedState}" && [[ -n ${array_saved_state_pkgnms[*]:0:1} ]]; } || 
 		exit "${LINENO}"
 }
 
-: "${C1}Define function write_list_saved_state${C0}"
-write_list_saved_state() {
-	printf '%s\n' "${list_saved_state[@]}" | tee "${ff_ListSavedState}" >/dev/null || 
+: "${C1}Define function write_array_saved_state_pkgnms${C0}"
+write_array_saved_state_pkgnms() {
+	printf '%s\n' "${array_saved_state_pkgnms[@]}" | tee "${ff_ListSavedState}" >/dev/null || 
 		exit "${LINENO}"
 
 	: "${C1}...and make a note to renew the #space_err# array (see below)${C0}"
@@ -187,19 +187,19 @@ if 	[[ -f ${ff_ListSavedState} ]]
 then
 	: 'y'
 	: "${C1}...then read the data in. The reading must have succeeded${C0}"
-	read_in_list_saved_state
+	read_in_array_saved_state_pkgnms
 else
 	: 'n'
 	: "${C1}...then make one${C0}"
 	copy_list_as_saved_state
-	write_list_saved_state
+	write_array_saved_state_pkgnms
 fi
 define_count_saved_state
 
 [[ -f ${ff_ListSavedState} ]] || exit "${LINENO}"
 
 	#declare -p count_saved_state #<>
-	#echo "${#list_saved_state[@]}" #<>
+	#echo "${#array_saved_state_pkgnms[@]}" #<>
 	#ls -lh "${ff_ListSavedState}" #<>
 	set -x #<>
 	#exit "${LINENO}" #<>
@@ -230,14 +230,14 @@ then
 
 		: "${C1}...write a new file...${C0}"
 		copy_list_as_saved_state
-		write_list_saved_state
+		write_array_saved_state_pkgnms
 		define_count_saved_state
 	fi
 else
 	: 'n'
 	: "${C1}...then the data in the file List Recorded should be corrected...${C0}"
 	copy_list_as_saved_state
-	write_list_saved_state
+	write_array_saved_state_pkgnms
 	define_count_saved_state
 fi
 	
