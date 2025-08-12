@@ -22,15 +22,19 @@ C1=$( tput setaf 4 )
 
 
 : "Variables"
-      file_Apps="./List__Saved_Applications"
-	    dnf_ff=./dnf-list-installed.txt
-      ff_ListActual="./Array__List_Pkgs_Actual"
-      ff_ListRecorded="./Array__List_Pkgs_Recorded"
-      renew__space__err="no"
-      ff_Err="./List__Err_pkgs"
-      ff_ProbProtect_pkgs="./List__Protect_pkgs"
-      renew_data=yes
-      ff_Indices=Array__Indices
+                   scr_nm="free-disk-space.sh"
+
+                  dd_data="/dev/shm/${scr_nm//./-}.d"
+                file_Apps="${dd_data}/List__Saved_Applications"
+	                 dnf_ff="${dd_data}/dnf-list-installed.txt"
+            ff_ListActual="${dd_data}/Array__List_Pkgs_Actual"
+          ff_ListRecorded="${dd_data}/Array__List_Pkgs_Recorded"
+      ff_ProbProtect_pkgs="${dd_data}/List__Protect_pkgs"
+                   ff_Err="${dd_data}/List__Err_pkgs"
+
+        renew__space__err="no"
+               renew_data="yes"
+               ff_Indices="Array__Indices"
 
 
 
