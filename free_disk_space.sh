@@ -136,8 +136,8 @@ define_count_recorded() {
 
 ## Bug, list_recorded is defined in two different ways
 
-: "${C1}Define function define_list_recorded${C0}"
-define_list_recorded() {
+: "${C1}Define function copy_list_as_recorded${C0}"
+copy_list_as_recorded() {
 	list_recorded=( "${list_actual[@]}" )
 }
 
@@ -183,7 +183,7 @@ then
 else
 	: 'n'
 	: "${C1}...then make one${C0}"
-	define_list_recorded
+	copy_list_as_recorded
 	write_list_recorded
 fi
 define_count_recorded
@@ -222,7 +222,7 @@ then
 		rm -f "${ff_ListRecorded}"
 
 		: "${C1}...write a new file...${C0}"
-		define_list_recorded
+		copy_list_as_recorded
 		write_list_recorded
 		define_count_recorded
 	fi
@@ -230,7 +230,7 @@ then
 else
 	: 'n'
 	: "${C1}...then the data in the file List Recorded should be corrected...${C0}"
-	define_list_recorded
+	copy_list_as_recorded
 	write_list_recorded
 	define_count_recorded
 fi
