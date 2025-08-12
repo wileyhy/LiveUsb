@@ -28,7 +28,7 @@ C1=$( tput setaf 4 )
                 file_Apps="${dd_data}/List__Saved_Applications"
 	                 dnf_ff="${dd_data}/dnf-list-installed.txt"
             ff_ListActual="${dd_data}/Array__List_Pkgs_Actual"
-          ff_ListRecorded="${dd_data}/Array__List_Pkgs_Recorded"
+        ff_ListSavedState="${dd_data}/Array__List_Pkgs_Recorded"
       ff_ProbProtect_pkgs="${dd_data}/List__Protect_pkgs"
                    ff_Err="${dd_data}/List__Err_pkgs"
 
@@ -62,13 +62,13 @@ copy_list_as_saved_state() {
 
 : "${C1}Define function read_in_list_saved_state${C0}"
 read_in_list_saved_state() {
-	{ mapfile -t list_saved_state < "${ff_ListRecorded}" && [[ -n ${list_saved_state[*]:0:1} ]]; } || 
+	{ mapfile -t list_saved_state < "${ff_ListSavedState}" && [[ -n ${list_saved_state[*]:0:1} ]]; } || 
 		exit "${LINENO}"
 }
 
 : "${C1}Define function write_list_saved_state${C0}"
 write_list_saved_state() {
-	printf '%s\n' "${list_saved_state[@]}" | tee "${ff_ListRecorded}" >/dev/null || 
+	printf '%s\n' "${list_saved_state[@]}" | tee "${ff_ListSavedState}" >/dev/null || 
 		exit "${LINENO}"
 
 	: "${C1}...and make a note to renew the #space_err# array (see below)${C0}"
@@ -161,29 +161,29 @@ fi
 
 #: "${C1}${C0}"
 : "${C1}From disk, of pkgs prev recorded as installed, if a list from a prev run of this script is available...${C0}"
-  ls -alhFi "${ff_ListRecorded}" #<>
+  ls -alhFi "${ff_ListSavedState}" #<>
   #exit "${LINENO}" #<>
 
 
 
   
 : "${C1}If a file List Recorded exists on disk...${C0}"
-if 	[[ -f ${ff_ListRecorded} ]] \
-      && [[ -s ${ff_ListRecorded} ]]
+if 	[[ -f ${ff_ListSavedState} ]] \
+      && [[ -s ${ff_ListSavedState} ]]
 then
 	: 'y'
-  wc_w_o=$( wc -w "${ff_ListRecorded}" )
+  wc_w_o=$( wc -w "${ff_ListSavedState}" )
   wc_w_o=${wc_w_o%% *}
 
   if [[ ${wc_w_o} -le 0 ]]
   then
-    rm -fv "${ff_ListRecorded}"
+    rm -fv "${ff_ListSavedState}"
   fi
 else
   : 'n'
 fi
   
-if 	[[ -f ${ff_ListRecorded} ]]
+if 	[[ -f ${ff_ListSavedState} ]]
 then
 	: 'y'
 	: "${C1}...then read the data in. The reading must have succeeded${C0}"
@@ -196,11 +196,11 @@ else
 fi
 define_count_saved_state
 
-[[ -f ${ff_ListRecorded} ]] || exit "${LINENO}"
+[[ -f ${ff_ListSavedState} ]] || exit "${LINENO}"
 
 	#declare -p count_saved_state #<>
 	#echo "${#list_saved_state[@]}" #<>
-	#ls -lh "${ff_ListRecorded}" #<>
+	#ls -lh "${ff_ListSavedState}" #<>
 	set -x #<>
 	#exit "${LINENO}" #<>
 
@@ -216,7 +216,7 @@ then
 	#+ because the package counts can be the same, but the contents of each
 	#+ list can differ.
 	      hash_ListAct=$( sha256sum < "${ff_ListActual}" )
-	      hash_ListRec=$( sha256sum < "${ff_ListRecorded}" )
+	      hash_ListRec=$( sha256sum < "${ff_ListSavedState}" )
 
 	: "${C1}If the actual and recorded lists are the same..${C0}"
 	if 	[[ ${hash_ListAct} == "${hash_ListRec}" ]]
@@ -226,7 +226,7 @@ then
 	else
 		: 'n'
 		: "${C1}...then remove the existing on-disk list, for pkgs recorded as installed...${C0}"
-		rm -f "${ff_ListRecorded}"
+		rm -f "${ff_ListSavedState}"
 
 		: "${C1}...write a new file...${C0}"
 		copy_list_as_saved_state
@@ -246,7 +246,7 @@ fi
 	if	[[ -n ${count_actual} ]] \
         && [[ -n ${count_saved_state} ]] \
         && [[ -f ${ff_ListActual} ]] \
-        && [[ -f ${ff_ListRecorded} ]]
+        && [[ -f ${ff_ListSavedState} ]]
 	then
 		: 'y'
 	else
