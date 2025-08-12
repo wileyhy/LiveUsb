@@ -68,10 +68,13 @@ unset ff_ListActual
 unset count_actual 
       count_actual="${#list_actual[@]}"
 
+
+
 : "${C1}Define function write_list_actual${C0}"
 write_list_actual() {
-	printf '%s\n' "${list_actual[@]}" | tee "${ff_ListActual}" >/dev/null || 
-		exit "${LINENO}"
+	#printf '%s\n' "${list_actual[@]}" | tee "${ff_ListActual}" >/dev/null || 
+		#exit "${LINENO}"
+  declare -p list_actual > "${ff_ListActual}"
 }
 
 
@@ -130,6 +133,8 @@ define_count_recorded() {
 	: "${C1}...and the integer in in the variable #count_recorded# should be defined${C0}"
 	count_recorded="${#list_recorded[@]}"
 }
+
+## Bug, list_recorded is defined in two different ways
 
 : "${C1}Define function define_list_recorded${C0}"
 define_list_recorded() {
@@ -249,8 +254,11 @@ fi
 
 
 : "${C1}Get data if necessary -- array #space_err# -- SLOW${C0}"
-unset ff_SpaceErr
-      ff_SpaceErr="./Array__Space_Err"
+unset ff_Err ff_ProbProtect_pkgs renew_data
+      ff_Err="./List__Err_pkgs"
+      ff_ProbProtect_pkgs="./List__Protect_pkgs"
+      #renew_data=yes
+
 
 if 	[[ ${renew_data} == "yes" ]]
 then
@@ -270,15 +278,23 @@ then
 	do
     dnf_rm_n_o=$(	sudo dnf --assumeno remove "${pkgs[II]}" )
 
-    if grep -ie Error -e Problem -e protected <<< "${dnf_rm_n_o}"
+    if grep -ie Error <<< "${dnf_rm_n_o}"
     then
+      printf '%s\n' "${pkgs[II]}" > "${ff_Err}"
+      
+        "${file_Apps}"
+      
+      continue
+    if grep -ie Problem -e protected <<< "${dnf_rm_n_o}"
+    then
+      printf '%s\n' "${pkgs[II]}" > "${ff_ProbProtect_pkgs}"
       continue
     elif
       grep -ie Freed <<< "${dnf_rm_n_o}"
     then
       awk_o__size=$( awk '/[Ff]reed/ { print $4, $5 }' <<< "${dnf_rm_n_o}" )
     else
-      continue
+      exit "${LINENO}"
     fi
 
     printf '\n\nPackage =\t%s\n\n' "${pkgs[II]}"
