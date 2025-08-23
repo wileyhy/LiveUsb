@@ -43,7 +43,7 @@ C1=$( tput setaf 4 )
 : "${C1} Functions ${C0}"
 
 : "${C1}Define function write_list_a\ctual${C0}"
-write_list_actual() {
+write_Lst_actual() {
 	#printf '%s\n' "${list_actual[@]}" | tee "${ff_ListActual}" >/dev/null || 
 		#exit "${LINENO}"
   declare -p list_actual > "${ff_ListActual}"
@@ -161,13 +161,13 @@ then
 	else
 		: 'n'
 		: "${C1}...if the hashes differ, then overwrite previous data${C0}"
-		write_list_actual
+		write_Lst_actual
 	fi
 		#exit "${LINENO}"
 else
 	: 'n'
 	: "${C1}...if there is no such file, then write data to disk${C0}"
-	write_list_actual
+	write_Lst_actual
 fi
 
 [[ -f ${ff_ListActual} ]] || exit "${LINENO}"
@@ -336,7 +336,7 @@ then
         ;;
       y|Y )
         sudo dnf remove "${pkgs[II]}" || exit "${LINENO}"
-        write_list_actual
+        write_Lst_actual
         ;;
     esac
     
