@@ -61,7 +61,7 @@ copy_list_as_saved_state() {
 }
 
 : "${C1}Define function read_in_array_s\aved_state_pkgnms${C0}"
-read_in_array_saved_state_pkgnms() {
+read_in_Array_saved_state_pkgNms() {
 	{ mapfile -t array_saved_state_pkgnms < "${ff_ListSavedState}" && [[ -n ${array_saved_state_pkgnms[*]:0:1} ]]; } || 
 		exit "${LINENO}"
 }
@@ -207,7 +207,7 @@ if 	[[ -f ${ff_ListSavedState} ]]
 then
 	: 'y' #<>
 	: "${C1}...then read the data in. The reading must have succeeded${C0}"
-	read_in_array_saved_state_pkgnms
+	read_in_Array_saved_state_pkgNms
 else
 	: 'n' #<>
 	: "${C1}...then make one${C0}"
