@@ -38,29 +38,30 @@
 
 : "${C1}Define function write_list_a\ctual${C0}"
 write_Lst_actual() {
-	#printf '%s\n' "${list_actual[@]}" | tee "${ff_ListActual}" >/dev/null || 
-		#exit "${LINENO}"
+  : "${C1}Execute function write_list_a\ctual${C0}"
   declare -p list_actual > "${ff_ListActual}"
 }
 
 
 : "${C1}Define function define_count_s\aved_state${C0}"
 define_count_saved_state() {
-	: "${C1}...and the integer in in the variable #count_s\aved_state# should be defined${C0}"
+  : "${C1}Execute function define_count_s\aved_state${C0}"
 	count_saved_state="${#array_saved_state_pkgnms[@]}"
 }
 
 
 : "${C1}Define function copy_list_as_s\aved_state${C0}"
 copy_list_as_saved_state() {
+  : "${C1}Define function copy_list_as_s\aved_state${C0}"
 	array_saved_state_pkgnms=( "${list_actual[@]}" )
 }
 
 
 : "${C1}Define function read_in_array_s\aved_state_pkgnms${C0}"
 read_in_Array_saved_state_pkgNms() {
-	{ mapfile -t array_saved_state_pkgnms < "${ff_ListSavedState}" && [[ -n ${array_saved_state_pkgnms[*]:0:1} ]]; } || 
-		exit "${LINENO}"
+  : "${C1}Define function read_in_array_s\aved_state_pkgnms${C0}"
+	mapfile -t array_saved_state_pkgnms < "${ff_ListSavedState}" || exit "${LINENO}"
+  [[ -n ${array_saved_state_pkgnms[*]:0:1} ]] || exit "${LINENO}"
 }
 
 
