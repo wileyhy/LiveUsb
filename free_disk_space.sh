@@ -42,31 +42,31 @@ C1=$( tput setaf 4 )
 
 : "${C1} Functions ${C0}"
 
-: "${C1}Define function write_list_actual${C0}"
+: "${C1}Define function write_list_a\ctual${C0}"
 write_list_actual() {
 	#printf '%s\n' "${list_actual[@]}" | tee "${ff_ListActual}" >/dev/null || 
 		#exit "${LINENO}"
   declare -p list_actual > "${ff_ListActual}"
 }
 
-: "${C1}Define function define_count_saved_state${C0}"
+: "${C1}Define function define_count_s\aved_state${C0}"
 define_count_saved_state() {
-	: "${C1}...and the integer in in the variable #count_saved_state# should be defined${C0}"
+	: "${C1}...and the integer in in the variable #count_s\aved_state# should be defined${C0}"
 	count_saved_state="${#array_saved_state_pkgnms[@]}"
 }
 
-: "${C1}Define function copy_list_as_saved_state${C0}"
+: "${C1}Define function copy_list_as_s\aved_state${C0}"
 copy_list_as_saved_state() {
 	array_saved_state_pkgnms=( "${list_actual[@]}" )
 }
 
-: "${C1}Define function read_in_array_saved_state_pkgnms${C0}"
+: "${C1}Define function read_in_array_s\aved_state_pkgnms${C0}"
 read_in_array_saved_state_pkgnms() {
 	{ mapfile -t array_saved_state_pkgnms < "${ff_ListSavedState}" && [[ -n ${array_saved_state_pkgnms[*]:0:1} ]]; } || 
 		exit "${LINENO}"
 }
 
-: "${C1}Define function write_array_saved_state_pkgnms${C0}"
+: "${C1}Define function write_array_s\aved_state_pkgnms${C0}"
 write_array_saved_state_pkgnms() {
 	printf '%s\n' "${array_saved_state_pkgnms[@]}" | tee "${ff_ListSavedState}" >/dev/null || 
 		exit "${LINENO}"
@@ -87,7 +87,7 @@ fi
 
 
 
-: "${C1}Require a list of any applications which should be saved${C0}"
+: "${C1}Require a list of any applications which should be s\aved${C0}"
 if 	[[ -f ${file_Apps} ]]
 then	: 'y'
 	mapfile -t array_user_selected_protected_apps < "${file_Apps}"
@@ -123,7 +123,7 @@ fi
 # history tx and mtime of target file
 
 
-: "${C1}From OS, get count of pkgs actually installed...${C0}"
+: "${C1}From OS, get count of pkgs a\ctually installed...${C0}"
 sudo dnf list --installed > "${dnf_ff}" || exit "${LINENO}"
 
 mapfile -t list_actual < <(
@@ -227,7 +227,7 @@ define_count_saved_state
 
 
 	
-: "${C1}if the actual and saved-state counts are the same (of software packages)...${C0}"
+: "${C1}if the ac\tual and s\aved-state counts are the same (of software packages)...${C0}"
 if 	[[ ${count_actual} == "${count_saved_state}" ]]
 then
 	: 'y'
@@ -239,7 +239,7 @@ then
 	      hash_ListAct=$( sha256sum < "${ff_ListActual}" )
 	      hash_ListRec=$( sha256sum < "${ff_ListSavedState}" )
 
-	: "${C1}If the actual and saved-state lists are the same..${C0}"
+	: "${C1}If the a\ctual and s\aved-state lists are the same..${C0}"
 	if 	[[ ${hash_ListAct} == "${hash_ListRec}" ]]
 	then
 		: 'y'
