@@ -165,7 +165,7 @@ then
 	fi
 		#exit "${LINENO}"
 else
-	: 'n'
+	: 'n' #<>
 	: "${C1}...if there is no such file, then write data to disk${C0}"
 	write_Lst_actual
 fi
@@ -191,7 +191,7 @@ fi
 if 	[[ -f ${ff_ListSavedState} ]] \
       && [[ -s ${ff_ListSavedState} ]]
 then
-	: 'y'
+	: 'y' #<>
   wc_w_o=$( wc -w "${ff_ListSavedState}" )
   wc_w_o=${wc_w_o%% *}
 
@@ -200,7 +200,7 @@ then
     rm -fv "${ff_ListSavedState}"
   fi
 else
-  : 'n'
+  : 'n' #<>
 fi
   
 if 	[[ -f ${ff_ListSavedState} ]]
