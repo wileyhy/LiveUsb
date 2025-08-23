@@ -52,14 +52,14 @@ define_count_saved_state() {
 
 : "${C1}Define function copy_list_as_s\aved_state${C0}"
 copy_list_as_saved_state() {
-  : "${C1}Define function copy_list_as_s\aved_state${C0}"
+  : "${C1}Execute function copy_list_as_s\aved_state${C0}"
 	array_saved_state_pkgnms=( "${list_actual[@]}" )
 }
 
 
 : "${C1}Define function read_in_array_s\aved_state_pkgnms${C0}"
 read_in_Array_saved_state_pkgNms() {
-  : "${C1}Define function read_in_array_s\aved_state_pkgnms${C0}"
+  : "${C1}Execute function read_in_array_s\aved_state_pkgnms${C0}"
 	mapfile -t array_saved_state_pkgnms < "${ff_ListSavedState}" || exit "${LINENO}"
   [[ -n ${array_saved_state_pkgnms[*]:0:1} ]] || exit "${LINENO}"
 }
@@ -67,15 +67,17 @@ read_in_Array_saved_state_pkgNms() {
 
 : "${C1}Define function write_array_s\aved_state_pkgnms${C0}"
 write_array_Saved_state_pkgNms() {
-	printf '%s\n' "${array_saved_state_pkgnms[@]}" | tee "${ff_ListSavedState}" >/dev/null || 
+  : "${C1}Execute function write_array_s\aved_state_pkgnms${C0}"
+	if ! printf '%s\n' "${array_saved_state_pkgnms[@]}" \
+    | tee "${ff_ListSavedState}" >/dev/null
+  then
 		exit "${LINENO}"
-
-	: "${C1}...and make a note to renew the #space_err# array (see below)${C0}"
-	#renew__space__err="yes"
+  fi
 }
 
 
 
+#####################################################################
 
 : "${C1} Create working directory ${C0}"
 if [[ ! -d ${dd_data} ]]
@@ -357,42 +359,4 @@ then
 fi
 
   exit "${LINENO}"
-#####################################################################
-
-
-#: "${C1}The two counts of indices must be the same.${C0}"
-
-#if [[ ${#pkgs[@]} == "${#space_err[@]}" ]]
-#then
-	#: 'y' #<>
-	#indices=( "${!pkgs[@]}" )
-#else
-	#: 'n' #<>
-	#echo "Indices do not match"
-	#exit "${LINENO}"
-#fi
-
-#: "${C1}Save arrays${C0}"
-#declare -p indices | tee array__indices >/dev/null
-#declare -p pkgs | tee "${ff_Pkgs}" >/dev/null
-#declare -p space_err | tee "${ff_SpaceErr}" >/dev/null
-
-
-#: "${C1}When output if dnf(1) is an error, unset both arrays #p\kgs# and #space_err#${C0}"
-#unset EE errors
-#for EE in "${indices[@]}"
-#do
-	#if [[ "${space_err[EE]}" == 'Error: ' ]]
-	#then
-		#: 'y' #<>
-		#mapfile -O "${EE}" -t errors <<< "${pkgs[EE]}"
-		#unset "pkgs[EE]" "space_err[EE]"
-	#else
-		#: 'n' #<>
-	#fi
-#done
-
-#: "${C1}Save array${C0}"
-#declare -p errors | tee array__errors >/dev/null
-
 
