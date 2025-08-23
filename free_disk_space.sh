@@ -139,7 +139,7 @@ mapfile -t list_actual < <(
 
 
 : "${C1}...and record that data.${C0}"
-count_actual="${#list_actual[@]}"
+count_Actual="${#list_actual[@]}"
 
 
 : "${C1}If the List Actual file already exists...${C0}"
@@ -172,7 +172,7 @@ fi
 
 [[ -f ${ff_ListActual} ]] || exit "${LINENO}"
 
-	#declare -p count_actual
+	#declare -p count_Actual
 	#echo "${#list_actual[@]}"
 	#ls -lh "${ff_ListActual}"
 	#set -x
@@ -227,7 +227,7 @@ define_count_saved_state
 
 	
 : "${C1}if the ac\tual and s\aved-state counts are the same (of software packages)...${C0}"
-if 	[[ ${count_actual} == "${count_saved_state}" ]]
+if 	[[ ${count_Actual} == "${count_saved_state}" ]]
 then
 	: 'y'
 
@@ -263,7 +263,7 @@ fi
 	
 	set -x
 	: "${C1}<> Debug: All data created thus far must exist${C0}"
-	if	[[ -n ${count_actual} ]] \
+	if	[[ -n ${count_Actual} ]] \
         && [[ -n ${count_saved_state} ]] \
         && [[ -f ${ff_ListActual} ]] \
         && [[ -f ${ff_ListSavedState} ]]
