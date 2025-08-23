@@ -124,7 +124,7 @@ fi
 
 
 : "${C1}From OS, get count of pkgs a\ctually installed...${C0}"
-sudo dnf list --installed > "${dnf_ff}" || exit "${LINENO}"
+sudo dnf list --installed | sudo tee "${dnf_ff}" > /dev/null || exit "${LINENO}"
 
 mapfile -t list_actual < <(
 	awk '$1 ~ /\.x86_64|\.noarch|\.i686/ &&
