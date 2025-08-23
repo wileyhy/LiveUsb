@@ -156,10 +156,10 @@ then
 	: "${C1}...if the hashes match...${C0}"
 	if	[[ ${hash_Actual} == "${hash_ListAct}" ]]
 	then
-		: 'y'
+		: 'y' #<>
 		: "${C1}...then don#t write any data to disk${C0}"
 	else
-		: 'n'
+		: 'n' #<>
 		: "${C1}...if the hashes differ, then overwrite previous data${C0}"
 		write_Lst_actual
 	fi
