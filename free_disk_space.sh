@@ -305,12 +305,12 @@ then
         "${file_Apps}"
       
       continue
-    if grep -ie Problem -e protected <<< "${dnf_rm_n_o}"
+
+    elif grep -ie Problem -e protected <<< "${dnf_rm_n_o}"
     then
       printf '%s\n' "${pkgs[II]}" > "${ff_ProbProtect_pkgs}"
       continue
-    elif
-      grep -ie Freed <<< "${dnf_rm_n_o}"
+    elif grep -ie Freed <<< "${dnf_rm_n_o}"
     then
       awk_o__size=$( awk '/[Ff]reed/ { print $4, $5 }' <<< "${dnf_rm_n_o}" )
     else
@@ -358,7 +358,7 @@ then
 fi
 
   exit "${LINENO}"
-
+#####################################################################
 
 
 #: "${C1}The two counts of indices must be the same.${C0}"
