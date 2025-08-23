@@ -10,14 +10,8 @@
 #+     Because as it's written now, the list is alphabetical with no
 #+   size data, which is super slow.
 
-
-
-	set -x
-	set -euo pipefail
-
-#####################################################################
-: "Colors"
-
+	set -x #<>
+	set -euo pipefail #<>
 
 
 #####################################################################
