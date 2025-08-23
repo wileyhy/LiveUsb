@@ -5,7 +5,7 @@
 ## Next step - this script is buggy, but the next step is to figure
 #+   out an sqlite cli command to get from rpm/dnf the list of 
 #+   packages installed, their size, their protected status, etc.
-#+   Remove the protected pkgs from the list, sort it by pkg size
+#+   Remove the protected p\kgs from the list, sort it by pkg size
 #+   and ask the user to remove the largest packages first.
 #+     Because as it's written now, the list is alphabetical with no
 #+   size data, which is super slow.
@@ -29,8 +29,8 @@ C1=$( tput setaf 4 )
 	                 dnf_ff="${dd_data}/dnf-list-installed.txt"
             ff_ListActual="${dd_data}/Array__List_Pkgs_Actual"
         ff_ListSavedState="${dd_data}/Array__List_PkgsSavedState"
-      ff_ProbProtect_Pkgs="${dd_data}/List__Protect_pkgs"
-                   ff_Err="${dd_data}/List__Err_pkgs"
+      ff_ProbProtect_Pkgs="${dd_data}/List__Protect_Pkgs"
+                   ff_Err="${dd_data}/List__Err_Pkgs"
 
         renew__space__err="no"
                renew_data="yes"
@@ -123,7 +123,7 @@ fi
 # history tx and mtime of target file
 
 
-: "${C1}From OS, get count of pkgs a\ctually installed...${C0}"
+: "${C1}From OS, get count of p\kgs a\ctually installed...${C0}"
 sudo dnf list --installed | sudo tee "${dnf_ff}" > /dev/null || exit "${LINENO}"
 
 mapfile -t list_actual < <(
@@ -379,7 +379,7 @@ fi
 #declare -p space_err | tee "${ff_SpaceErr}" >/dev/null
 
 
-#: "${C1}When output if dnf(1) is an error, unset both arrays #pkgs# and #space_err#${C0}"
+#: "${C1}When output if dnf(1) is an error, unset both arrays #p\kgs# and #space_err#${C0}"
 #unset EE errors
 #for EE in "${indices[@]}"
 #do
