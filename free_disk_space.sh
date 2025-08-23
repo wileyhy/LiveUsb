@@ -21,9 +21,7 @@
 
 
 #####################################################################
-: "$( tput setaf 4 ) Variables $( tput sgr0 )"
-                       C0=$( tput sgr0 )
-                       C1=$( tput setaf 4 )
+: "${C1:=$( tput setaf 4 )} Variables ${C0:=$( tput sgr0 )}"
                    scr_nm="free-disk-space.sh"
                   dd_data="/dev/shm/${scr_nm//./-}.d"
 
