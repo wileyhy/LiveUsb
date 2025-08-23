@@ -15,13 +15,15 @@
 	set -x
 	set -euo pipefail
 
+#####################################################################
 : "Colors"
-C0=$( tput sgr0 )
-C1=$( tput setaf 4 )
 
 
 
-: "${C1} Variables ${C0}"
+#####################################################################
+: "$( tput setaf 4 ) Variables $( tput sgr0 )"
+                       C0=$( tput sgr0 )
+                       C1=$( tput setaf 4 )
                    scr_nm="free-disk-space.sh"
                   dd_data="/dev/shm/${scr_nm//./-}.d"
 
@@ -40,6 +42,7 @@ C1=$( tput setaf 4 )
 
 
 
+#####################################################################
 : "${C1} Functions ${C0}"
 
 : "${C1}Define function write_list_a\ctual${C0}"
