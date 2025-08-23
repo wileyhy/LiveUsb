@@ -89,9 +89,9 @@ fi
 
 : "${C1}Require a list of any applications which should be s\aved${C0}"
 if 	[[ -f ${file_Apps} ]]
-then	: 'y'
+then	: 'y' #<>
 	mapfile -t array_user_selected_protected_apps < "${file_Apps}"
-else	: 'n'
+else	: 'n' #<>
 	printf '%s\n' "bash" "kernel*" > "${file_Apps}"
 
 	cat <<- EOF | tee /dev/stderr >/dev/null
@@ -145,7 +145,7 @@ count_Actual="${#list_actual[@]}"
 : "${C1}If the List Actual file already exists...${C0}"
 if 	[[ -f ${ff_ListActual} ]]
 then
-	: 'y'
+	: 'y' #<>
 		
 	: "${C1}...then hash the datas...${C0}"
 	      hash_Actual=$( tr '\n' ' ' <<< "${list_actual[@]}" | sha256sum )
@@ -205,11 +205,11 @@ fi
   
 if 	[[ -f ${ff_ListSavedState} ]]
 then
-	: 'y'
+	: 'y' #<>
 	: "${C1}...then read the data in. The reading must have succeeded${C0}"
 	read_in_array_saved_state_pkgnms
 else
-	: 'n'
+	: 'n' #<>
 	: "${C1}...then make one${C0}"
 	copy_list_as_saved_state
 	write_array_saved_state_pkgnms
@@ -229,7 +229,7 @@ define_count_saved_state
 : "${C1}if the ac\tual and s\aved-state counts are the same (of software packages)...${C0}"
 if 	[[ ${count_Actual} == "${count_saved_state}" ]]
 then
-	: 'y'
+	: 'y' #<>
 
 	: "${C1}...then make sure the contents of the lists are the same${C0}"
 	# ...by getting and comparing some cryptographic hashes of each array...
@@ -241,10 +241,10 @@ then
 	: "${C1}If the a\ctual and s\aved-state lists are the same..${C0}"
 	if 	[[ ${hash_ListAct} == "${hash_ListRec}" ]]
 	then
-		: 'y'
+		: 'y' #<>
 		: "${C1}...then move on to next section${C0}"
 	else
-		: 'n'
+		: 'n' #<>
 		: "${C1}...then remove the existing on-disk Saved-State list...${C0}"
 		rm -f "${ff_ListSavedState}"
 
@@ -254,7 +254,7 @@ then
 		define_count_saved_state
 	fi
 else
-	: 'n'
+	: 'n' #<>
 	: "${C1}...then the data in the file List Recorded should be corrected...${C0}"
 	copy_list_as_saved_state
 	write_array_saved_state_pkgnms
@@ -268,9 +268,9 @@ fi
         && [[ -f ${ff_ListActual} ]] \
         && [[ -f ${ff_ListSavedState} ]]
 	then
-		: 'y'
+		: 'y' #<>
 	else
-		: 'n'
+		: 'n' #<>
 		exit "${LINENO}"
 	fi
 	exit "${LINENO}"
@@ -283,13 +283,13 @@ fi
 
 if 	[[ ${renew_data} == "yes" ]]
 then
-	: 'y'
+	: 'y' #<>
 	if 	[[ -f ${ff_SpaceErr} ]]
 	then
-		: 'y'
+		: 'y' #<>
 		rm -f "${ff_SpaceErr}"
 	else
-		: 'n'
+		: 'n' #<>
 	fi
 
 
@@ -328,10 +328,10 @@ then
 
         if [[ ${save_yn} == y ]]
         then
-          : 'y'
+          : 'y' #<>
           printf '$s\n' "${pkgs[II]}" >> "${file_Apps}"
         else
-          : 'n'
+          : 'n' #<>
         fi
         ;;
       y|Y )
@@ -364,10 +364,10 @@ fi
 
 #if [[ ${#pkgs[@]} == "${#space_err[@]}" ]]
 #then
-	#: 'y'
+	#: 'y' #<>
 	#indices=( "${!pkgs[@]}" )
 #else
-	#: 'n'
+	#: 'n' #<>
 	#echo "Indices do not match"
 	#exit "${LINENO}"
 #fi
@@ -384,11 +384,11 @@ fi
 #do
 	#if [[ "${space_err[EE]}" == 'Error: ' ]]
 	#then
-		#: 'y'
+		#: 'y' #<>
 		#mapfile -O "${EE}" -t errors <<< "${pkgs[EE]}"
 		#unset "pkgs[EE]" "space_err[EE]"
 	#else
-		#: 'n'
+		#: 'n' #<>
 	#fi
 #done
 
