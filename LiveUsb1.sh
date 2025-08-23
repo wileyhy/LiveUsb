@@ -1359,7 +1359,7 @@ function _Fn_setup_dnf_ (){
       addl_pkgs+=( ${for_critical_L:=}    iptables-{libs,nft} {,python3-}nftables )
       addl_pkgs+=( ${for_critical_M:=}    dnf{,-data,-plugins-core}
                                             python3-dnf{,-plugins-core}
-                                            {python3-,}libdnf )
+                                            {python3-,}libdnf ) sqlite
       addl_pkgs+=( ${for_critical_M:=}    rpm{,-{build-,}libs} rpm-plugin-{selinux,systemd-inhibit} rpm{-sequoia,-sign-libs} )
       addl_pkgs+=( ${for_critical_M:=}      {delta,python3-}rpm )
       addl_pkgs+=( ${for_critical_N:=}    audit{,-libs} python3-audit )
