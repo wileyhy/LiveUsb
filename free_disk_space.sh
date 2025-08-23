@@ -29,7 +29,7 @@ C1=$( tput setaf 4 )
 	                 dnf_ff="${dd_data}/dnf-list-installed.txt"
             ff_ListActual="${dd_data}/Array__List_Pkgs_Actual"
         ff_ListSavedState="${dd_data}/Array__List_PkgsSavedState"
-      ff_ProbProtect_pkgs="${dd_data}/List__Protect_pkgs"
+      ff_ProbProtect_Pkgs="${dd_data}/List__Protect_pkgs"
                    ff_Err="${dd_data}/List__Err_pkgs"
 
         renew__space__err="no"
@@ -308,7 +308,7 @@ then
 
     elif grep -ie Problem -e protected <<< "${dnf_rm_n_o}"
     then
-      printf '%s\n' "${pkgs[II]}" > "${ff_ProbProtect_pkgs}"
+      printf '%s\n' "${pkgs[II]}" > "${ff_ProbProtect_Pkgs}"
       continue
     elif grep -ie Freed <<< "${dnf_rm_n_o}"
     then
