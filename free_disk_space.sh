@@ -92,7 +92,8 @@ if 	[[ -f ${file_Apps} ]]
 then	: 'y'
 	mapfile -t array_user_selected_protected_apps < "${file_Apps}"
 else	: 'n'
-	echo bash > "${file_Apps}"
+	printf '%s\n' "bash" "kernel*" > "${file_Apps}"
+
 	cat <<- EOF | tee /dev/stderr >/dev/null
 
 		fds:    A list of user-protected applications is required.
@@ -103,15 +104,18 @@ else	: 'n'
 		        mation. Exiting.
 
 	EOF
+
 	ls --color=auto -Ghl "${file_Apps}" 1>&2
 	exit "${LINENO}"
 fi
 
+## If the array \array_user_selected_protected_apps is empty, then
+#+   exit.
 [[ -n ${array_user_selected_protected_apps[0]:0:16} ]] || exit "${LINENO}"
 
-	#declare -p array_user_selected_protected_apps
-	set -x
-	#exit "${LINENO}"
+	#declare -p array_user_selected_protected_apps #<>
+	set -x #<>
+	#exit "${LINENO}" #<>
 
 
 
@@ -123,7 +127,11 @@ fi
 sudo dnf list --installed > "${dnf_ff}" || exit "${LINENO}"
 
 mapfile -t list_actual < <(
-	awk '$1 ~ /\.x86_64|\.noarch|\.i686/ && $1 !~ /^Installed/ { print $1 }' < "${dnf_ff}"
+	awk '$1 ~ /\.x86_64|\.noarch|\.i686/ &&
+       $1 !~ /^Installed/
+       {
+         print $1
+       }' < "${dnf_ff}"
 )
 
   #declare -p PIPESTATUS list_actual #<>
