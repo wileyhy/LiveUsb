@@ -329,7 +329,7 @@ then
         if [[ ${save_yn} == y ]]
         then
           : 'y' #<>
-          printf '$s\n' "${pkgs[II]}" >> "${file_Apps}"
+          printf '%s\n' "${pkgs[II]}" >> "${file_Apps}"
         else
           : 'n' #<>
         fi
