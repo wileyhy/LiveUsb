@@ -109,7 +109,7 @@ else	: 'n'
 	exit "${LINENO}"
 fi
 
-## If the array \array_user_selected_protected_apps is empty, then
+## If the array \a\rray_user_selected_protected_apps is empty, then
 #+   exit.
 [[ -n ${array_user_selected_protected_apps[0]:0:16} ]] || exit "${LINENO}"
 
