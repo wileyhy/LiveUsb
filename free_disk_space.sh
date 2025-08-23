@@ -67,7 +67,7 @@ read_in_Array_saved_state_pkgNms() {
 }
 
 : "${C1}Define function write_array_s\aved_state_pkgnms${C0}"
-write_array_saved_state_pkgnms() {
+write_array_Saved_state_pkgNms() {
 	printf '%s\n' "${array_saved_state_pkgnms[@]}" | tee "${ff_ListSavedState}" >/dev/null || 
 		exit "${LINENO}"
 
@@ -212,7 +212,7 @@ else
 	: 'n' #<>
 	: "${C1}...then make one${C0}"
 	copy_list_as_saved_state
-	write_array_saved_state_pkgnms
+	write_array_Saved_state_pkgNms
 fi
 define_count_saved_state
 
@@ -250,14 +250,14 @@ then
 
 		: "${C1}...write a new file...${C0}"
 		copy_list_as_saved_state
-		write_array_saved_state_pkgnms
+		write_array_Saved_state_pkgNms
 		define_count_saved_state
 	fi
 else
 	: 'n' #<>
 	: "${C1}...then the data in the file List Recorded should be corrected...${C0}"
 	copy_list_as_saved_state
-	write_array_saved_state_pkgnms
+	write_array_Saved_state_pkgNms
 	define_count_saved_state
 fi
 	
@@ -354,6 +354,7 @@ then
 		printf '\n%s\t' "${pkgs[II]}"
 		#echo "${space_err[II]}"
 	done
+  unset II
 fi
 
   exit "${LINENO}"
