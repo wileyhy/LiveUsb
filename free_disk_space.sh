@@ -16,19 +16,19 @@
 
 #####################################################################
 : "${C1:=$( tput setaf 4 )} Variables ${C0:=$( tput sgr0 )}"
-                   scr_nm="free-disk-space.sh"
-                  dd_data="/dev/shm/${scr_nm//./-}.d"
 
-                file_Apps="${dd_data}/List__Saved_Applications"
-	                 dnf_ff="${dd_data}/dnf-list-installed.txt"
-            ff_ListActual="${dd_data}/Array__List_Pkgs_Actual"
-        ff_ListSavedState="${dd_data}/Array__List_PkgsSavedState"
-      ff_ProbProtect_Pkgs="${dd_data}/List__Protect_Pkgs"
-                   ff_Err="${dd_data}/List__Err_Pkgs"
+               scr_nm="free-disk-space.sh"
+              dd_data="/dev/shm/${scr_nm//./-}.d"
 
-        renew__space__err="no"
-               renew_data="yes"
-               #ff_Indices="Array__Indices"
+            file_Apps="${dd_data}/List__Saved_Applications"
+	             dnf_ff="${dd_data}/dnf-list-installed.txt"
+        ff_ListActual="${dd_data}/Array__List_Pkgs_Actual"
+    ff_ListSavedState="${dd_data}/Array__List_PkgsSavedState"
+  ff_ProbProtect_Pkgs="${dd_data}/List__Protect_Pkgs"
+               ff_Err="${dd_data}/List__Err_Pkgs"
+
+    renew__space__err="no"
+           renew_data="yes"
 
 
 
