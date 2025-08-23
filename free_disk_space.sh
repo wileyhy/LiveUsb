@@ -34,7 +34,7 @@ C1=$( tput setaf 4 )
 
         renew__space__err="no"
                renew_data="yes"
-               ff_Indices="Array__Indices"
+               #ff_Indices="Array__Indices"
 
 
 
@@ -180,7 +180,6 @@ fi
 
 
 
-#: "${C1}${C0}"
 : "${C1}From disk, re List-Saved-State, if a list from a prev run of this script is available...${C0}"
   ls -alhFi "${ff_ListSavedState}" #<>
   #exit "${LINENO}" #<>
