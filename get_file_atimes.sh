@@ -20,12 +20,6 @@ ZZ=${DD}/ZZ_find_tmpfile
 
 
 
-# Clean the filesystem - remove broken symlinks
-sudo find / \
-  -exec sh -c 'file "$1" | grep "broken symbolic link"' sh '{}' \; \
-  -print > "${II}" \
-  -exec rm -v '{}' \;
-
 # Reset the filesystem
 sudo -v
 if sudo test -d "${DD}"
@@ -39,7 +33,13 @@ fi
 mkdir -p -m 0700 "${DD}" || exit "${LINENO}"
 rpm -qa > "${EE}" || exit "${LINENO}"
 
-  #exit "${LINENO}" #<>
+# Clean the filesystem - remove broken symlinks
+sudo find / \
+  -exec sh -c 'file "$1" | grep "broken symbolic link"' sh '{}' \; \
+  -print > "${II}" \
+  -exec rm -v '{}' \;
+
+  exit "${LINENO}" #<>
 
 # Get the dirs
 unset all_dirs
