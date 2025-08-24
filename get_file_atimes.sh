@@ -72,7 +72,7 @@ do
   
     echo "count, some_files: ${#some_files[@]}" #<>
 
-  if [[ -e "${some_files[0]:0:8}" ]]
+  if [[ -e "${some_files[0]}" ]]
   then
     sudo -- stat --printf='%W %N\n' "${some_files[@]}" \
       | sudo tee -a "${II}" >/dev/null \
