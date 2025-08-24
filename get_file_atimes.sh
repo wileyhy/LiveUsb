@@ -57,8 +57,11 @@ sudo -v \
               printf "%d" $?
             done
             echo
-            printf "rm -fv %s\n" "$yy"
-            rm -fv "$yy"
+            if [[ ${xx} != /proc/* ]]
+            then
+              printf "rm -fv %s\n" "$yy"
+              rm -fv "$yy"
+            fi
           fi
         fi
       done' > dangling
