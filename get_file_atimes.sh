@@ -2,7 +2,8 @@
 
 
 set -x #<>
-sudo  #<>v
+set -euo pipefail #<>
+sudo -v #<>
 
 # Variables
 DD=/dev/shm/free-disk-space-sh.d
