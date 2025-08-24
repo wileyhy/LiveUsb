@@ -51,7 +51,7 @@ unset all_files
 all_files=()
 arr__args_for_binFind=( '(' '!' "-path" '*/proc/*' "-a" '!' "-path" '/sys/*' "-a"
   '!' "-path" '/run/systemd/transient/*' "-a" '!' "-path" '/run/user/1000/*' "-a"
-  '!' "-path" '/run/host/*' ')'
+  '!' "-path" '/run/host/*' "-a" '!' "-path" '/dev/pts/*' ')'
 )
 tst_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 
