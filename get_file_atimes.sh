@@ -83,6 +83,8 @@ do
       echo "count, all_files: ${#all_files[@]}" #<>
       echo "count, some_files: ${#some_files[@]}" #<>
       echo "full_count_allFiles: $full_count_allFiles"
+      sudo wc "${II}"
+      break 2
     fi
   done
   
