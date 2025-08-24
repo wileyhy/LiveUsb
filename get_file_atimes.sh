@@ -86,9 +86,11 @@ do
 
   if sudo test -e "${some_files[0]}"
   then
-    sudo -- stat --printf='%W %N\n' "${some_files[@]}" \
-      | sudo tee -a "${II}" >/dev/null \
+    { sudo -- stat --printf='%W %N\n' "${some_files[@]}" \
       || exit "${LINENO}"
+    } \
+      | sudo tee -a "${II}" >/dev/null \
+        || exit "${LINENO}"
   else
     break 2
   fi
