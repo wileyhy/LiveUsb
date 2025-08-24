@@ -28,10 +28,9 @@ declare -p all_dirs > "${GG}" || exit "${LINENO}"
 # Get the files
 unset all_files
 find_args=( '(' '!' "-path" "'/proc'" "-a" '!' "-path" "'/sys/'" "-a"
-  '!' "-path" "'/run/systemd/transient/'" "-a" '!' "-name" "/run/user/1000/doc" "-a" 
-  '!' ')'
+  '!' "-path" "'/run/systemd/transient/'" "-a" '!' "-path" "/run/user/1000/" ')'
 )
-test_extglb="@(/proc/|/sys/|/run/systemd/transient/)*"
+test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 
 mapfile -d "" -t all_files < <(
   for dd in "${all_dirs[@]}"
