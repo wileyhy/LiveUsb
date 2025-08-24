@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-set -o extglob
+shopt -s extglob
 set -x #<>
 set -euo pipefail #<>
 sudo -v #<>
