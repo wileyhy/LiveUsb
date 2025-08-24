@@ -67,7 +67,7 @@ do
       echo 'ii:' "${ii}" #<>
       #echo 'all_files [ii]:' "${all_files[ii]}" #<>
 
-    if [[ -n "${all_files[ii]}" ]]
+    if [[ -n "${all_files[ii]:-}" ]]
     then
       if [[ "${all_files[ii]}" == ${test_extglb} ]]
       then
