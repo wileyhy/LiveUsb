@@ -104,15 +104,8 @@ do
 
   if [[ -z ${curr_assoc_indx} ]]
   then
-    if [[ ${all_files[qq]} == @(/dev/stdout) ]]
-    then
-      printf '\n\n\tFound /dev/stdout\n\n'
-      true
-      sleep 10
-    else
-      echo realpath returned an empty string
-      exit "${LINENO}"
-    fi
+    echo realpath returned an empty string
+    exit "${LINENO}"
   fi
 
   if [[ ${all_files[qq]} != "${curr_assoc_indx}" ]]
