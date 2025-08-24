@@ -81,18 +81,27 @@ sudo test -f "${MM}" && rm -f -v "${MM}"
 
 # Canonicalize all the paths
 set +e
-all_canonicalized_paths=()
-
+declare -A all_canonicalized_paths=()
 uu=0
+
 for qq in "${!all_files[@]}"
 do
-  all_canonicalized_paths[qq]=$( sudo -- realpath -e "${all_files[qq]}" )
+  curr_assoc_indx=$( sudo -- realpath -e "${all_files[qq]}" )
+  all_canonicalized_paths=( ["${curr_assoc_indx}"]+="" )
 
-  if [[ -n ${all_files[qq]} ]] && [[ -z ${all_canonicalized_paths[qq]} ]]
+  if [[ -z ${all_files[qq]} ]]
+  then
+    printf 'array "%s" index "%d" is empty\n' "all_files" "${qq}"
+    exit "${LINENO}"
+  fi
+
+  if [[ -z ${curr_assoc_indx} ]]
   then
     echo realpath returned an empty string
     exit "${LINENO}"
   fi
+
+    declare -p all_canonicalized_paths
 
   if [[ ${all_files[qq]} != "${all_canonicalized_paths[qq]}" ]]
   then
