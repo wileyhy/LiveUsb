@@ -13,11 +13,18 @@ EE=${DD}/EE_rpm-qa_o
 FF=${DD}/FF_arr__all_dirs
 GG=${DD}/GG_arr__all_files
 HH=${DD}/HH_stat-cNW_o
-JJ=${CC}/arr__all_files.immut
+II=${DD}/II_removed-symlinks
+JJ=${CC}/arr__all_files.i
 LL=${DD}/LL_realpath_changes
 ZZ=${DD}/ZZ_find_tmpfile
 
 
+
+# Clean the filesystem - remove broken symlinks
+sudo find / \
+  -exec sh -c 'file "$1" | grep "broken symbolic link"' sh '{}' \; \
+  -print > "${II}" \
+  -exec rm -v '{}' \;
 
 # Reset the filesystem
 sudo -v
