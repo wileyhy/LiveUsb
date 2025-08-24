@@ -99,7 +99,9 @@ do
   then
     if [[ ${all_files[qq]} == @(/dev/stdout) ]]
     then
+      printf '\n\n\tFound /dev/stdout\n\n'
       true
+      sleep 10
     else
       echo realpath returned an empty string
       exit "${LINENO}"
