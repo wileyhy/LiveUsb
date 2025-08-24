@@ -81,7 +81,7 @@ do
     break 2
   fi
   
-  all_files+=( "${all_files[@]}" )
+  all_files=( "${all_files[@]}" )
   
     echo "count, all_files: ${#all_files[@]}" #<>
     printf '\n\t%s\n\n' "end of big loop ${nn}"
