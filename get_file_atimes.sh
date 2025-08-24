@@ -70,8 +70,9 @@ do
     then
       if [[ "${all_files[ii]}" == ${test_extglb} ]]
       then
-        echo match found
-        break 2
+        continue
+        #echo match found
+        #break 2
       fi
 
       some_files+=( [ii]="${all_files[ii]}" )  
