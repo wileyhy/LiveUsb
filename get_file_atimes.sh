@@ -34,10 +34,10 @@ mkdir -p -m 0700 "${DD}" || exit "${LINENO}"
 rpm -qa > "${EE}" || exit "${LINENO}"
 
 # Clean the filesystem - remove broken symlinks
-sudo find / \
-  -exec sh -c 'file "$1" | grep "broken symbolic link"' sh '{}' \; \
-  -print > "${II}" \
-  -exec rm -v '{}' \;
+#sudo find / \
+  #-exec sh -c 'file "$1" | grep "broken symbolic link"' sh '{}' \; \
+  #-print > "${II}" \
+  #-exec rm -v '{}' \;
 
   exit "${LINENO}" #<>
 
