@@ -34,15 +34,22 @@ mapfile -d "" -t all_files < <(
 declare -p all_files > "${HH}" || exit "${LINENO}"
 
   #echo "all_files[0]: ${all_files[0]}" #<>
+  echo "count, all_files: ${#all_files[@]}" #<>
   #exit "${LINENO}" #<>
+
 
 ## Get all the atimes
 
 #+ While there are still any files listed in the array
+nn=0
+
 while [[ "${#all_files[@]}" -gt 0 ]]
 do
   unset ii some_files
-  
+  nn=$((nn++))
+
+    echo "count, all_files: ${#all_files[@]}" #<>
+
   #+ Take 1000 at a time
   for (( ii = 0; ii <= 1000; ii++ ))
   do
@@ -52,6 +59,8 @@ do
     unset "all_files[ii]"
   done
   
+    echo "count, some_files: ${#some_files[@]}" #<>
+
   if [[ -e "${some_files[0]:0:8}" ]]
   then
     sudo -- stat --printf='%W %N\n' "${some_files[@]}" \
@@ -62,5 +71,8 @@ do
   fi
   
   all_files+=( "${all_files[@]}" )
+  
+    echo "count, all_files: ${#all_files[@]}" #<>
+    printf '\n\t%s\n\n' "end of big loop ${nn}"
 done
 
