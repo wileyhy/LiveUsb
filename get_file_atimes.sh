@@ -39,7 +39,7 @@ mapfile -d "" -t all_files < <(
   done
 )
 
-for qq in "${all_files[@]}"
+for qq in "${!all_files[@]}"
 do
   all_files[qq]=$( realpath -e "${all_files[qq]}" )
 
