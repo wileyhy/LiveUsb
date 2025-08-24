@@ -62,7 +62,7 @@ do
     exit "${LINENO}"
   fi
 
-  if [[ ${all_files[qq]} != ${all_canonicalized_paths[qq]} ]]
+  if [[ ${all_files[qq]} != "${all_canonicalized_paths[qq]}" ]]
   then
     printf '%s --> %s\n' "${all_files[qq]}" "${all_canonicalized_paths[qq]}" > "${LL}"
     printf '\n\t realpath changed a value\n\n'
