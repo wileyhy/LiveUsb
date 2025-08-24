@@ -121,7 +121,7 @@ do
       echo wtf
       echo "count, all_files: ${#all_files[@]}" #<>
       echo "count, some_files: ${#some_files[@]}" #<>
-      echo "full_count_allFiles: $full_count_allFiles"
+      echo "full_count_allFiles: ${full_count_allFiles}"
       sudo wc "${HH}"
       break 2
     fi
