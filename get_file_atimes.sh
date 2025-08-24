@@ -65,7 +65,7 @@ do
     sudo cat "${MM}" 
   )
 
-  if [[ ${cc} -le "${#all_files[@]}" ]]
+  if [[ ${cc} -ge "${#all_files[@]}" ]]
   then
     printf '\n\tError: array not filling.\n\n'
     exit "${LINENO}"
