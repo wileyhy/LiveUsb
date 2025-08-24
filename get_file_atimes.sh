@@ -86,6 +86,13 @@ uu=0
 
 for qq in "${!all_files[@]}"
 do
+  if [[ ${all_files[qq]} =~ /dev/(stdout) ]]
+  then
+    printf '\n\n\tFound %s\n\n' "${BASH_REMATCH[0]}"
+    sleep 10
+    continue
+  fi
+
   curr_assoc_indx=$( sudo -- realpath -e "${all_files[qq]}" )
   all_canonicalized_paths=( ["${curr_assoc_indx}"]+="${qq}|" )
 
