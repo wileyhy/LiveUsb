@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+set -o extglob
 set -x #<>
 set -euo pipefail #<>
 sudo -v #<>
