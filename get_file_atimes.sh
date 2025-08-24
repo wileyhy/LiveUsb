@@ -26,10 +26,14 @@ declare -p all_dirs > "${GG}" || exit "${LINENO}"
 
 # Get the files
 unset all_files
+find_args=( '(' '!' "-path" "'/proc/*'" "-a" '!' "-path" "'/sys/*'" "-a"
+  "-path" '!' "'/run/systemd/transient/*'" ')'
+)
+
 mapfile -d "" -t all_files < <(
   for dd in "${all_dirs[@]}"
   do
-    sudo find "${dd}" -print0 2> /dev/null
+    sudo find "${dd}" "${find_args[@]}" -print0 2> /dev/null
   done
 )
 declare -p all_files > "${HH}" || exit "${LINENO}"
