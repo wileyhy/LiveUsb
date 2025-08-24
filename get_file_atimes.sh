@@ -40,11 +40,13 @@ mapfile -d "" -t all_files < <(
 )
 
 set +e
+all_canonicalized_paths=()
+
 for qq in "${!all_files[@]}"
 do
-  all_files[qq]=$( sudo -- realpath -e "${all_files[qq]}" )
+  all_canonicalized_paths[qq]=$( sudo -- realpath -e "${all_files[qq]}" )
 
-  if [[ -z "${all_files[qq]}" ]]
+  if [[ -n "${all_files[qq]}" ]] && [[ -z ${}
   then
     unset "all_files[qq]"
   fi    
