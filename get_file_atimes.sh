@@ -42,7 +42,7 @@ do
   if [[ -e "${some_files[0]:0:8}" ]]
   then
     sudo -- stat --printf='%W %N\n' "${some_files[@]}" \
-      | sudo tee -a "${II}" \
+      | sudo tee -a "${II}" >/dev/null \
       || exit "${LINENO}"
   else
     break 2
