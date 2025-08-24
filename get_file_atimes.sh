@@ -16,6 +16,7 @@ HH=${DD}/HH_stat-cNW_o
 II=${DD}/II_removed-symlinks
 JJ=${CC}/arr__all_files.i
 LL=${DD}/LL_realpath_changes
+MM=${DD}/MM_dangling-symlinks
 ZZ=${DD}/ZZ_find_tmpfile
 
 
@@ -34,13 +35,7 @@ mkdir -p -m 0700 "${DD}" || exit "${LINENO}"
 rpm -qa > "${EE}" || exit "${LINENO}"
 
 # Clean the filesystem - remove broken symlinks
-#sudo find / \
-  #-exec sh -c 'file "$1" | grep "broken symbolic link"' sh '{}' \; \
-  #-print > "${II}" \
-  #-exec rm -v '{}' \;
-
-sudo -v \
-  && time sudo bash -O globstar -c \
+time sudo bash -O globstar -c \
      'ii=0
       for yy in /**
       do
@@ -64,7 +59,7 @@ sudo -v \
             fi
           fi
         fi
-      done' > dangling
+      done' >> "${MM}"
 
   exit "${LINENO}" #<>
 
