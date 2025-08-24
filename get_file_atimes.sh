@@ -41,13 +41,14 @@ rpm -qa > "${EE}" || exit "${LINENO}"
 
 sudo -v \
   && time sudo bash -O globstar -c \
-     'for yy in /**
+     'ii=0
+      for yy in /**
       do
         if [[ -n "$yy" ]] && [[ -L "$yy" ]]
         then
           if ! [[ -a "$yy" ]]
           then
-            printf "\nFilename:<%s>\n" "$yy"
+            printf "\nFilename %d:<%s>\n" "$((++ii))" "$yy"
             ls -alhFi "$yy" 2>/dev/null
             for xx in n a L  b c d f p t S
             do 
