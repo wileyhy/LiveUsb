@@ -97,8 +97,13 @@ do
 
   if [[ -z ${curr_assoc_indx} ]]
   then
-    echo realpath returned an empty string
-    exit "${LINENO}"
+    if [[ ${all_files[qq]} == @(/dev/stdout) ]]
+    then
+      true
+    else
+      echo realpath returned an empty string
+      exit "${LINENO}"
+    fi
   fi
 
   if [[ ${all_files[qq]} != "${curr_assoc_indx}" ]]
