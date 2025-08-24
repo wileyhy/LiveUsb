@@ -44,7 +44,7 @@ sudo -v \
      'ii=0
       for yy in /**
       do
-        if [[ ${xx} != /proc/* ]]
+        if [[ ${yy} != /proc/* ]]
         then
           if [[ -n "$yy" ]] && [[ -L "$yy" ]]
           then
