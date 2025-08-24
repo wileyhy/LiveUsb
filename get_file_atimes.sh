@@ -44,7 +44,7 @@ test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 mapfile -d "" -t all_files < <(
   for dd in "${all_dirs[@]}"
   do
-    sudo find "${dd}" "${find_args[@]}" -print0 2> /dev/null
+    sudo find -L "${dd}" "${find_args[@]}" -print0 2> /dev/null
   done
 )
 
