@@ -46,7 +46,7 @@ nn=0
 
 while [[ "${#all_files[@]}" -gt 0 ]]
 do
-  unset ii some_files
+  unset some_files
   nn=$((nn++))
 
     echo "count, all_files: ${#all_files[@]}" #<>
@@ -57,8 +57,8 @@ do
     #+ One by one, add a file to the \s\ome_files array and then
     #+   unset the same index from the \a\ll_files array
     
-      echo "ii:$ii" #<>
-      echo "all_files [ii]: ${all_files[$ii]}" #<>
+      echo 'ii:' "${ii}" #<>
+      echo 'all_files [ii]:' "${all_files[ii]}" #<>
 
     if [[ -n "${all_files[ii]}" ]]
     then
