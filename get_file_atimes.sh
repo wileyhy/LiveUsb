@@ -14,7 +14,7 @@ FF=${DD}/arr__all_dirs
 GG=${DD}/arr__all_files
 HH=${DD}/stat-cNW_o
 JJ=${CC}/arr__all_files.immut
-KK=${DD}/realpath_changes
+LL=${DD}/realpath_changes
 
 
 # Reset the filesystem
@@ -63,7 +63,7 @@ do
 
   if [[ ${all_files[qq]} != ${all_canonicalized_paths[qq]} ]]
   then
-    printf '%s --> %s\n' "${all_files[qq]}" "${all_canonicalized_paths[qq]}" > 
+    printf '%s --> %s\n' "${all_files[qq]}" "${all_canonicalized_paths[qq]}" > "${LL}"
     printf '\n\t realpath changed a value\n\n'
     sleep 5
   fi
