@@ -107,7 +107,7 @@ do
       2> /dev/null > "${LL}"
 
     printf '\n\t realpath changed a value: %d times\n\n' $((++uu))
-    sleep 5
+    sleep 2
   fi
 
     declare -p all_canonicalized_paths
