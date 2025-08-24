@@ -56,11 +56,19 @@ test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 for dd in "${all_dirs[@]}"
 do
 
+  cc=${#all_files[@]}
+
   sudo find -P "${dd}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null \
     | sudo tee "${MM}" > /dev/null
 
   sudo cat "${MM}" \
     | mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files
+
+  if [[ ${cc} -le "${#all_files[@]}" ]]
+  then
+    printf '\n\tError: array not filling.\n\n'
+    exit "${LINENO}"
+  fi
 
   all_files=( "${all_files[@]}" )
   
