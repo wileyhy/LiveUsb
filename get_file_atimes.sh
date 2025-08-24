@@ -33,8 +33,8 @@ mapfile -d "" -t all_files < <(
 )
 declare -p all_files > "${HH}" || exit "${LINENO}"
 
-  echo "all_files[0]: ${all_files[0]}"
-  exit "${LINENO}"
+  #echo "all_files[0]: ${all_files[0]}" #<>
+  #exit "${LINENO}" #<>
 
 ## Get all the atimes
 
