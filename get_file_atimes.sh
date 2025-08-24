@@ -58,7 +58,7 @@ do
     #+   unset the same index from the \a\ll_files array
     
       echo "ii:$ii" #<>
-      echo "all_files[ii]: ${all_files[$ii]}" #<>
+      echo "all_files [ii]: ${all_files[$ii]}" #<>
 
     if [[ -n "${all_files[ii]}" ]]
     then
