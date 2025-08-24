@@ -56,6 +56,10 @@ do
   do
     #+ One by one, add a file to the \s\ome_files array and then
     #+   unset the same index from the \a\ll_files array
+    
+      echo "ii:$ii" #<>
+      echo "all_files[ii]: ${all_files[ii]}" #<>
+
     some_files+=( [ii]="${all_files[ii]}" )  
     unset "all_files[ii]"
   done
