@@ -12,6 +12,12 @@ FF=${DD}/rpm-qa_o
 GG=${DD}/arr__all_dirs
 HH=${DD}/arr__all_files
 II=${DD}/stat-cNW_o
+parent_dir=$( realpath -e "${HH%/[a-z]*}/.." )
+basenm=${HH##*/}
+JJ=${parent_dir}/${basenm}
+unset parent_dir basenm
+KK=${DD}/realpath_changes
+
 
 # Reset the filesystem
 rm -fr "${DD}" || exit "${LINENO}"
@@ -21,8 +27,14 @@ rpm -qa > "${FF}" || exit "${LINENO}"
 # Get the dirs
 unset all_dirs
 all_dirs=( /* )
-unset "all_dirs[12]"
-unset "all_dirs[17]"
+for yy in "${!all_dirs[@]}"
+do
+  if [[ ${all_dirs[yy]} == @(/proc|/sys) ]]
+  then
+    unset "all_dirs[yy]"
+  fi
+done
+unset yy
 declare -p all_dirs > "${GG}" || exit "${LINENO}"
 
 # Get the files
@@ -46,10 +58,20 @@ for qq in "${!all_files[@]}"
 do
   all_canonicalized_paths[qq]=$( sudo -- realpath -e "${all_files[qq]}" )
 
-  if [[ -n "${all_files[qq]}" ]] && [[ -z ${}
+  if [[ -n "${all_files[qq]}" ]] && [[ -z ${all_canonicalized_paths[qq]} ]]
   then
-    unset "all_files[qq]"
-  fi    
+    echo realpath returned an empty string
+    exit "${LINENO}"
+  fi
+
+  if [[ ${all_files[qq]} != ${all_canonicalized_paths[qq]} ]]
+  then
+    printf '%s --> %s\n' "${all_files[qq]}" "${all_canonicalized_paths[qq]}" > 
+    printf '\n\t realpath changed a value\n\n'
+    sleep 5
+  fi
+
+
 done
 unset qq
 set -e
@@ -57,9 +79,6 @@ set -e
 all_files=( "${all_files[@]}" )
 
 declare -p all_files > "${HH}" || exit "${LINENO}"
-parent_dir=$( realpath -e "${HH%/[a-z]*}/.." )
-basenm=${HH##*/}
-JJ=${parent_dir}/${basenm}
 sudo mv "${HH}" "${JJ}"
 sudo chattr +i "${JJ}"
 full_count_allFiles=${#all_files[@]}
