@@ -7,22 +7,20 @@ set -euo pipefail #<>
 sudo -v #<>
 
 # Variables
-DD=/dev/shm/free-disk-space-sh.d
-FF=${DD}/rpm-qa_o
-GG=${DD}/arr__all_dirs
-HH=${DD}/arr__all_files
-II=${DD}/stat-cNW_o
-parent_dir=$( realpath -e "${HH%/[a-z]*}/.." )
-basenm=${HH##*/}
-JJ=${parent_dir}/${basenm}
-unset parent_dir basenm
+CC=/dev/shm
+DD=${CC}/get_file_atimes-sh.d
+EE=${DD}/rpm-qa_o
+FF=${DD}/arr__all_dirs
+GG=${DD}/arr__all_files
+HH=${DD}/stat-cNW_o
+JJ=${CC}/arr__all_files.immut
 KK=${DD}/realpath_changes
 
 
 # Reset the filesystem
 rm -fr "${DD}" || exit "${LINENO}"
 mkdir -p -m 0700 "${DD}" || exit "${LINENO}"
-rpm -qa > "${FF}" || exit "${LINENO}"
+rpm -qa > "${EE}" || exit "${LINENO}"
 
 # Get the dirs
 unset all_dirs
@@ -35,7 +33,7 @@ do
   fi
 done
 unset yy
-declare -p all_dirs > "${GG}" || exit "${LINENO}"
+declare -p all_dirs > "${FF}" || exit "${LINENO}"
 
 # Get the files
 unset all_files
@@ -78,8 +76,8 @@ set -e
 
 all_files=( "${all_files[@]}" )
 
-declare -p all_files > "${HH}" || exit "${LINENO}"
-sudo mv "${HH}" "${JJ}"
+declare -p all_files > "${GG}" || exit "${LINENO}"
+sudo mv "${GG}" "${JJ}"
 sudo chattr +i "${JJ}"
 full_count_allFiles=${#all_files[@]}
 
@@ -125,7 +123,7 @@ do
       echo "count, all_files: ${#all_files[@]}" #<>
       echo "count, some_files: ${#some_files[@]}" #<>
       echo "full_count_allFiles: $full_count_allFiles"
-      sudo wc "${II}"
+      sudo wc "${HH}"
       break 2
     fi
   done
@@ -139,7 +137,7 @@ do
     { sudo -- stat --printf='%W %N\n' "${some_files[@]}" \
       || exit "${LINENO}"
     } \
-      | sudo tee -a "${II}" >/dev/null \
+      | sudo tee -a "${HH}" >/dev/null \
         || exit "${LINENO}"
   else
     break 2
