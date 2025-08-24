@@ -53,7 +53,7 @@ arr__args_for_binFind=( '(' '!' "-path" '*/proc/*' "-a" '!' "-path" '/sys/*' "-a
   '!' "-path" '/run/systemd/transient/*' "-a" '!' "-path" '/run/user/1000/*' "-a"
   '!' "-path" '/run/host/*' ')'
 )
-test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
+tst_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 
 for dd in "${all_dirs[@]}"
 do
@@ -78,7 +78,7 @@ do
   sudo test -f "${MM}" && rm -f -v "${MM}"
 
 done && unset dd
-sudo test -d "${MM}" && rm -f -v "${MM}"
+sudo test -f "${MM}" && rm -f -v "${MM}"
 
 
 # Canonicalize all the paths
@@ -166,7 +166,7 @@ do
 
     if [[ -n "${all_files[ii]:-}" ]]
     then
-      if [[ ${all_files[ii]} == "${test_extglb}" ]]
+      if [[ ${all_files[ii]} == "${tst_extglb}" ]]
       then
         continue
         #echo match found
