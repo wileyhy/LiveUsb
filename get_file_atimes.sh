@@ -83,6 +83,7 @@ sudo test -f "${MM}" && rm -f -v "${MM}"
 set +e
 all_canonicalized_paths=()
 
+uu=0
 for qq in "${!all_files[@]}"
 do
   all_canonicalized_paths[qq]=$( sudo -- realpath -e "${all_files[qq]}" )
@@ -97,10 +98,9 @@ do
   then
     printf '%s --> %s\n' "${all_files[qq]}" "${all_canonicalized_paths[qq]}" \
       2> /dev/null > "${LL}"
-    printf '\n\t realpath changed a value\n\n'
+    printf '\n\t realpath changed a value: %d times\n\n' $((++uu))
     sleep 5
   fi
-
 
 done && unset qq
 set -e
