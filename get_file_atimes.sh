@@ -76,7 +76,7 @@ do
   sudo test -f "${MM}" && rm -f -v "${MM}"
 
 done && unset dd
-sudo test -f "${MM}" && rm -f -v "${MM}"
+sudo test -d "${MM}" && rm -f -v "${MM}"
 
 
 # Canonicalize all the paths
