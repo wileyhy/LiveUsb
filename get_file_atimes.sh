@@ -23,7 +23,7 @@ MM=${DD}/zzz_find_tmpfile
 sudo -v
 if sudo test -d "${DD}"
 then
-  if ! sudo rm -fr "${DD}"
+  if ! sudo rm -fr -v "${DD}"
   then
     exit "${LINENO}"
   fi
