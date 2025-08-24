@@ -39,6 +39,28 @@ rpm -qa > "${EE}" || exit "${LINENO}"
   #-print > "${II}" \
   #-exec rm -v '{}' \;
 
+sudo -v \
+  && time sudo bash -O globstar -c \
+     'for yy in /**
+      do
+        if [[ -n "$yy" ]] && [[ -L "$yy" ]]
+        then
+          if ! [[ -a "$yy" ]]
+          then
+            printf "\nFilename:<%s>\n" "$yy"
+            ls -alhFi "$yy" 2>/dev/null
+            for xx in n a L  b c d f p t S
+            do 
+              printf " %s:" "${xx}"
+              eval [[ "-${xx}" ./b ]]
+              printf "%d" $?
+            done
+            echo
+            printf "rm -fv %s\n" "$yy"
+          fi
+        fi
+      done' > dangling
+
   exit "${LINENO}" #<>
 
 # Get the dirs
