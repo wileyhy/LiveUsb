@@ -38,6 +38,20 @@ mapfile -d "" -t all_files < <(
     sudo find "${dd}" "${find_args[@]}" -print0 2> /dev/null
   done
 )
+
+for qq in "${all_files[@]}"
+do
+  all_files[qq]=$( realpath -e "${all_files[@]}" )
+
+  if [[ -z "${all_files[qq]}" ]]
+  then
+    unset "all_files[qq]"
+  fi    
+done
+unset qq
+
+all_files=( "${all_files[@]}" )
+
 declare -p all_files > "${HH}" || exit "${LINENO}"
 full_count_allFiles=${#all_files[@]}
 
@@ -87,8 +101,10 @@ do
       break 2
     fi
   done
-  
+  unset ii
+
     echo "count, some_files: ${#some_files[@]}" #<>
+
 
   if sudo test -e "${some_files[0]}"
   then
