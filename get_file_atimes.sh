@@ -58,6 +58,7 @@ sudo -v \
             done
             echo
             printf "rm -fv %s\n" "$yy"
+            rm -fv "$yy"
           fi
         fi
       done' > dangling
