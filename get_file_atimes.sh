@@ -56,7 +56,7 @@ for qq in "${!all_files[@]}"
 do
   all_canonicalized_paths[qq]=$( sudo -- realpath -e "${all_files[qq]}" )
 
-  if [[ -n "${all_files[qq]}" ]] && [[ -z ${all_canonicalized_paths[qq]} ]]
+  if [[ -n ${all_files[qq]} ]] && [[ -z ${all_canonicalized_paths[qq]} ]]
   then
     echo realpath returned an empty string
     exit "${LINENO}"
@@ -108,7 +108,7 @@ do
 
     if [[ -n "${all_files[ii]:-}" ]]
     then
-      if [[ "${all_files[ii]}" == ${test_extglb} ]]
+      if [[ ${all_files[ii]} == "${test_extglb}" ]]
       then
         continue
         #echo match found
