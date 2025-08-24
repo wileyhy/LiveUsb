@@ -26,8 +26,8 @@ declare -p all_dirs > "${GG}" || exit "${LINENO}"
 
 # Get the files
 unset all_files
-find_args=( '(' '!' "-path" "'/proc/*'" "-a" '!' "-path" "'/sys/*'" "-a"
-  '!' "-path" "'/run/systemd/transient/*'" ')'
+find_args=( '(' '!' "-path" "'/proc'" "-a" '!' "-path" "'/sys/'" "-a"
+  '!' "-path" "'/run/systemd/transient/'" ')'
 )
 
 mapfile -d "" -t all_files < <(
