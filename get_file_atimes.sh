@@ -37,7 +37,7 @@ declare -p all_dirs > "${FF}" || exit "${LINENO}"
 
 # Get the files
 unset all_files
-find_args=( '(' '!' "-path" "'/proc'" "-a" '!' "-path" "'/sys/'" "-a"
+find_args=( '(' '!' "-path" "'/proc/'" "-a" '!' "-path" "'/sys/'" "-a"
   '!' "-path" "'/run/systemd/transient/'" "-a" '!' "-path" "/run/user/1000/" ')'
 )
 test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
@@ -46,6 +46,7 @@ mapfile -d "" -t all_files < <(
   for dd in "${all_dirs[@]}"
   do
     sudo find -L "${dd}" "${find_args[@]}" -print0 2> /dev/null
+
   done
 )
 
