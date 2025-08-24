@@ -41,7 +41,7 @@ mapfile -d "" -t all_files < <(
 
 for qq in "${!all_files[@]}"
 do
-  all_files[qq]=$( realpath -e "${all_files[qq]}" )
+  all_files[qq]=$( sudo -- realpath -e "${all_files[qq]}" )
 
   if [[ -z "${all_files[qq]}" ]]
   then
