@@ -39,6 +39,7 @@ mapfile -d "" -t all_files < <(
   done
 )
 declare -p all_files > "${HH}" || exit "${LINENO}"
+full_count_allFiles=${#all_files[@]}
 
   #echo "all_files[0]: ${all_files[0]}" #<>
   echo "count, all_files: ${#all_files[@]}" #<>
@@ -79,7 +80,9 @@ do
       unset "all_files[ii]"
     else
       echo wtf
-      break 2
+      echo "count, all_files: ${#all_files[@]}" #<>
+      echo "count, some_files: ${#some_files[@]}" #<>
+      echo "full_count_allFiles: $full_count_allFiles"
     fi
   done
   
