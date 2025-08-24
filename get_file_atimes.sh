@@ -4,7 +4,7 @@
 shopt -s extglob
 set -x #<>
 set -euo pipefail #<>
-sudo -v #<>
+
 
 # Variables
 CC=/dev/shm
@@ -20,7 +20,14 @@ MM=${DD}/find_tmpfile
 
 
 # Reset the filesystem
-rm -fr "${DD}" || exit "${LINENO}"
+sudo -v
+if sudo test -f "${DD}"
+then
+  if ! sudo rm -fr "${DD}"
+  then
+    exit "${LINENO}"
+  fi
+fi
 # shellcheck disable=SC2174
 mkdir -p -m 0700 "${DD}" || exit "${LINENO}"
 rpm -qa > "${EE}" || exit "${LINENO}"
@@ -55,9 +62,11 @@ do
     | mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files
 
   all_files=( "${all_files[@]}" )
+  
+  sudo test -f "${MM}" && rm -f -v "${MM}"
 
 done && unset dd
-rm -f "${MM}"
+sudo test -f "${MM}" && rm -f -v "${MM}"
 
 
 # Canonicalize all the paths
