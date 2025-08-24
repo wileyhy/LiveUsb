@@ -39,6 +39,7 @@ declare -p all_dirs > "${FF}" || exit "${LINENO}"
 
 # Get the files
 unset all_files
+export all_files=()
 arr__args_for_binFind=( '(' '!' "-path" "'/proc/'" "-a" '!' "-path" "'/sys/'" "-a"
   '!' "-path" "'/run/systemd/transient/'" "-a" '!' "-path" "/run/user/1000/" ')'
 )
