@@ -111,7 +111,7 @@ do
   if [[ ${all_files[qq]} != "${curr_assoc_indx}" ]]
   then
     printf 'Log: %s --> %s\n' "${all_files[qq]}" "${curr_assoc_indx}" \
-      2> /dev/null > "${LL}"
+      2> /dev/null >> "${LL}"
 
     printf '\n\t realpath changed a value: %d times\n\n' $((++uu))
     
