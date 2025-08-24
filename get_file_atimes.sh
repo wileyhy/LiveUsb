@@ -29,6 +29,7 @@ unset all_files
 find_args=( '(' '!' "-path" "'/proc'" "-a" '!' "-path" "'/sys/'" "-a"
   '!' "-path" "'/run/systemd/transient/'" ')'
 )
+test_extglb="@(/proc/|/sys/|/run/systemd/transient/)*"
 
 mapfile -d "" -t all_files < <(
   for dd in "${all_dirs[@]}"
@@ -66,6 +67,12 @@ do
 
     if [[ -n "${all_files[ii]}" ]]
     then
+      if [[ "${all_files[ii]}" =~ ${test_extglb} ]]
+      then
+        echo match found
+        break 2
+      fi
+
       some_files+=( [ii]="${all_files[ii]}" )  
       unset "all_files[ii]"
     else
