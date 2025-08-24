@@ -47,8 +47,8 @@ declare -p all_dirs > "${FF}" || exit "${LINENO}"
 # Get the files
 unset all_files
 all_files=()
-arr__args_for_binFind=( '(' '!' "-path" "/proc/" "-a" '!' "-path" "/sys/" "-a"
-  '!' "-path" "/run/systemd/transient/" "-a" '!' "-path" "/run/user/1000/" ')'
+arr__args_for_binFind=( '(' '!' "-path" '*/proc/*' "-a" '!' "-path" '/sys/*' "-a"
+  '!' "-path" '/run/systemd/transient/*' "-a" '!' "-path" '/run/user/1000/*' ')'
 )
 test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 
