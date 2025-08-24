@@ -32,7 +32,7 @@ fi
 mkdir -p -m 0700 "${DD}" || exit "${LINENO}"
 rpm -qa > "${EE}" || exit "${LINENO}"
 
-  exit "${LINENO}" #<>
+  #exit "${LINENO}" #<>
 
 # Get the dirs
 unset all_dirs
