@@ -82,7 +82,7 @@ full_count_allFiles=${#all_files[@]}
 
   echo "all_files[0]: ${all_files[0]}" #<>
   echo "full_count_allFiles: ${full_count_allFiles}" #<>
-  exit "${LINENO}" #<>
+  #exit "${LINENO}" #<>
 
 
 ## Get all the atimes
