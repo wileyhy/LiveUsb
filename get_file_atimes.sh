@@ -44,21 +44,21 @@ sudo -v \
      'ii=0
       for yy in /**
       do
-        if [[ -n "$yy" ]] && [[ -L "$yy" ]]
+        if [[ ${xx} != /proc/* ]]
         then
-          if ! [[ -a "$yy" ]]
+          if [[ -n "$yy" ]] && [[ -L "$yy" ]]
           then
-            printf "\nFilename %d:<%s>\n" "$((++ii))" "$yy"
-            ls -alhFi "$yy" 2>/dev/null
-            for xx in n a L  b c d f p t S
-            do 
-              printf " %s:" "${xx}"
-              eval [[ "-${xx}" ./b ]]
-              printf "%d" $?
-            done
-            echo
-            if [[ ${xx} != /proc/* ]]
+            if ! [[ -a "$yy" ]]
             then
+              printf "\nFilename %d:<%s>\n" "$((++ii))" "$yy"
+              ls -alhFi "$yy" 2>/dev/null
+              for xx in n a L  b c d f p t S
+              do 
+                printf " %s:" "${xx}"
+                eval [[ "-${xx}" ./b ]]
+                printf "%d" $?
+              done
+              echo
               printf "rm -fv %s\n" "$yy"
               rm -fv "$yy"
             fi
