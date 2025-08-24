@@ -47,7 +47,8 @@ test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 for dd in "${all_dirs[@]}"
 do
 
-  sudo find -L "${dd}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null > "${MM}"
+  sudo find -L "${dd}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null \
+    | sudo tee "${MM}" > /dev/null
 
   mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files < "${MM}"
 
