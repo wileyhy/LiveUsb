@@ -68,7 +68,7 @@ do
 
     if [[ -n "${all_files[ii]}" ]]
     then
-      if [[ "${all_files[ii]}" =~ ${test_extglb} ]]
+      if [[ "${all_files[ii]}" =~ "${test_extglb}" ]]
       then
         echo match found
         break 2
