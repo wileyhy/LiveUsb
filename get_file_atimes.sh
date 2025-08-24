@@ -61,8 +61,9 @@ do
   sudo find -P "${dd}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null \
     | sudo tee "${MM}" > /dev/null
 
-  sudo cat "${MM}" \
-    | mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files
+  mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files < <(
+    sudo cat "${MM}" 
+  )
 
   if [[ ${cc} -le "${#all_files[@]}" ]]
   then
