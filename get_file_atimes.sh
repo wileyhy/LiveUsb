@@ -21,7 +21,7 @@ MM=${DD}/zzz_find_tmpfile
 
 # Reset the filesystem
 sudo -v
-if sudo test -f "${DD}"
+if sudo test -d "${DD}"
 then
   if ! sudo rm -fr "${DD}"
   then
