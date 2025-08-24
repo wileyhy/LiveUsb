@@ -55,10 +55,15 @@ set -e
 all_files=( "${all_files[@]}" )
 
 declare -p all_files > "${HH}" || exit "${LINENO}"
+parent_dir=$( realpath -e "${HH%/[a-z]*}/.." )
+basenm=${HH##*/}
+JJ=${parent_dir}/${basenm}
+sudo mv "${HH}" "${JJ}"
+sudo chattr +i "${JJ}"
 full_count_allFiles=${#all_files[@]}
 
   echo "all_files[0]: ${all_files[0]}" #<>
-  echo "count, all_files: ${#all_files[@]}" #<>
+  echo "full_count_allFiles: ${full_count_allFiles}" #<>
   exit "${LINENO}" #<>
 
 
