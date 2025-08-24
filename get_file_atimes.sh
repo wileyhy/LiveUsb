@@ -60,8 +60,14 @@ do
       echo "ii:$ii" #<>
       echo "all_files[ii]: ${all_files[ii]}" #<>
 
-    some_files+=( [ii]="${all_files[ii]}" )  
-    unset "all_files[ii]"
+    if [[ -n "${all_files[ii]}" ]]
+    then
+      some_files+=( [ii]="${all_files[ii]}" )  
+      unset "all_files[ii]"
+    else
+      echo wtf
+      break 2
+    fi
   done
   
     echo "count, some_files: ${#some_files[@]}" #<>
