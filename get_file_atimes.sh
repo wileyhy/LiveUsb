@@ -9,13 +9,13 @@ set -euo pipefail #<>
 # Variables
 CC=/dev/shm
 DD=${CC}/get_file_atimes-sh.d
-EE=${DD}/rpm-qa_o
-FF=${DD}/arr__all_dirs
-GG=${DD}/arr__all_files
-HH=${DD}/stat-cNW_o
+EE=${DD}/EE_rpm-qa_o
+FF=${DD}/FF_arr__all_dirs
+GG=${DD}/GG_arr__all_files
+HH=${DD}/HH_stat-cNW_o
 JJ=${CC}/arr__all_files.immut
-LL=${DD}/realpath_changes
-MM=${DD}/zzz_find_tmpfile
+LL=${DD}/LL_realpath_changes
+ZZ=${DD}/ZZ_find_tmpfile
 
 
 
@@ -61,10 +61,10 @@ do
   cc=${#all_files[@]}
 
   sudo find -P "${dd}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null \
-    | sudo tee "${MM}" > /dev/null
+    | sudo tee "${ZZ}" > /dev/null
 
   mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files < <(
-    sudo cat "${MM}" 
+    sudo cat "${ZZ}" 
   )
 
   if [[ ${cc} -ge "${#all_files[@]}" ]]
@@ -75,10 +75,10 @@ do
 
   all_files=( "${all_files[@]}" )
   
-  sudo test -f "${MM}" && rm -f -v "${MM}"
+  sudo test -f "${ZZ}" && rm -f -v "${ZZ}"
 
 done && unset dd
-sudo test -f "${MM}" && rm -f -v "${MM}"
+sudo test -f "${ZZ}" && rm -f -v "${ZZ}"
 
 
 # Canonicalize all the paths
