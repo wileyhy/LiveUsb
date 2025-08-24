@@ -15,6 +15,8 @@ GG=${DD}/arr__all_files
 HH=${DD}/stat-cNW_o
 JJ=${CC}/arr__all_files.immut
 LL=${DD}/realpath_changes
+MM=${DD}/find_tmpfile
+
 
 
 # Reset the filesystem
@@ -37,7 +39,7 @@ declare -p all_dirs > "${FF}" || exit "${LINENO}"
 
 # Get the files
 unset all_files
-find_args=( '(' '!' "-path" "'/proc/'" "-a" '!' "-path" "'/sys/'" "-a"
+arr__args_for_binFind=( '(' '!' "-path" "'/proc/'" "-a" '!' "-path" "'/sys/'" "-a"
   '!' "-path" "'/run/systemd/transient/'" "-a" '!' "-path" "/run/user/1000/" ')'
 )
 test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
@@ -46,7 +48,7 @@ for dd in "${all_dirs[@]}"
 do
 
   mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files < <(
-    sudo find -L "${dd}" "${find_args[@]}" -print0 2> /dev/null
+    sudo find -L "${dd}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null
   )
 
   all_files=( "${all_files[@]}" )
