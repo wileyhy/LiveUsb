@@ -31,8 +31,7 @@ do
   then
     unset "all_dirs[yy]"
   fi
-done
-unset yy
+done && unset yy
 declare -p all_dirs > "${FF}" || exit "${LINENO}"
 
 # Get the files
@@ -70,8 +69,7 @@ do
   fi
 
 
-done
-unset qq
+done && unset qq
 set -e
 
 all_files=( "${all_files[@]}" )
@@ -126,8 +124,7 @@ do
       sudo wc "${HH}"
       break 2
     fi
-  done
-  unset ii
+  done && unset ii
 
     echo "count, some_files: ${#some_files[@]}" #<>
 
