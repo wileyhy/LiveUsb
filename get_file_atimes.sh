@@ -87,7 +87,7 @@ uu=0
 for qq in "${!all_files[@]}"
 do
   curr_assoc_indx=$( sudo -- realpath -e "${all_files[qq]}" )
-  all_canonicalized_paths=( ["${curr_assoc_indx}"]+="" )
+  all_canonicalized_paths=( ["${curr_assoc_indx}"]+="${qq}|" )
 
   if [[ -z ${all_files[qq]} ]]
   then
@@ -101,14 +101,21 @@ do
     exit "${LINENO}"
   fi
 
-    declare -p all_canonicalized_paths
-
-  if [[ ${all_files[qq]} != "${all_canonicalized_paths[qq]}" ]]
+  if [[ ${all_files[qq]} != "${curr_assoc_indx}" ]]
   then
-    printf '%s --> %s\n' "${all_files[qq]}" "${all_canonicalized_paths[qq]}" \
-      2> /dev/null > "${LL}"
+    printf '%s --> %s\n' "${all_files[qq]}" \
+      "${all_canonicalized_paths[${curr_assoc_indx}]}" 2> /dev/null > "${LL}"
+
     printf '\n\t realpath changed a value: %d times\n\n' $((++uu))
     sleep 5
+  fi
+
+    declare -p all_canonicalized_paths
+
+  if ! [[ ${all_canonicalized_paths[${curr_assoc_indx}]} =~ "${qq}|"$ ]]
+  then
+    echo Assignment error
+    exit "${LINENO}"
   fi
 
 done && unset qq
