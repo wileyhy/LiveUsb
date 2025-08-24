@@ -19,6 +19,7 @@ LL=${DD}/realpath_changes
 
 # Reset the filesystem
 rm -fr "${DD}" || exit "${LINENO}"
+# shellcheck disable=SC2174
 mkdir -p -m 0700 "${DD}" || exit "${LINENO}"
 rpm -qa > "${EE}" || exit "${LINENO}"
 
