@@ -42,14 +42,18 @@ find_args=( '(' '!' "-path" "'/proc/'" "-a" '!' "-path" "'/sys/'" "-a"
 )
 test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 
-mapfile -d "" -t all_files < <(
-  for dd in "${all_dirs[@]}"
-  do
+for dd in "${all_dirs[@]}"
+do
+
+  mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files < <(
     sudo find -L "${dd}" "${find_args[@]}" -print0 2> /dev/null
+  )
 
-  done
-)
+  all_files=( "${all_files[@]}" )
 
+done && unset dd
+
+# Canonicalize all the paths
 set +e
 all_canonicalized_paths=()
 
