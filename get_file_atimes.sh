@@ -86,7 +86,8 @@ do
 
   if [[ ${all_files[qq]} != "${all_canonicalized_paths[qq]}" ]]
   then
-    printf '%s --> %s\n' "${all_files[qq]}" "${all_canonicalized_paths[qq]}" > "${LL}"
+    printf '%s --> %s\n' "${all_files[qq]}" "${all_canonicalized_paths[qq]}" \
+      2> /dev/null > "${LL}"
     printf '\n\t realpath changed a value\n\n'
     sleep 5
   fi
