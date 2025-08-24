@@ -39,6 +39,7 @@ mapfile -d "" -t all_files < <(
   done
 )
 
+set +e
 for qq in "${!all_files[@]}"
 do
   all_files[qq]=$( sudo -- realpath -e "${all_files[qq]}" )
@@ -49,6 +50,7 @@ do
   fi    
 done
 unset qq
+set -e
 
 all_files=( "${all_files[@]}" )
 
