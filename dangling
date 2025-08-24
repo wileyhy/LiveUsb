@@ -1,260 +1,120 @@
 
-Filename 1:</proc/100/exe>
-50343 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/100/exe
+Filename 1:</run/systemd/units/invocation:session-c19.scope>
+3508 lrwxrwxrwx. 1 root root 32 Aug 24 16:48 /run/systemd/units/invocation:session-c19.scope -> ec1f646171be46a3b07146303f20a8e7
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/100/exe
+rm -fv /run/systemd/units/invocation:session-c19.scope
+removed '/run/systemd/units/invocation:session-c19.scope'
 
-Filename 2:</proc/100/task/100/exe>
-50397 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/100/task/100/exe
+Filename 2:</run/systemd/units/invocation:user@0.service>
+3477 lrwxrwxrwx. 1 root root 32 Aug 24 16:48 /run/systemd/units/invocation:user@0.service -> 3cbc96cddc5d48a9be9612fc9738ce87
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/100/task/100/exe
+rm -fv /run/systemd/units/invocation:user@0.service
+removed '/run/systemd/units/invocation:user@0.service'
 
-Filename 3:</proc/101/exe>
-50480 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/101/exe
+Filename 3:</run/systemd/units/invocation:user-runtime-dir@0.service>
+3469 lrwxrwxrwx. 1 root root 32 Aug 24 16:48 /run/systemd/units/invocation:user-runtime-dir@0.service -> a9ff2874b9a54274842a6f2a5a64ef65
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/101/exe
+rm -fv /run/systemd/units/invocation:user-runtime-dir@0.service
+removed '/run/systemd/units/invocation:user-runtime-dir@0.service'
 
-Filename 4:</proc/101/task/101/exe>
-50534 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/101/task/101/exe
+Filename 4:</run/user/0/systemd/units/invocation:dbus.socket>
+49 lrwxrwxrwx. 1 root root 32 Aug 24 16:48 /run/user/0/systemd/units/invocation:dbus.socket -> 69c37ab6db944429abbf306f8f866b42
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/101/task/101/exe
+rm -fv /run/user/0/systemd/units/invocation:dbus.socket
+removed '/run/user/0/systemd/units/invocation:dbus.socket'
 
-Filename 5:</proc/102/exe>
-50617 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/102/exe
+Filename 5:</run/user/0/systemd/units/invocation:systemd-tmpfiles-setup.service>
+50 lrwxrwxrwx. 1 root root 32 Aug 24 16:48 /run/user/0/systemd/units/invocation:systemd-tmpfiles-setup.service -> 8f8f898731944c278bb251c1f708abc7
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/102/exe
+rm -fv /run/user/0/systemd/units/invocation:systemd-tmpfiles-setup.service
+removed '/run/user/0/systemd/units/invocation:systemd-tmpfiles-setup.service'
 
-Filename 6:</proc/102/task/102/exe>
-50671 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/102/task/102/exe
+Filename 6:</usr/bin/xelatex-unsafe>
+2353692 lrwxrwxrwx. 1 root root 69 Jan 22  2025 /usr/bin/xelatex-unsafe -> /usr/share/texlive/texmf-dist/scripts/texlive-extra/xelatex-unsafe.sh
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/102/task/102/exe
+rm -fv /usr/bin/xelatex-unsafe
+removed '/usr/bin/xelatex-unsafe'
 
-Filename 7:</proc/103/exe>
-50754 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/103/exe
+Filename 7:</usr/bin/xetex-unsafe>
+2353694 lrwxrwxrwx. 1 root root 67 Jan 22  2025 /usr/bin/xetex-unsafe -> /usr/share/texlive/texmf-dist/scripts/texlive-extra/xetex-unsafe.sh
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/103/exe
+rm -fv /usr/bin/xetex-unsafe
+removed '/usr/bin/xetex-unsafe'
 
-Filename 8:</proc/103/task/103/exe>
-50808 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/103/task/103/exe
+Filename 8:</usr/lib/gcc/x86_64-redhat-linux/15/32/libasan.a>
+2356627 lrwxrwxrwx. 1 root root 39 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libasan.a -> ../../../i686-redhat-linux/15/libasan.a
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/103/task/103/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libasan.a
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libasan.a'
 
-Filename 9:</proc/1048/exe>
-79914 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1048/exe
+Filename 9:</usr/lib/gcc/x86_64-redhat-linux/15/32/libatomic.a>
+2356630 lrwxrwxrwx. 1 root root 41 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libatomic.a -> ../../../i686-redhat-linux/15/libatomic.a
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1048/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libatomic.a
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libatomic.a'
 
-Filename 10:</proc/1048/task/1048/exe>
-79968 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1048/task/1048/exe
+Filename 10:</usr/lib/gcc/x86_64-redhat-linux/15/32/libgomp.so>
+2356637 lrwxrwxrwx. 1 root root 28 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libgomp.so -> ../../../../libgomp.so.1.0.0
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1048/task/1048/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libgomp.so
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libgomp.so'
 
-Filename 11:</proc/1049/exe>
-80052 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1049/exe
+Filename 11:</usr/lib/gcc/x86_64-redhat-linux/15/32/libitm.a>
+2356638 lrwxrwxrwx. 1 root root 38 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libitm.a -> ../../../i686-redhat-linux/15/libitm.a
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1049/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libitm.a
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libitm.a'
 
-Filename 12:</proc/1049/task/1049/exe>
-80106 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1049/task/1049/exe
+Filename 12:</usr/lib/gcc/x86_64-redhat-linux/15/32/libquadmath.a>
+2356640 lrwxrwxrwx. 1 root root 43 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libquadmath.a -> ../../../i686-redhat-linux/15/libquadmath.a
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1049/task/1049/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libquadmath.a
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libquadmath.a'
 
-Filename 13:</proc/1051/exe>
-80190 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1051/exe
+Filename 13:</usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++.a>
+2356927 lrwxrwxrwx. 1 root root 41 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++.a -> ../../../i686-redhat-linux/15/libstdc++.a
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1051/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++.a
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++.a'
 
-Filename 14:</proc/1051/task/1051/exe>
-80244 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1051/task/1051/exe
+Filename 14:</usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++exp.a>
+2356929 lrwxrwxrwx. 1 root root 44 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++exp.a -> ../../../i686-redhat-linux/15/libstdc++exp.a
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1051/task/1051/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++exp.a
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++exp.a'
 
-Filename 15:</proc/1052/exe>
-80328 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1052/exe
+Filename 15:</usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++fs.a>
+2356930 lrwxrwxrwx. 1 root root 43 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++fs.a -> ../../../i686-redhat-linux/15/libstdc++fs.a
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1052/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++fs.a
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++fs.a'
 
-Filename 16:</proc/1052/task/1052/exe>
-80382 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1052/task/1052/exe
+Filename 16:</usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++.so>
+2356928 lrwxrwxrwx. 1 root root 31 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++.so -> ../../../../libstdc++.so.6.0.34
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1052/task/1052/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++.so
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libstdc++.so'
 
-Filename 17:</proc/105/exe>
-50891 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/105/exe
+Filename 17:</usr/lib/gcc/x86_64-redhat-linux/15/32/libsupc++.a>
+2356931 lrwxrwxrwx. 1 root root 41 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libsupc++.a -> ../../../i686-redhat-linux/15/libsupc++.a
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/105/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libsupc++.a
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libsupc++.a'
 
-Filename 18:</proc/105/task/105/exe>
-50945 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/105/task/105/exe
+Filename 18:</usr/lib/gcc/x86_64-redhat-linux/15/32/libubsan.a>
+2356642 lrwxrwxrwx. 1 root root 40 Aug  7 17:00 /usr/lib/gcc/x86_64-redhat-linux/15/32/libubsan.a -> ../../../i686-redhat-linux/15/libubsan.a
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/105/task/105/exe
+rm -fv /usr/lib/gcc/x86_64-redhat-linux/15/32/libubsan.a
+removed '/usr/lib/gcc/x86_64-redhat-linux/15/32/libubsan.a'
 
-Filename 19:</proc/10/exe>
-38083 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/10/exe
+Filename 19:</usr/lib/modules/6.12.7-200.fc41.x86_64/build>
+1180620 lrwxrwxrwx. 1 root root 39 Dec 26  2024 /usr/lib/modules/6.12.7-200.fc41.x86_64/build -> /usr/src/kernels/6.12.7-200.fc41.x86_64
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/10/exe
+rm -fv /usr/lib/modules/6.12.7-200.fc41.x86_64/build
+removed '/usr/lib/modules/6.12.7-200.fc41.x86_64/build'
 
-Filename 20:</proc/10/task/10/exe>
-38137 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/10/task/10/exe
+Filename 20:</usr/lib/modules/6.12.7-200.fc41.x86_64/source>
+1183744 lrwxrwxrwx. 1 root root 5 Dec 26  2024 /usr/lib/modules/6.12.7-200.fc41.x86_64/source -> build
  n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/10/task/10/exe
-
-Filename 21:</proc/1105/exe>
-78393 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1105/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1105/exe
-
-Filename 22:</proc/1105/task/1105/exe>
-78447 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1105/task/1105/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1105/task/1105/exe
-
-Filename 23:</proc/1123/exe>
-78742 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1123/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1123/exe
-
-Filename 24:</proc/1123/task/1123/exe>
-78796 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1123/task/1123/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1123/task/1123/exe
-
-Filename 25:</proc/1131/exe>
-88703 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1131/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1131/exe
-
-Filename 26:</proc/1131/task/1131/exe>
-88757 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/1131/task/1131/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/1131/task/1131/exe
-
-Filename 27:</proc/11/exe>
-38220 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/11/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/11/exe
-
-Filename 28:</proc/11/task/11/exe>
-38274 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/11/task/11/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/11/task/11/exe
-
-Filename 29:</proc/121/exe>
-51028 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/121/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/121/exe
-
-Filename 30:</proc/121/task/121/exe>
-51082 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/121/task/121/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/121/task/121/exe
-
-Filename 31:</proc/123/exe>
-51165 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/123/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/123/exe
-
-Filename 32:</proc/123/task/123/exe>
-51219 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/123/task/123/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/123/task/123/exe
-
-Filename 33:</proc/124/exe>
-51302 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/124/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/124/exe
-
-Filename 34:</proc/124/task/124/exe>
-51356 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/124/task/124/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/124/task/124/exe
-
-Filename 35:</proc/125/exe>
-51439 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/125/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/125/exe
-
-Filename 36:</proc/125/task/125/exe>
-51493 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/125/task/125/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/125/task/125/exe
-
-Filename 37:</proc/126/exe>
-51576 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/126/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/126/exe
-
-Filename 38:</proc/126/task/126/exe>
-51630 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/126/task/126/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/126/task/126/exe
-
-Filename 39:</proc/127/exe>
-51713 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/127/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/127/exe
-
-Filename 40:</proc/127/task/127/exe>
-51767 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/127/task/127/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/127/task/127/exe
-
-Filename 41:</proc/128/exe>
-51850 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/128/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/128/exe
-
-Filename 42:</proc/128/task/128/exe>
-51904 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/128/task/128/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/128/task/128/exe
-
-Filename 43:</proc/129/exe>
-51987 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/129/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/129/exe
-
-Filename 44:</proc/129/task/129/exe>
-52041 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/129/task/129/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/129/task/129/exe
-
-Filename 45:</proc/12/exe>
-38357 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/12/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/12/exe
-
-Filename 46:</proc/12/task/12/exe>
-38411 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/12/task/12/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/12/task/12/exe
-
-Filename 47:</proc/130/exe>
-52124 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/130/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/130/exe
-
-Filename 48:</proc/130/task/130/exe>
-52178 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/130/task/130/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/130/task/130/exe
-
-Filename 49:</proc/131/exe>
-52261 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/131/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/131/exe
-
-Filename 50:</proc/131/task/131/exe>
-52315 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/131/task/131/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/131/task/131/exe
-
-Filename 51:</proc/132/exe>
-52398 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/132/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/132/exe
-
-Filename 52:</proc/132/task/132/exe>
-52452 lrwxrwxrwx. 1 root root 0 Aug 24 16:42 /proc/132/task/132/exe
- n:0 a:1 L:1 b:1 c:1 d:1 f:1 p:1 t:1 S:1
-rm -fv /proc/132/task/132/exe
+rm -fv /usr/lib/modules/6.12.7-200.fc41.x86_64/source
+removed '/usr/lib/modules/6.12.7-200.fc41.x86_64/source'

@@ -40,7 +40,7 @@ rpm -qa > "${EE}" || exit "${LINENO}"
   #-exec rm -v '{}' \;
 
 sudo -v \
-  && time sudo bash -O globstar -xc \
+  && time sudo bash -O globstar -c \
      'ii=0
       for yy in /**
       do
