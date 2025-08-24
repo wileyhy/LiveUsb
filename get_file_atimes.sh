@@ -47,13 +47,15 @@ test_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 for dd in "${all_dirs[@]}"
 do
 
-  mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files < <(
-    sudo find -L "${dd}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null
-  )
+  sudo find -L "${dd}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null > "${MM}"
+
+  mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files < "${MM}"
 
   all_files=( "${all_files[@]}" )
 
 done && unset dd
+rm -f "${MM}"
+
 
 # Canonicalize all the paths
 set +e
