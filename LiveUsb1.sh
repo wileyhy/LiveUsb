@@ -2768,14 +2768,15 @@ _Fn_must_be_root_
 _Fn_test_os_
 
   #
+  #exit "${LINENO}"
   builtin set -x
-  exit "${LINENO}"
 
 ##
 :;:;: " Line ${nameref_Lineno}, Run r\estorecon "
 _Fn__run_restorecon_
 
   #
+  exit "${LINENO}"
   builtin set -x
 
 
