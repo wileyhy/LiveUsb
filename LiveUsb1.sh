@@ -93,7 +93,8 @@ export scr_nm prev_cmd_exit_code
 :;:;: "Line ${LINENO}, Define \Fn_error_and_exit_"
 function _Fn_error_and_exit_ (){
 
-    #local - && set -x #<>
+    #local - \
+      #&& set -x #<>
 
   local local_lineno
         local_lineno=$1
@@ -108,7 +109,8 @@ function _Fn_error_and_exit_ (){
 
   printf '%s, Error, line %d, %s\n' "${scr_nm}" "${local_lineno}" "$*" >&2
 
-  [[ ${prev_cmd_exit_code} = 0 ]] && prev_cmd_exit_code=01
+  [[ ${prev_cmd_exit_code} = 0 ]] \
+    && prev_cmd_exit_code=01
 
     exti_code=${prev_cmd_exit_code}
     LN=${local_lineno} builtin exit "${exti_code}"
@@ -173,8 +175,8 @@ function _Fn_enable_git_debug_settings_ (){
         GIT_TRACE_SETUP=true
         GIT_TRACE_SHALLOW=true
     }
-    [[ -f ~/.gitconfig ]] &&
-        git config --global --list --show-origin --show-scope |
+    [[ -f ~/.gitconfig ]] \
+      && git config --global --list --show-origin --show-scope |
             cat -n
 }
 #_Fn_enable_git_debug_settings_
@@ -188,7 +190,8 @@ function _Fn_enable_git_debug_settings_ (){
 ## Usage,   \Fn_pause_to_check_ ${nameref_Lineno}
 function _Fn_pause_to_check_ (){
 
-    local - && set -
+    local - \
+      && set -
 
     ## Q, Why inherit attributes and values when you assign values anyway?
     local -I exti_code=101
@@ -196,8 +199,9 @@ function _Fn_pause_to_check_ (){
     local -a KK=( "$@" )
     local reply
 
-    [[ -n ${KK[*]:0:1} ]] &&
-        printf '\n%s, %s, %s\n' "${scr_nm}" "${FUNCNAME[0]}" "${KK[@]}" >&2
+    [[ -n ${KK[*]:0:1} ]] \
+      && printf '\n%s, %s, %s\n' "${scr_nm}" "${FUNCNAME[0]}" "${KK[@]}" >&2
+
     printf '\n[Y|y|(enter)|(space)] is yes\nAnything else is { no and exit }\n' >&2
 
     if ! read -N1 -p $'\nReady?\n' -rst 600 reply >&2
@@ -2628,12 +2632,11 @@ function _Fn_write_bashrc_strings_ (){
 
   :;:;: " Certain parameters must be defined and have non-zero" \
       "values "
-  (( ${#files_for_use_with_bash[@]} == 0 )) && {
-    _Fn_error_and_exit_ "${LINENO}"
-  }
-  (( $# == 0 )) && {
-    _Fn_error_and_exit_ "${LINENO}"
-  }
+  (( ${#files_for_use_with_bash[@]} == 0 )) \
+    && _Fn_error_and_exit_ "${LINENO}"
+
+  (( $# == 0 )) \
+    && _Fn_error_and_exit_ "${LINENO}"
 
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
@@ -2739,7 +2742,8 @@ function _Fn_write_ssh_conf_ (){
 :;:;: " Define \Fn__run_restorecon_ "
 function _Fn__run_restorecon_(){
 
-    #local - && set -x #<>
+    #local - \
+      #&& set -x #<>
 
   local dd=$( date '+%F')
   local tt=$( date '+%H-%M-%S')
@@ -2765,7 +2769,8 @@ function _Fn__run_restorecon_(){
         rm -fv "${FF}"
       fi
     fi
-  done && unset FF
+  done \
+    && unset FF
   
   {
     sudo restorecon -F -D -m -R / \
