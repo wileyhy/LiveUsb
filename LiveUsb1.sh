@@ -2729,11 +2729,23 @@ function _Fn_write_ssh_conf_ (){
 :;:;: " Define \Fn__run_restorecon_ "
 function _Fn__run_restorecon_(){
   local tt=$( date '+%F_%H-%M-%S')
+  local ff=~/restorecon
+  local files=( "${ff}"_* )
+
+  for FF in "${files[@]}"
+  do
+    if [[ -f ${FF} ]] \
+      && [[ ! -L ${FF} ]]
+    then
+      rm -fv "${FF}"
+    fi
+  done
+  
   {
     sudo restorecon -F -D -m -R / \
       |& grep -v "Operation not supported"
   } \
-    | sudo tee -a ~/"restorecon_${tt}_o"
+    | tee -a "${ff}_${tt}_o"
 }
 
 
