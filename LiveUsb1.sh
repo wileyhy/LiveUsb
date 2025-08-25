@@ -597,15 +597,15 @@ function _Fn_increase_disk_space_ (){
 
     while true
     do
-      [[ -z ${1:-} ]] &&
-        break 1 # <> s\et-u
+      [[ -z ${1:-} ]] \
+        && break 1 # <> s\et-u
 
       # shellcheck disable=SC2190
       Aa_fsos5+=( "${1%% *}" "${1#* }")
       shift 1
 
-      (( $# == 0 )) &&
-        break 1
+      (( $# == 0 )) \
+        && break 1
     done
   fi
 
@@ -783,7 +783,8 @@ function _Fn_reqd_user_files_ (){
   local YY
   for YY in "${!array_mt_pts[@]}"
   do
-    [[ -z ${array_mt_pts[YY]} ]] && unset "array_mt_pts[YY]"
+    [[ -z ${array_mt_pts[YY]} ]] \
+      && unset "array_mt_pts[YY]"
   done
   unset YY
 
@@ -1035,8 +1036,8 @@ function _Fn_rsync_install_if_missing_ (){
 
   :;:;: " Unset a local variable defined and assigned in only this" "function, and not any variables by the same name... "
   #+  from any other scope
-  [[ ${unset_local_var_rand5791:=} = "yes" ]] &&
-    unset unset_local_var_rand5791 data_dir
+  [[ ${unset_local_var_rand5791:=} = "yes" ]] \
+    && unset unset_local_var_rand5791 data_dir
 
   unset fn_source_var fn_target_dir
 
@@ -1749,8 +1750,8 @@ function _Fn_setup_dnf_ (){
       #+   RHS is matched as in Pattern Matching, ie, as \PID 1.\
       :;:;: $'if any PID\x60s were found... ...and if there are any' \
           $'PID\x60s other than PID 1...'
-      if  [[ -n ${a_pids[*]: -1:1} ]] &&
-          ! [[ ${a_pids[*]} = 1 ]]
+      if  [[ -n ${a_pids[*]: -1:1} ]] \
+        && ! [[ ${a_pids[*]} = 1 ]]
       then
         II=0
         XX=${#a_pids[@]}
@@ -1768,8 +1769,8 @@ function _Fn_setup_dnf_ (){
           : $'\x60kill\x60'" loop $(( ++II )) of ${XX}"
 
           ZZ=${a_pids[YY]}
-          (( ZZ == 1 )) &&
-            continue 001
+          (( ZZ == 1 )) \
+            && continue 001
           sleep 1
 
           for AA in HUP USR1 TERM KILL
@@ -2145,9 +2146,9 @@ function _Fn_setup_gpg_ (){
           \(  \!  -gid "${login_uid}" -a  \! -uid 0  \) \
         \)  -print0 \
   )
-  [[ -n ${problem_files[*]} ]] && {
-    _Fn_error_and_exit_ "${LINENO}" "Incorrect ownership on --" "${problem_files[@]}"
-  }
+  [[ -n ${problem_files[*]} ]] \
+    && _Fn_error_and_exit_ "${LINENO}" "Incorrect ownership on --" "${problem_files[@]}"
+
   unset problem_files
 
   :;:;: $'If any files are owned by root, then change their ownership to \x24USER'
@@ -2230,8 +2231,8 @@ function _Fn_setup_network_ (){
     esac
 
     # shellcheck disable=SC2310
-    if  ! _Fn_test_dns_ "${dns_srv_1}" ||
-        ! _Fn_test_dns_ "${dns_srv_A}"
+    if   ! _Fn_test_dns_ "${dns_srv_1}" \
+      || ! _Fn_test_dns_ "${dns_srv_A}"
     then
       printf '\n%s, Network, Giving up, exiting.\n\n' "${scr_nm}"
     else
@@ -2330,9 +2331,9 @@ function _Fn_setup_ssh_ (){
   )
 
   :;:;: " Make sure ssh daemon is running (?) "
-  if  [[ -z ${SSH_AUTH_SOCK:-} ]] ||
-      [[ -z ${SSH_AGENT_PID:-} ]] ||
-      [[ -z ${ssh_agent_pids[*]:-} ]]
+  if   [[ -z ${SSH_AUTH_SOCK:-} ]] \
+    || [[ -z ${SSH_AGENT_PID:-} ]] \
+    || [[ -z ${ssh_agent_pids[*]:-} ]]
   then
     :;:;: $'If there aren\x60t any SSH Agents running, then start one'
     ## Note, https://stackoverflow.com/questions/10032461/\
@@ -2373,8 +2374,9 @@ function _Fn_setup_ssh_ (){
         local II
         for II in "${!ssh_agent_pids[@]}"
         do
-          [[ ${II} = 0 ]] &&
-            continue
+          [[ ${II} = 0 ]] \
+            && continue
+
           "$( type -P kill )" "${ver__[@]}" "${ssh_agent_pids[II]}"
           printf '<%s>\n' "${II}"
         done
@@ -2423,7 +2425,7 @@ function _Fn_setup_temp_dirs_ (){
   )
 
   [[ -d ${tmp_dir} ]] \
-      || _Fn_error_and_exit_ "${LINENO}"
+    || _Fn_error_and_exit_ "${LINENO}"
   readonly tmp_dir
 
 }
@@ -2514,8 +2516,8 @@ function _Fn_setup_vim_ (){
   fi
 
   :;:;: " Write .vimrc "
-  if  (( ${#arr_vrc[@]} == 0 )) ||
-      ! [[ ${WW} = "${YY}" ]]
+  if  (( ${#arr_vrc[@]} == 0 )) \
+    || ! [[ ${WW} = "${YY}" ]]
   then
     : $'Test returned \x22true,\x22 the number didn\x60t match, so write to .vimrc'
 
@@ -2526,15 +2528,14 @@ function _Fn_setup_vim_ (){
     umask 177
 
     :;:;: " Write the root file "
-    sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" || {
-      _Fn_error_and_exit_ "${LINENO}"
-    }
+    sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" \
+      || _Fn_error_and_exit_ "${LINENO}"
 
     :;:;: " Copy the root file to ${HOME}" \
         $' and repair DAC\x60s on '"${USER}"$'\x60s copy'
-    sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc || {
-      _Fn_error_and_exit_ "${LINENO}"
-    }
+    sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc \
+      || _Fn_error_and_exit_ "${LINENO}"
+
     sudo -- chown "${UID}:${UID}" -- ~/.vimrc
     chmod 0400 -- ~/.vimrc
 
@@ -2609,10 +2610,10 @@ function _Fn_trap_exit_ (){
   trap - EXIT
 
   :;:;: " Remove temporary directory, if one exists "
-  [[ -d ${tmp_dir:=} ]] &&
-    "$( type -P rm )" \
-        --force --one-file-system --preserve-root=all --recursive \
-        "${ver__[@]}" "${tmp_dir}"
+  [[ -d ${tmp_dir:=} ]] \
+    && "$( type -P rm )" \
+      --force --one-file-system --preserve-root=all --recursive \
+      "${ver__[@]}" "${tmp_dir}"
 
   builtin exit "${prev_cmd_exit_code}"
 
@@ -2668,9 +2669,9 @@ function _Fn_write_bashrc_strings_ (){
           :;:;: " Then write the function definition into the" \
               "file "
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" |
-            sudo -- tee --append -- "${file_x}" > /dev/null || {
-              _Fn_error_and_exit_ "${LINENO}"
-            }
+            sudo -- tee --append -- "${file_x}" > /dev/null \
+              || _Fn_error_and_exit_ "${LINENO}"
+
         else
           :;:;: " Definition exists, skipping "
         fi
@@ -2892,9 +2893,8 @@ for BB in "${dns_srv_A}" "${dns_srv_1}"
 do
   if ! ping -4qc1 -- "${BB}" > /dev/null 2>&1
   then
-    sudo -- nice --adjustment=-20 -- systemctl restart -- NetworkManager.service || {
-      _Fn_error_and_exit_ "${LINENO}"
-    }
+    sudo -- nice --adjustment=-20 -- systemctl restart -- NetworkManager.service \
+      || _Fn_error_and_exit_ "${LINENO}"
   fi
 done
 unset BB
@@ -2951,9 +2951,8 @@ _Fn_clone_repo_
 :;:;: " Line ${nameref_Lineno}, Remind user of commands for the" \
     "interactive shell "
 
-popd > /dev/null || {
-  _Fn_error_and_exit_ "${LINENO}"
-}
+popd > /dev/null \
+  || _Fn_error_and_exit_ "${LINENO}"
 
 
 ##
