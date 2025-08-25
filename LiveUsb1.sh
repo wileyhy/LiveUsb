@@ -2781,14 +2781,14 @@ _Fn_test_os_
 
   #
   #exit "${LINENO}"
-  builtin set -x
+  #builtin set -x
 
 ##
 :;:;: " Line ${nameref_Lineno}, Run r\estorecon "
 _Fn__run_restorecon_
 
   #
-  exit "${LINENO}"
+  #exit "${LINENO}"
   builtin set -x
 
 
@@ -2797,8 +2797,9 @@ _Fn__run_restorecon_
     "installed from off-disk "
 #_Fn_reqd_user_files_
 
-  #builtin exit 101
-  #
+  exit "${LINENO}"
+  builtin set -x
+
 
 
 ##
