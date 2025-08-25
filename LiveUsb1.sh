@@ -91,7 +91,7 @@ export scr_nm prev_cmd_exit_code
 
 ##
 :;:;: "Line ${LINENO}, Define \Fn_error_and_exit_"
-function _Fn_error_and_exit_ (){
+function _Fn_error_and_ext_ (){
 
     #local - \
       #&& set -x #<>
@@ -116,7 +116,7 @@ function _Fn_error_and_exit_ (){
     LN=${local_lineno} builtin exit "${exti_code}"
 }
 
-  #_Fn_error_and_exit_ "${LINENO}" #<>
+  #_Fn_error_and_ext_ "${LINENO}" #<>
   #exit "${LINENO}" #<>
   #set -x #<>
 
@@ -435,7 +435,7 @@ fi
 function _Fn_clone_repo_ (){ #
 
   [[ ${PWD} = "${local_dir_1}" ]] #\
-    #|| _Fn_error_and_exit_ "${LINENO}"
+    #|| _Fn_error_and_ext_ "${LINENO}"
 
   local AA
     AA=$(
@@ -448,7 +448,7 @@ function _Fn_clone_repo_ (){ #
       || ! [[ ${AA} == "${sha256_of_repo_readme}" ]]
   then
     git clone --origin github "https://github.com/wileyhy/${script__repo_name}" \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
   fi
   unset AA
   #
@@ -491,7 +491,7 @@ function _Fn_get_pids_for_restarting_ (){
 
   readarray -t dnf_o < <(
     sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
   )
   if [[ ${#dnf_o[@]} -eq 0 ]]
   then
@@ -552,7 +552,7 @@ function _Fn_gh_auth_login_command_ (){
       -h github.com \
       -s admin:public_key,read:gpg_key,admin:ssh_signing_key \
       -w \
-        || _Fn_error_and_exit_ "${LINENO}"
+        || _Fn_error_and_ext_ "${LINENO}"
 }
 
 
@@ -672,7 +672,7 @@ function _Fn_increase_disk_space_ (){
                     unset "Aa_fsos5[${AA}]"
                     break 1
                   else
-                    _Fn_error_and_exit_ "${LINENO}" "Unknown error"
+                    _Fn_error_and_ext_ "${LINENO}" "Unknown error"
                   fi
                 ;; #
             n |f )
@@ -734,13 +734,13 @@ function _Fn_must_be_root_ (){
 
   if (( UID == 0 ))
   then
-    _Fn_error_and_exit_ "${LINENO}" "Must be a regular user and use sudo"
+    _Fn_error_and_ext_ "${LINENO}" "Must be a regular user and use sudo"
   elif sudo --validate
   then
     : validation succeeded
   else
     : validation failed
-    _Fn_error_and_exit_ "${LINENO}"
+    _Fn_error_and_ext_ "${LINENO}"
   fi
 
 }
@@ -781,7 +781,7 @@ function _Fn_reqd_user_files_ (){
   #! Note, error
   if [[ -z ${pttn_device_path} ]]
   then
-    _Fn_error_and_exit_ "${LINENO}" $'Necessary USB drive isn\x27t plugged in' \
+    _Fn_error_and_ext_ "${LINENO}" $'Necessary USB drive isn\x27t plugged in' \
       'or its filesystem has changed.'
   fi
 
@@ -823,7 +823,7 @@ function _Fn_reqd_user_files_ (){
       ;; #
     * )
       :;:;: " Line ${nameref_Lineno}, Multiple matches "
-      _Fn_error_and_exit_ "${LINENO}" \
+      _Fn_error_and_ext_ "${LINENO}" \
         "The target partition is mounted in multiple places"
       ;; #
   esac
@@ -833,7 +833,7 @@ function _Fn_reqd_user_files_ (){
   local mount_user
   mount_user=${mount_pt%/*} mount_user=${mount_user##*/}
   [[ ${mount_user} = @(root|liveuser) ]] \
-    || _Fn_error_and_exit_ "${LINENO}"
+    || _Fn_error_and_ext_ "${LINENO}"
   unset mount_user
 
   :;:;: " Line ${nameref_Lineno}, USB drive must be mounted "
@@ -842,11 +842,11 @@ function _Fn_reqd_user_files_ (){
     if ! [[ -d "${mount_pt}" ]]
     then
       sudo -- mkdir --parents -- "${mount_pt}" \
-        || _Fn_error_and_exit_ "${LINENO}"
+        || _Fn_error_and_ext_ "${LINENO}"
     fi
 
     sudo -- mount -- "${pttn_device_path}" "${mount_pt}" \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
     is_mounted=yes
     sync -f
   fi
@@ -874,7 +874,7 @@ function _Fn_reqd_user_files_ (){
   if ! [[ -d ${data_dir} ]] \
     || [[ -L ${data_dir} ]]
   then
-    _Fn_error_and_exit_ "${LINENO}"
+    _Fn_error_and_ext_ "${LINENO}"
   fi
 
   :;:;: " Line ${nameref_Lineno}, Data directory must be readable via ACL," \
@@ -896,12 +896,12 @@ function _Fn_reqd_user_files_ (){
   if  ! [[ -f ${data_dir}/${datdir_idfile} ]] \
     || [[ -L ${data_dir}/${datdir_idfile} ]]
   then
-    _Fn_error_and_exit_ "${LINENO}"
+    _Fn_error_and_ext_ "${LINENO}"
   fi
 
   if ! [[ ${ZZ} = "${data_dir_id_sha256}" ]]
   then
-    _Fn_error_and_exit_ "${LINENO}"
+    _Fn_error_and_ext_ "${LINENO}"
   fi
   unset ZZ
 
@@ -956,7 +956,7 @@ function _Fn_reqd_user_files_ (){
           then
 
             sudo -- mount -- "${pttn_device_path}" "${mount_pt}" \
-              || _Fn_error_and_exit_ "${LINENO}"
+              || _Fn_error_and_ext_ "${LINENO}"
 
             if mount \
               | grep -q "${pttn_device_path}"
@@ -968,7 +968,7 @@ function _Fn_reqd_user_files_ (){
           :;:;: " Line ${nameref_Lineno}, If the source conf file/dir still does not exist," "then throw an error "
           if ! [[ -e ${source_file} ]]
           then
-            _Fn_error_and_exit_ "${LINENO}" "${QQ[BB]}" "${source_file}"
+            _Fn_error_and_ext_ "${LINENO}" "${QQ[BB]}" "${source_file}"
           fi
         fi
 
@@ -1017,7 +1017,7 @@ function _Fn_rsync_install_if_missing_ (){
   then
     if ! [[ -d ${fn_target_dir} ]]
     then
-      _Fn_error_and_exit_ "${LINENO}" "${fn_target_dir}"
+      _Fn_error_and_ext_ "${LINENO}" "${fn_target_dir}"
     fi
   else
     local fn_umask
@@ -1058,7 +1058,7 @@ function _Fn_rsync_install_if_missing_ (){
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
     rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" \
-      || _Fn_error_and_exit_ "${LINENO}" "${fn_target_dir}"
+      || _Fn_error_and_ext_ "${LINENO}" "${fn_target_dir}"
   fi
 
   :;:;: " Unset a local variable defined and assigned in only this" "function, and not any variables by the same name... "
@@ -1085,7 +1085,7 @@ function _Fn_setup_bashrc_ (){
     :;:;: " Line ${nameref_Lineno}, bashrc -- RC File must exist "
     if ! sudo -- "$(type -P test)" -f "${WW}"
     then
-      _Fn_error_and_exit_ "${LINENO}" "${WW}"
+      _Fn_error_and_ext_ "${LINENO}" "${WW}"
     fi
 
     ## Note, chmod changes the ctime, even with no change of DAC\s
@@ -1116,7 +1116,7 @@ function _Fn_setup_bashrc_ (){
 
     :;:;: " Line ${nameref_Lineno}, bashrc -- ...per-script-execution file backup "
     sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}~" \
-      || _Fn_error_and_exit_ "${LINENO}" "${WW}"
+      || _Fn_error_and_ext_ "${LINENO}" "${WW}"
   done
   unset WW
 
@@ -1236,7 +1236,7 @@ function _Fn_setup_bashrc_ (){
   :;:;: " Line ${nameref_Lineno}, bashrc -- Test for any missing parameters "
   if (( ${#missing_vars_and_fns[@]} > 0 ))
   then
-    _Fn_error_and_exit_ "${LINENO}" "${missing_vars_and_fns[@]}"
+    _Fn_error_and_ext_ "${LINENO}" "${missing_vars_and_fns[@]}"
   fi
 
   :;:;: " Line ${nameref_Lineno}, bashrc -- Create Associative arrays of required" \
@@ -1473,7 +1473,7 @@ function _Fn_setup_dnf_ (){
         then
           unset "removable_pkgs[QQ]"
         else
-          _Fn_error_and_exit_ "${LINENO}" "${removable_pkgs[QQ]}"
+          _Fn_error_and_ext_ "${LINENO}" "${removable_pkgs[QQ]}"
         fi
         unset DD exp_dt dnf_cmd
       done
@@ -1572,7 +1572,7 @@ function _Fn_setup_dnf_ (){
             nice --adjustment=-20 -- \
                 dnf --assumeyes --quiet upgrade "${pkgs_installed[@]}"
     then
-        _Fn_error_and_exit_ "${LINENO}"
+        _Fn_error_and_ext_ "${LINENO}"
     fi
   fi
 
@@ -1592,7 +1592,7 @@ function _Fn_setup_dnf_ (){
     for VV in "${not_yet_installed_pkgs[@]}"
     do
       sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install "${VV}" \
-        || _Fn_error_and_exit_ "${LINENO}"
+        || _Fn_error_and_ext_ "${LINENO}"
 
       _Fn_get_pids_for_restarting_
 
@@ -2077,10 +2077,10 @@ function _Fn_setup_git_ (){
 
     # shellcheck disable=SC2024 #(info): sudo does not affect redirects....
     tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
 
     chmod 0644 "${ver__[@]}" "${git_mesg}" \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
   fi
 
   :;:;: " Git -- gitignore (global) "
@@ -2097,10 +2097,10 @@ function _Fn_setup_git_ (){
 
     # shellcheck disable=SC2024
     tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
 
     chmod 0644 "${ver__[@]}" "${git_ignr}" \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
   fi
 
   :;:;: $'Git -- Set correct DAC\x60s (ownership and permissions)'
@@ -2149,14 +2149,14 @@ function _Fn_setup_gti_user_dirs_ (){
     if ! [[ -d ${UU} ]]
     then
       mkdir --mode=0700 "${ver__[@]}" "${UU}" \
-        || _Fn_error_and_exit_ "${LINENO}"
+        || _Fn_error_and_ext_ "${LINENO}"
     fi
   done
   unset UU
 
   :;:;: " Change dirs "
   pushd "${local_dir_1}" > /dev/null \
-    || _Fn_error_and_exit_ "${LINENO}"
+    || _Fn_error_and_ext_ "${LINENO}"
 }
 
 
@@ -2175,7 +2175,7 @@ function _Fn_setup_gpg_ (){
         \)  -print0 \
   )
   [[ -n ${problem_files[*]} ]] \
-    && _Fn_error_and_exit_ "${LINENO}" "Incorrect ownership on --" "${problem_files[@]}"
+    && _Fn_error_and_ext_ "${LINENO}" "Incorrect ownership on --" "${problem_files[@]}"
 
   unset problem_files
 
@@ -2183,7 +2183,7 @@ function _Fn_setup_gpg_ (){
   sudo -- \
     find -- ~/.gnupg -xdev \( -uid 0 -o -gid 0 \) -execdir \
       chown "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; \
-        || _Fn_error_and_exit_ "${LINENO}"
+        || _Fn_error_and_ext_ "${LINENO}"
 
   :;:;: $'If any dir perms aren\x60t 700 or any file perms aren\x60t 600, then make them so'
   find -- ~/.gnupg -xdev -type d \! -perm 700  -execdir \
@@ -2248,14 +2248,14 @@ function _Fn_setup_network_ (){
     :;:;: " Connect the interface "
     case "${#ifaces[@]}" in
       0 )
-        _Fn_error_and_exit_ "${LINENO}" "No network device available"
+        _Fn_error_and_ext_ "${LINENO}" "No network device available"
         ;; #
       1 )
         nmcli c up "${ifaces[*]}"
         sleep 5
         ;; #
       * )
-        _Fn_error_and_exit_ "${LINENO}" "Multiple network devices available"
+        _Fn_error_and_ext_ "${LINENO}" "Multiple network devices available"
         ;; #
     esac
 
@@ -2293,14 +2293,14 @@ function _Fn_setup_ssh_ (){
   if [[ ! -d ${ssh_usr_conf_dir} ]]
   then
       mkdir -m 0700 "${ssh_usr_conf_dir}" \
-        || _Fn_error_and_exit_ "${LINENO}"
+        || _Fn_error_and_ext_ "${LINENO}"
   fi
 
   # shellcheck disable=SC2310
   if [[ ! -f ${ssh_user_conf_file} ]]
   then
       _Fn_write_ssh_conf_ \
-        || _Fn_error_and_exit_ "${LINENO}"
+        || _Fn_error_and_ext_ "${LINENO}"
   fi
 
      # <>
@@ -2336,7 +2336,7 @@ function _Fn_setup_ssh_ (){
             \! -gid "${login_gid}"  \
         \) -execdir \
           chown -- "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; \
-            || _Fn_error_and_exit_ "${LINENO}"
+            || _Fn_error_and_ext_ "${LINENO}"
     find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir \
       chmod 700 "${ver__[@]}" \{\} \; #
     find -- "${ssh_usr_conf_dir}" -xdev -type f -execdir \
@@ -2385,7 +2385,7 @@ function _Fn_setup_ssh_ (){
 
   case "${#ssh_agent_pids[@]}" in
     0 )
-        _Fn_error_and_exit_ "${LINENO}" "ssh-agent failed to start"
+        _Fn_error_and_ext_ "${LINENO}" "ssh-agent failed to start"
       ;; #
     1 )
         if [[ -z ${SSH_AGENT_PID:-} ]]
@@ -2449,12 +2449,12 @@ function _Fn_setup_temp_dirs_ (){
   tmp_dir=$(
     if ! TMPDIR="" mktemp --directory --suffix=-LiveUsb 2>&1
     then
-      _Fn_error_and_exit_ "${LINENO}"
+      _Fn_error_and_ext_ "${LINENO}"
     fi
   )
 
   [[ -d ${tmp_dir} ]] \
-    || _Fn_error_and_exit_ "${LINENO}"
+    || _Fn_error_and_ext_ "${LINENO}"
   readonly tmp_dir
 
 }
@@ -2473,7 +2473,7 @@ function _Fn_setup_time_ (){
       : true
   else
       : false
-      _Fn_error_and_exit_ "${LINENO}"
+      _Fn_error_and_ext_ "${LINENO}"
   fi
 
   sudo -- chronyc makestep > /dev/null
@@ -2527,7 +2527,7 @@ function _Fn_setup_vim_ (){
     *)
         printf '\n  Multiple .vimrc files found, please edit the filesystem.\n' >&2
         printf '\t%s\n' "${arr_vrc[@]}" >&2
-        _Fn_error_and_exit_ "${LINENO}"
+        _Fn_error_and_ext_ "${LINENO}"
       ;; #
   esac
 
@@ -2558,12 +2558,12 @@ function _Fn_setup_vim_ (){
 
     :;:;: " Write the root file "
     sudo -- rsync --archive --checksum -- "${tmp_dir}/vim-conf-text" "${strng_vrc}" \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
 
     :;:;: " Copy the root file to ${HOME}" \
         $' and repair DAC\x60s on '"${USER}"$'\x60s copy'
     sudo -- rsync --archive --checksum -- "${strng_vrc}" ~/.vimrc \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
 
     sudo -- chown "${UID}:${UID}" -- ~/.vimrc
     chmod 0400 -- ~/.vimrc
@@ -2603,7 +2603,7 @@ function _Fn_test_os_ (){
   #+   "fc38" or "Fedora Core 38")
   if ! [[ ${kern_rel} =~ \.fc[0-9]{2}\. ]]
   then
-    _Fn_error_and_exit_ "${LINENO}" "OS is not Fedora"
+    _Fn_error_and_ext_ "${LINENO}" "OS is not Fedora"
   fi
   unset kern_rel
 
@@ -2653,10 +2653,10 @@ function _Fn_write_bashrc_strings_ (){
   :;:;: " Certain parameters must be defined and have non-zero" \
       "values "
   (( ${#files_for_use_with_bash[@]} == 0 )) \
-    && _Fn_error_and_exit_ "${LINENO}"
+    && _Fn_error_and_ext_ "${LINENO}"
 
   (( $# == 0 )) \
-    && _Fn_error_and_exit_ "${LINENO}"
+    && _Fn_error_and_ext_ "${LINENO}"
 
   local JJ file_x Aa_index Aa_element
   local -n fn_nameref
@@ -2693,7 +2693,7 @@ function _Fn_write_bashrc_strings_ (){
               "file "
           printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" \
             | sudo -- tee --append -- "${file_x}" > /dev/null \
-              || _Fn_error_and_exit_ "${LINENO}"
+              || _Fn_error_and_ext_ "${LINENO}"
 
         else
           :;:;: " Definition exists, skipping "
@@ -2896,7 +2896,7 @@ do
   if ! ping -4qc1 -- "${BB}" > /dev/null 2>&1
   then
     sudo -- nice --adjustment=-20 -- systemctl restart -- NetworkManager.service \
-      || _Fn_error_and_exit_ "${LINENO}"
+      || _Fn_error_and_ext_ "${LINENO}"
   fi
 done
 unset BB
@@ -2954,7 +2954,7 @@ _Fn_clone_repo_
     "interactive shell "
 
 popd > /dev/null \
-  || _Fn_error_and_exit_ "${LINENO}"
+  || _Fn_error_and_ext_ "${LINENO}"
 
 
 ##
