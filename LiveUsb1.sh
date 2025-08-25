@@ -808,7 +808,7 @@ function _Fn_reqd_user_files_ (){
   esac
   unset array_mt_pts
 
-  :;:;: " Line ${nameref_Lineno}, FS mounting must be restricted to root and/or liveuser" ""
+  :;:;: " Line ${nameref_Lineno}, FS mounting must be restricted to root and/or liveuser"
   local mount_user
   mount_user=${mount_pt%/*} mount_user=${mount_user##*/}
   [[ ${mount_user} = @(root|liveuser) ]] || _Fn_error_and_exit_ "${LINENO}"
