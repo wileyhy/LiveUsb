@@ -306,6 +306,8 @@ fi
   datdir_idfile=.${script__repo_name}_id-key
   readonly script__repo_name scr_nm datadir_basenm datdir_idfile
 
+  #! Bug? hardcoded \data_pttn_uuid\.
+
   :;:;: " Line ${nameref_Lineno}, Variables, File and partition data and metadata "
   sha256_of_repo_readme=67e18b59ecd9140079503836e2dda1315b8799395b8da67693479b3d970f0a1
   data_pttn_uuid=7fcfd195-01
