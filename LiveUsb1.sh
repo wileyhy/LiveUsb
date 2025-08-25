@@ -176,8 +176,8 @@ function _Fn_enable_git_debug_settings_ (){
         GIT_TRACE_SHALLOW=true
     }
     [[ -f ~/.gitconfig ]] \
-      && git config --global --list --show-origin --show-scope |
-            cat -n
+      && git config --global --list --show-origin --show-scope \
+        | cat -n
 }
 #_Fn_enable_git_debug_settings_
 
@@ -496,8 +496,8 @@ function _Fn_get_pids_for_restarting_ (){
     declare -p dnf_o # <>
 
   readarray -t pipline0 < <(
-    printf '%s\n' "${dnf_o[@]}" |
-      grep --invert-match --fixed-strings --regexp="/firefox/"
+    printf '%s\n' "${dnf_o[@]}" \
+      | grep --invert-match --fixed-strings --regexp="/firefox/"
   )
   if [[ ${#pipline0[@]} -eq 0 ]]
   then
@@ -505,8 +505,8 @@ function _Fn_get_pids_for_restarting_ (){
   fi
 
   readarray -t pipline1 < <(
-    printf '%s\n' "${pipline0[@]}" |
-      awk '{ print $1 }'
+    printf '%s\n' "${pipline0[@]}" \
+      | awk '{ print $1 }'
   )
   if [[ ${#pipline1[@]} -eq 0 ]]
   then
@@ -514,8 +514,8 @@ function _Fn_get_pids_for_restarting_ (){
   fi
 
   readarray -t a_pids < <(
-    printf '%s\n' "${pipline1[@]}" |
-      grep --only-matching --extended-regexp ^"[0-9]*"$
+    printf '%s\n' "${pipline1[@]}" \
+      | grep --only-matching --extended-regexp ^"[0-9]*"$
   )
   if [[ ${#a_pids[@]} -eq 0 ]]
   then
@@ -589,9 +589,9 @@ function _Fn_increase_disk_space_ (){
         do
           printf '%s\0' "$( stat --printf='%i %n\n' -- "${BB}" )"
         done
-      } |
-        sort --unique |
-          tr --delete '\n'
+      } \
+        | sort --unique \
+        | tr --delete '\n'
     )
 
     ## Question, does this assoc array Aa_fsos5 need to be declared as such? (I
@@ -767,7 +767,7 @@ function _Fn_reqd_user_files_ (){
 
   :;:;: $' Vars. Is device identified by \x22\x24data_pttn_uuid\x22' 'attached to this machine? If so, get device path '
   local pttn_device_path
-  pttn_device_path=$( 
+  pttn_device_path=$(
     lsblk --noheadings --output partuuid,path \
       | awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }'
   )
@@ -1026,8 +1026,8 @@ function _Fn_rsync_install_if_missing_ (){
       for XX in "${poss_dat_dirs[@]}"
       do
         sha256sum -b "${XX}"
-      done |
-        awk -F'*' --assign "av_XX=${data_dir_id_sha256}" '$1 ~ av_XX { print $2 }'
+      done \
+        | awk -F'*' --assign "av_XX=${data_dir_id_sha256}" '$1 ~ av_XX { print $2 }'
       )
     unset XX poss_dat_dirs
   fi
@@ -1152,8 +1152,8 @@ function _Fn_setup_bashrc_ (){
       command -v firefox
     )
     EDITOR=$(
-      command -v vim vi nano |
-        head --lines=1
+      command -v vim vi nano \
+        | head --lines=1
     )
   }
 
@@ -1317,9 +1317,9 @@ function _Fn_setup_dnf_ (){
   #+   so that \shellcheck disable\ will apply to the entire block
 
   hash_of_installed_pkgs_A=$(
-    rpm --all --query |
-      sha256sum |
-      cut --delimiter=' ' --fields=1
+    rpm --all --query \
+      | sha256sum \
+      | cut --delimiter=' ' --fields=1
   )
 
   :;:;: " Line ${nameref_Lineno}, Define filename for record of previous hash..B "
@@ -1472,9 +1472,9 @@ function _Fn_setup_dnf_ (){
     :;:;: " Get full list of rpms to upgrade, in an array; exit" \
         "on non-zero "
     readarray -d "" -t pkgs_for_upgrade < <(
-      sudo -- dnf --assumeno --security --bugfix upgrade 2>/dev/null |
-        awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' |
-        grep -vE ^replacing$
+      sudo -- dnf --assumeno --security --bugfix upgrade 2>/dev/null \
+        | awk '$2 ~ /x86_64|noarch/ { printf "%s\0", $1 }' \
+        | grep -vE ^replacing$
       )
 
     :;:;: $'remove all  kernel  and  firmware  rpms from array \x24pkgs_for_upgrade array'
@@ -1588,8 +1588,8 @@ function _Fn_setup_dnf_ (){
         do
             : $'\x22${a_pids[WW]}\x22:' "${a_pids[WW]}" # <>
 
-          ps aux |
-            awk --assign "CC=${a_pids[WW]}" '$2 ~ CC { print }'
+          ps aux \
+            | awk --assign "CC=${a_pids[WW]}" '$2 ~ CC { print }'
 
           :;:;: " Ensure a process is still running before trying" \
               "to kill it "
@@ -1671,8 +1671,8 @@ function _Fn_setup_dnf_ (){
             --timeout 1000 TERM \
             --timeout 1000 KILL "${ver__[@]}"  "${a_pids[WW]}"
           sleep 3
-          ps aux |
-            awk --assign "DD=${a_pids[WW]}" '$2 ~ DD { print }'
+          ps aux \
+            | awk --assign "DD=${a_pids[WW]}" '$2 ~ DD { print }'
 
         done
         unset WW
@@ -1692,9 +1692,9 @@ function _Fn_setup_dnf_ (){
 
   :;:;: $'Get new hash of installed packages, ie, \x24{hash..B}'
   hash_of_installed_pkgs_B=$(
-    rpm --all --query |
-      sha256sum |
-      awk '{ print $1 }'
+    rpm --all --query \
+      | sha256sum \
+      | awk '{ print $1 }'
   )
 
   :;:;: $'Write \x24{hash..B} to disk'
@@ -1709,8 +1709,8 @@ function _Fn_setup_dnf_ (){
     :;:;: " If the target file is immutable "
     local has_immutable
     has_immutable=$(
-      lsattr -l "${hash_f}" |
-        awk '$1 ~ /i/ { printf "Yes" }'
+      lsattr -l "${hash_f}" \
+        | awk '$1 ~ /i/ { printf "Yes" }'
     )
 
     if [[ ${has_immutable} = "Yes" ]]
@@ -1734,8 +1734,8 @@ function _Fn_setup_dnf_ (){
   :;:;: " State, the file exists and is writeable "
 
   :;:;: $'Write \x24{hash..B} to disk, and make it RO and immutable.'
-  printf '%s\n' "${hash_of_installed_pkgs_B_prev}" |
-    tee "${hash_f}"
+  printf '%s\n' "${hash_of_installed_pkgs_B_prev}" \
+    | tee "${hash_f}"
   chmod 400 "${ver__[@]}" "${hash_f}"
   sudo chattr +i "${hash_f}"
   unset hash_f
@@ -1808,12 +1808,12 @@ function _Fn_setup_dnf_ (){
 
               :;:;: "...and if the PID in question no longer exists" \
                   "then unset the current array index number "
-              if  ps --no-headers --quick-pid "${ZZ}" |
-                    grep -qv defunct
+              if  ps --no-headers --quick-pid "${ZZ}" \
+                | grep -qv defunct
               then
                 is_pid_a_zombie=$(
-                  ps aux |
-                    awk --assign "EE=${ZZ}" '$2 ~ EE { print $8 }'
+                  ps aux \
+                    | awk --assign "EE=${ZZ}" '$2 ~ EE { print $8 }'
                 )
 
                 if [[ ${is_pid_a_zombie} = Z ]]
@@ -1858,8 +1858,8 @@ function _Fn_setup_gh_cli_ (){
   github_configs+=( [pager]=less )
   github_configs+=( [git_protocol]=ssh )
   gh_config_list_out=$(
-    gh config list |
-      tr '\n' ' '
+    gh config list \
+      | tr '\n' ' '
   )
 
   for KK in "${!github_configs[@]}"
@@ -2014,8 +2014,8 @@ function _Fn_setup_git_ (){
 
   :;:;: " Git -- remove a particular configuration key/value pair" \
       "if present "
-  if  printf '%s\n' "${git_cnf_glob_list[@]}" |
-        grep gpg.format "${qui__[@]}"
+  if printf '%s\n' "${git_cnf_glob_list[@]}" \
+    | grep gpg.format "${qui__[@]}"
   then
     git config --global --unset gpg.format
   fi
@@ -2216,8 +2216,8 @@ function _Fn_setup_network_ (){
 
     :;:;: " Get interface names "
     readarray -d "" -t ifaces < <(
-      nmcli --terse c |
-        awk --field-separator : '$1 !~ /lo/ { printf "%s\0", $1 }'
+      nmcli --terse c \
+        | awk --field-separator : '$1 !~ /lo/ { printf "%s\0", $1 }'
     )
 
     :;:;: " Connect the interface "
@@ -2330,8 +2330,8 @@ function _Fn_setup_ssh_ (){
       "more than one "
   local -a ssh_agent_pids
   readarray -t ssh_agent_pids < <(
-    ps h -C 'ssh-agent -s' -o pid |
-      tr -d ' '
+    ps h -C 'ssh-agent -s' -o pid \
+      | tr -d ' '
   )
 
   :;:;: " Make sure ssh daemon is running (?) "
@@ -2351,8 +2351,8 @@ function _Fn_setup_ssh_ (){
 
     :;:;: "...and try again to get the PID of the SSH Agent "
     readarray -t ssh_agent_pids < <(
-      ps h -C 'ssh-agent -s' -o pid |
-        tr -d ' '
+      ps h -C 'ssh-agent -s' -o pid \
+        | tr -d ' '
     )
   fi
 
@@ -2671,8 +2671,8 @@ function _Fn_write_bashrc_strings_ (){
 
           :;:;: " Then write the function definition into the" \
               "file "
-          printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" |
-            sudo -- tee --append -- "${file_x}" > /dev/null \
+          printf '\n## %s \n%s \n' "${Aa_index}" "${Aa_element}" \
+            | sudo -- tee --append -- "${file_x}" > /dev/null \
               || _Fn_error_and_exit_ "${LINENO}"
 
         else
@@ -2693,11 +2693,11 @@ function _Fn_write_bashrc_strings_ (){
       :;:;: " Loops D:1:a - complete === "
 
       :;:;: " For each file, if absent add a newline at EOF "
-      if  sudo -- tail --lines 1 -- "${file_x}" |
-            grep --quiet --extended-regexp "[[:graph:]]"
+      if  sudo -- tail --lines 1 -- "${file_x}" \
+        | grep --quiet --extended-regexp "[[:graph:]]"
       then
-        printf '\n' |
-          sudo -- tee --append -- "${file_x}" > /dev/null
+        printf '\n' \
+          | sudo -- tee --append -- "${file_x}" > /dev/null
       fi
 
       :;:;: " Loop D:1 - shut /// "
@@ -2771,7 +2771,7 @@ function _Fn__run_restorecon_(){
     fi
   done \
     && unset FF
-  
+
   {
     sudo restorecon -F -D -m -R / \
       |& grep -v "Operation not supported"
