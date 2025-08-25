@@ -2728,8 +2728,12 @@ function _Fn_write_ssh_conf_ (){
 ##
 :;:;: " Define \Fn__run_restorecon_ "
 function _Fn__run_restorecon_(){
-  sudo restorecon -F -D -m -p -R / \
-    |& grep -v "Operation not supported"
+  local tt=$( date '+%F_%H-%M-%S')
+  {
+    sudo restorecon -F -D -m -p -R / \
+      |& grep -v "Operation not supported"
+  } \
+    | sudo tee -a ~/"restorecon_${tt}_o"
 }
 
 
