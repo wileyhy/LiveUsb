@@ -2730,7 +2730,7 @@ function _Fn_write_ssh_conf_ (){
 function _Fn__run_restorecon_(){
   local tt=$( date '+%F_%H-%M-%S')
   {
-    sudo restorecon -F -D -m -p -R / \
+    sudo restorecon -F -D -m -R / \
       |& grep -v "Operation not supported"
   } \
     | sudo tee -a ~/"restorecon_${tt}_o"
