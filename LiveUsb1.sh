@@ -465,6 +465,9 @@ function _Fn_clone_repo_ (){ #
 : " Line ${LINENO}, Define \Fn_get_pids_for_restarting_ "
 function _Fn_get_pids_for_restarting_ (){
 
+  local - \
+    && set -x
+
   # shellcheck disable=SC2034
   local dnf_o
   local pipline0 pipline1
@@ -491,10 +494,17 @@ function _Fn_get_pids_for_restarting_ (){
   #+  done
 
 
-  readarray -t dnf_o < <(
+  {
     sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null \
       || _Fn_error_and_ext_ "${LINENO}"
-  )
+  } \
+    | tee ./dnf-nr_o
+
+  readarray -t dnf_o < ./dnf-nr_o
+
+    declare -p dnf_o
+    exit "${LINENO}"
+
   if [[ ${#dnf_o[@]} -eq 0 ]]
   then
     return 0
