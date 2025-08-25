@@ -221,7 +221,7 @@ function _Fn_pause_to_check_ (){
     esac
     unset KK
 }
-#_Fn_pause_to_check_
+_Fn_pause_to_check_
 
   #exit "${LINENO}" #<>
   #set -x #<>
