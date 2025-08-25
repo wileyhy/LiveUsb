@@ -84,8 +84,8 @@ umask 077
 
 # Variables.
 scr_nm=LiveUsb1.sh
-prev_cmd_exit_code=0
-export scr_nm prev_cmd_exit_code
+prev_cmd_ext_code=0
+export scr_nm prev_cmd_ext_code
 
 
 
@@ -109,10 +109,10 @@ function _Fn_error_and_ext_ (){
 
   printf '%s, Error, line %d, %s\n' "${scr_nm}" "${local_lineno}" "$*" >&2
 
-  [[ ${prev_cmd_exit_code} = 0 ]] \
-    && prev_cmd_exit_code=01
+  [[ ${prev_cmd_ext_code} = 0 ]] \
+    && prev_cmd_ext_code=01
 
-    exti_code=${prev_cmd_exit_code}
+    exti_code=${prev_cmd_ext_code}
     LN=${local_lineno} builtin exit "${exti_code}"
 }
 
@@ -2623,7 +2623,7 @@ function _Fn_trap_err_ (){
 
 
 ##
-#! Bug, these var assignments $prev_cmd_exit_code and $lineno only fail wh
+#! Bug, these var assignments $prev_cmd_ext_code and $lineno only fail wh
 #+   they\re on line number >=2 of  trap  "args section" ??
 
 
@@ -2641,7 +2641,7 @@ function _Fn_trap_exit_ (){
       --force --one-file-system --preserve-root=all --recursive \
       "${ver__[@]}" "${tmp_dir}"
 
-  builtin exit "${prev_cmd_exit_code}"
+  builtin exit "${prev_cmd_ext_code}"
 
 }
 
