@@ -179,7 +179,7 @@ function _Fn_enable_git_debug_settings_ (){
       && git config --global --list --show-origin --show-scope \
         | cat -n
 }
-#_Fn_enable_git_debug_settings_
+_Fn_enable_git_debug_settings_
 
   #exit "${LINENO}" #<>
   #set -x #<>
