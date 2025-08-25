@@ -2769,7 +2769,7 @@ _Fn_test_os_
 
   #
   builtin set -x
-
+  exit "${LINENO}"
 
 ##
 :;:;: " Line ${nameref_Lineno}, Run r\estorecon "
