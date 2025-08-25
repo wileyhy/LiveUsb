@@ -2726,6 +2726,14 @@ function _Fn_write_ssh_conf_ (){
 
 
 ##
+:;:;: " Define \Fn__run_restorecon_ "
+function _Fn__run_restorecon_(){
+  sudo restorecon -F -D -m -p -R / \
+    |& grep -v "Operation not supported"
+}
+
+
+##
 :;:;: " Line ${nameref_Lineno}, Functions Complete "
 
 #! ToDo, perhaps there should be a "main" function.
@@ -2754,6 +2762,14 @@ _Fn_must_be_root_
 ##
 :;:;: " Line ${nameref_Lineno}, Test OS "
 _Fn_test_os_
+
+  #
+  builtin set -x
+
+
+##
+:;:;: " Line ${nameref_Lineno}, Run r\estorecon "
+_Fn__run_restorecon_
 
   #
   builtin set -x
