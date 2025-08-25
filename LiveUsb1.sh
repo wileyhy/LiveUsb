@@ -5,9 +5,9 @@
 #+ version 1.2
 
 #! Note, Putting a \LN=$nameref_Lineno\, ie, LINENO or
-#!   \main_lineno=$nameref_Lineno\ assignment preceding an \exit\
+#!   \main_lineno=$nameref_Lineno\ assignment preceding an \e\xit\
 #!   command lets the value of LN or main_lineno match the line number
-#!   of the \exit\ command.
+#!   of the \e\xit\ command.
 #! Note, idempotent script
 #! Note, the symbol \<>\ marks code as for debugging purpoeses only
 #! Note, ...undocumented feature??
@@ -2808,7 +2808,7 @@ function _Fn__run_restorecon_(){
 
 ##
 #! Note, traps:
-#!   EXIT -- for exiting
+#!   EXIT -- for e\xiting
 #!   HUP USR1 TERM KILL -- for restarting processes
 #!   INT QUIT USR2 -- for stopping logging
 #!   For starting logging ?
@@ -2968,7 +2968,7 @@ fi
 
 
 ##
-:;:;: " Line ${nameref_Lineno}, Clean up & exit "
+:;:;: " Line ${nameref_Lineno}, Clean up & e\xit "
 printf '  %s - Done \n' "$( date +%H:%M:%S )"
 exti_code=00
 main_lineno="${nameref_Lineno}" exit
