@@ -2846,7 +2846,7 @@ _Fn__run_restorecon_
     "installed from off-disk "
 _Fn_reqd_user_files_
 
-  exit "${LINENO}"
+  #exit "${LINENO}"
   builtin set -x
 
 
@@ -2925,7 +2925,7 @@ _Fn_setup_gti_user_dirs_
 
 ##
 :;:;: "Git debug settings"
-#_Fn_enable_git_debug_settings_
+_Fn_enable_git_debug_settings_
 
 
 ##
