@@ -261,16 +261,19 @@ _Fn_verbose_flags_ #<>
     "early-definition required "
 
 :;:;: " Line ${nameref_Lineno}, Variables, Error handling "
+
 ## Bug, only way to export namerefs?  \declare -nx nameref_Lineno=...\
 ## Note, variable assignments, backslash escape bc  sed -i
 # shellcheck disable=SC1001
 declare -nx nameref_Lineno=L\INENO
 
 :;:;: " Line ${nameref_Lineno}, Variables, PATH "
+
 PATH='/usr/bin:/usr/sbin'
 export PATH
 
 :;:;: " Line ${nameref_Lineno}, Variables, Other environment variables "
+
 ## Note, Initialize some env vars found in sourced files, as a workaround for nounset
 ## Note, local style, inline comments, ie, \: foo ## Note, blah\, are useful for
 #+  rebutting false positives from ShellCheck
@@ -282,6 +285,7 @@ PS1=""
 declare BASHRCSOURCED USER_LS_COLORS
 
 :;:;: " Line ${nameref_Lineno}, Variables, Login UID and GID "
+
 ## Note, ps.1, \The real group ID identifies the group of the user who created
 #+   the process\ and \The effective group ID describes the group whose file
 #+   access permissions are used by the process\. See output of,
@@ -302,10 +306,12 @@ fi
 # shellcheck disable=SC2034
 {
   :;:;: " Line ${nameref_Lineno}, Variables, Script metadata "
+
   global_hyphn=$-
   export global_hyphn
 
   :;:;: " Line ${nameref_Lineno}, Variables, Repo info "
+
   script__repo_name=LiveUsb
   scr_nm=LiveUsb1.sh
   datadir_basenm=skel-LiveUsb
@@ -315,6 +321,7 @@ fi
   #! Bug? hardcoded \data_pttn_uuid\.
 
   :;:;: " Line ${nameref_Lineno}, Variables, File and partition data and metadata "
+
   sha256_of_repo_readme=67e18b59ecd9140079503836e2dda1315b8799395b8da67693479b3d970f0a1
   data_pttn_uuid=7fcfd195-01 # CORRECT
 
@@ -324,6 +331,7 @@ fi
   readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
 
   :;:;: " Line ${nameref_Lineno}, Variables, User info "
+
   user_real_name="Wiley Young"
   user_github_email_address=84648683+wileyhy@users.noreply.github.com
   #user_github_gpg_key=0C83679F385F55F914D25A21CD85D53BBCB172C2
@@ -331,6 +339,7 @@ fi
   readonly user_real_name user_github_email_address user_github_gpg_key
 
   :;:;: " Line ${nameref_Lineno}, Variables, Required RPM\s "
+
   list_of_minimum_reqd_rpms+=( [0]="ShellCheck"
                                [1]="firewall-config"
                                [2]="geany"
@@ -371,6 +380,7 @@ fi
   #files_for_use_with_github_depth_0+=( ~/.mozilla )
 
   :;:;: " Line ${nameref_Lineno}, Files, gh (cli) "
+
   files_for_use_with_github_depth_2+=(
       ~/.config/gh/{config.yml,gpg-agent.conf,hosts.yml,pubring.kbx,trustdb.gpg} )
   files_for_use_with_github_depth_3+=(
@@ -379,6 +389,7 @@ fi
       ~/.config/gh/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
 
   :;:;: " Line ${nameref_Lineno}, Files, gpg "
+
   files_for_use_with_github_depth_1+=(
       ~/.gnupg/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
   files_for_use_with_github_depth_2+=( ~/.gnupg/crls.d/DIR.txt )
@@ -388,18 +399,21 @@ fi
       ~/.gnupg/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
 
   :;:;: " Line ${nameref_Lineno}, Files, ssh "
+
   files_for_use_with_github_depth_1+=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
 
   :;:;: " Line ${nameref_Lineno}, Files, top "
+
   files_for_use_with_github_depth_2+=( ~/.config/procps/toprc )
 
   :;:;: " Line ${nameref_Lineno}, Files, vim "
+
   files_for_use_with_github_depth_0+=( ~/.vimrc )
+
   :;: "   End of Files lists " :;:;:;:
 }
 
 
-##
 :;: " Line ${nameref_Lineno}, Functions TOC ";:
 
   ##  Function name
@@ -434,7 +448,6 @@ fi
   #+  \Fn_write_ssh_conf_
 
 
-##
 : " Line ${nameref_Lineno}, Define \Fn_clone_repo_ "
 function _Fn_clone_repo_ (){ #
 
@@ -442,27 +455,27 @@ function _Fn_clone_repo_ (){ #
     #|| _Fn_error_and_ext_ "${LINENO}"
 
   local AA
-    AA=$(
-        sha256sum "${local_dir_1}/${script__repo_name}/README.md" \
-            | cut --delimiter=" " --fields=1
-        )
+  AA=$(
+    sha256sum "${local_dir_1}/${script__repo_name}/README.md" \
+      | cut --delimiter=" " --fields=1
+  )
 
   if     ! [[ -d ./${script__repo_name} ]] \
       || ! [[ -f ./${script__repo_name}/README.md ]] \
       || ! [[ ${AA} == "${sha256_of_repo_readme}" ]]
   then
+
+    #! Error: fatal: destination path 'LiveUsb' already exists and is not an empty dir.
+
     git clone --origin github "https://github.com/wileyhy/${script__repo_name}" \
       || _Fn_error_and_ext_ "${LINENO}"
   fi
-  unset AA
-  #
 }
 
 
 ## ToDo: add a \get_distro\ function
 
 
-##
 #: " Line ${nameref_Lineno}, Define \Fn_get_pids_for_restarting_ "
 : " Line ${LINENO}, Define \Fn_get_pids_for_restarting_ "
 function _Fn_get_pids_for_restarting_ (){
@@ -2916,54 +2929,38 @@ done
 unset BB
 
 
-##
 :;:;: " Line ${nameref_Lineno}, SSH "
 _Fn_setup_ssh_
 
-  #
 
 
-##
 :;:;: " Line ${nameref_Lineno}, GPG "
 _Fn_setup_gpg_
 
-  #
 
 
-##
 :;:;: " Line ${nameref_Lineno}, Make and change into directories "
 _Fn_setup_gti_user_dirs_
 
-  #
 
 
-##
 :;:;: "Git debug settings"
 _Fn_enable_git_debug_settings_
 
 
-##
 :;:;: " Line ${nameref_Lineno}, Git "
 _Fn_setup_git_
 
-  #
 
 
-##
 :;:;: " Line ${nameref_Lineno}, GH -- github CLI configuration "
 _Fn_setup_gh_cli_
 
-  #
 
-
-##
 :;:;: " Line ${nameref_Lineno}, Clone repo "
 _Fn_clone_repo_
 
-  #
 
-
-##
 :;:;: " Line ${nameref_Lineno}, Remind user of commands for the" \
     "interactive shell "
 
