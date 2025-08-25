@@ -211,7 +211,7 @@ function _Fn_pause_to_check_ (){
     fi
 
     case "${reply}" in
-        Y* | y* | $'\n' | \  )
+        Y* |y* |$'\n' |" " )
 	        printf '\nOkay\n\n' >&2
 	        ;; #
         * )
@@ -481,7 +481,12 @@ function _Fn_get_pids_for_restarting_ (){
   ## ToDo, implement some improved commands,
   #+  dnf --assumeno --security upgrade 2>/dev/null | grep -e ^'Install ' -e ^'Upgrade '
   #+  dnf --assumeno --bugfix upgrade 2>/dev/null | grep -e ^'Install ' -e ^'Upgrade '
-  #+  for II in 7656 11807 17897 72230; do ps_o=$( ps aux ); printf '\n%s\n' "$( grep -Ee "\<${II}\>" <<< "${ps_o}" )"; /bin/kill -s HUP "${II}"; sleep 2; done
+  #+  for II in 7656 11807 17897 72230
+  #+  do ps_o=$( ps aux )
+  #+    printf '\n%s\n' "$( grep -Ee "\<${II}\>" <<< "${ps_o}" )"
+  #+    /bin/kill -s HUP "${II}"
+  #+    sleep 2
+  #+  done
 
 
   readarray -t dnf_o < <(
@@ -652,11 +657,11 @@ function _Fn_increase_disk_space_ (){
           yes_or_no="${yes_or_no,,?}"
 
           case "${yes_or_no}" in
-            0 | 1 )
+            0 |1 )
                   printf '  Zero and one are ambiguous, please use letters. \n'
                   continue 1
                 ;; #
-            y | t )
+            y |t )
                   printf '  %s %b %s %s \n' "Script," ' \x60rm -i\x60 ' \
                     "requires a typed [yN] response," \
                     "it defaults to do-not-delete if a user just presses [enter]."
@@ -670,7 +675,7 @@ function _Fn_increase_disk_space_ (){
                     _Fn_error_and_exit_ "${LINENO}" "Unknown error"
                   fi
                 ;; #
-            n | f )
+            n |f )
                   printf '  Keeping this file. \n'
                   unset "Aa_fsos5[${AA}]"
                   break 1
@@ -765,7 +770,8 @@ function _Fn_reqd_user_files_ (){
   #+ In this script, index zero should exist, barring any future changes.
   #+   So, it\s a bit of future-proofing.
 
-  :;:;: $' Vars. Is device identified by \x22\x24data_pttn_uuid\x22' 'attached to this machine? If so, get device path '
+  :;:;: $' Vars. Is device identified by \x22\x24data_pttn_uuid\x22' \
+    'attached to this machine? If so, get device path '
   local pttn_device_path
   pttn_device_path=$(
     lsblk --noheadings --output partuuid,path \
@@ -782,7 +788,9 @@ function _Fn_reqd_user_files_ (){
   :;:;: " Line ${nameref_Lineno}, Vars, get mountpoints and label "
   local mount_pt data_dir is_mounted
   local -a array_mt_pts
-  readarray -t array_mt_pts < <( lsblk --noheadings --output mountpoints "${pttn_device_path}")
+  readarray -t array_mt_pts < <(
+    lsblk --noheadings --output mountpoints "${pttn_device_path}"
+  )
 
   local YY
   for YY in "${!array_mt_pts[@]}"
@@ -815,12 +823,13 @@ function _Fn_reqd_user_files_ (){
       ;; #
     * )
       :;:;: " Line ${nameref_Lineno}, Multiple matches "
-      _Fn_error_and_exit_ "${LINENO}" "The target partition is mounted in multiple places"
+      _Fn_error_and_exit_ "${LINENO}" \
+        "The target partition is mounted in multiple places"
       ;; #
   esac
   unset array_mt_pts
 
-  :;:;: " Line ${nameref_Lineno}, FS mounting must be restricted to root and/or liveuser"
+  :;:;: " Line ${nameref_Lineno}, FS mounting must be restricted to root/liveuser"
   local mount_user
   mount_user=${mount_pt%/*} mount_user=${mount_user##*/}
   [[ ${mount_user} = @(root|liveuser) ]] \
@@ -842,34 +851,47 @@ function _Fn_reqd_user_files_ (){
     sync -f
   fi
 
-  :;:;: $'FS mounting must auto- \x60umount\x60 after some time, and auto-' $'\x60mount\x60 on access'
-  if  mount | grep -Fe "${pttn_device_path}" | grep -q timeout
+  :;:;: $'FS mounting must auto- \x60umount\x60 after some time, and auto-' \
+    $'\x60mount\x60 on access'
+  if mount \
+    | grep -Fe "${pttn_device_path}" \
+    | grep -q timeout
   then
-    sudo -- mount -o remount,x-systemd.idle.timeout=10,nosuid,noexec,dev,nouser,ro -- "${pttn_device_path}"
+    sudo -- mount -o remount,x-systemd.idle.timeout=10,nosuid,noexec,dev,nouser,ro -- \
+      "${pttn_device_path}"
     sync -f
   fi
 
-  :;:;: " Line ${nameref_Lineno}, Directories from mount-username directory to mount point must" "be readable via ACL, but not writeable "
+  :;:;: " Line ${nameref_Lineno}, Directories from mount-username directory to" \
+    "mount point must be readable via ACL, but not writeable "
+
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${mount_pt%/*}"
   sudo -- setfacl --remove-all --remove-default -- "${mount_pt}"
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${mount_pt}"
 
   :;:;: " Line ${nameref_Lineno}, Data directory must already exist "
-  if  ! [[ -d ${data_dir} ]] \
+
+  if ! [[ -d ${data_dir} ]] \
     || [[ -L ${data_dir} ]]
   then
     _Fn_error_and_exit_ "${LINENO}"
   fi
 
-  :;:;: " Line ${nameref_Lineno}, Data directory must be readable via ACL, but not writeable" ""
+  :;:;: " Line ${nameref_Lineno}, Data directory must be readable via ACL," \
+    "but not writeable"
+
   sudo -- setfacl --remove-all --remove-default --recursive --physical -- "${data_dir}"
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${data_dir}"
   sudo -- find "${data_dir}" -type d -execdir setfacl --modify="u:${LOGNAME}:rx" --recursive --physical '{}' \; #
   sudo -- find "${data_dir}" -type f -execdir setfacl --modify="u:${LOGNAME}:r" '{}' \; #
 
   :;:;: " Line ${nameref_Lineno}, Data directory verification info must be correct "
+
   local ZZ
-  ZZ=$( sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" | grep -o "${data_dir_id_sha256}")
+  ZZ=$(
+    sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" \
+      | grep -o "${data_dir_id_sha256}"
+  )
 
   if  ! [[ -f ${data_dir}/${datdir_idfile} ]] \
     || [[ -L ${data_dir}/${datdir_idfile} ]]
@@ -936,7 +958,8 @@ function _Fn_reqd_user_files_ (){
             sudo -- mount -- "${pttn_device_path}" "${mount_pt}" \
               || _Fn_error_and_exit_ "${LINENO}"
 
-            if  mount | grep -q "${pttn_device_path}"
+            if mount \
+              | grep -q "${pttn_device_path}"
             then
               is_mounted=yes
             fi
@@ -1422,7 +1445,8 @@ function _Fn_setup_dnf_ (){
       printf -- '-e\0%s.*\0' "${pkg_nms_for_removal[@]}"
     )
     readarray -t removable_pkgs < <(
-      rpm --all --query | grep --ignore-case --extended-regexp "${grep_args[@]}"
+      rpm --all --query \
+        | grep --ignore-case --extended-regexp "${grep_args[@]}"
     )
 
     :;:;: " Keep a list, just in case an rpm removal accidentally" \
@@ -2169,7 +2193,8 @@ function _Fn_setup_gpg_ (){
 
   :;:;: " GPG -- If a gpg-agent daemon is running, or not, then, either way say so "
   # shellcheck disable=SC2009
-  if ps aux | grep -q --extended-regexp "[g]pg-a.*daemon" "${qui__[@]}"
+  if ps aux \
+    | grep -q --extended-regexp "[g]pg-a.*daemon" "${qui__[@]}"
   then
     printf '\n\tgpg-agent daemon IS RUNNING\n\n'
 
@@ -2589,7 +2614,6 @@ function _Fn_test_os_ (){
 :;:;: " Line ${nameref_Lineno}, Define \Fn_trap_err_ "
 function _Fn_trap_err_ (){
 
-
   declare -p BASH BASH_ALIASES BASH_ARGC BASH_ARGV BASH_ARGV0 BASH_CMDS
   declare -p BASH_COMMAND BASH_LINENO BASH_REMATCH BASH_SOURCE BASH_SUBSHELL
   declare -p BASHOPTS BASHPID DIRSTACK EUID FUNCNAME HISTCMD IFS LC_ALL LINENO
@@ -2598,18 +2622,16 @@ function _Fn_trap_err_ (){
 }
 
 
-
 ##
 #! Bug, these var assignments $prev_cmd_exit_code and $lineno only fail wh
 #+   they\re on line number >=2 of  trap  "args section" ??
+
 
 :;:;: " Line ${nameref_Lineno}, Define \Fn_trap_exit_ "
 ## Note, these variable assignments must be on the 1st line of the funtion
 #+   in order to capture correct data
 # shellcheck disable=SC2317
 function _Fn_trap_exit_ (){
-
-  #
 
   trap - EXIT
 
@@ -2627,8 +2649,6 @@ function _Fn_trap_exit_ (){
 ##
 :;:;: " Line ${nameref_Lineno}, Define \Fn_write_bashrc_strings_ "
 function _Fn_write_bashrc_strings_ (){
-
-  #
 
   :;:;: " Certain parameters must be defined and have non-zero" \
       "values "
@@ -2725,7 +2745,6 @@ function _Fn_write_bashrc_strings_ (){
 ##
 :;:;: " Define \Fn__write_ssh_conf_ "
 function _Fn_write_ssh_conf_ (){
-  #
 
   #! Bug? $ssh_user_conf_file defined in a different function, \Fn_setup_ssh_
 
@@ -2734,7 +2753,6 @@ function _Fn_write_ssh_conf_ (){
 	ForwardAgent yes
 
 	EOF
-
 }
 
 
@@ -2793,37 +2811,35 @@ function _Fn__run_restorecon_(){
 #!   INT QUIT USR2 -- for stopping logging
 #!   For starting logging ?
 
+
 :;:;: " Line ${nameref_Lineno}, Define trap on ERR "
 trap _Fn_trap_err_ ERR
+
 
 :;:;: " Line ${nameref_Lineno}, Define trap on EXIT "
 trap _Fn_trap_exit_ EXIT
 
     _Fn_verbose_flags_
 
-##
+
 :;:;: " Line ${nameref_Lineno}, Regular users with sudo, only "
 _Fn_must_be_root_
 
 
-##
 :;:;: " Line ${nameref_Lineno}, Test OS "
 _Fn_test_os_
 
-  #
   #exit "${LINENO}"
   #builtin set -x
 
-##
+
 :;:;: " Line ${nameref_Lineno}, Run r\estorecon "
 _Fn__run_restorecon_
 
-  #
   #exit "${LINENO}"
   builtin set -x
 
 
-##
 :;:;: " Line ${nameref_Lineno}, Certain files must have been" \
     "installed from off-disk "
 _Fn_reqd_user_files_
@@ -2832,68 +2848,47 @@ _Fn_reqd_user_files_
   builtin set -x
 
 
-
-##
 :;:;: " Line ${nameref_Lineno}, Network "
 _Fn_setup_network_
 
-  #
 
 
-##
 :;:;: " Line ${nameref_Lineno}, Time "
 _Fn_setup_time_
 
-  #
   #declare -p
   #exit 101
 
-##
+
 :;:;: " Line ${nameref_Lineno}, Temporary directory "
 _Fn_setup_temp_dirs_
 
-  #
 
-
-##
 :;:;: " Line ${nameref_Lineno}, Minimum necessary rpms "
 _Fn_min_necc_packages_
 
-  #
 
-
-##
 :;:;: " Line ${nameref_Lineno}, Vim "
 _Fn_setup_vim_
 
-  #
 
-
-##
 :;:;: " Line ${nameref_Lineno}, Bash "
 _Fn_setup_bashrc_
 
-  #
 
-
-##
 :;:;: " Line ${nameref_Lineno}, Increase disk space "
 _Fn_increase_disk_space_
 
-  #
 
-
-##
 :;:;: " Line ${nameref_Lineno}, Dnf "
 _Fn_setup_dnf_
 
-  #
 
-
-##
 :;:;: " Line ${nameref_Lineno}, Restart NetworkManager if" \
     "necessary "
+
 #! ToDo: use written function here
+
 for BB in "${dns_srv_A}" "${dns_srv_1}"
 do
   if ! ping -4qc1 -- "${BB}" > /dev/null 2>&1
