@@ -757,12 +757,16 @@ function _Fn_reqd_user_files_ (){
   #+ In this script, index zero should exist, barring any future changes.
   #+   So, it\s a bit of future-proofing.
 
-  :;:;: $'Vars, Is device identified by \x22\x24data_pttn_uuid\x22' 'attached to this machine? If so, get device path'
+  :;:;: $' Vars. Is device identified by \x22\x24data_pttn_uuid\x22' 'attached to this machine? If so, get device path '
   local pttn_device_path
-  pttn_device_path=$( lsblk --noheadings --output partuuid,path | awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }')
+  pttn_device_path=$( 
+    lsblk --noheadings --output partuuid,path \
+      | awk --assign awk_var_ptn="${data_pttn_uuid}" '$1 ~ awk_var_ptn { print $2 }'
+  )
 
   #! Note, error
-  [[ -n ${pttn_device_path} ]] || _Fn_error_and_exit_ $'Necessary USB drive isn\x27t plugged in or its filesystem has changed.' "${LINENO}"
+  [[ -n ${pttn_device_path} ]] \
+    || _Fn_error_and_exit_ $' Necessary USB drive isn\x27t plugged in or its filesystem has changed. ' "${LINENO}"
 
   :;:;: " Line ${nameref_Lineno}, Vars, get mountpoints and label "
   local mount_pt data_dir is_mounted
