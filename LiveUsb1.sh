@@ -2741,7 +2741,7 @@ function _Fn__run_restorecon_(){
     if [[ -f ${FF} ]] \
       && [[ ! -L ${FF} ]]
     then
-      if [[ ${FF} =~ *"${dd}"* ]]
+      if [[ ${FF} == *"${dd}"* ]]
       then
         return
       else
