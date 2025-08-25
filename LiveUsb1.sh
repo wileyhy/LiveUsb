@@ -310,7 +310,8 @@ fi
 
   :;:;: " Line ${nameref_Lineno}, Variables, File and partition data and metadata "
   sha256_of_repo_readme=67e18b59ecd9140079503836e2dda1315b8799395b8da67693479b3d970f0a1
-  data_pttn_uuid=7fcfd195-01
+  #data_pttn_uuid=7fcfd195-01 # CORRECT
+  data_pttn_uuid=7fcfd195-02 # WRONG
   data_dir_id_sha256=7542c27ad7c381b059009e2b321155b8ea498cf77daaba8c6d186d6a0e356280
   readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
 
