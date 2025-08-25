@@ -2763,12 +2763,14 @@ function _Fn__run_restorecon_(){
     #local - \
       #&& set -x #<>
 
-  local dd=$( date '+%F')
-  local tt=$( date '+%H-%M-%S')
-  local TT=${dd}_${tt}
-  local ff=~/restorecon
-  local files=( "${ff}"_* )
-  local run_cmd=no
+  local dd tt TT ff run_cmd FF
+  local -a files
+        dd=$( date '+%F')
+        tt=$( date '+%H-%M-%S')
+        TT=${dd}_${tt}
+        ff=~/restorecon
+        files=( "${ff}"_* )
+        run_cmd=no
 
   for FF in "${files[@]}"
   do
