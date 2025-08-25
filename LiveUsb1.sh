@@ -503,7 +503,7 @@ function _Fn_get_pids_for_restarting_ (){
   readarray -t dnf_o < ./dnf-nr_o
 
     declare -p dnf_o
-    exit "${LINENO}"
+    #exit "${LINENO}"
 
   if [[ ${#dnf_o[@]} -eq 0 ]]
   then
