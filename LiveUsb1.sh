@@ -2728,24 +2728,38 @@ function _Fn_write_ssh_conf_ (){
 ##
 :;:;: " Define \Fn__run_restorecon_ "
 function _Fn__run_restorecon_(){
-  local tt=$( date '+%F_%H-%M-%S')
+  
+  local dd=$( date '+%F')
+  local tt=$( date '+%H-%M-%S')
+  local TT=${dd}_${tt}
   local ff=~/restorecon
   local files=( "${ff}"_* )
+  local run_cmd=no
 
   for FF in "${files[@]}"
   do
     if [[ -f ${FF} ]] \
       && [[ ! -L ${FF} ]]
     then
-      rm -fv "${FF}"
+      if [[ ${FF} =~ *"${dd}"* ]]
+      then
+        return
+      else
+        run_cmd=yes
+      fi
+
+      if [[ ${run_cmd} == "yes" ]]
+      then
+        rm -fv "${FF}"
+      fi
     fi
-  done
+  done && unset FF
   
   {
     sudo restorecon -F -D -m -R / \
       |& grep -v "Operation not supported"
   } \
-    | tee -a "${ff}_${tt}_o"
+    | tee -a "${ff}_${TT}_o"
 }
 
 
