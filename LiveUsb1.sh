@@ -442,7 +442,8 @@ function _Fn_clone_repo_ (){ #
       || ! [[ -f ./${script__repo_name}/README.md ]] \
       || ! [[ ${AA} == "${sha256_of_repo_readme}" ]]
   then
-    git clone --origin github "https://github.com/wileyhy/${script__repo_name}" || _Fn_error_and_exit_ "${LINENO}"
+    git clone --origin github "https://github.com/wileyhy/${script__repo_name}" \
+      || _Fn_error_and_exit_ "${LINENO}"
   fi
   unset AA
   #
@@ -479,7 +480,8 @@ function _Fn_get_pids_for_restarting_ (){
 
 
   readarray -t dnf_o < <(
-    sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null || _Fn_error_and_exit_ "${LINENO}"
+    sudo -- nice --adjustment=-20 -- dnf needs-restarting 2> /dev/null \
+      || _Fn_error_and_exit_ "${LINENO}"
   )
   if [[ ${#dnf_o[@]} -eq 0 ]]
   then
@@ -662,7 +664,7 @@ function _Fn_increase_disk_space_ (){
                     unset "Aa_fsos5[${AA}]"
                     break 1
                   else
-                    _Fn_error_and_exit_ "Unknown error" "${LINENO}"
+                    _Fn_error_and_exit_ "${LINENO}" "Unknown error"
                   fi
                 ;; #
             n | f )
@@ -724,7 +726,7 @@ function _Fn_must_be_root_ (){
 
   if (( UID == 0 ))
   then
-    _Fn_error_and_exit_ "Must be a regular user and use sudo" "${LINENO}"
+    _Fn_error_and_exit_ "${LINENO}" "Must be a regular user and use sudo"
   elif sudo --validate
   then
     : validation succeeded
@@ -770,7 +772,8 @@ function _Fn_reqd_user_files_ (){
   #! Note, error
   if [[ -z ${pttn_device_path} ]]
   then
-    _Fn_error_and_exit_ $' Necessary USB drive isn\x27t plugged in or its filesystem has changed. ' "${LINENO}"
+    _Fn_error_and_exit_ "${LINENO}" $'Necessary USB drive isn\x27t plugged in' \
+      'or its filesystem has changed.'
   fi
 
   :;:;: " Line ${nameref_Lineno}, Vars, get mountpoints and label "
@@ -808,7 +811,7 @@ function _Fn_reqd_user_files_ (){
       ;; #
     * )
       :;:;: " Line ${nameref_Lineno}, Multiple matches "
-      _Fn_error_and_exit_ "The target partition is mounted in multiple places" "${LINENO}"
+      _Fn_error_and_exit_ "${LINENO}" "The target partition is mounted in multiple places"
       ;; #
   esac
   unset array_mt_pts
@@ -921,7 +924,8 @@ function _Fn_reqd_user_files_ (){
           if [[ ${is_mounted} = no ]]
           then
 
-            sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || _Fn_error_and_exit_ "${LINENO}"
+            sudo -- mount -- "${pttn_device_path}" "${mount_pt}" \
+              || _Fn_error_and_exit_ "${LINENO}"
 
             if  mount | grep -q "${pttn_device_path}"
             then
@@ -932,7 +936,7 @@ function _Fn_reqd_user_files_ (){
           :;:;: " Line ${nameref_Lineno}, If the source conf file/dir still does not exist," "then throw an error "
           if ! [[ -e ${source_file} ]]
           then
-            _Fn_error_and_exit_ "${QQ[BB]}" "${source_file}" "${LINENO}"
+            _Fn_error_and_exit_ "${LINENO}" "${QQ[BB]}" "${source_file}"
           fi
         fi
 
@@ -981,7 +985,7 @@ function _Fn_rsync_install_if_missing_ (){
   then
     if ! [[ -d ${fn_target_dir} ]]
     then
-      _Fn_error_and_exit_ "${fn_target_dir}" "${LINENO}"
+      _Fn_error_and_exit_ "${LINENO}" "${fn_target_dir}"
     fi
   else
     local fn_umask
@@ -1022,7 +1026,7 @@ function _Fn_rsync_install_if_missing_ (){
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
     rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || {
-      _Fn_error_and_exit_ "${fn_target_dir}" "${LINENO}"
+      _Fn_error_and_exit_ "${LINENO}" "${fn_target_dir}"
     }
   fi
 
@@ -1050,7 +1054,7 @@ function _Fn_setup_bashrc_ (){
     :;:;: " Line ${nameref_Lineno}, bashrc -- RC File must exist "
     if ! sudo -- "$(type -P test)" -f "${WW}"
     then
-      _Fn_error_and_exit_ "${WW}" "${LINENO}"
+      _Fn_error_and_exit_ "${LINENO}" "${WW}"
     fi
 
     ## Note, chmod changes the ctime, even with no change of DAC\s
@@ -1081,7 +1085,7 @@ function _Fn_setup_bashrc_ (){
 
     :;:;: " Line ${nameref_Lineno}, bashrc -- ...per-script-execution file backup "
     sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}~" || {
-      _Fn_error_and_exit_ "${WW}" "${LINENO}"
+      _Fn_error_and_exit_ "${LINENO}" "${WW}"
     }
   done
   unset WW
@@ -1202,7 +1206,7 @@ function _Fn_setup_bashrc_ (){
   :;:;: " Line ${nameref_Lineno}, bashrc -- Test for any missing parameters "
   if (( ${#missing_vars_and_fns[@]} > 0 ))
   then
-    _Fn_error_and_exit_ "${missing_vars_and_fns[@]}" "${LINENO}"
+    _Fn_error_and_exit_ "${LINENO}" "${missing_vars_and_fns[@]}"
   fi
 
   :;:;: " Line ${nameref_Lineno}, bashrc -- Create Associative arrays of required" \
@@ -1438,7 +1442,7 @@ function _Fn_setup_dnf_ (){
         then
           unset "removable_pkgs[QQ]"
         else
-          _Fn_error_and_exit_ "${removable_pkgs[QQ]}" "${LINENO}"
+          _Fn_error_and_exit_ "${LINENO}" "${removable_pkgs[QQ]}"
         fi
         unset DD exp_dt dnf_cmd
       done
@@ -2145,7 +2149,7 @@ function _Fn_setup_gpg_ (){
         \)  -print0 \
   )
   [[ -n ${problem_files[*]} ]] && {
-    _Fn_error_and_exit_ Incorrect ownership on -- "${problem_files[@]}" "${LINENO}"
+    _Fn_error_and_exit_ "${LINENO}" "Incorrect ownership on --" "${problem_files[@]}"
   }
   unset problem_files
 
@@ -2218,14 +2222,14 @@ function _Fn_setup_network_ (){
     :;:;: " Connect the interface "
     case "${#ifaces[@]}" in
       0 )
-        _Fn_error_and_exit_ "No network device available" "${LINENO}"
+        _Fn_error_and_exit_ "${LINENO}" "No network device available"
         ;; #
       1 )
         nmcli c up "${ifaces[*]}"
         sleep 5
         ;; #
       * )
-        _Fn_error_and_exit_ "Multiple network devices available" "${LINENO}"
+        _Fn_error_and_exit_ "${LINENO}" "Multiple network devices available"
         ;; #
     esac
 
@@ -2262,13 +2266,15 @@ function _Fn_setup_ssh_ (){
   # shellcheck disable=SC2310
   if [[ ! -d ${ssh_usr_conf_dir} ]]
   then
-      mkdir -m 0700 "${ssh_usr_conf_dir}" || _Fn_error_and_exit_ "${LINENO}"
+      mkdir -m 0700 "${ssh_usr_conf_dir}" \
+        || _Fn_error_and_exit_ "${LINENO}"
   fi
 
   # shellcheck disable=SC2310
   if [[ ! -f ${ssh_user_conf_file} ]]
   then
-      _Fn_write_ssh_conf_ || _Fn_error_and_exit_ "${LINENO}"
+      _Fn_write_ssh_conf_ \
+        || _Fn_error_and_exit_ "${LINENO}"
   fi
 
      # <>
@@ -2303,9 +2309,8 @@ function _Fn_setup_ssh_ (){
         \(  \! -uid "${login_uid}"  -o  \
             \! -gid "${login_gid}"  \
         \) -execdir \
-          chown -- "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; || {
-            _Fn_error_and_exit_ "${LINENO}"
-          }
+          chown -- "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; \
+            || _Fn_error_and_exit_ "${LINENO}"
     find -- "${ssh_usr_conf_dir}" -xdev -type d -execdir \
       chmod 700 "${ver__[@]}" \{\} \; #
     find -- "${ssh_usr_conf_dir}" -xdev -type f -execdir \
@@ -2354,7 +2359,7 @@ function _Fn_setup_ssh_ (){
 
   case "${#ssh_agent_pids[@]}" in
     0 )
-        _Fn_error_and_exit_ "ssh-agent failed to start" "${LINENO}"
+        _Fn_error_and_exit_ "${LINENO}" "ssh-agent failed to start"
       ;; #
     1 )
         if [[ -z ${SSH_AGENT_PID:-} ]]
@@ -2572,7 +2577,7 @@ function _Fn_test_os_ (){
   #+   "fc38" or "Fedora Core 38")
   if ! [[ ${kern_rel} =~ \.fc[0-9]{2}\. ]]
   then
-    _Fn_error_and_exit_ "OS is not Fedora" "${LINENO}"
+    _Fn_error_and_exit_ "${LINENO}" "OS is not Fedora"
   fi
   unset kern_rel
 
