@@ -253,140 +253,139 @@ _Fn_verbose_flags_ #<>
 
 
 
-  :;:;: " Line ${nameref_Lineno}, Variables ...likely to change or" \
-      "early-definition required "
+:;:;: " Line ${nameref_Lineno}, Variables ...likely to change or" \
+    "early-definition required "
 
-  :;:;: " Line ${nameref_Lineno}, Variables, Error handling "
-  ## Bug, only way to export namerefs?  \declare -nx nameref_Lineno=...\
-  ## Note, variable assignments, backslash escape bc  sed -i
-  # shellcheck disable=SC1001
-  declare -nx nameref_Lineno=L\INENO
+:;:;: " Line ${nameref_Lineno}, Variables, Error handling "
+## Bug, only way to export namerefs?  \declare -nx nameref_Lineno=...\
+## Note, variable assignments, backslash escape bc  sed -i
+# shellcheck disable=SC1001
+declare -nx nameref_Lineno=L\INENO
 
-  :;:;: " Line ${nameref_Lineno}, Variables, PATH "
-  PATH='/usr/bin:/usr/sbin'
-  export PATH
+:;:;: " Line ${nameref_Lineno}, Variables, PATH "
+PATH='/usr/bin:/usr/sbin'
+export PATH
 
-  :;:;: " Line ${nameref_Lineno}, Variables, Other environment variables "
-  ## Note, Initialize some env vars found in sourced files, as a workaround for nounset
-  ## Note, local style, inline comments, ie, \: foo ## Note, blah\, are useful for
-  #+  rebutting false positives from ShellCheck
-  LC_ALL=""
-  PS1=""
+:;:;: " Line ${nameref_Lineno}, Variables, Other environment variables "
+## Note, Initialize some env vars found in sourced files, as a workaround for nounset
+## Note, local style, inline comments, ie, \: foo ## Note, blah\, are useful for
+#+  rebutting false positives from ShellCheck
+LC_ALL=""
+PS1=""
 
-  ## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
-  # shellcheck disable=SC2034
-  declare BASHRCSOURCED USER_LS_COLORS
+## Note, /etc/bashrc and /etc/profile.d/colorls.*sh on Fedora 38
+# shellcheck disable=SC2034
+declare BASHRCSOURCED USER_LS_COLORS
 
-  :;:;: " Line ${nameref_Lineno}, Variables, Login UID and GID "
-  ## Note, ps.1, \The real group ID identifies the group of the user who created
-  #+   the process\ and \The effective group ID describes the group whose file
-  #+   access permissions are used by the process\. See output of,
-  #+   \ps ax -o euid,ruid,egid,rgid,pid,ppid,stat,cmd | awk \$1 !~ $2 || $3 !~ $4\\
-  ## Note, sudo.1, \SUDO_UID: Set to the user-ID of the user who invoked sudo.\
-  if [[ -z ${login_uid:=} ]]
-  then
-    login_uid=$( id -u "$( logname )" )
-  fi
+:;:;: " Line ${nameref_Lineno}, Variables, Login UID and GID "
+## Note, ps.1, \The real group ID identifies the group of the user who created
+#+   the process\ and \The effective group ID describes the group whose file
+#+   access permissions are used by the process\. See output of,
+#+   \ps ax -o euid,ruid,egid,rgid,pid,ppid,stat,cmd | awk \$1 !~ $2 || $3 !~ $4\\
+## Note, sudo.1, \SUDO_UID: Set to the user-ID of the user who invoked sudo.\
+if [[ -z ${login_uid:=} ]]
+then
+  login_uid=$( id -u "$( logname )" )
+fi
 
-  if [[ -z ${login_gid:=} ]]
-  then
-    login_gid=$( id -g "$( logname )" )
-  fi
+if [[ -z ${login_gid:=} ]]
+then
+  login_gid=$( id -g "$( logname )" )
+fi
 
-  # shellcheck disable=SC2034
-  {
-    :;:;: " Line ${nameref_Lineno}, Variables, Script metadata "
-    global_hyphn=$-
-    export global_hyphn
+# shellcheck disable=SC2034
+{
+  :;:;: " Line ${nameref_Lineno}, Variables, Script metadata "
+  global_hyphn=$-
+  export global_hyphn
 
-    :;:;: " Line ${nameref_Lineno}, Variables, Repo info "
-    script__repo_name=LiveUsb
-    scr_nm=LiveUsb1.sh
-    datadir_basenm=skel-LiveUsb
-    datdir_idfile=.${script__repo_name}_id-key
-    readonly script__repo_name scr_nm datadir_basenm datdir_idfile
+  :;:;: " Line ${nameref_Lineno}, Variables, Repo info "
+  script__repo_name=LiveUsb
+  scr_nm=LiveUsb1.sh
+  datadir_basenm=skel-LiveUsb
+  datdir_idfile=.${script__repo_name}_id-key
+  readonly script__repo_name scr_nm datadir_basenm datdir_idfile
 
-    :;:;: " Line ${nameref_Lineno}, Variables, File and partition data and metadata "
-    sha256_of_repo_readme=67e18b59ecd9140079503836e2dda1315b8799395b8da67693479b3d970f0a1
-    data_pttn_uuid=7fcfd195-01
-    data_dir_id_sha256=7542c27ad7c381b059009e2b321155b8ea498cf77daaba8c6d186d6a0e356280
-    readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
+  :;:;: " Line ${nameref_Lineno}, Variables, File and partition data and metadata "
+  sha256_of_repo_readme=67e18b59ecd9140079503836e2dda1315b8799395b8da67693479b3d970f0a1
+  data_pttn_uuid=7fcfd195-01
+  data_dir_id_sha256=7542c27ad7c381b059009e2b321155b8ea498cf77daaba8c6d186d6a0e356280
+  readonly sha256_of_repo_readme data_pttn_uuid data_dir_id_sha256
 
-    :;:;: " Line ${nameref_Lineno}, Variables, User info "
-    user_real_name="Wiley Young"
-    user_github_email_address=84648683+wileyhy@users.noreply.github.com
-    #user_github_gpg_key=0C83679F385F55F914D25A21CD85D53BBCB172C2
-    user_github_gpg_key=DB8DF41D08E5E156D02C3BC114588FBF5B11D84C
-    readonly user_real_name user_github_email_address user_github_gpg_key
+  :;:;: " Line ${nameref_Lineno}, Variables, User info "
+  user_real_name="Wiley Young"
+  user_github_email_address=84648683+wileyhy@users.noreply.github.com
+  #user_github_gpg_key=0C83679F385F55F914D25A21CD85D53BBCB172C2
+  user_github_gpg_key=DB8DF41D08E5E156D02C3BC114588FBF5B11D84C
+  readonly user_real_name user_github_email_address user_github_gpg_key
 
-    :;:;: " Line ${nameref_Lineno}, Variables, Required RPM\s "
-    list_of_minimum_reqd_rpms+=( [0]="ShellCheck"
-                                 [1]="firewall-config"
-                                 [2]="geany"
-                                 [3]="gh"
-                                 [4]="git"
-                                 [5]="vim-enhanced" )
-    readonly list_of_minimum_reqd_rpms
+  :;:;: " Line ${nameref_Lineno}, Variables, Required RPM\s "
+  list_of_minimum_reqd_rpms+=( [0]="ShellCheck"
+                               [1]="firewall-config"
+                               [2]="geany"
+                               [3]="gh"
+                               [4]="git"
+                               [5]="vim-enhanced" )
+  readonly list_of_minimum_reqd_rpms
 
-    :;:;: " Line ${nameref_Lineno}, Files, Required files lists "
+  :;:;: " Line ${nameref_Lineno}, Files, Required files lists "
 
-    ## Note, the \indexed array,\ $arrays_of_conf_files , is a meta-array containing
-    #+   a list of names of more \indexed arrays.\ The array names,
-    #+   $files_for_use_with_github_depth_* , each have the same format and are
-    #+   numbered sequentially are created here on one line only and have values
-    #+   assigned to each of them within the next ~50 lines. The list of index
-    #+   numbers is created just once, so the indices in the assignment section
-    #+   below must match the indices created here.
-    arrays_of_conf_files+=( [0]="files_for_use_with_github_depth_0"
-                            [1]="files_for_use_with_github_depth_1"
-                            [2]="files_for_use_with_github_depth_2"
-                            [3]="files_for_use_with_github_depth_3" )
-    readonly arrays_of_conf_files
+  ## Note, the \indexed array,\ $arrays_of_conf_files , is a meta-array containing
+  #+   a list of names of more \indexed arrays.\ The array names,
+  #+   $files_for_use_with_github_depth_* , each have the same format and are
+  #+   numbered sequentially are created here on one line only and have values
+  #+   assigned to each of them within the next ~50 lines. The list of index
+  #+   numbers is created just once, so the indices in the assignment section
+  #+   below must match the indices created here.
+  arrays_of_conf_files+=( [0]="files_for_use_with_github_depth_0"
+                          [1]="files_for_use_with_github_depth_1"
+                          [2]="files_for_use_with_github_depth_2"
+                          [3]="files_for_use_with_github_depth_3" )
+  readonly arrays_of_conf_files
 
-    :;:;: Unset each value of the array
-    unset "${arrays_of_conf_files[@]}"
+  :;:;: Unset each value of the array
+  unset "${arrays_of_conf_files[@]}"
 
-    ## Note, this is really a lot of manually entered data ...of filenames -- it\s
-    #+   a lot to maintain. :-\ Wouldn\t it be better to just always keep the data
-    #+   directory... in proper intended order...? But then the data dir can be
-    #+   changed and there wouldn\t be any process of making sure the DACs are
-    #+   correct. On the other hand, it\s easier to maintain a simple s\et of
-    #+   files. ...but their state wouldn\t necessarily have been documented, which
-    #+   is valuable in and of itself. Otherwise, if they were changed accidentally,
-    #+   how would you know any change had occurred?
-    ## ToDo
-    #:
-    #: "  Line ${nameref_Lineno}, Files, firefox"
-    #files_for_use_with_github_depth_0+=( ~/.mozilla )
+  ## Note, this is really a lot of manually entered data ...of filenames -- it\s
+  #+   a lot to maintain. :-\ Wouldn\t it be better to just always keep the data
+  #+   directory... in proper intended order...? But then the data dir can be
+  #+   changed and there wouldn\t be any process of making sure the DACs are
+  #+   correct. On the other hand, it\s easier to maintain a simple s\et of
+  #+   files. ...but their state wouldn\t necessarily have been documented, which
+  #+   is valuable in and of itself. Otherwise, if they were changed accidentally,
+  #+   how would you know any change had occurred?
+  ## ToDo
+  #:
+  #: "  Line ${nameref_Lineno}, Files, firefox"
+  #files_for_use_with_github_depth_0+=( ~/.mozilla )
 
-    :;:;: " Line ${nameref_Lineno}, Files, gh (cli) "
-    files_for_use_with_github_depth_2+=(
-        ~/.config/gh/{config.yml,gpg-agent.conf,hosts.yml,pubring.kbx,trustdb.gpg} )
-    files_for_use_with_github_depth_3+=(
-        ~/.config/gh/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev )
-    files_for_use_with_github_depth_3+=(
-        ~/.config/gh/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
+  :;:;: " Line ${nameref_Lineno}, Files, gh (cli) "
+  files_for_use_with_github_depth_2+=(
+      ~/.config/gh/{config.yml,gpg-agent.conf,hosts.yml,pubring.kbx,trustdb.gpg} )
+  files_for_use_with_github_depth_3+=(
+      ~/.config/gh/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev )
+  files_for_use_with_github_depth_3+=(
+      ~/.config/gh/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
 
-    :;:;: " Line ${nameref_Lineno}, Files, gpg "
-    files_for_use_with_github_depth_1+=(
-        ~/.gnupg/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
-    files_for_use_with_github_depth_2+=( ~/.gnupg/crls.d/DIR.txt )
-    files_for_use_with_github_depth_2+=(
-        ~/.gnupg/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev )
-    files_for_use_with_github_depth_2+=(
-        ~/.gnupg/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
+  :;:;: " Line ${nameref_Lineno}, Files, gpg "
+  files_for_use_with_github_depth_1+=(
+      ~/.gnupg/{gpg-agent.conf,pubring.kbx,tofu.db,trustdb.gpg} )
+  files_for_use_with_github_depth_2+=( ~/.gnupg/crls.d/DIR.txt )
+  files_for_use_with_github_depth_2+=(
+      ~/.gnupg/openpgp-revocs.d/421C6CBB253AED9D0390ABE7E287D0CF528591CE.rev )
+  files_for_use_with_github_depth_2+=(
+      ~/.gnupg/private-keys-v1.d/58C9C0ACBE45778C05DE9623560AC4465D8C46C8.key )
 
-    :;:;: " Line ${nameref_Lineno}, Files, ssh "
-    files_for_use_with_github_depth_1+=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
+  :;:;: " Line ${nameref_Lineno}, Files, ssh "
+  files_for_use_with_github_depth_1+=( ~/.ssh/{id_ed25519{,.pub},known_hosts} )
 
-    :;:;: " Line ${nameref_Lineno}, Files, top "
-    files_for_use_with_github_depth_2+=( ~/.config/procps/toprc )
+  :;:;: " Line ${nameref_Lineno}, Files, top "
+  files_for_use_with_github_depth_2+=( ~/.config/procps/toprc )
 
-    :;:;: " Line ${nameref_Lineno}, Files, vim "
-    files_for_use_with_github_depth_0+=( ~/.vimrc )
-    :;:;: "   End of Files lists "
-
-  }
+  :;:;: " Line ${nameref_Lineno}, Files, vim "
+  files_for_use_with_github_depth_0+=( ~/.vimrc )
+  :;:;: "   End of Files lists "
+}
 
 
 ##
