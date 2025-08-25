@@ -768,8 +768,10 @@ function _Fn_reqd_user_files_ (){
   )
 
   #! Note, error
-  [[ -n ${pttn_device_path} ]] \
-    || _Fn_error_and_exit_ $' Necessary USB drive isn\x27t plugged in or its filesystem has changed. ' "${LINENO}"
+  if [[ -z ${pttn_device_path} ]]
+  then
+    _Fn_error_and_exit_ $' Necessary USB drive isn\x27t plugged in or its filesystem has changed. ' "${LINENO}"
+  fi
 
   :;:;: " Line ${nameref_Lineno}, Vars, get mountpoints and label "
   local mount_pt data_dir is_mounted
