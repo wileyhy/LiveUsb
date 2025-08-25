@@ -424,7 +424,7 @@ fi
   #+  \Fn_test_dns_
   #+  \\F_test_os_
   #+  \Fn_trap_err_
-  #+  \Fn_trap_exit_
+  #+  \Fn_trap_extt_
   #+  \Fn_trap_return_
   #+  \Fn_write_bashrc_strings_
   #+  \Fn_write_ssh_conf_
@@ -2627,11 +2627,11 @@ function _Fn_trap_err_ (){
 #+   they\re on line number >=2 of  trap  "args section" ??
 
 
-:;:;: " Line ${nameref_Lineno}, Define \Fn_trap_exit_ "
+:;:;: " Line ${nameref_Lineno}, Define \Fn_trap_extt_ "
 ## Note, these variable assignments must be on the 1st line of the funtion
 #+   in order to capture correct data
 # shellcheck disable=SC2317
-function _Fn_trap_exit_ (){
+function _Fn_trap_extt_ (){
 
   trap - EXIT
 
@@ -2819,7 +2819,7 @@ trap _Fn_trap_err_ ERR
 
 
 :;:;: " Line ${nameref_Lineno}, Define trap on EXIT "
-trap _Fn_trap_exit_ EXIT
+trap _Fn_trap_extt_ EXIT
 
     _Fn_verbose_flags_
 
