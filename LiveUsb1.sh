@@ -1493,7 +1493,7 @@ function _Fn_setup_dnf_ (){
   while true
   do
 
-    :;:;: " Get full list of rpms to upgrade, in an array; exit" \
+    :;:;: " Get full list of rpms to upgrade, in an array; e\xit" \
         "on non-zero "
     readarray -d "" -t pkgs_for_upgrade < <(
       sudo -- dnf --assumeno --security --bugfix upgrade 2>/dev/null \
@@ -1821,7 +1821,7 @@ function _Fn_setup_dnf_ (){
               #+   of variables ...?
 
               :;:;: $'...then \x60kill\x60 it with the according per-loop SIGNAL...'
-              ## Note, the exit codes for  kill  only indicate whether or not the
+              ## Note, the e\xit codes for  kill  only indicate whether or not the
               #+   target PIDs existed, rather than whether the  kill  operation
               #+   succeeded, per  info kill .
               sudo -- "$( type -P kill )" --signal "${AA}" -- "${ZZ}"
@@ -1902,7 +1902,7 @@ function _Fn_setup_gh_cli_ (){
     hash -r
 
   ## Bug, \gh auth status\ is executed too many (ie, 3) times. Both the checkmarks
-  #+   and the exit code are used
+  #+   and the e\xit code are used
 
     #gh auth status ## <>
 
@@ -2164,7 +2164,7 @@ function _Fn_setup_gti_user_dirs_ (){
 :;:;: " Line ${nameref_Lineno}, Define \Fn_setup_gpg_ "
 function _Fn_setup_gpg_ (){
 
-  :;:;: " If any files in ~/.gnupg are not owned by either USER or root, then error out and exit "
+  :;:;: " If any files in ~/.gnupg are not owned by either USER or root, then error out and e\xit "
   local -a problem_files
   problem_files=( )
   readarray -d "" -t problem_files < <(
@@ -2263,7 +2263,7 @@ function _Fn_setup_network_ (){
     if   ! _Fn_test_dns_ "${dns_srv_1}" \
       || ! _Fn_test_dns_ "${dns_srv_A}"
     then
-      printf '\n%s, Network, Giving up, exiting.\n\n' "${scr_nm}"
+      printf '\n%s, Network, Giving up, e\xiting.\n\n' "${scr_nm}"
     else
       printf '\n%s, Network, Success!\n\n' "${scr_nm}"
     fi
@@ -2423,7 +2423,7 @@ function _Fn_setup_ssh_ (){
   #ssh-add -L -v
 
   ## Note,  ssh -T  is "disable pseudo-terminal allocation."
-  ## Note, returns exit code 1; why is this command here exectly?
+  ## Note, returns e\xit code 1; why is this command here exectly?
   #ssh -T git@github.com
 
 }
