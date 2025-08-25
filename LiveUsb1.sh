@@ -2728,7 +2728,9 @@ function _Fn_write_ssh_conf_ (){
 ##
 :;:;: " Define \Fn__run_restorecon_ "
 function _Fn__run_restorecon_(){
-  local - && set -x 
+
+    #local - && set -x #<>
+
   local dd=$( date '+%F')
   local tt=$( date '+%H-%M-%S')
   local TT=${dd}_${tt}
