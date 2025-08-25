@@ -90,7 +90,7 @@ export scr_nm prev_cmd_ext_code
 
 
 ##
-:;:;: "Line ${LINENO}, Define \Fn_error_and_exit_"
+:;:;: "Line ${LINENO}, Define \Fn_error_and_ext_"
 function _Fn_error_and_ext_ (){
 
     #local - \
@@ -401,7 +401,7 @@ fi
   ##  Function name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #+  \Fn_clone_repo_
-  #+  # \Fn_error_and_exit_
+  #+  # \Fn_error_and_ext_
   #+  \Fn_get_pids_for_restarting_
   #+  \Fn_gh_auth_login_command_
   #+  \Fn_increase_disk_space_
