@@ -430,7 +430,8 @@ fi
 : " Line ${nameref_Lineno}, Define \Fn_clone_repo_ "
 function _Fn_clone_repo_ (){ #
 
-  [[ ${PWD} = "${local_dir_1}" ]] #|| _Fn_error_and_exit_ "${LINENO}"
+  [[ ${PWD} = "${local_dir_1}" ]] #\
+    #|| _Fn_error_and_exit_ "${LINENO}"
 
   local AA
     AA=$(
@@ -541,10 +542,8 @@ function _Fn_gh_auth_login_command_ (){
       -p ssh \
       -h github.com \
       -s admin:public_key,read:gpg_key,admin:ssh_signing_key \
-      -w || {
-    _Fn_error_and_exit_ "${LINENO}"
-  }
-
+      -w \
+        || _Fn_error_and_exit_ "${LINENO}"
 }
 
 
@@ -819,7 +818,8 @@ function _Fn_reqd_user_files_ (){
   :;:;: " Line ${nameref_Lineno}, FS mounting must be restricted to root and/or liveuser"
   local mount_user
   mount_user=${mount_pt%/*} mount_user=${mount_user##*/}
-  [[ ${mount_user} = @(root|liveuser) ]] || _Fn_error_and_exit_ "${LINENO}"
+  [[ ${mount_user} = @(root|liveuser) ]] \
+    || _Fn_error_and_exit_ "${LINENO}"
   unset mount_user
 
   :;:;: " Line ${nameref_Lineno}, USB drive must be mounted "
@@ -827,10 +827,12 @@ function _Fn_reqd_user_files_ (){
   then
     if ! [[ -d "${mount_pt}" ]]
     then
-      sudo -- mkdir --parents -- "${mount_pt}" || _Fn_error_and_exit_ "${LINENO}"
+      sudo -- mkdir --parents -- "${mount_pt}" \
+        || _Fn_error_and_exit_ "${LINENO}"
     fi
 
-    sudo -- mount -- "${pttn_device_path}" "${mount_pt}" || _Fn_error_and_exit_ "${LINENO}"
+    sudo -- mount -- "${pttn_device_path}" "${mount_pt}" \
+      || _Fn_error_and_exit_ "${LINENO}"
     is_mounted=yes
     sync -f
   fi
@@ -848,7 +850,8 @@ function _Fn_reqd_user_files_ (){
   sudo -- setfacl --modify="u:${LOGNAME}:rx" -- "${mount_pt}"
 
   :;:;: " Line ${nameref_Lineno}, Data directory must already exist "
-  if  ! [[ -d ${data_dir} ]] || [[ -L ${data_dir} ]]
+  if  ! [[ -d ${data_dir} ]] \
+    || [[ -L ${data_dir} ]]
   then
     _Fn_error_and_exit_ "${LINENO}"
   fi
@@ -863,7 +866,8 @@ function _Fn_reqd_user_files_ (){
   local ZZ
   ZZ=$( sudo -- sha256sum -b "${data_dir}/${datdir_idfile}" | grep -o "${data_dir_id_sha256}")
 
-  if  ! [[ -f ${data_dir}/${datdir_idfile} ]] || [[ -L ${data_dir}/${datdir_idfile} ]]
+  if  ! [[ -f ${data_dir}/${datdir_idfile} ]] \
+    || [[ -L ${data_dir}/${datdir_idfile} ]]
   then
     _Fn_error_and_exit_ "${LINENO}"
   fi
@@ -1025,9 +1029,8 @@ function _Fn_rsync_install_if_missing_ (){
 
   if ! [[ -e ${fn_target_dir}/${fn_source_var#*"${data_dir}"/} ]]
   then
-    rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" || {
-      _Fn_error_and_exit_ "${LINENO}" "${fn_target_dir}"
-    }
+    rsync --archive --checksum -- "${fn_source_var}" "${fn_target_dir}" \
+      || _Fn_error_and_exit_ "${LINENO}" "${fn_target_dir}"
   fi
 
   :;:;: " Unset a local variable defined and assigned in only this" "function, and not any variables by the same name... "
@@ -1084,9 +1087,8 @@ function _Fn_setup_bashrc_ (){
     fi
 
     :;:;: " Line ${nameref_Lineno}, bashrc -- ...per-script-execution file backup "
-    sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}~" || {
-      _Fn_error_and_exit_ "${LINENO}" "${WW}"
-    }
+    sudo -- rsync --archive --checksum "${ver__[@]}" "${WW}" "${WW}~" \
+      || _Fn_error_and_exit_ "${LINENO}" "${WW}"
   done
   unset WW
 
@@ -1560,9 +1562,8 @@ function _Fn_setup_dnf_ (){
 
     for VV in "${not_yet_installed_pkgs[@]}"
     do
-      sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install "${VV}" || {
-        _Fn_error_and_exit_ "${LINENO}"
-      }
+      sudo -- nice --adjustment=-20 -- dnf --assumeyes --quiet install "${VV}" \
+        || _Fn_error_and_exit_ "${LINENO}"
 
       _Fn_get_pids_for_restarting_
 
@@ -1722,8 +1723,8 @@ function _Fn_setup_dnf_ (){
   fi
 
   :;:;: " Make sure the file is writeable "
-  [[ -w "${hash_f}" ]] ||
-    chmod u+w "${hash_f}"
+  [[ -w "${hash_f}" ]] \
+    || chmod u+w "${hash_f}"
 
   :;:;: " State, the file exists and is writeable "
 
@@ -1736,8 +1737,8 @@ function _Fn_setup_dnf_ (){
 
   ## ToDo: change temp-vars (II, XX, etc) to fully named vars
 
-  if  ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] ||
-      [[ ${#a_pids[@]} -gt 0 ]]
+  if  ! [[ ${hash_of_installed_pkgs_A} = "${hash_of_installed_pkgs_B}" ]] \
+    || [[ ${#a_pids[@]} -gt 0 ]]
   then
 
     while true
@@ -1884,8 +1885,8 @@ function _Fn_setup_gh_cli_ (){
     grep --count $'\xe2\x9c\x93'
   )"
 
-  if  ! gh auth status 2>/dev/null 1>&2 ||
-      [[ ${count_gh_auth_checkmarks} -ne 4 ]]
+  if  ! gh auth status 2>/dev/null 1>&2 \
+    || [[ ${count_gh_auth_checkmarks} -ne 4 ]]
   then
     if ! pgrep firefox
     then
@@ -1995,8 +1996,9 @@ function _Fn_setup_git_ (){
   for AA in "${git_files_a[@]}"
   do
     :;:;: '  Loop B - open \\\ '
-    sudo -- [ -e "${AA}" ] ||
-      sudo -- touch "${AA}"
+    sudo -- [ -e "${AA}" ] \
+      || sudo -- touch "${AA}"
+
     sudo -- chmod 0600 "${ver__[@]}" "${AA}"
     :;:;: " Loop B - shut ///  "
   done
@@ -2045,17 +2047,16 @@ function _Fn_setup_git_ (){
 		EOF
 
     # shellcheck disable=SC2024 #(info): sudo does not affect redirects....
-    tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null || {
-      _Fn_error_and_exit_ "${LINENO}"
-    }
-    chmod 0644 "${ver__[@]}" "${git_mesg}" || {
-      _Fn_error_and_exit_ "${LINENO}"
-    }
+    tee -- "${git_mesg}" < "${tmp_dir}/msg" > /dev/null \
+      || _Fn_error_and_exit_ "${LINENO}"
+
+    chmod 0644 "${ver__[@]}" "${git_mesg}" \
+      || _Fn_error_and_exit_ "${LINENO}"
   fi
 
   :;:;: " Git -- gitignore (global) "
-  if  ! [[ -f ${git_ignr} ]] ||
-      ! grep swp "${qui__[@]}" "${git_ignr}"
+  if  ! [[ -f ${git_ignr} ]] \
+    || ! grep swp "${qui__[@]}" "${git_ignr}"
   then
     :;:;: " Heredoc, gitignore "
     cat <<- \EOF > "${tmp_dir}/ign"
@@ -2066,20 +2067,19 @@ function _Fn_setup_git_ (){
 		EOF
 
     # shellcheck disable=SC2024
-    tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null || {
-      _Fn_error_and_exit_ "${LINENO}"
-    }
-    chmod 0644 "${ver__[@]}" "${git_ignr}" || {
-      _Fn_error_and_exit_ "${LINENO}"
-    }
+    tee -- "${git_ignr}" < "${tmp_dir}/ign" > /dev/null \
+      || _Fn_error_and_exit_ "${LINENO}"
+
+    chmod 0644 "${ver__[@]}" "${git_ignr}" \
+      || _Fn_error_and_exit_ "${LINENO}"
   fi
 
   :;:;: $'Git -- Set correct DAC\x60s (ownership and permissions)'
   local HH
   for HH in "${git_mesg}" "${git_ignr}"
   do
-    if  ! [[ "$( stat -c%u "${HH}" )" = "${login_uid}" ]] ||
-        ! [[ "$( stat -c%g "${HH}" )" = "${login_gid}" ]]
+    if   ! [[ "$( stat -c%u "${HH}" )" = "${login_uid}" ]] \
+      || ! [[ "$( stat -c%g "${HH}" )" = "${login_gid}" ]]
     then
       sudo -- chown "${login_uid}:${login_gid}" "${ver__[@]}" "${HH}"
     fi
@@ -2119,18 +2119,15 @@ function _Fn_setup_gti_user_dirs_ (){
   do
     if ! [[ -d ${UU} ]]
     then
-      mkdir --mode=0700 "${ver__[@]}" "${UU}" || {
-        _Fn_error_and_exit_ "${LINENO}"
-      }
+      mkdir --mode=0700 "${ver__[@]}" "${UU}" \
+        || _Fn_error_and_exit_ "${LINENO}"
     fi
   done
   unset UU
 
   :;:;: " Change dirs "
-  pushd "${local_dir_1}" > /dev/null || {
-    _Fn_error_and_exit_ "${LINENO}"
-  }
-
+  pushd "${local_dir_1}" > /dev/null \
+    || _Fn_error_and_exit_ "${LINENO}"
 }
 
 
@@ -2156,9 +2153,8 @@ function _Fn_setup_gpg_ (){
   :;:;: $'If any files are owned by root, then change their ownership to \x24USER'
   sudo -- \
     find -- ~/.gnupg -xdev \( -uid 0 -o -gid 0 \) -execdir \
-      chown "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; || {
-        _Fn_error_and_exit_ "${LINENO}"
-      }
+      chown "${login_uid}:${login_gid}" "${ver__[@]}" \{\} \; \
+        || _Fn_error_and_exit_ "${LINENO}"
 
   :;:;: $'If any dir perms aren\x60t 700 or any file perms aren\x60t 600, then make them so'
   find -- ~/.gnupg -xdev -type d \! -perm 700  -execdir \
@@ -2198,8 +2194,8 @@ function _Fn_setup_network_ (){
   readonly dns_srv_1 dns_srv_A
 
   # shellcheck disable=SC2310
-  if  ! _Fn_test_dns_ "${dns_srv_1}" ||
-      ! _Fn_test_dns_ "${dns_srv_A}"
+  if   ! _Fn_test_dns_ "${dns_srv_1}" \
+    || ! _Fn_test_dns_ "${dns_srv_A}"
   then
     printf '\n%s, Attempting to connect to the internet... \n\n' "${scr_nm}"
 
