@@ -287,14 +287,16 @@ declare BASHRCSOURCED USER_LS_COLORS
 #+   access permissions are used by the process\. See output of,
 #+   \ps ax -o euid,ruid,egid,rgid,pid,ppid,stat,cmd | awk \$1 !~ $2 || $3 !~ $4\\
 ## Note, sudo.1, \SUDO_UID: Set to the user-ID of the user who invoked sudo.\
+log_nm=$( logname )
+
 if [[ -z ${login_uid:=} ]]
 then
-  login_uid=$( id -u "$( logname )" )
+  login_uid=$( id -u "${log_nm}" )
 fi
 
 if [[ -z ${login_gid:=} ]]
 then
-  login_gid=$( id -g "$( logname )" )
+  login_gid=$( id -g "${log_nm}" )
 fi
 
 # shellcheck disable=SC2034
