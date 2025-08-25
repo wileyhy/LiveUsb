@@ -2795,7 +2795,7 @@ _Fn__run_restorecon_
 ##
 :;:;: " Line ${nameref_Lineno}, Certain files must have been" \
     "installed from off-disk "
-#_Fn_reqd_user_files_
+_Fn_reqd_user_files_
 
   exit "${LINENO}"
   builtin set -x
