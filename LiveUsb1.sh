@@ -246,9 +246,9 @@ function _Fn_verbose_flags_ (){
 }
 _Fn_verbose_flags_ #<>
 
-    #echo mv "${ver__[@]}" foo bar
-    #exit "${LINENO}" #<>
-    set -x #<>
+  #echo mv "${ver__[@]}" foo bar
+  #exit "${LINENO}" #<>
+  #set -x #<>
 
 
 
@@ -389,7 +389,7 @@ fi
 
 
 ##
-: " Line ${nameref_Lineno}, Functions TOC "
+:;: " Line ${nameref_Lineno}, Functions TOC ";:
 
   ##  Function name
   #+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
