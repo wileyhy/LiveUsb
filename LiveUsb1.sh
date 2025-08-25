@@ -384,7 +384,7 @@ fi
 
   :;:;: " Line ${nameref_Lineno}, Files, vim "
   files_for_use_with_github_depth_0+=( ~/.vimrc )
-  :;:;: "   End of Files lists "
+  :;:;: "   End of Files lists " :;:;:
 }
 
 
