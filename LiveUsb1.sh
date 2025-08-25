@@ -320,12 +320,12 @@ _Fn_verbose_flags_ #<>
     readonly user_real_name user_github_email_address user_github_gpg_key
 
     :;:;: " Line ${nameref_Lineno}, Variables, Required RPM\s "
-      list_of_minimum_reqd_rpms+=( [0]="ShellCheck"
-                                   [1]="firewall-config"
-                                   [2]="geany"
-                                   [3]="gh"
-                                   [4]="git"
-                                   [5]="vim-enhanced" )
+    list_of_minimum_reqd_rpms+=( [0]="ShellCheck"
+                                 [1]="firewall-config"
+                                 [2]="geany"
+                                 [3]="gh"
+                                 [4]="git"
+                                 [5]="vim-enhanced" )
     readonly list_of_minimum_reqd_rpms
 
     :;:;: " Line ${nameref_Lineno}, Files, Required files lists "
@@ -337,10 +337,10 @@ _Fn_verbose_flags_ #<>
     #+   assigned to each of them within the next ~50 lines. The list of index
     #+   numbers is created just once, so the indices in the assignment section
     #+   below must match the indices created here.
-      arrays_of_conf_files+=( [0]="files_for_use_with_github_depth_0"
-                              [1]="files_for_use_with_github_depth_1"
-                              [2]="files_for_use_with_github_depth_2"
-                              [3]="files_for_use_with_github_depth_3" )
+    arrays_of_conf_files+=( [0]="files_for_use_with_github_depth_0"
+                            [1]="files_for_use_with_github_depth_1"
+                            [2]="files_for_use_with_github_depth_2"
+                            [3]="files_for_use_with_github_depth_3" )
     readonly arrays_of_conf_files
 
     :;:;: Unset each value of the array
