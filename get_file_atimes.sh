@@ -127,7 +127,7 @@ uu=0
 
 for qq in "${!all_files[@]}"
 do
-  if [[ ${all_files[qq]} =~ /dev/(stdout) ]]
+  if [[ ${all_files[qq]} =~ (/dev/(stdout)|"${DD}") ]]
   then
     printf '\n\n\tFound %s\n\n' "${BASH_REMATCH[0]}"
     sleep 10
