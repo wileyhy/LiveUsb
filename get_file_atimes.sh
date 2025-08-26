@@ -2,8 +2,9 @@
 
 
 shopt -s extglob
-set -x #<>
-set -euo pipefail #<>
+
+  #set -x #<>
+  set -euo pipefail #<>
 
 
 # Variables
