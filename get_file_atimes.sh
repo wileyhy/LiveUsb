@@ -28,7 +28,7 @@ ZZ=${DD}/ZZ_find_tmpfile
 sudo -v
 if sudo test -d "${DD}"
 then
-  if ! sudo rm -fr -v "${DD}"
+  if ! sudo rm -f -r -v "${DD}"
   then
     exit "${LINENO}"
   fi
@@ -85,7 +85,7 @@ time sudo bash -O globstar -c \
                 printf "%d" $?
               done
               echo
-              printf "rm -fv %s\n" "$yy"
+              printf "rm -f -v %s\n" "$yy"
               rm -fv "$yy"
             fi
           fi
@@ -95,7 +95,7 @@ time sudo bash -O globstar -c \
 if [[ -f ${MM} ]] \
   && [[ ! -s ${MM} ]]
 then
-  rm "${MM}"
+  rm -f -v  "${MM}"
 fi
 
   exit "${LINENO}" #<>
