@@ -7,6 +7,7 @@ shopt -s extglob
   set -euo pipefail #<>
 
 
+  
 # Variables
 AA=$(  date '+%F' )
 CC=/dev/shm
@@ -71,6 +72,8 @@ fi
   #exit "${LINENO}" #<>
   #set -x #<>
 
+  
+
 # Clean the filesystem - remove broken symlinks
 time sudo bash -O globstar -c \
      'ii=0
@@ -109,6 +112,8 @@ fi
   #exit "${LINENO}" #<>
   #set -x #<>
 
+  
+
 # Get the dirs
 unset all_dirs
 all_dirs=( /* )
@@ -129,6 +134,8 @@ declare -p all_dirs > "${FF}" \
   #<13s>
   #exit "${LINENO}" #<>
   set -x #<>
+
+  
 
 # Get the files
 unset all_files
@@ -167,6 +174,11 @@ done \
 
 sudo test -f "${ZZ}" \
   && rm -f -v "${ZZ}"
+
+  #<13s>
+  exit "${LINENO}" #<>
+  set -x #<>
+
 
 
 # Canonicalize all the paths
