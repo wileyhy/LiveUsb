@@ -36,6 +36,11 @@ fi
 # shellcheck disable=SC2174
 mkdir -p -m 0700 "${DD}" || exit "${LINENO}"
 rpm -qa > "${EE}" || exit "${LINENO}"
+if [[ -f ${EE} ]] \
+  && [[ ! -S ${EE} ]]
+then
+  sudo mv "${EE}" "${NN}"
+fi
 
 # Clean the filesystem - remove broken symlinks
 time sudo bash -O globstar -c \
