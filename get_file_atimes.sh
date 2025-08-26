@@ -96,7 +96,7 @@ sudo bash -O globstar -c \
               done
               echo
               printf "rm -f -v %s\n" "$yy"
-              rm -fv "$yy"
+              rm -f -v "$yy"
             fi
           fi
         fi
