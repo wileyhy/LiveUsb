@@ -8,6 +8,7 @@ shopt -s extglob
 
 
 # Variables
+AA=$(  date '+%F' )
 CC=/dev/shm
 DD=${CC}/get_file_atimes-sh.d
 EE=${DD}/EE_rpm-qa_o
@@ -18,6 +19,7 @@ II=${DD}/II_removed-symlinks
 JJ=${CC}/arr__all_files.i
 LL=${DD}/LL_realpath_changes
 MM=${DD}/MM_dangling-symlinks
+NN=${CC}/rpm-qa_o.i
 ZZ=${DD}/ZZ_find_tmpfile
 
 
