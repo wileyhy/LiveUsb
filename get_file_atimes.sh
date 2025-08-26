@@ -36,8 +36,29 @@ fi
 # shellcheck disable=SC2174
 mkdir -p -m 0700 "${DD}" \
   || exit "${LINENO}"
-rpm -qa > "${EE}" \
-  || exit "${LINENO}"
+
+# Usage: `_Fn_rpm_qa_ "${LINENO}"`
+function _Fn_rpm_qa_ (){
+  rpm -qa > "${EE}" \
+    || exit "${1}"
+}
+
+if [[ -e ${NN} ]]
+then 
+  if [[ -f ${NN} ]] \
+    && [[ ! -L ${NN} ]] \
+    && [[ ${NN} =~ "${AA}" ]]
+  then
+    true
+  else
+    rm -f -v "${NN}"
+    _Fn_rpm_qa_ "${LINENO}"
+  fi
+else
+  _Fn_rpm_qa_ "${LINENO}"
+fi
+
+
 if [[ -f ${EE} ]] \
   && [[ ! -s ${EE} ]]
 then
