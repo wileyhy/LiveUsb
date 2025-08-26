@@ -146,12 +146,12 @@ arr__args_for_binFind=( '(' '!' "-path" '*/proc/*' "-a" '!' "-path" '/sys/*' "-a
 )
 tst_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 
-for dd in "${all_dirs[@]}"
+for DIR in "${all_dirs[@]}"
 do
 
   cc=${#all_files[@]}
 
-  sudo find -P "${dd}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null \
+  sudo find -P "${DIR}" "${arr__args_for_binFind[@]}" -print0 2> /dev/null \
     | sudo tee "${ZZ}" > /dev/null
 
   mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files < <(
@@ -170,7 +170,7 @@ do
     && rm -f -v "${ZZ}"
 
 done \
-  && unset dd
+  && unset DIR
 
 sudo test -f "${ZZ}" \
   && rm -f -v "${ZZ}"
@@ -270,7 +270,7 @@ do
   #+ Take 1000 at a time
   for (( ii = 0; ii <= 1000; ii++ ))
   do
-    #+ One by one, add a file to the \s\ome_files array and then
+    #+ One by one, ad\d a file to the \s\ome_files array and then
     #+   unset the same index from the \a\ll_files array
 
       echo 'ii:' "${ii}" #<>
