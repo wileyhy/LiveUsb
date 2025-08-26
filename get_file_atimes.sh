@@ -72,7 +72,8 @@ time sudo bash -O globstar -c \
       do
         if [[ ${yy} != @(/proc/|/run/@(systemd|udev|user)/)* ]]
         then
-          if [[ -n "$yy" ]] && [[ -L "$yy" ]]
+          if [[ -n "$yy" ]] \
+            && [[ -L "$yy" ]]
           then
             if ! [[ -a "$yy" ]]
             then
@@ -110,7 +111,8 @@ do
   then
     unset "all_dirs[yy]"
   fi
-done && unset yy
+done \
+  && unset yy
 declare -p all_dirs > "${FF}" \
   || exit "${LINENO}"
 
@@ -143,10 +145,13 @@ do
 
   all_files=( "${all_files[@]}" )
 
-  sudo test -f "${ZZ}" && rm -f -v "${ZZ}"
+  sudo test -f "${ZZ}" \
+    && rm -f -v "${ZZ}"
 
-done && unset dd
-sudo test -f "${ZZ}" && rm -f -v "${ZZ}"
+done \
+  && unset dd
+sudo test -f "${ZZ}" \
+  && rm -f -v "${ZZ}"
 
 
 # Canonicalize all the paths
@@ -196,7 +201,8 @@ do
     exit "${LINENO}"
   fi
 
-done && unset qq
+done \
+  && unset qq
 set -e
 
 all_files=( "${all_files[@]}" )
@@ -255,7 +261,8 @@ do
       sudo wc "${HH}"
       break 2
     fi
-  done && unset ii
+  done \
+    && unset ii
 
     echo "count, some_files: ${#some_files[@]}" #<>
 
