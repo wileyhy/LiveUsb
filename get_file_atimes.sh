@@ -3,7 +3,7 @@
 
 shopt -s extglob
 
-  set -x #<>
+  #set -x #<>
   set -euo pipefail #<>
 
 
@@ -67,7 +67,8 @@ then
   sudo mv "${EE}" "${NN}"
 fi
 
-  exit "${LINENO}" #<>
+  #<> 0.5s
+  #exit "${LINENO}" #<>
   set -x #<>
 
 # Clean the filesystem - remove broken symlinks
