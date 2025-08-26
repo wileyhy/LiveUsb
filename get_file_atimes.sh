@@ -3,7 +3,7 @@
 
 shopt -s extglob
 
-  set -x #<>
+  #set -x #<>
   set -euo pipefail #<>
 
 
@@ -101,7 +101,8 @@ then
   rm -f -v  "${MM}"
 fi
 
-  exit "${LINENO}" #<>
+  #<> 13s
+  #exit "${LINENO}" #<>
   set -x #<>
 
 # Get the dirs
