@@ -69,7 +69,7 @@ fi
 
   #<0.5s>
   #exit "${LINENO}" #<>
-  set -x #<>
+  #set -x #<>
 
 # Clean the filesystem - remove broken symlinks
 time sudo bash -O globstar -c \
@@ -106,7 +106,7 @@ then
 fi
 
   #<14s>
-  exit "${LINENO}" #<>
+  #exit "${LINENO}" #<>
   set -x #<>
 
 # Get the dirs
@@ -125,6 +125,10 @@ done \
 
 declare -p all_dirs > "${FF}" \
   || exit "${LINENO}"
+
+  #<14s>
+  exit "${LINENO}" #<>
+  set -x #<>
 
 # Get the files
 unset all_files
