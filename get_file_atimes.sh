@@ -28,11 +28,13 @@ ZZ=${DD}/ZZ_find_tmpfile
 sudo -v
 if sudo test -d "${DD}"
 then
+
   if ! sudo rm -f -r -v "${DD}"
   then
     exit "${LINENO}"
   fi
 fi
+
 # shellcheck disable=SC2174
 mkdir -p -m 0700 "${DD}" \
   || exit "${LINENO}"
@@ -45,6 +47,7 @@ function _Fn_rpm_qa_ (){
 
 if [[ -e ${NN} ]]
 then 
+
   if [[ -f ${NN} ]] \
     && [[ ! -L ${NN} ]] \
     && [[ ${NN} =~ "${AA}" ]]
@@ -57,7 +60,6 @@ then
 else
   _Fn_rpm_qa_ "${LINENO}"
 fi
-
 
 if [[ -f ${EE} ]] \
   && [[ ! -s ${EE} ]]
@@ -105,14 +107,17 @@ fi
 # Get the dirs
 unset all_dirs
 all_dirs=( /* )
+
 for yy in "${!all_dirs[@]}"
 do
+
   if [[ ${all_dirs[yy]} == @(/proc|/sys) ]]
   then
     unset "all_dirs[yy]"
   fi
 done \
   && unset yy
+
 declare -p all_dirs > "${FF}" \
   || exit "${LINENO}"
 
@@ -150,6 +155,7 @@ do
 
 done \
   && unset dd
+
 sudo test -f "${ZZ}" \
   && rm -f -v "${ZZ}"
 
@@ -161,6 +167,7 @@ uu=0
 
 for qq in "${!all_files[@]}"
 do
+
   if [[ ${all_files[qq]} =~ (/dev/(stdout)|"${DD}") ]]
   then
     printf '\n\n\tFound %s\n\n' "${BASH_REMATCH[0]}"
@@ -200,20 +207,22 @@ do
     echo Assignment error
     exit "${LINENO}"
   fi
-
 done \
   && unset qq
+
 set -e
 
 all_files=( "${all_files[@]}" )
 
 declare -p all_files > "${GG}" \
   || exit "${LINENO}"
+
 if [[ -f ${GG} ]] \
   && [[ ! -S ${GG} ]]
 then
   sudo mv "${GG}" "${JJ}"
 fi
+
 full_count_allFiles=${#all_files[@]}
 
   echo "all_files[0]: ${all_files[0]}" #<>
@@ -228,6 +237,7 @@ nn=0
 
 while [[ "${#all_files[@]}" -gt 0 ]]
 do
+
   unset some_files
   nn=$((nn++))
 
@@ -244,6 +254,7 @@ do
 
     if [[ -n "${all_files[ii]:-}" ]]
     then
+
       if [[ ${all_files[ii]} == "${tst_extglb}" ]]
       then
         continue
