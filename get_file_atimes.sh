@@ -100,7 +100,8 @@ sudo bash -O globstar -c \
             fi
           fi
         fi
-      done' >> "${MM}"
+      done \
+        && unset yy' >> "${MM}"
 
 if [[ -f ${MM} ]] \
   && [[ ! -s ${MM} ]]
@@ -157,6 +158,7 @@ do
     sudo cat "${ZZ}"
   )
 
+  
   if [[ ${cc} -ge "${#all_files[@]}" ]]
   then
     printf '\n\tError: array not filling.\n\n'
