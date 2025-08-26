@@ -173,7 +173,11 @@ set -e
 all_files=( "${all_files[@]}" )
 
 declare -p all_files > "${GG}" || exit "${LINENO}"
-sudo mv "${GG}" "${JJ}"
+if [[ -f ${GG} ]] \
+  && [[ ! -S ${GG} ]]
+then
+  sudo mv "${GG}" "${JJ}"
+fi
 full_count_allFiles=${#all_files[@]}
 
   echo "all_files[0]: ${all_files[0]}" #<>
