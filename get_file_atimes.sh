@@ -39,7 +39,7 @@ time sudo bash -O globstar -c \
      'ii=0
       for yy in /**
       do
-        if [[ ${yy} != @(/proc/|/run/systemd/|/run/user/)* ]]
+        if [[ ${yy} != @(/proc/|/run/systemd/|/run/@(user|udev)/)* ]]
         then
           if [[ -n "$yy" ]] && [[ -L "$yy" ]]
           then
