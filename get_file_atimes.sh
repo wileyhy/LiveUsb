@@ -106,7 +106,7 @@ then
 fi
 
   #<> 13s
-  #exit "${LINENO}" #<>
+  exit "${LINENO}" #<>
   set -x #<>
 
 # Get the dirs
