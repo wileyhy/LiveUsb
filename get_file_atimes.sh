@@ -144,7 +144,6 @@ arr__args_for_binFind=( '(' '!' "-path" '*/proc/*' "-a" '!' "-path" '/sys/*' "-a
   '!' "-path" '/run/systemd/transient/*' "-a" '!' "-path" '/run/user/1000/*' "-a"
   '!' "-path" '/run/host/*' "-a" '!' "-path" '/dev/pts/*' ')'
 )
-tst_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 
 for DIR in "${all_dirs[@]}"
 do
@@ -258,6 +257,7 @@ full_count_allFiles=${#all_files[@]}
 
 #+ While there are still any files listed in the array
 nn=0
+tst_extglb="@(/proc/|/sys/|/run/systemd/transient/|/run/user/1000/)*"
 
 while [[ "${#all_files[@]}" -gt 0 ]]
 do
