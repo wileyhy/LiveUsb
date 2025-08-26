@@ -75,7 +75,7 @@ fi
   
 
 # Clean the filesystem - remove broken symlinks
-time sudo bash -O globstar -c \
+sudo bash -O globstar -c \
      'ii=0
       for yy in /**
       do
