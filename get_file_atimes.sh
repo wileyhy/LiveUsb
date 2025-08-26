@@ -175,7 +175,7 @@ done \
 sudo test -f "${ZZ}" \
   && rm -f -v "${ZZ}"
 
-  #<13s>
+  #<43s>
   exit "${LINENO}" #<>
   set -x #<>
 
