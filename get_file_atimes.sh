@@ -16,10 +16,10 @@ FF=${DD}/FF_arr__all_dirs
 GG=${DD}/GG_arr__all_files
 HH=${DD}/HH_stat-cNW_o
 II=${DD}/II_removed-symlinks
-JJ=${CC}/arr__all_files.i
+JJ=${CC}/arr__all_files
 LL=${DD}/LL_realpath_changes
 MM=${DD}/MM_dangling-symlinks
-NN=${CC}/rpm-qa_o.i
+NN=${CC}/rpm-qa_o
 ZZ=${DD}/ZZ_find_tmpfile
 
 
