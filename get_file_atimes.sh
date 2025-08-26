@@ -105,9 +105,9 @@ then
   rm -f -v  "${MM}"
 fi
 
-  #<14s>
+  #<13s>
   #exit "${LINENO}" #<>
-  set -x #<>
+  #set -x #<>
 
 # Get the dirs
 unset all_dirs
@@ -126,8 +126,8 @@ done \
 declare -p all_dirs > "${FF}" \
   || exit "${LINENO}"
 
-  #<14s>
-  exit "${LINENO}" #<>
+  #<13s>
+  #exit "${LINENO}" #<>
   set -x #<>
 
 # Get the files
