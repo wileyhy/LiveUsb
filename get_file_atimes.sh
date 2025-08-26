@@ -48,7 +48,7 @@ time sudo bash -O globstar -c \
               printf "\nFilename %d:<%s>\n" "$((++ii))" "$yy"
               ls -alhFi "$yy" 2>/dev/null
               for xx in n a L  b c d f p t S
-              do 
+              do
                 printf " %s:" "${xx}"
                 eval [[ "-${xx}" ./b ]]
                 printf "%d" $?
@@ -61,7 +61,14 @@ time sudo bash -O globstar -c \
         fi
       done' >> "${MM}"
 
-  exit "${LINENO}" #<>
+if [[ -f ${MM} ]] \
+  && [[ ! -s ${MM} ]]
+then
+  rm "${MM}"
+fi
+
+  #exit "${LINENO}" #<>
+  set -x #<>
 
 # Get the dirs
 unset all_dirs
@@ -93,7 +100,7 @@ do
     | sudo tee "${ZZ}" > /dev/null
 
   mapfile -d "" -t -O $(( ${#all_files[@]} + 1 )) all_files < <(
-    sudo cat "${ZZ}" 
+    sudo cat "${ZZ}"
   )
 
   if [[ ${cc} -ge "${#all_files[@]}" ]]
@@ -103,7 +110,7 @@ do
   fi
 
   all_files=( "${all_files[@]}" )
-  
+
   sudo test -f "${ZZ}" && rm -f -v "${ZZ}"
 
 done && unset dd
@@ -145,7 +152,7 @@ do
       2> /dev/null >> "${LL}"
 
     printf '\n\t realpath changed a value: %d times\n\n' $((++uu))
-    
+
       #sleep 2 #<>
   fi
 
@@ -189,7 +196,7 @@ do
   do
     #+ One by one, add a file to the \s\ome_files array and then
     #+   unset the same index from the \a\ll_files array
-    
+
       echo 'ii:' "${ii}" #<>
       #echo 'all_files [ii]:' "${all_files[ii]}" #<>
 
@@ -202,7 +209,7 @@ do
         #break 2
       fi
 
-      some_files+=( [ii]="${all_files[ii]}" )  
+      some_files+=( [ii]="${all_files[ii]}" )
       unset "all_files[ii]"
     else
       echo wtf
@@ -227,9 +234,9 @@ do
   else
     break 2
   fi
-  
+
   all_files=( "${all_files[@]}" )
-  
+
     echo "count, all_files: ${#all_files[@]}" #<>
     printf '\n\t%s\n\n' "end of big loop ${nn}"
 done
