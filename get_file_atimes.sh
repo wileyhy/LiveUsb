@@ -34,10 +34,12 @@ then
   fi
 fi
 # shellcheck disable=SC2174
-mkdir -p -m 0700 "${DD}" || exit "${LINENO}"
-rpm -qa > "${EE}" || exit "${LINENO}"
+mkdir -p -m 0700 "${DD}" \
+  || exit "${LINENO}"
+rpm -qa > "${EE}" \
+  || exit "${LINENO}"
 if [[ -f ${EE} ]] \
-  && [[ ! -S ${EE} ]]
+  && [[ ! -s ${EE} ]]
 then
   sudo mv "${EE}" "${NN}"
 fi
@@ -88,7 +90,8 @@ do
     unset "all_dirs[yy]"
   fi
 done && unset yy
-declare -p all_dirs > "${FF}" || exit "${LINENO}"
+declare -p all_dirs > "${FF}" \
+  || exit "${LINENO}"
 
 # Get the files
 unset all_files
@@ -177,7 +180,8 @@ set -e
 
 all_files=( "${all_files[@]}" )
 
-declare -p all_files > "${GG}" || exit "${LINENO}"
+declare -p all_files > "${GG}" \
+  || exit "${LINENO}"
 if [[ -f ${GG} ]] \
   && [[ ! -S ${GG} ]]
 then
