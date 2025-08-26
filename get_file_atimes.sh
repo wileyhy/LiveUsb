@@ -67,7 +67,7 @@ then
   sudo mv "${EE}" "${NN}"
 fi
 
-  #<> 0.5s
+  #<0.5s>
   #exit "${LINENO}" #<>
   set -x #<>
 
@@ -105,7 +105,7 @@ then
   rm -f -v  "${MM}"
 fi
 
-  #<> 13s
+  #<13s>
   exit "${LINENO}" #<>
   set -x #<>
 
