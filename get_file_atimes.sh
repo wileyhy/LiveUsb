@@ -62,7 +62,7 @@ else
 fi
 
 if [[ -f ${EE} ]] \
-  && [[ ! -s ${EE} ]]
+  && [[ -s ${EE} ]]
 then
   sudo mv "${EE}" "${NN}"
 fi
