@@ -24,6 +24,17 @@ _Fn_get_line_nos_
 
 
 
+# Usage: ecco STRING
+#
+ecco(){
+  printf '%b' "$1" \
+    | xxd -ps
+
+  printf '%b' "$1" \
+    | cat -Aen
+}
+
+
 # Usage: _Fn_get_files_ -$'\n'
 #        _Fn_get_files_ --eval
 #
@@ -39,15 +50,32 @@ function _Fn_get_files_ (){
   elif [[ $# -ne 1 ]]
   then
     : $?
-    local ec=$?
+    ec=$?
     printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
     exit "0${ec}"
   else
     : $?
   fi
 
-  local -a files
   input=$1
+  ecco "${input}" \
+    | awk ' NR==1 {
+                line1=$0
+              } 
+            NR==2 {
+                line2=$0
+                exit
+              } 
+            END {
+                if (line1==line2) 
+                  print "Lines are identical"
+                else 
+                  print "Lines are different"
+              }'
+
+    return 101
+
+  local -a files
   files=( )
 
   if [[ ${input} == --[^-]* ]]
@@ -59,7 +87,9 @@ function _Fn_get_files_ (){
   then
     : $?
     _Fn_find_chars_ "${input}"
-  
+
+  elif [[ -z ${input} ]] \
+    && xxd <<< "${input}"  
   else
     local ec=$?
     : "ec: $ec"
