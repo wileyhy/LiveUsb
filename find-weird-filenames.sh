@@ -59,19 +59,20 @@ function _Fn_get_files_ (){
 
   input=$1
   ecco "${input}" \
-    | awk ' NR==1 {
-                line1=$0
-              } 
-            NR==2 {
-                line2=$0
-                exit
-              } 
-            END {
-                if (line1==line2) 
-                  print "Lines are identical"
-                else 
-                  print "Lines are different"
-              }'
+    | awk \
+'  NR==1 {
+      line1=$0
+    } 
+  NR==2 {
+      line2=$0
+      exit
+    } 
+  END {
+      if (line1==line2) 
+        print "Lines are identical"
+      else 
+        print "Lines are different"
+    }'
 
     return 101
 
