@@ -88,8 +88,9 @@ function _Fn_get_files_ (){
     : $?
     _Fn_find_chars_ "${input}"
 
-  elif [[ -z ${input} ]] \
-    && xxd <<< "${input}"  
+  elif [[ -z ${input} ]]
+  then
+    is_null=maybe
   else
     local ec=$?
     : "ec: $ec"
