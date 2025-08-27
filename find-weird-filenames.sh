@@ -59,8 +59,8 @@ function _Fn_get_files_ (){
 
   input=$1
   ecco "${input}" \
-    | awk \
-'  NR==1 {
+    | awk '
+  NR==1 {
       line1=$0
     } 
   NR==2 {
