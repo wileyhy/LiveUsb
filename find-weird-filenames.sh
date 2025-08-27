@@ -14,11 +14,71 @@
 sudo -v 
 
 
+#
+#
+function _Fn_get_line_nos_ (){
+  shopt -s expand_aliases
+  alias _Fn_get_files='_Fn_get_files_ "${LINENO}" '
+}
+_Fn_get_line_nos_
+
+
+
+# Usage: _Fn_get_files_ -$'\n'
+#        _Fn_get_files_ --eval
+#
+function _Fn_get_files_ (){
+  local - ec input lin \
+    && set -x
+  
+  if [[ $# -eq 2 ]]
+  then
+    lin=$1
+    shift
+  elif [[ $# -ne 1 ]]
+  then
+    local ec=$?
+    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
+    exit "0${ec}"
+  fi
+
+  local -a files
+  input=$1
+  file=( )
+
+  if [[ ${input} == --[^-]* ]]
+  then
+    _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
+
+  elif [[ ${input} == -[^-]* ]]
+    _Fn_find_chars_ "${input}"
+  
+  else
+    local ec=$?
+    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
+    exit "0${ec}"
+  fi
+
+  printf '%d' "${#files[@]}"
+  return 00
+}
+
+
 # Usage: _Fn_find_chars_ "${input}"
 #
 function _Fn_find_chars_ (){
-  local input
+  local ec input - \
+    && set -x
   input=$1
+
+  if [[ ${input} == -[^-]* ]]
+  then
+    input=${input#-}
+  else
+    ec=$?
+    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
+    exit "0${ec}"
+  fi
 
   mapfile -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0
@@ -28,16 +88,18 @@ function _Fn_find_chars_ (){
 # Usage: _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
 #
 function _Fn_find_IFS_delimd_strings_ (){
-  local input loc
+  local ec input loc - \
+    && set -x
   input=$1
   loc=$2
 
-  if [[ ${input} == --?* ]]
+  if [[ ${input} == --[^-]* ]]
   then
     input=${input#--}
   else
-    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n'
-    exit "${lin:-${LINENO}}"
+    ec=$?
+    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
+    exit "0${ec}"
   fi
 
   mapfile -d "" -t files < <(
@@ -57,50 +119,6 @@ function _Fn_find_IFS_delimd_strings_ (){
         -e $'\n'"${input}"$'\n'
   )
 }
-
-
-# Usage: _Fn_get_files_ -$'\n'
-#        _Fn_get_files_ --eval
-#
-function _Fn_get_files_ (){
-  local - \
-    && set -x
-  
-  if [[ $# -eq 2 ]]
-  then
-    local lin
-    lin=$1
-    shift
-  elif [[ $# -ne 1 ]]
-  then
-    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n'
-    exit "${lin:-${LINENO}}"
-  fi
-
-  local input
-  input=$1
-  local -a files
-  file=( )
-
-  if [[ ${input} =~ ([A-Za-z]+) ]]
-  then
-    _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
-  else
-    _Fn_find_chars_ "${input}"
-  fi
-
-  printf '%d' "${#files[@]}"
-  return 00
-}
-
-
-#
-#
-function _Fn_get_line_nos_ (){
-  shopt -s expand_aliases
-  alias _Fn_get_files='_Fn_get_files_ "${LINENO}" '
-}
-_Fn_get_line_nos_
 
 
 
@@ -271,3 +289,7 @@ _Fn_get_files_
 # Bourne Special Builtins
 
 # Bash 5.2 Shell Builtins
+#
+
+
+exit 000
