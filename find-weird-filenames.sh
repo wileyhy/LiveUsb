@@ -51,6 +51,7 @@ function _Fn_get_files_ (){
     _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
 
   elif [[ ${input} == -[^-]* ]]
+  then
     _Fn_find_chars_ "${input}"
   
   else
