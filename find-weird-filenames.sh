@@ -128,7 +128,10 @@ function _Fn_find_IFS_delimd_strings_ (){
 _Fn_get_files_ -'/'
 
 # <NUL>
-_Fn_get_files_ -$'\0'
+_Fn_get_files_ $'\0'
+
+  exit "${LINENO}"
+  set -x
 
 # Execution contexts
 # exec
@@ -136,9 +139,6 @@ _Fn_get_files_ --"exec"
 
 # eval
 _Fn_get_files_ --"eval"
-
-  exit "${LINENO}"
-  set -x
 
 # $((
 _Fn_get_files_
