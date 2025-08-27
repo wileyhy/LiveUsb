@@ -19,24 +19,48 @@ sudo -v
 function _Fn_find_chars_ (){
   local input
   input=$1
+
   mapfile -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0
   )
 }
 
-# Usage: _Fn_find_words_ "${input}"
+# Usage: _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
 #
-function _Fn_find_words_ (){
-  local input
+function _Fn_find_IFS_delimd_strings_ (){
+  local input loc
   input=$1
+  loc=$2
+
+  if [[ ${input} == --?* ]]
+  then
+    input=${input#--}
+  else
+    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n'
+    exit "${lin:-${LINENO}}"
+  fi
+
   mapfile -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0 2>&1 \
-      | grep -Eze '\<'"${input}"'\>'
+      | grep -Ez                \
+        -e  '\<'"${input}"'\>'  \
+        -e  '\b'"${input}"'\b'  \
+        -e  '\W'"${input}"'\W'  \
+        -e     " ${input} "     \
+        -e     " ${input}"$'\t' \
+        -e     " ${input}"$'\n' \
+        -e $'\t'"${input} "     \
+        -e $'\t'"${input}"$'\t' \
+        -e $'\t'"${input}"$'\n' \
+        -e $'\n'"${input} "     \
+        -e $'\n'"${input}"$'\t' \
+        -e $'\n'"${input}"$'\n'
   )
 }
 
 
-# Usage: _Fn_get_files_ $'\n'
+# Usage: _Fn_get_files_ -$'\n'
+#        _Fn_get_files_ --eval
 #
 function _Fn_get_files_ (){
   local - \
@@ -60,7 +84,7 @@ function _Fn_get_files_ (){
 
   if [[ ${input} =~ ([A-Za-z]+) ]]
   then
-    _Fn_find_words_ "${input}"
+    _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
   else
     _Fn_find_chars_ "${input}"
   fi
@@ -68,6 +92,16 @@ function _Fn_get_files_ (){
   printf '%d' "${#files[@]}"
   return 00
 }
+
+
+#
+#
+function _Fn_get_line_nos_ (){
+  shopt -s expand_aliases
+  alias _Fn_get_files='_Fn_get_files_ "${LINENO}" '
+}
+_Fn_get_line_nos_
+
 
 
 # Characters illegal for filenames in Linux
