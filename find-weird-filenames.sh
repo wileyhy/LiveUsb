@@ -44,7 +44,7 @@ function _Fn_get_files_ (){
 
   local -a files
   input=$1
-  file=( )
+  files=( )
 
   if [[ ${input} == --[^-]* ]]
   then
@@ -99,7 +99,7 @@ function _Fn_find_IFS_delimd_strings_ (){
     input=${input#--}
   else
     ec=$?
-    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
+    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${loc:-${LINENO}}"
     exit "0${ec}"
   fi
 
