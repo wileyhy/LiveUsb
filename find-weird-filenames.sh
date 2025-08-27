@@ -33,13 +33,17 @@ function _Fn_get_files_ (){
   
   if [[ $# -eq 2 ]]
   then
+    : $?
     lin=$1
     shift
   elif [[ $# -ne 1 ]]
   then
+    : $?
     local ec=$?
     printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
     exit "0${ec}"
+  else
+    : $?
   fi
 
   local -a files
@@ -48,14 +52,17 @@ function _Fn_get_files_ (){
 
   if [[ ${input} == --[^-]* ]]
   then
+    : $?
     _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
 
   elif [[ ${input} == -[^-]* ]]
   then
+    : $?
     _Fn_find_chars_ "${input}"
   
   else
     local ec=$?
+    : "ec: $ec"
     printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
     exit "0${ec}"
   fi
@@ -74,9 +81,11 @@ function _Fn_find_chars_ (){
 
   if [[ ${input} == -[^-]* ]]
   then
+    : $?
     input=${input#-}
   else
     ec=$?
+    : "ec: $ec"
     printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
     exit "0${ec}"
   fi
@@ -96,9 +105,11 @@ function _Fn_find_IFS_delimd_strings_ (){
 
   if [[ ${input} == --[^-]* ]]
   then
+    : $?
     input=${input#--}
   else
     ec=$?
+    : "ec: $ec"
     printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${loc:-${LINENO}}"
     exit "0${ec}"
   fi
