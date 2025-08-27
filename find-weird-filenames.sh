@@ -125,17 +125,20 @@ function _Fn_find_IFS_delimd_strings_ (){
 
 # Characters illegal for filenames in Linux
 # /
-_Fn_get_files_ '/'
+_Fn_get_files_ -'/'
 
 # <NUL>
-_Fn_get_files_ $'\0'
+_Fn_get_files_ -$'\0'
 
 # Execution contexts
 # exec
-_Fn_get_files_ "exec"
+_Fn_get_files_ --"exec"
 
 # eval
-_Fn_get_files_ "eval"
+_Fn_get_files_ --"eval"
+
+  exit "${LINENO}"
+  set -x
 
 # $((
 _Fn_get_files_
