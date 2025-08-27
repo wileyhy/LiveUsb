@@ -136,7 +136,7 @@ function _Fn_find_IFS_delimd_strings_ (){
 
 # Characters illegal for filenames in Linux
 # /
-_Fn_get_files_ -'/'
+#_Fn_get_files_ -'/'
 
 # <NUL>
 _Fn_get_files_ $'\0'
