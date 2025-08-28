@@ -201,7 +201,7 @@ _Fn_get_files_ (){
   # Bug: \nounset\ doesn\t allow for a gap between \ff\ and \=0\ 
   for ((  ff=0;  ff <= $limit;  ff++  ))
   do
-      declare -p ff #<>
+      #declare -p ff #<>
 
     printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
       | grep -s --color=always -e "${input}" 2> /dev/null
