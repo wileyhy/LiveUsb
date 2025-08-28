@@ -92,6 +92,8 @@ _Fn_get_files_ (){
     : arobase: "$@" #<>
 
   local - ec ff input lin nam
+  ff=0
+  export ff
   #set -x #<>
 
   # Process positional parameters
