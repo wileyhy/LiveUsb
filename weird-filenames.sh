@@ -43,6 +43,8 @@ then
   declare -A pos_parms
   for pp in "$@"
   do
+      declare -p pp #<>
+
     pos_parms=( ["${pp}"]+=1 )
   done
   parms_changed=y
