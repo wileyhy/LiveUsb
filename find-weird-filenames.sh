@@ -31,7 +31,7 @@ ecco(){
     | xxd -ps
 
   printf '%b' "$1" \
-    | cat -Aen
+    | cat -A
 }
 export -f ecco
 
