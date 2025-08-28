@@ -15,10 +15,14 @@ sudo -v
 
 
 #
-#
+: Define _Fn_get_line_nos_
 function _Fn_get_line_nos_ (){
+  :;: "enter function ${FUNCNAME[0]}";:
+
   shopt -s expand_aliases
   alias _Fn_get_files_='_Fn_get_files_ "${LINENO}" '
+
+  :;: "exit function ${FUNCNAME[0]}" ;:
 }
 _Fn_get_line_nos_
 
@@ -27,19 +31,26 @@ _Fn_get_line_nos_
 # Usage: ecco STRING
 #
 #ecco(){
+  #:;: "enter function ${FUNCNAME[0]}";:
+
   #printf '%b' "$1" \
     #| xxd -ps
 #
   #printf '%b' "$1" \
     #| cat -A
+
+  #:;: "exit function ${FUNCNAME[0]}" ;:
 #}
 #export -f ecco
 
 
+: Define _Fn_get_files_
 # Usage: _Fn_get_files_ -$'\n'
 #        _Fn_get_files_ --eval
 #
 function _Fn_get_files_ (){
+  :;: "enter function ${FUNCNAME[0]}";:
+
   local - ec input lin \
     && set -x
   
@@ -102,12 +113,16 @@ function _Fn_get_files_ (){
   printf 'File count: %d\n' "${#files[@]}"
   : printf '<%s>\n' "${files[@]}"
   return 00
+
+  :;: "exit function ${FUNCNAME[0]}" ;:
 }
 
 
 # Usage: _Fn_find_chars_ "${input}"
 #
 function _Fn_find_chars_ (){
+  :;: "enter function ${FUNCNAME[0]}";:
+
   local ec input - \
     && set -x
   input=$1
@@ -126,11 +141,15 @@ function _Fn_find_chars_ (){
   mapfile -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0
   )
+
+  :;: "exit function ${FUNCNAME[0]}" ;:
 }
 
 # Usage: _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
 #
 function _Fn_find_IFS_delimd_strings_ (){
+  :;: "enter function ${FUNCNAME[0]}";:
+
   local ec input loc - \
     && set -x
   input=$1
@@ -166,6 +185,8 @@ function _Fn_find_IFS_delimd_strings_ (){
         -e $'\n'"${input}"$'\t' \
         -e $'\n'"${input}"$'\n' 2> /dev/null
   )
+
+  :;: "exit function ${FUNCNAME[0]}" ;:
 }
 
 
@@ -175,7 +196,7 @@ function _Fn_find_IFS_delimd_strings_ (){
 #_Fn_get_files_ -'/'
 _Fn_get_files_ '--\x2f'
 
-  exit "${LINENO}"
+  #exit "${LINENO}"
   set -x
 
 # <NUL>
