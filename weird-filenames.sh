@@ -741,14 +741,11 @@ _Fn_get_files_ equals_ascii '-='
 # +
 _Fn_get_files_ plus_ascii '-+'
 
-# :
-_Fn_get_files_ colon_ascii '-:'
-
 # .
-_Fn_get_files_ period_ascii '-.'
+_Fn_get_files_ period_ascii "-$'.'"
 
 # /
-_Fn_get_files_ backslash_ascii '-\'
+_Fn_get_files_ backslash_ascii "-$'\'"
 
 
 # Bourne Special Builtins
