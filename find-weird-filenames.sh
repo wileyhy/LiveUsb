@@ -197,7 +197,8 @@ _Fn_get_files_ (){
   else
     limit="${#files[@]}"
   fi
-  
+ 
+  # Bug: \nounset\ doesn\t allow for a gap between \ff\ and \=0\ 
   for ((  ff=0;  ff <= $limit;  ff++  ))
   do
       declare -p ff #<>
