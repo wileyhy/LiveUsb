@@ -45,7 +45,7 @@ then
   do
       declare -p pp #<>
 
-    pos_parms=( ["${pp}"]+=1 )
+    pos_parms+=( ["${pp##*-}"]+=1 )
   done
   parms_changed=y
 
