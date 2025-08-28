@@ -62,12 +62,13 @@ fi
 if [[ ${in_clr} = n ]]
 then
   # Note: intentional use of word splitting
-  # shellcheck disable=SC2206,SC2034
+  # shellcheck disable=SC2206
   colors=( ${!Clr*} )
   declare -n CC
 
   for CC in "${colors[@]}"
   do
+    # shellcheck disable=SC2034
     CC=
     grp_clr='--color=never'
   done \
