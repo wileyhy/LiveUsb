@@ -49,7 +49,7 @@ _Fn_print_elapsed_t_ (){
   #set -x
   now=$((  $( date '+%s' ) - T0  ))
 
-  printf '%-2d:%-2d:%-2d\n' \
+  printf '%02d:%02d:%02d\n' \
     $((  ( now - ( now % 60**2 ) ) / 60**2  )) \
     $((  ( ( now - ( now % 60 ) ) / 60 ) % 60  )) \
     $((  now % 60  ))
