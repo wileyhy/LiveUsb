@@ -43,10 +43,11 @@ then
   for PP in "$@"
   do
     case "$PP" in
-      -A                ) pr_all=y  ;;
-      -[Hh]|'-?'|--help ) _Fn_help_ ;;
-      -I                ) pr_per=y  ;;
-      *                 ) _Fn_help_ ;;
+      --help|'-?' ) _Fn_help_ ;;
+      -A          ) pr_all=y  ;;
+      -[Hh]       ) _Fn_help_ ;;
+      -I          ) pr_per=y  ;;
+      *           ) _Fn_help_ ;;
     esac
   done
 fi
@@ -170,7 +171,7 @@ function _Fn_get_files_ (){
   local -a files
   files=( )
 
-  # Hardcoded leading hyphens are used to signal which sub-f\unction 
+  # Hardcoded leading hyphens are used to signal which sub-f\unction
   #   is used; two hyphens to search for strings delimited by the
   #   default value of IFS (ie, \Words\)...
   if [[ ${input} == --[^-]* ]]
@@ -204,7 +205,7 @@ function _Fn_get_files_ (){
   # Reset array indices
   files=( "${files[@]}" )
 
-  # Note, printing of the input string is performed in the two 
+  # Note, printing of the input string is performed in the two
   #   sub-functions, after the value of \input is fully processed.
 
 
@@ -214,12 +215,12 @@ function _Fn_get_files_ (){
   limit=${file_count}
   yn=skip
 
-  printf '\t%bCount:%b\t' "${C5}" "${C0}" 
+  printf '\t%bCount:%b\t' "${C5}" "${C0}"
 
   if [[ ${file_count} -gt 0 ]]
-  then 
+  then
     : $? #<>
-    printf '%b%d%b\n' "${C46}" "${file_count}" "${C0}" 
+    printf '%b%d%b\n' "${C46}" "${file_count}" "${C0}"
 
   elif [[ ${file_count} -eq 0 ]]
   then
@@ -238,28 +239,33 @@ function _Fn_get_files_ (){
     #<>   something r\eadable
     #if [[ "${#files[@]}" -ge 10 ]]; then limit=10; #<>
     #fi #<>
-  
+
   # Print, each file with index number
-  if [[ ${limit} != 0 ]]
+  if [[ ${pr_all} == n ]] \
+    [[ ${pr_per} == y ]]
   then
-    # Bug: \nounset\ doesn\t allow for a gap between \ff\ and \=0\ 
-    for ((  ff=0;  ff <= ( $limit - 1 );  ff++  ))
-    do
-        #declare -p ff #<>
 
-      printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
-        | grep -s --color=always -Fe "${input}" 2> /dev/null
-    done \
-      && unset ff
-    echo
+    if [[ ${limit} != 0 ]]
+    then
+      # Bug: \nounset\ doesn\t allow for a gap between \ff\ and \=0\
+      for ((  ff=0;  ff <= ( $limit - 1 );  ff++  ))
+      do
+          #declare -p ff #<>
 
-    # Pause to check
-    printf 'Next test? [Y/n]\n'
-    read -N 1 -r -s -t 600 yn
-    case "${yn}" in
-      n) builtin exit 000 ;;
-      *) :;;
-    esac
+        printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
+          | grep -s --color=always -Fe "${input}" 2> /dev/null
+      done \
+        && unset ff
+      echo
+
+      # Pause to check
+      printf 'Next test? [Y/n]\n'
+      read -N 1 -r -s -t 600 yn
+      case "${yn}" in
+        n) builtin exit 000 ;;
+        *) :;;
+      esac
+    fi
   fi
 
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
@@ -292,7 +298,7 @@ function _Fn_fnd_chars_ (){
     builtin exit "0${ec}"
   fi
 
-  # Print, input string  
+  # Print, input string
   _Fn_print_input_str_ "${input}"
 
   # Search
@@ -331,7 +337,7 @@ function _Fn_fnd_IFS_delimd_strings_ (){
     builtin exit "0${ec}"
   fi
 
-  # Print, input string  
+  # Print, input string
   _Fn_print_input_str_ "${input}"
 
   # Gather
