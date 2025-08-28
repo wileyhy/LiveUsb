@@ -419,7 +419,7 @@ _Fn_get_files_ newline_ascii "-$'\\n'"
 _Fn_get_files_ tab_ascii "-$'\\t'"
 
 # <space> " "
-_Fn_get_files_ space_ascii '- '
+_Fn_get_files_ space_ascii "-$' '"
 
 # &
 _Fn_get_files_ ampersand_ascii '-&'
