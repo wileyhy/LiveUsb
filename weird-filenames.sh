@@ -24,7 +24,7 @@ C5=$( tput setaf 5 )    export C5   #         - Blue
 C46=$( tput setaf 46 )  export C46  #         - Yello
 
 print_per_search=y
-print_all_searches=n
+pr_all=n
 
 
 
@@ -43,10 +43,10 @@ then
   for PP in "$@"
   do
     case "$PP" in
-      -I )                print_per_search=y    ;;
-      -A )                print_all_searches=y  ;;
-      -[Hh]|'-?'|--help ) _Fn_help_             ;;
-      * )                 _Fn_help_             ;;
+      -A                ) pr_all=y  ;;
+      -[Hh]|'-?'|--help ) _Fn_help_ ;;
+      -I                ) pr_per=y  ;;
+      *                 ) _Fn_help_ ;;
     esac
   done
 fi
