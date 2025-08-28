@@ -57,9 +57,9 @@ _Fn_print_elapsed_t_ (){
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
 
-  sleep 3 #<>
-  _Fn_print_elapsed_t_ #<>
-  exit "${LINENO}" #<>
+  #sleep 3 #<>
+  #_Fn_print_elapsed_t_ #<>
+  #exit "${LINENO}" #<>
 
 : Define _Fn_get_files_
 # This f\unction runs regardless of whether a\liases are enabled; it
@@ -101,7 +101,8 @@ _Fn_get_files_ (){
   fi
 
   # Print per-test header
-  printf '%bTest:%b %d\n'      "${C5}" "${C0}" "$((  ++II  ))"
+  printf '%bTest:%b %d: %s\n' "${C5}" "${C0}" "$((  ++II  ))" \
+    _Fn_print_elapsed_t_
   printf '\t%bName:%b\t%s\n'  "${C5}" "${C0}" "${nam}"
 
   # More variables
