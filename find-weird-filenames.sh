@@ -18,7 +18,7 @@ sudo -v
 #
 function _Fn_get_line_nos_ (){
   shopt -s expand_aliases
-  alias _Fn_get_files='_Fn_get_files_ "${LINENO}" '
+  alias _Fn_get_files_='_Fn_get_files_ "${LINENO}" '
 }
 _Fn_get_line_nos_
 
