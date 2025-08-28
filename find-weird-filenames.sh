@@ -92,8 +92,6 @@ _Fn_get_files_ (){
     : arobase: "$@" #<>
 
   local - ec ff input lin nam
-  ff=0
-  export ff
   #set -x #<>
 
   # Process positional parameters
@@ -194,7 +192,7 @@ _Fn_get_files_ (){
   # Print, each file with index number
   for ((  ff=0;  ff<=10;  ff++  ))
   do
-    printf '\t%d:\t<%s>\n' "${ff}" "${files[ff]}" \
+    printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
       | grep -s --color=always -e "${input}" 2> /dev/null
   done \
     && unset ff
