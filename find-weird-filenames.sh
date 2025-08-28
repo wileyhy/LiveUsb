@@ -52,8 +52,9 @@ _Fn_get_files_ (){
     shift 2
   elif [[ $# -ne 2 ]]
   then
-    : $?
     ec=$?
+    : "ec: $ec"
+    nam=$1
     printf 'Error, lines %d:%d: fn reqs x2 non-lineno arguments.\n' \
       "${lin:-${LINENO}}" "${LINENO}"
     exit "0${ec}"
