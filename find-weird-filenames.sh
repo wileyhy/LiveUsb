@@ -94,14 +94,14 @@ _Fn_get_files_ (){
   if [[ ${input} == --[^-]* ]]
   then
     : $? #<>
-    _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
+    _Fn_fnd_IFS_delimd_strings_ "${input}" "${lin}"
     input=${input#--}
 
   # ...and one hyphen to search for non-\word\ tokens.
   elif [[ ${input} == -[^-]* ]]
   then
     : $? #<>
-    _Fn_find_chars_ "${input}"
+    _Fn_fnd_chars_ "${input}"
     input=${input#-}
 
   # The <null> byte is a special case.
@@ -139,11 +139,11 @@ _Fn_get_files_ (){
 }
 
 
-: Define _Fn_find_chars_
+: Define _Fn_fnd_chars_
 # Look for strings of certain characters.
-# Usage: _Fn_find_chars_ "${input}"
+# Usage: _Fn_fnd_chars_ "${input}"
 #
-_Fn_find_chars_ (){
+_Fn_fnd_chars_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local - ec input
@@ -165,18 +165,18 @@ _Fn_find_chars_ (){
 
   # Search
   mapfile -d "" -t files < <(
-    sudo find / -name '*'"${input}"'*' -print0
+    sudo find / -nowarn -name '*'"${input}"'*' -print0
   )
 
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
 
 
-: Define _Fn_find_IFS_delimd_strings_
+: Define _Fn_fnd_IFS_delimd_strings_
 # Look for \word\s.
-# Usage: _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
+# Usage: _Fn_fnd_IFS_delimd_strings_ "${input}" "${lin}"
 #
-_Fn_find_IFS_delimd_strings_ (){
+_Fn_fnd_IFS_delimd_strings_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local - ec input loc
@@ -199,19 +199,19 @@ _Fn_find_IFS_delimd_strings_ (){
 
   # Gather
   mapfile -C 0000000 -d "" -t files < <(
-    sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
+    sudo find -nowarn / -name '*'"${input}"'*' -print0 2> /dev/null \
       | grep --color=always -sz \
         -Fe     "${input}"      2> /dev/null
   )
 
   mapfile -C 1000000 -d "" -t files < <(
-    sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
+    sudo find -nowarn / -name '*'"${input}"'*' -print0 2> /dev/null \
       | grep --color=always -swz \
         -Fe     "${input}"      2> /dev/null
   )
 
   mapfile -C 2000000 -d "" -t files < <(
-    sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
+    sudo find / -nowarn -name '*'"${input}"'*' -print0 2> /dev/null \
       | grep --color=always -sz \
         -Ee '\<'"${input}"'\>'  \
         -e  '\b'"${input}"'\b'  \
@@ -228,7 +228,7 @@ _Fn_find_IFS_delimd_strings_ (){
   )
 
   mapfile -C 3000000 -d "" -t files < <(
-    sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
+    sudo find / -nowarn -name '*'"${input}"'*' -print0 2> /dev/null \
       | grep --color=always -swz \
         -Ee '\<'"${input}"'\>'  \
         -e  '\b'"${input}"'\b'  \
