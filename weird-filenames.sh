@@ -211,7 +211,7 @@ function _Fn_get_files_ (){
         #declare -p ff #<>
 
       printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
-        | grep -s --color=always -e "${input}" 2> /dev/null
+        | grep -s --color=always -Fe "${input}" 2> /dev/null
     done \
       && unset ff
     echo
