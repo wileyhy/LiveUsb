@@ -190,13 +190,12 @@ _Fn_get_files_ (){
   fi
 
   # Print, each file with index number
-      #"${!files[@]}"
-    for ((  ff=0;  ff<=10;  ff++  ))
-    do
-      printf '\t%d:\t<%s>\n' "${ff}" "${files[ff]}" \
-        | grep -s --color=always -e "${input}" 2> /dev/null
-    done \
-      && unset ff
+  for ((  ff=0;  ff<=10;  ff++  ))
+  do
+    printf '\t%d:\t<%s>\n' "${ff}" "${files[ff]}" \
+      | grep -s --color=always -e "${input}" 2> /dev/null
+  done \
+    && unset ff
   echo 
 
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
