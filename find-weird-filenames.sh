@@ -22,9 +22,6 @@ C5=$( tput setaf 5 )    export C5
 C46=$( tput setaf 46 )  export C46
 
 
-# Traps
-trap 'trap - INT; echo Lineno: "${LINENO}"; kill -s INT $$' INT
-
 
 ######### # # ######### # # #########
 ## Functions
