@@ -198,7 +198,7 @@ _Fn_get_files_ (){
     limit="${#files[@]}"
   fi
   
-  for ((  ff=0;  ff <= $limit;  f++  ))
+  for ((  ff=0;  ff <= $limit;  ff++  ))
   do
       declare -p ff #<>
 
