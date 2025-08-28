@@ -62,7 +62,7 @@ fi
 if [[ ${in_clr} = n ]]
 then
   # Note: intentional use of word splitting
-  # shellcheck disable=SC2206
+  # shellcheck disable=SC2206,SC2034
   colors=( ${!Clr*} )
   declare -n CC
 
