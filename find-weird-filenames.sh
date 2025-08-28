@@ -51,19 +51,20 @@ _Fn_get_line_nos_
 function _Fn_get_files_ (){
   :;: "enter function ${FUNCNAME[0]}";:
 
-  local - ec input lin #\
+  local - ec input lin nam #\
     #&& set -x
   
-  if [[ $# -eq 2 ]]
+  if [[ $# -eq 3 ]]
   then
     : $?
     lin=$1
-    shift
-  elif [[ $# -ne 1 ]]
+    nam=$2
+    shift 2
+  elif [[ $# -ne 2 ]]
   then
     : $?
     ec=$?
-    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
+    printf 'Error, line %d: fn reqs x2 non-lineno arguments.\n' "${lin:-${LINENO}}"
     exit "0${ec}"
   else
     : $?
@@ -197,22 +198,22 @@ function _Fn_find_IFS_delimd_strings_ (){
 # Characters illegal for filenames in Linux
 # /
 #_Fn_get_files_ -'/'
-_Fn_get_files_ '--\x2f'
-_Fn_get_files_ '--\057'
+_Fn_get_files_ forward-slash_hex '--\x2f'
+_Fn_get_files_ forward-slash_octal '--\057'
 
   #exit "${LINENO}"
   #set -x
 
 # <NUL>
-#_Fn_get_files_ $'\\0'
-_Fn_get_files_ '--\x00'
+#_Fn_get_files_ null_ascii-c $'\\0'
+_Fn_get_files_ null_hex'--\x00'
 
   exit "${LINENO}"
   set -x
 
 # Execution contexts
 # exec
-_Fn_get_files_ --exec
+_Fn_get_files_ exec_ascii --exec
 
   exit "${LINENO}"
   set -x
