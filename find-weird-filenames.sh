@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# find-weird-filenames.sh
+# weird-filenames.sh
 #
 # At a certain point, it\s easier to clearlist all filenames as
 # being \Names\ according to Bash syntax rules.
