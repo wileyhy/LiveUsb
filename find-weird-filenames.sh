@@ -167,8 +167,8 @@ function _Fn_find_IFS_delimd_strings_ (){
 # Characters illegal for filenames in Linux
 # /
 #_Fn_get_files_ -'/'
-_Fn_get_files_ forward-slash_hex '--\x2f'
-_Fn_get_files_ forward-slash_octal '--\057'
+#_Fn_get_files_ forward-slash_hex '--\x2f'
+#_Fn_get_files_ forward-slash_octal '--\057'
 
   #exit "${LINENO}"
   #set -x
