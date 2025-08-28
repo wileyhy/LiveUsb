@@ -37,7 +37,7 @@ function _Fn_get_files_ (){
 
     : ampersand: "$@"
 
-  local - ec input lin nam #\
+  local - ec ff input lin nam #\
     #&& set -x
 
   if [[ $# -eq 3 ]]
@@ -87,7 +87,11 @@ function _Fn_get_files_ (){
   printf 'Test name:\t%s\n' "${nam}"
   printf 'Input string:\t%s\n' "${input}"
   printf 'File count:\t%d\n' "${#files[@]}"
-  : printf '<%s>\n' "${files[@]}"
+  for ff in "${!files[@]}"
+  do
+    printf '\t%d:\t<%s>\n' "${ff}" "${files[ff]}"
+  done \
+    && unset ff
   echo
   return 00
 
