@@ -180,7 +180,7 @@ function _Fn_find_IFS_delimd_strings_ (){
 
 # <NUL>
 # Note: leading hyphen breaks <null>
-_Fn_get_files_ null_ascii-c < <( printf $'\\0' )
+_Fn_get_files_ null_ascii-c "$( printf $'\\0' )"
 _Fn_get_files_ null_hex '--\x00'
 
   exit "${LINENO}"
