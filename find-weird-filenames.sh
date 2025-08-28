@@ -60,6 +60,7 @@ _Fn_get_files_ (){
   else
     : $?
     nam=$1
+    shift
   fi
 
   printf '%bTest %d%b\n' "${C5}" "$((  ++II  ))" "${C0}"
