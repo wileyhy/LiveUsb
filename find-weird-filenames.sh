@@ -128,7 +128,7 @@ _Fn_get_files_ (){
   input=$1
   lin=${lin:=}
   local -a files
-  files=( )
+  files=( ) export files
 
   # Hardcoded leading hyphens are used to signal which sub-f\unction 
   #   is used; two hyphens to search for strings delimited by the
