@@ -94,7 +94,7 @@ function _Fn_get_files_ (){
     : arobase: "$@" #<>
 
   local - ec ff input lin nam
-  #set -x #<>
+  set -x #<>
 
   # Process positional parameters
   #   If aliases are enabled, there\ll be x3
