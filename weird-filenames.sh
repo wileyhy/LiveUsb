@@ -74,9 +74,9 @@ then
   for RR in "${!pos_parms[@]}"
   do
       declare -p RR pos_parms #<>
-      : '-${RR}:' "-${RR}" #<>
+      : '-${pos_parms[RR]}:' "-${pos_parms[RR]}" #<>
 
-    case "-${RR}" in
+    case "-${pos_parms[RR]}" in
       -A    ) pr_all=y pr_per=n ;;
       -G    ) in_clr=n          ;;
       -[Hh] ) _Fn_help_         ;;
