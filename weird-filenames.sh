@@ -74,11 +74,11 @@ then
   for RR in "${!pos_parms[@]}"
   do
     case "$RR" in
-      -A          ) pr_all=y pr_per=n ;;
-      -G          ) in_clr=n          ;;
-      -[Hh]       ) _Fn_help_         ;;
-      -I          ) pr_per=y pr_all=n ;;
-      *           ) _Fn_help_         ;;
+      A     ) pr_all=y pr_per=n ;;
+      G     ) in_clr=n          ;;
+      [Hh]  ) _Fn_help_         ;;
+      I     ) pr_per=y pr_all=n ;;
+      *     ) _Fn_help_         ;;
     esac
   done \
     && unset RR
