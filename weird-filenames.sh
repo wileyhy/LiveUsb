@@ -55,9 +55,12 @@ then
   done
 fi
 
+  echo "${!C*}"
+  exit "${LINENO}"
+
 if [[ ${in_clr} = n ]]
-then
-  
+then :
+fi  
 
 
 ######### # # ######### # # #########
