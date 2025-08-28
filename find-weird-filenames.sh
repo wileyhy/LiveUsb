@@ -26,14 +26,14 @@ _Fn_get_line_nos_
 
 # Usage: ecco STRING
 #
-ecco(){
-  printf '%b' "$1" \
-    | xxd -ps
-
-  printf '%b' "$1" \
-    | cat -A
-}
-export -f ecco
+#ecco(){
+  #printf '%b' "$1" \
+    #| xxd -ps
+#
+  #printf '%b' "$1" \
+    #| cat -A
+#}
+#export -f ecco
 
 
 # Usage: _Fn_get_files_ -$'\n'
@@ -59,23 +59,22 @@ function _Fn_get_files_ (){
   fi
 
   input=$1
-  ecco "${input}" \
-    | awk '
-  NR==1 {
-      line1=$0
-    } 
-  NR==2 {
-      line2=$0
-      exit
-    } 
-  END {
-      if (line1==line2) 
-        print "Lines are identical"
-      else 
-        print "Lines are different"
-    }'
-
-    return 101
+  #ecco "${input}" \
+    #| awk '
+  #NR==1 {
+      #line1=$0
+    #} 
+  #NR==2 {
+      #line2=$0
+      #exit
+    #} 
+  #END {
+      #if (line1==line2) 
+        #print "Lines are identical"
+      #else 
+        #print "Lines are different"
+    #}'
+    #return 101
 
   local -a files
   files=( )
