@@ -30,7 +30,7 @@ C46=$( tput setaf 46 )  export C46
 : Define _Fn_get_line_nos_
 # This f\unction, if activated, will let the script print line numbers
 #   indicating where the f\unction \Fn_get_files_ was called.
-_Fn_get_line_nos_ (){
+function _Fn_get_line_nos_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   shopt -s expand_aliases
@@ -38,13 +38,13 @@ _Fn_get_line_nos_ (){
 
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
-_Fn_get_line_nos_ #<>
+function _Fn_get_line_nos_ #<>
 
 
 : Define _Fn_print_elapsed_t_
 # Print with each test header
 # Usage: _Fn_print_elapsed_t_
-_Fn_print_elapsed_t_ (){
+function _Fn_print_elapsed_t_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local - now
@@ -68,7 +68,7 @@ _Fn_print_elapsed_t_ (){
 # Print, input string
 # Usage: _Fn_print_input_str_ "${input}"
 #
-_Fn_print_input_str_ (){
+function _Fn_print_input_str_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local - input
@@ -233,7 +233,7 @@ function _Fn_get_files_ (){
 # Look for strings of certain characters.
 # Usage: _Fn_fnd_chars_ "${input}"
 #
-_Fn_fnd_chars_ (){
+function _Fn_fnd_chars_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local - ec input
@@ -269,7 +269,7 @@ _Fn_fnd_chars_ (){
 # Look for \word\s.
 # Usage: _Fn_fnd_IFS_delimd_strings_ "${input}" "${lin}"
 #
-_Fn_fnd_IFS_delimd_strings_ (){
+function _Fn_fnd_IFS_delimd_strings_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local - ec input loc
@@ -546,27 +546,27 @@ _Fn_fnd_IFS_delimd_strings_ (){
 
 # POSIX-2024 Quoting c\haracters
 # $'
-_Fn_get_files_ ansi-c-quoting_ascii "-$'"
+#_Fn_get_files_ ansi-c-quoting_ascii "-$'"
 
 # $"
-_Fn_get_files_ locale-translation_ascii '-$"'
+#_Fn_get_files_ locale-translation_ascii '-$"'
 
 # \
-_Fn_get_files_ backslash_ascii '-\'
+#_Fn_get_files_ backslash_ascii '-\'
 
 # '
-_Fn_get_files_ single-quote_ascii "-'"
+#_Fn_get_files_ single-quote_ascii "-'"
 
 # "
-_Fn_get_files_ double-quote_ascii '-"'
+#_Fn_get_files_ double-quote_ascii '-"'
 
 
 # Shell comment c\haracters
 # '#' hash comment
-_Fn_get_files_ hash_ascii '-#'
+#_Fn_get_files_ hash_ascii '-#'
 
 # ': ' colon comment(rare)
-_Fn_get_files_ _ascii '-:'
+#_Fn_get_files_ _ascii '-:'
 
 
 # Bash 5.2 Reserved Words
@@ -628,13 +628,13 @@ _Fn_get_files_ _ascii '-:'
 #_Fn_get_files_ _ascii '-'
 
 # {
-_Fn_get_files_ left_brace_ascii '-{'
+#_Fn_get_files_ left_brace_ascii '-{'
 
 # }
-_Fn_get_files_ right_brace_ascii '-}'
+#_Fn_get_files_ right_brace_ascii '-}'
 
 # !
-_Fn_get_files_ bang_ascii '-!'
+#_Fn_get_files_ bang_ascii '-!'
 
 
 # Pathname expansion c\haracters (globs)
