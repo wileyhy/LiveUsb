@@ -49,6 +49,9 @@ then
   done
   parms_changed=y
 
+    declare -p pos_parms
+    exit "${LINENO}"
+
   while true
   do
 
