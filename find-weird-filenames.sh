@@ -199,7 +199,7 @@ _Fn_get_files_ (){
   fi
  
   # Bug: \nounset\ doesn\t allow for a gap between \ff\ and \=0\ 
-  for ((  ff=0;  ff <= $limit;  ff++  ))
+  for ((  ff=0;  ff <= ( $limit - 1 );  ff++  ))
   do
       #declare -p ff #<>
 
