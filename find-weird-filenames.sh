@@ -50,7 +50,8 @@ function _Fn_get_files_ (){
   then
     : $?
     ec=$?
-    printf 'Error, line %d: fn reqs x2 non-lineno arguments.\n' "${lin:-${LINENO}}"
+    printf 'Error, lines %d:%d: fn reqs x2 non-lineno arguments.\n' \
+      "${lin:-${LINENO}}" "${LINENO}"
     exit "0${ec}"
   else
     : $?
