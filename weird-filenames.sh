@@ -246,30 +246,37 @@ function _Fn_get_files_ (){
     #fi #<>
 
   # Print, each file with index number
-  if [[ ${pr_all} == n ]] \
-    || [[ ${pr_per} == y ]]
+  if [[ ${limit} != 0 ]]
   then
+    # Bug: \nounset\ doesn\t allow for a gap between \ff\ and \=0\
+    for ((  ff=0;  ff <= ( $limit - 1 );  ff++  ))
+    do
+        #declare -p ff #<>
 
-    if [[ ${limit} != 0 ]]
+      printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
+        | grep -s --color=always -Fe "${input}" 2> /dev/null
+    done \
+      && unset ff
+    echo
+
+    # Pause to check
+    if   [[ ${pr_all} == n ]] \
+      || [[ ${pr_per} == y ]]
     then
-      # Bug: \nounset\ doesn\t allow for a gap between \ff\ and \=0\
-      for ((  ff=0;  ff <= ( $limit - 1 );  ff++  ))
-      do
-          #declare -p ff #<>
 
-        printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
-          | grep -s --color=always -Fe "${input}" 2> /dev/null
-      done \
-        && unset ff
-      echo
-
-      # Pause to check
       printf 'Next test? [Y/n]\n'
       read -N 1 -r -s -t 600 yn
+
       case "${yn}" in
         n) builtin exit 000 ;;
         *) :;;
       esac
+
+    else
+      local ec=$?
+      : "ec: $ec" #<>
+      printf 'Error, line %d: unreachable code.\n' \
+        "${lin:-${LINENO}}"
     fi
   fi
 
