@@ -71,9 +71,9 @@ function _Fn_get_files_ (){
     : $?
     _Fn_find_chars_ "${input}"
 
-  elif [[ -z ${input} ]]
+  elif [[ -z "${input}" ]]
   then
-    is_null=maybe
+    is_null=$'\0'
 
   else
     local ec=$?
@@ -83,7 +83,7 @@ function _Fn_get_files_ (){
   fi
 
   printf 'Test name:\t%s\n' "${nam}"
-  printf 'Input string:\t%s\n' "${input}"
+  printf 'Input string:\t%s\n' "${input:-${is_null}}"
   printf 'File count:\t%d\n' "${#files[@]}"
   : printf '<%s>\n' "${files[@]}"
   echo
