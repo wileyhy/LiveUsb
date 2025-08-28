@@ -242,7 +242,7 @@ function _Fn_get_files_ (){
 
   # Print, each file with index number
   if [[ ${pr_all} == n ]] \
-    [[ ${pr_per} == y ]]
+    || [[ ${pr_per} == y ]]
   then
 
     if [[ ${limit} != 0 ]]
