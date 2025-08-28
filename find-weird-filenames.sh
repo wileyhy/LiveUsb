@@ -89,7 +89,8 @@ function _Fn_get_files_ (){
   printf 'File count:\t%d\n' "${#files[@]}"
   for ff in "${!files[@]}"
   do
-    printf '\t%d:\t<%s>\n' "${ff}" "${files[ff]}"
+    printf '\t%d:\t<%s>\n' "${ff}" "${files[ff]}" \
+      | grep --color=always -e "${input}"
   done \
     && unset ff
   echo
