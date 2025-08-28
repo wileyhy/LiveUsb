@@ -3,15 +3,15 @@
 # find-weird-filenames.sh
 #
 # At a certain point, it\s easier to clearlist all filenames as
-# being \Names\ according to Bash syntax rules. 
+# being \Names\ according to Bash syntax rules.
 
   #set -x
   set -euo pipefail
   shopt -s globstar extglob
 
 
-# 
-sudo -v 
+#
+sudo -v
 
 
 #
@@ -37,7 +37,7 @@ function _Fn_get_files_ (){
 
   local - ec input lin nam #\
     #&& set -x
-  
+
   if [[ $# -eq 3 ]]
   then
     : $?
@@ -71,6 +71,7 @@ function _Fn_get_files_ (){
   elif [[ -z ${input} ]]
   then
     is_null=maybe
+
   else
     local ec=$?
     : "ec: $ec"
@@ -229,20 +230,20 @@ _Fn_get_files_
 # |&
 
 # Bash 5.2 Redirection operators (which are not also single metac\haracters)
-# <&digit- 
-# >&digit- 
-# <&- 
+# <&digit-
+# >&digit-
+# <&-
 # >&-
-# <<< 
-# &>> 
-# <<- 
-# << 
-# >> 
-# <& 
-# >& 
-# >| 
-# >& 
-# &> 
+# <<<
+# &>>
+# <<-
+# <<
+# >>
+# <&
+# >&
+# >|
+# >&
+# &>
 
 # POSIX-2024 Shell metac\haracters
 
@@ -274,7 +275,7 @@ _Fn_get_files_
 # Bash 5.2 Reserved Words
 # function
 # coproc
-# select 
+# select
 # until
 # while
 # case
@@ -287,11 +288,11 @@ _Fn_get_files_
 # for
 # [[
 # ]]
-# do 
+# do
 # if
 # in
 # fi
-# { 
+# {
 # }
 # !
 
@@ -304,7 +305,7 @@ _Fn_get_files_
 # ]
 
 # Bash 5.2 Extglobs
-# 
+#
 
 # Tilde expansion c\haracters (globs)
 # ~+digit
