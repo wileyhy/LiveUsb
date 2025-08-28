@@ -150,7 +150,10 @@ function _Fn_find_IFS_delimd_strings_ (){
   mapfile -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0 2>&1 \
       | grep -z --color=always  \
-        -Fe     "${input}"      \
+        -Fe     "${input}"
+
+    sudo find / -name '*'"${input}"'*' -print0 2>&1 \
+      | grep -z --color=always  \
         -Ee '\<'"${input}"'\>'  \
         -e  '\b'"${input}"'\b'  \
         -e  '\W'"${input}"'\W'  \
