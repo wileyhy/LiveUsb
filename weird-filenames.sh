@@ -56,6 +56,7 @@ then
 fi
 
   echo "${!Clr*}"
+  set -x
 
 if [[ ${in_clr} = n ]]
 then
