@@ -148,13 +148,38 @@ function _Fn_find_IFS_delimd_strings_ (){
     exit "0${ec}"
   fi
 
-  mapfile -d "" -t files < <(
+  # Gather
+  mapfile -C 0000000 -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep -z -w --color=always  -Fe "${input}" 2> /dev/null; \
+      | grep --color=always -sz \
+        -Fe     "${input}"      2> /dev/null
   )
+
   mapfile -C 1000000 -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep -z -w --color=always  \
+      | grep --color=always -swz \
+        -Fe     "${input}"      2> /dev/null
+  )
+
+  mapfile -C 2000000 -d "" -t files < <(
+    sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
+      | grep --color=always -sz \
+        -Ee '\<'"${input}"'\>'  \
+        -e  '\b'"${input}"'\b'  \
+        -e  '\W'"${input}"'\W'  \
+        -e     " ${input} "     \
+        -e     " ${input}"$'\t' \
+        -e     " ${input}"$'\n' \
+        -e $'\t'"${input} "     \
+        -e $'\t'"${input}"$'\t' \
+        -e $'\t'"${input}"$'\n' \
+        -e $'\n'"${input} "     \
+        -e $'\n'"${input}"$'\t' \
+        -e $'\n'"${input}"$'\n' 2> /dev/null
+    
+  mapfile -C 3000000 -d "" -t files < <(
+    sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
+      | grep --color=always -swz \
         -Ee '\<'"${input}"'\>'  \
         -e  '\b'"${input}"'\b'  \
         -e  '\W'"${input}"'\W'  \
