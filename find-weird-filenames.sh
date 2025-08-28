@@ -46,7 +46,7 @@ _Fn_print_elapsed_t_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local - now
-  set -x
+  #set -x
   now=$((  $( date '+%s' ) - T0  ))
 
   printf '%dh:%dm:%ds\n' \
