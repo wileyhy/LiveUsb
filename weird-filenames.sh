@@ -36,7 +36,7 @@ function _Fn_help_ (){
   builtin exit 002
 }
 
-  set -x #<>
+  #set -x #<>
   
 if [[ $# -gt 0 ]]
 then
@@ -88,7 +88,7 @@ then
     && unset RR
 fi
 
-  exit "${LINENO}"
+  #exit "${LINENO}"
   #echo "${!Clr*}" #<>
   #set -x #<>
 
