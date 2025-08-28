@@ -101,7 +101,7 @@ _Fn_get_files_ (){
   fi
 
   # Print per-test header
-  printf '%bTest:%b %d: %s\n' "${C5}" "${C0}" "$((  ++II  ))" \
+  printf '%bTest:%b %d \t\t%s\n' "${C5}" "${C0}" "$((  ++II  ))" \
     "$( _Fn_print_elapsed_t_ )"
   printf '\t%bName:%b\t%s\n'  "${C5}" "${C0}" "${nam}"
 
