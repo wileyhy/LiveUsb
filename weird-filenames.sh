@@ -14,20 +14,51 @@
 sudo -v
 
 
+
 # Variables
-T0=$( date '+%s' )      export T0
-II=0                    export II
-C0=$( tput sgr0 )       export C0
-C5=$( tput setaf 5 )    export C5
-C46=$( tput setaf 46 )  export C46
+
+T0=$( date '+%s' )      export T0   # Time
+II=0                    export II   # Index
+C0=$( tput sgr0 )       export C0   # Colors  - B&W
+C5=$( tput setaf 5 )    export C5   #         - Blue
+C46=$( tput setaf 46 )  export C46  #         - Yello
+
+print_per_search=y
+print_all_searches=n
+
+
+
+# Options
+
+: Define _Fn_help_
+function _Fn_help (){
+  printf '\n\tweird-filenames.sh\n'
+  printf '\t  -A  Automated   / print full report\n'
+  printf '\t  -I  Interactive / print per test [Default]\n'
+  printf '\t  -h  Help\n\n'
+}
+
+if [[ $# -gt 0 ]]
+then
+  for PP in "$@"
+  do
+    case "$PP" in
+      -I )                print_per_search=y    ;;
+      -A )                print_all_searches=y  ;;
+      -[Hh]|'-?'|--help ) _Fn_help_             ;;
+      * )                 _Fn_help_             ;;
+    esac
+  done
+fi
 
 
 
 ######### # # ######### # # #########
-## Functions
+## Primary Functions
 ######### # # ######### # # #########
 
 : Define _Fn_get_line_nos_
+
 # This f\unction, if activated, will let the script print line numbers
 #   indicating where the f\unction \Fn_get_files_ was called.
 function _Fn_get_line_nos_ (){
@@ -41,7 +72,9 @@ function _Fn_get_line_nos_ (){
 _Fn_get_line_nos_ #<>
 
 
+
 : Define _Fn_print_elapsed_t_
+
 # Print with each test header
 # Usage: _Fn_print_elapsed_t_
 function _Fn_print_elapsed_t_ (){
@@ -64,7 +97,9 @@ function _Fn_print_elapsed_t_ (){
   #exit "${LINENO}" #<>
 
 
+
 : Define _Fn_print_input_str_
+
 # Print, input string
 # Usage: _Fn_print_input_str_ "${input}"
 #
@@ -81,7 +116,9 @@ function _Fn_print_input_str_ (){
 }
 
 
+
 : Define _Fn_get_files_
+
 # This f\unction runs regardless of whether a\liases are enabled; it
 #   calls one of two sub-f\unctions.
 # Usage: _Fn_get_files_ -$'\n'
@@ -229,7 +266,9 @@ function _Fn_get_files_ (){
 }
 
 
+
 : Define _Fn_fnd_chars_
+
 # Look for strings of certain characters.
 # Usage: _Fn_fnd_chars_ "${input}"
 #
@@ -265,7 +304,9 @@ function _Fn_fnd_chars_ (){
 }
 
 
+
 : Define _Fn_fnd_IFS_delimd_strings_
+
 # Look for \word\s.
 # Usage: _Fn_fnd_IFS_delimd_strings_ "${input}" "${lin}"
 #
