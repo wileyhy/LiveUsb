@@ -67,6 +67,7 @@ _Fn_get_files_ (){
   printf 'Test name:\t%s\n' "${nam}"
 
   input=$1
+  lin=${lin:=}
   local -a files
   files=( )
 
