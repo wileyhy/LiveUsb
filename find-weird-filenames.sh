@@ -90,7 +90,7 @@ function _Fn_get_files_ (){
   for ff in "${!files[@]}"
   do
     printf '\t%d:\t<%s>\n' "${ff}" "${files[ff]}" \
-      | grep -s --color=always -e "${input}"
+      | grep -s --color=always -e "${input}" 2> /dev/null
   done \
     && unset ff
   echo
