@@ -86,6 +86,8 @@ _Fn_print_input_str_ (){
 # Usage: _Fn_get_files_ -$'\n'
 #        _Fn_get_files_ --eval
 #
+# Bug? without the \function keyword, bash reads Fn definition as alias
+#   call?
 function _Fn_get_files_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
