@@ -55,8 +55,8 @@ then
   done
 fi
 
-  echo "${!Clr*}"
-  set -x
+  #echo "${!Clr*}" #<>
+  #set -x #<>
 
 if [[ ${in_clr} = n ]]
 then
@@ -71,7 +71,7 @@ then
     declare -p ${!Clr*}
 fi  
 
-  #exit "${LINENO}"
+  #exit "${LINENO}" #<>
 
 
 ######### # # ######### # # #########
