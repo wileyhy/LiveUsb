@@ -12,10 +12,13 @@
 
 #
 sudo -v
+II=0 export II
 
 
-#
+
 : Define _Fn_get_line_nos_
+# This function, if activated, will let the script print line numbers
+# indicating where the function \Fn_get_files_ was called
 function _Fn_get_line_nos_ (){
   :;: "enter function ${FUNCNAME[0]}";:
 
@@ -24,7 +27,7 @@ function _Fn_get_line_nos_ (){
 
   :;: "exit function ${FUNCNAME[0]}" ;:
 }
-_Fn_get_line_nos_
+#_Fn_get_line_nos_
 
 
 
@@ -57,10 +60,9 @@ function _Fn_get_files_ (){
     : $?
   fi
 
-  input=$1
   printf 'Test name:\t%s\n' "${nam}"
-  printf 'Input string:\t%s\n' "${input}"
 
+  input=$1
   local -a files
   files=( )
 
@@ -87,6 +89,7 @@ function _Fn_get_files_ (){
     exit "0${ec}"
   fi
 
+  printf 'Input string:\t%s\n' "${input}"
   printf 'File count:\t%d\n' "${#files[@]}"
   for ff in "${!files[@]}"
   do
@@ -101,6 +104,7 @@ function _Fn_get_files_ (){
 }
 
 
+: Define _Fn_find_chars_
 # Usage: _Fn_find_chars_ "${input}"
 #
 function _Fn_find_chars_ (){
@@ -128,6 +132,8 @@ function _Fn_find_chars_ (){
   :;: "exit function ${FUNCNAME[0]}" ;:
 }
 
+
+: Define _Fn_find_IFS_delimd_strings_
 # Usage: _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
 #
 function _Fn_find_IFS_delimd_strings_ (){
@@ -200,6 +206,10 @@ function _Fn_find_IFS_delimd_strings_ (){
 }
 
 
+
+######### # # ######### # # #########
+## Tests
+######### # # ######### # # #########
 
 # Characters illegal f\or filenames in Linux
 # /
