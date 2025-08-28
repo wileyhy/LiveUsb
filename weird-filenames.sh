@@ -17,14 +17,15 @@ sudo -v
 
 # Variables
 
-T0=$( date '+%s' )      export T0     # Time
-II=0                    export II     # Index
+T0=$( date '+%s' )        export T0       # Time
+II=0                      export II       # Index
 Clr0=$( tput sgr0 )       export Clr0     # Colors  - B&W
 Clr5=$( tput setaf 5 )    export Clr5     #         - Blue
 Clr46=$( tput setaf 46 )  export Clr46    #         - Yellow
-in_clr=y                export in_clr # CLI Options - In color
-pr_all=n                export pr_all #             - Full report
-pr_per=y                export pr_per #             - Interactive
+in_clr=y                  export in_clr   # CLI Options - In color
+grp_clr='--color=always'  export grp_clr  #             - 
+pr_all=n                  export pr_all   #             - Full report
+pr_per=y                  export pr_per   #             - Interactive
 
 
 
@@ -66,9 +67,10 @@ then
   for CC in "${colors[@]}"
   do
     CC=
+    grp_clr='--color=never'
   done
 
-    declare -p ${!Clr*}
+    #declare -p ${!Clr*} #<>
 fi  
 
   #exit "${LINENO}" #<>
@@ -274,7 +276,7 @@ function _Fn_get_files_ (){
         #declare -p ff #<>
 
       printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
-        | grep -s --color=always -Fe "${input}" 2> /dev/null
+        | grep -s "${grp_clr}" -Fe "${input}" 2> /dev/null
     done \
       && unset ff
 
@@ -370,19 +372,19 @@ function _Fn_fnd_IFS_delimd_strings_ (){
   # Gather
   mapfile -C 0000000 -d "" -t files < <(
     sudo find -nowarn / -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep --color=always -sz \
+      | grep "${grp_clr}" -sz \
         -Fe     "${input}"      2> /dev/null
   )
 
   mapfile -C 1000000 -d "" -t files < <(
     sudo find -nowarn / -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep --color=always -swz \
+      | grep "${grp_clr}" -swz \
         -Fe     "${input}"      2> /dev/null
   )
 
   mapfile -C 2000000 -d "" -t files < <(
     sudo find / -nowarn -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep --color=always -sz \
+      | grep "${grp_clr}" -sz \
         -Ee '\<'"${input}"'\>'  \
         -e  '\b'"${input}"'\b'  \
         -e  '\W'"${input}"'\W'  \
@@ -399,7 +401,7 @@ function _Fn_fnd_IFS_delimd_strings_ (){
 
   mapfile -C 3000000 -d "" -t files < <(
     sudo find / -nowarn -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep --color=always -swz \
+      | grep "${grp_clr}" -swz \
         -Ee '\<'"${input}"'\>'  \
         -e  '\b'"${input}"'\b'  \
         -e  '\W'"${input}"'\W'  \
