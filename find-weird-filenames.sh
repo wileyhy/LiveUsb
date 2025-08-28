@@ -5,21 +5,28 @@
 # At a certain point, it\s easier to clearlist all filenames as
 # being \Names\ according to Bash syntax rules.
 
-  #set -x
-  set -euo pipefail
-  #shopt -s globstar extglob
+  #<> Debugging
+  #set -x #<>
+  set -euo pipefail #<>
 
 
+# \sudo\ is required
 sudo -v
+
+
+# Variables
 II=0                  export II
 C5=$( tput setaf 5 )  export C5
 C0=$( tput sgr0 )     export C0
 
 
+######### # # ######### # # #########
+## Functions
+######### # # ######### # # #########
 
 : Define _Fn_get_line_nos_
 # This f\unction, if activated, will let the script print line numbers
-# indicating where the f\unction \Fn_get_files_ was called
+#   indicating where the f\unction \Fn_get_files_ was called.
 _Fn_get_line_nos_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
@@ -28,109 +35,135 @@ _Fn_get_line_nos_ (){
 
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
-#_Fn_get_line_nos_
+#_Fn_get_line_nos_ #<>
 
 
 
 : Define _Fn_get_files_
+# This f\unction runs regardless of whether a\liases are enabled; it
+#   calls one of two sub-f\unctions.
 # Usage: _Fn_get_files_ -$'\n'
 #        _Fn_get_files_ --eval
 #
 _Fn_get_files_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
-    : ampersand: "$@"
+    : ampersand: "$@" #<>
 
-  local - ec ff input lin nam #\
-    #&& set -x
+  local - ec ff input lin nam
+  #set -x #<>
 
+  # Process positional parameters
+  #   If aliases are enabled, there\ll be x3
   if [[ $# -eq 3 ]]
   then
-    : $?
+    : $? #<>
     lin=$1
     nam=$2
     shift 2
+
+  # Otherwise, there\ll be x2, so not having x2 is an error
   elif [[ $# -ne 2 ]]
   then
     ec=$?
-    : "ec: $ec"
+    : "ec: $ec" #<>
     printf 'Error, lines %d:%d: fn reqs x2 non-lineno arguments.\n' \
       "${lin:-${LINENO}}" "${LINENO}"
-    exit "0${ec}"
+    builtin exit "0${ec}"
+
+  # There are x2 pos-parms; \nam is assigned.
   else
-    : $?
+    : $? #<>
     nam=$1
     shift
   fi
 
+  # Print per-test header
   printf '%bTest:%b %d\n'      "${C5}" "${C0}" "$((  ++II  ))"
   printf '\t%bName:%b\t%s\n'  "${C5}" "${C0}" "${nam}"
 
+  # More variables
   input=$1
   lin=${lin:=}
   local -a files
   files=( )
 
+  # Hardcoded leading hyphens are used to signal which sub-f\unction 
+  #   is used; two hyphens to search for strings delimited by the
+  #   default value of IFS (ie, \Words\)...
   if [[ ${input} == --[^-]* ]]
   then
-    : $?
+    : $? #<>
     _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
     input=${input#--}
 
+  # ...and one hyphen to search for non-\word\ tokens.
   elif [[ ${input} == -[^-]* ]]
   then
-    : $?
+    : $? #<>
     _Fn_find_chars_ "${input}"
     input=${input#-}
 
+  # The <null> byte is a special case.
   elif [[ -z "${input}" ]]
   then
+    : $? #<>
     input=$'\\0'
 
+  # Error handling
   else
     local ec=$?
-    : "ec: $ec"
-    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
-    exit "0${ec}"
+    : "ec: $ec" #<>
+    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' \
+      "${lin:-${LINENO}}"
+    builtin exit "0${ec}"
   fi
 
+  # Reset array indices
+  files=( "${files[@]}" )
+
+  # Print, input string and count of found files
   printf '\t%bInput:%b\t%s\n' "${C5}" "${C0}" "${input}"
   printf '\t%bCount:%b\t%d\n' "${C5}" "${C0}" "${#files[@]}"
 
+  # Print, each file with index number
   for ff in "${!files[@]}"
   do
     printf '\t%d:\t<%s>\n' "${ff}" "${files[ff]}" \
       | grep -s --color=always -e "${input}" 2> /dev/null
   done \
     && unset ff
-  echo
-  return 00
+  echo 
 
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
 
 
 : Define _Fn_find_chars_
+# Look for strings of certain characters.
 # Usage: _Fn_find_chars_ "${input}"
 #
 _Fn_find_chars_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
-  local ec input - #\
-    #&& set -x
+  local - ec input
+  #set -x #<>
   input=$1
 
+  # Handle hyphen prefixes
   if [[ ${input} == -[^-]* ]]
   then
-    : $?
+    : $? #<>
     input=${input#-}
+
   else
     ec=$?
-    : "ec: $ec"
-    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${lin:-${LINENO}}"
-    exit "0${ec}"
+    : "ec: $ec" #<>
+    printf 'Error, line %d: input is malformed.\n' "${lin:-${LINENO}}"
+    builtin exit "0${ec}"
   fi
 
+  # Search
   mapfile -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0
   )
@@ -140,25 +173,28 @@ _Fn_find_chars_ (){
 
 
 : Define _Fn_find_IFS_delimd_strings_
+# Look for \word\s.
 # Usage: _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
 #
 _Fn_find_IFS_delimd_strings_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
-  local ec input loc - #\
-    #&& set -x
+  local - ec input loc
+  #set -x #<>
   input=$1
   loc=$2
 
   if [[ ${input} == --[^-]* ]]
   then
-    : $?
+    : $? #<>
     input=${input#--}
+
   else
     ec=$?
-    : "ec: $ec"
-    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' "${loc:-${LINENO}}"
-    exit "0${ec}"
+    : "ec: $ec" #<>
+    printf 'Error, line %d: fn reqs x1 non-lineno argument.\n' \
+      "${loc:-${LINENO}}"
+    builtin exit "0${ec}"
   fi
 
   # Gather
@@ -223,16 +259,16 @@ _Fn_get_files_ forward-slash_ascii '-/'
 _Fn_get_files_ forward-slash_hex '--\x2f'
 _Fn_get_files_ forward-slash_octal '--\057'
 
-  #exit "${LINENO}"
-  #set -x
+  #builtin exit "${LINENO}" #<>
+  #set -x #<>
 
 # <NUL>
 # Note: leading hyphen breaks <null>
 _Fn_get_files_ null_ascii-c "$( printf $'\0' )"
 _Fn_get_files_ null_hex '--\x00'
 
-  #exit "${LINENO}"
-  #set -x
+  #builtin exit "${LINENO}" #<>
+  #set -x #<>
 
 # Execution contexts
 # exec
@@ -241,8 +277,8 @@ _Fn_get_files_ exec_hex-1 '--\x65x78x65x63'
 _Fn_get_files_ exec_hex-2 '--\x65786563'
 _Fn_get_files_ exec_octal '--\145170145143'
 
-  exit "${LINENO}"
-  set -x
+  builtin exit "${LINENO}" #<>
+  set -x #<>
 
 # eval
 _Fn_get_files_ eval_ascii --eval
@@ -250,37 +286,64 @@ _Fn_get_files_ eval_hex-1 '--\x65x76x61x6c'
 _Fn_get_files_ eval_hex-2 '--\x6576616c'
 _Fn_get_files_ eval_octal '--\145166141154'
 
-  exit "${LINENO}"
-  set -x
+  builtin exit "${LINENO}" #<>
+  set -x #<>
 
 # $((
 _Fn_get_files_ arith-expan-1_ascii '-$(('
 
+  builtin exit "${LINENO}" #<>
+  set -x #<>
+
 # $(<
 _Fn_get_files_ com-sub-1_ascii '-$(<'
+
+  builtin exit "${LINENO}" #<>
+  set -x #<>
 
 # ${|
 _Fn_get_files_ com-sub-2_ascii '-${|'
 
+  builtin exit "${LINENO}" #<>
+  set -x #<>
+
 # ${c
 _Fn_get_files_ com-sub-3_ascii '-${c'
+
+  builtin exit "${LINENO}" #<>
+  set -x #<>
 
 # ((
 _Fn_get_files_ arith-expan-2a_ascii '-(('
 
+  builtin exit "${LINENO}" #<>
+  set -x #<>
+
 # ))
 _Fn_get_files_ arith-expan-2b_ascii '-))'
+
+  builtin exit "${LINENO}" #<>
+  set -x #<>
 
 # $(
 _Fn_get_files_ com-sub-4_ascii '-$('
 
+  builtin exit "${LINENO}" #<>
+  set -x #<>
+
 # ${
 _Fn_get_files_ com-sub-5_ascii '-${'
+
+  builtin exit "${LINENO}" #<>
+  set -x #<>
 
 # `
 _Fn_get_files_ backtick_ascii '-`'
 _Fn_get_files_ backtick_hex '--\x60'
 _Fn_get_files_ backtick_octal '--\140'
+
+  builtin exit "${LINENO}" #<>
+  set -x #<>
 
 
 # Bash 5.2 Control operators (which are not also single metac\haracters)
@@ -411,4 +474,4 @@ _Fn_get_files_ backtick_octal '--\140'
 #
 
 
-exit 000
+builtin exit 000
