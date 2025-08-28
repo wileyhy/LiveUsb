@@ -63,7 +63,7 @@ then
           declare -p pos_parms PP QQ LINENO #<>
 
         pos_parms+=( ${pos_parms[PP]:0:1} )
-        pos_parms+=( ${pos_parms[PP]:1}   )
+        pos_parms+=( [PP]=${pos_parms[PP]:1}   )
 
           declare -p pos_parms PP QQ LINENO #<>
 
