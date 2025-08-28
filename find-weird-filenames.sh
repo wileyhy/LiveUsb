@@ -168,15 +168,15 @@ function _Fn_find_IFS_delimd_strings_ (){
 
 # Characters illegal for filenames in Linux
 # /
-#_Fn_get_files_ -'/'
-#_Fn_get_files_ forward-slash_hex '--\x2f'
-#_Fn_get_files_ forward-slash_octal '--\057'
+_Fn_get_files_ forward-slash_ascii '-/'
+_Fn_get_files_ forward-slash_hex '--\x2f'
+_Fn_get_files_ forward-slash_octal '--\057'
 
   #exit "${LINENO}"
   #set -x
 
 # <NUL>
-#_Fn_get_files_ null_ascii-c $'\\0'
+_Fn_get_files_ null_ascii-c $'\\0'
 _Fn_get_files_ null_hex '--\x00'
 
   exit "${LINENO}"
@@ -185,42 +185,50 @@ _Fn_get_files_ null_hex '--\x00'
 # Execution contexts
 # exec
 _Fn_get_files_ exec_ascii --exec
+#_Fn_get_files_ exec_hex --exec
+#_Fn_get_files_ exec_octal --exec
 
   exit "${LINENO}"
   set -x
 
 # eval
-_Fn_get_files_ --eval
+_Fn_get_files_ eval_ascii --eval
+#_Fn_get_files_ eval_hex-1 --\x65x76x61x6c
+#_Fn_get_files_ eval_hex-2 --\x6576616c
+#_Fn_get_files_ eval_octal-1 --\145\166\141\154
+#_Fn_get_files_ eval_octal-2 --\145166141154
 
   exit "${LINENO}"
   set -x
 
 # $((
-_Fn_get_files_
+_Fn_get_files_ arith-expan-1_ascii '-$(('
 
 # $(<
-_Fn_get_files_
+_Fn_get_files_ com-sub-1_ascii '-$(<'
 
 # ${|
-_Fn_get_files_
+_Fn_get_files_ com-sub-2_ascii '-${|'
 
 # ${c
-_Fn_get_files_
+_Fn_get_files_ com-sub-3_ascii '-${c'
 
 # ((
-_Fn_get_files_
+_Fn_get_files_ arith-expan-2a_ascii '-(('
 
 # ))
-_Fn_get_files_
+_Fn_get_files_ arith-expan-2b_ascii '-))'
 
 # $(
-_Fn_get_files_
+_Fn_get_files_ com-sub-4_ascii '-$('
 
 # ${
-_Fn_get_files_
+_Fn_get_files_ com-sub-5_ascii '-${'
 
 # `
-_Fn_get_files_
+_Fn_get_files_ backtick_ascii '-`'
+_Fn_get_files_ backtick_hex '--\x60'
+_Fn_get_files_ backtick_octal '--\140'
 
 
 # Bash 5.2 Control operators (which are not also single metac\haracters)
