@@ -59,6 +59,8 @@ fi
   #echo "${!Clr*}" #<>
   #set -x #<>
 
+
+# Enable Grayscale option, re CLI
 if [[ ${in_clr} = n ]]
 then
   # Note: intentional use of word splitting
