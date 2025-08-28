@@ -15,10 +15,11 @@ sudo -v
 
 
 # Variables
-T0=$( date '+%s' )    export T0
-II=0                  export II
-C5=$( tput setaf 5 )  export C5
-C0=$( tput sgr0 )     export C0
+T0=$( date '+%s' )      export T0
+II=0                    export II
+C0=$( tput sgr0 )       export C0
+C5=$( tput setaf 5 )    export C5
+C46=$( tput setaf 46 )  export C5
 
 
 ######### # # ######### # # #########
@@ -166,8 +167,27 @@ _Fn_get_files_ (){
   # Note, printing of the input string is performed in the two 
   #   sub-functions, after the value of \input is fully processed.
 
-  # Print, count of found files
-  printf '\t%bCount:%b\t%d\n' "${C5}" "${C0}" "${#files[@]}"
+  # Print, count of found files. If there\s more than one, use yellow.
+  local file_count
+  file_count="${#files[@]}"
+  printf '\t%bCount:%b\t' "${C5}" "${C0}" 
+
+  if [[ file_count -gt 0 ]]
+  then 
+    : $? #<>
+    printf '%b%d%b\n' "${C46}" "${file_count}" "${C0}" 
+
+  elif [[ file_count -eq 0 ]]
+  then
+    : $? #<>
+    printf '0\n'
+
+  else
+    local ec=$?
+    : "ec: $ec" #<>
+    printf 'Error, line %d: unreachable code.\n' \
+      "${lin:-${LINENO}}"
+  fi
 
   # Print, each file with index number
   for ff in "${!files[@]}"
