@@ -195,6 +195,7 @@ function _Fn_find_IFS_delimd_strings_ (){
 # /
 #_Fn_get_files_ -'/'
 _Fn_get_files_ '--\x2f'
+_Fn_get_files_ '--\057'
 
   #exit "${LINENO}"
   set -x
