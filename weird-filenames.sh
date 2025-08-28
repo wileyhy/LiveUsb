@@ -10,11 +10,6 @@
   set -euo pipefail #<>
 
 
-# \sudo\ is required
-sudo -v
-
-
-
 # Variables
 
 T0=$( date '+%s' )        export T0       # Time
@@ -108,6 +103,11 @@ then
 fi  
 
   #exit "${LINENO}" #<>
+
+
+# \sudo\ is required
+sudo -v
+
 
 
 ######### # # ######### # # #########
