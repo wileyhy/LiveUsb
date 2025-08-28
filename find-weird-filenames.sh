@@ -101,9 +101,9 @@ _Fn_get_files_ (){
   fi
 
   # Print per-test header
-  printf '%bTest:%b %d \t%s\n' "${C5}" "${C0}" "$((  ++II  ))" \
-    "$( _Fn_print_elapsed_t_ )"
+  printf '%bTest:%b %d\n'     "${C5}" "${C0}" "$((  ++II  ))"
   printf '\t%bName:%b\t%s\n'  "${C5}" "${C0}" "${nam}"
+  printf '\t%bTime:%b\t%s\n'  "${C5}" "${C0}" "$( _Fn_print_elapsed_t_ )"
 
   # More variables
   input=$1
