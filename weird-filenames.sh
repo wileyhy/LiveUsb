@@ -42,36 +42,41 @@ if [[ $# -gt 0 ]]
 then
   pos_parms=( "$@" )
 
-  # Handle mashed up options, ie, '-AG' as '-A -G'
-  for PP in "${!pos_parms[@]}"
+  while true
   do
 
-      declare -p pos_parms PP LINENO #<>
-      : "pos_parms[PP]: ${pos_parms[PP]}"
+    # Handle mashed up options, ie, '-AG' as '-A -G'
+    for PP in "${!pos_parms[@]}"
+    do
 
-    pos_parms+=( [PP]=${pos_parms[PP]##*-} )  # Remove leading hyphen(s)
-    len_pp=${#pos_parms[PP]}                  # Get length of \PP
+        declare -p pos_parms PP LINENO #<>
+        : "pos_parms[PP]: ${pos_parms[PP]}"
+
+      pos_parms+=( [PP]=${pos_parms[PP]##*-} )  # Remove leading hyphen(s)
+      len_pp=${#pos_parms[PP]}                  # Get length of \PP
     
-      declare -p pos_parms PP len_pp LINENO #<>
-      : "pos_parms[PP]: ${pos_parms[PP]}"
+        declare -p pos_parms PP len_pp LINENO #<>
+        : "pos_parms[PP]: ${pos_parms[PP]}"
 
-    if [[ ${len_pp} -gt 1 ]]
-    then
-      : $? #<>
+      if [[ ${len_pp} -gt 1 ]]
+      then
+        : $? #<>
 
-          declare -p pos_parms PP LINENO #<>
+            declare -p pos_parms PP LINENO #<>
 
-        pos_parms+=( ${pos_parms[PP]:0:1} )
-        pos_parms+=( ${pos_parms[PP]:1}   )
-        unset "pos_parms[PP]"
+          pos_parms+=( ${pos_parms[PP]:0:1} )
+          pos_parms+=( ${pos_parms[PP]:1}   )
+          unset "pos_parms[PP]"
 
-          declare -p pos_parms PP LINENO #<>
+            declare -p pos_parms PP LINENO #<>
 
-    else
-      : $? #<>
-    fi
-  done \
-    && unset PP
+      else
+        : $? #<>
+      fi
+    done \
+      && unset PP
+
+  done
 
   for RR in "${!pos_parms[@]}"
   do
