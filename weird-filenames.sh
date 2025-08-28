@@ -41,21 +41,46 @@ function _Fn_help_ (){
   builtin exit 002
 }
 
+  set -x #<>
+  
 if [[ $# -gt 0 ]]
 then
-  for PP in "$@"
+  pos_parms=( "$@" )
+
+  # Handle mashed up options, ie, '-AG' as '-A -G'
+  for PP in "${!pos_parms[@]}"
   do
-    case "$PP" in
-      --help|'-?' ) _Fn_help_         ;;
+
+    pos_parms=( [PP]=${pos_parms[PP]#-} ) # Remove leading hyphen
+    len_pp=${#pos_parms[PP]}              # Get length of \PP
+    
+    if [[ ${len_pp} -gt 1 ]]
+    then
+      for ((  QQ=0; QQ <= ( len_pp - 1 ); QQ++  ))
+      do
+        pos_parms+=( ${pos_parms[PP]:0:1} )
+        pos_parms=(  [PP]=${pos_parms[PP]:1} )
+      done
+
+      unset "pos_parms[PP]"
+    fi
+  done \
+    && unset PP
+
+  for RR in "${!pos_parms[@]}"
+  do
+    case "$RR" in
       -A          ) pr_all=y pr_per=n ;;
       -G          ) in_clr=n          ;;
       -[Hh]       ) _Fn_help_         ;;
       -I          ) pr_per=y pr_all=n ;;
       *           ) _Fn_help_         ;;
     esac
-  done
+  done \
+    && unset RR
 fi
 
+  exit "${LINENO}"
   #echo "${!Clr*}" #<>
   #set -x #<>
 
