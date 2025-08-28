@@ -35,6 +35,8 @@ _Fn_get_line_nos_
 function _Fn_get_files_ (){
   :;: "enter function ${FUNCNAME[0]}";:
 
+    echo ampersand: "$@"
+
   local - ec input lin nam \
     && set -x
 
