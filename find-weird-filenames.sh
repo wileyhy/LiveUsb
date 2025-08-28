@@ -65,11 +65,13 @@ function _Fn_get_files_ (){
   then
     : $?
     _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
+    input=${input#--}
 
   elif [[ ${input} == -[^-]* ]]
   then
     : $?
     _Fn_find_chars_ "${input}"
+    input=${input#-}
 
   elif [[ -z "${input}" ]]
   then
@@ -83,7 +85,7 @@ function _Fn_get_files_ (){
   fi
 
   printf 'Test name:\t%s\n' "${nam}"
-  printf 'Input string:\t%s\n' "${input#*-}"
+  printf 'Input string:\t%s\n' "${input}"
   printf 'File count:\t%d\n' "${#files[@]}"
   : printf '<%s>\n' "${files[@]}"
   echo
