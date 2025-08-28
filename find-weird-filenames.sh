@@ -91,10 +91,10 @@ _Fn_print_input_str_ (){
 function _Fn_get_files_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
-    : arobase: "$@" #<>
-
   local - ec ff input lin nam
   set -x #<>
+
+    : arobase: "$@" #<>
 
   # Process positional parameters
   #   If aliases are enabled, there\ll be x3
