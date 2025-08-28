@@ -169,6 +169,8 @@ function _Fn_find_IFS_delimd_strings_ (){
   mapfile -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
       | grep -z --color=always  -Fe "${input}" 2> /dev/null; \
+  )
+  mapfile -C 1000000 -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
       | grep -z --color=always  \
         -Ee '\<'"${input}"'\>'  \
