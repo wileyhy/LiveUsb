@@ -18,15 +18,15 @@ C0=$( tput sgr0 )     export C0
 
 
 : Define _Fn_get_line_nos_
-# This function, if activated, will let the script print line numbers
-# indicating where the function \Fn_get_files_ was called
-function _Fn_get_line_nos_ (){
-  :;: "enter function ${FUNCNAME[0]}";:
+# This f\unction, if activated, will let the script print line numbers
+# indicating where the f\unction \Fn_get_files_ was called
+_Fn_get_line_nos_ (){
+  :;: "${C5}enter ${FUNCNAME[0]}${C0}";:
 
   shopt -s expand_aliases
   alias _Fn_get_files_='_Fn_get_files_ "${LINENO}" '
 
-  :;: "exit function ${FUNCNAME[0]}" ;:
+  :;: "${C5}exit ${FUNCNAME[0]}${C0}" ;:
 }
 #_Fn_get_line_nos_
 
@@ -36,8 +36,8 @@ function _Fn_get_line_nos_ (){
 # Usage: _Fn_get_files_ -$'\n'
 #        _Fn_get_files_ --eval
 #
-function _Fn_get_files_ (){
-  :;: "enter function ${FUNCNAME[0]}";:
+_Fn_get_files_ (){
+  :;: "${C5}enter ${FUNCNAME[0]}${C0}";:
 
     : ampersand: "$@"
 
@@ -102,15 +102,15 @@ function _Fn_get_files_ (){
   echo
   return 00
 
-  :;: "exit function ${FUNCNAME[0]}" ;:
+  :;: "${C5}exit ${FUNCNAME[0]}${C0}" ;:
 }
 
 
 : Define _Fn_find_chars_
 # Usage: _Fn_find_chars_ "${input}"
 #
-function _Fn_find_chars_ (){
-  :;: "enter function ${FUNCNAME[0]}";:
+_Fn_find_chars_ (){
+  :;: "${C5}enter ${FUNCNAME[0]}${C0}";:
 
   local ec input - #\
     #&& set -x
@@ -131,15 +131,15 @@ function _Fn_find_chars_ (){
     sudo find / -name '*'"${input}"'*' -print0
   )
 
-  :;: "exit function ${FUNCNAME[0]}" ;:
+  :;: "${C5}exit ${FUNCNAME[0]}${C0}" ;:
 }
 
 
 : Define _Fn_find_IFS_delimd_strings_
 # Usage: _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
 #
-function _Fn_find_IFS_delimd_strings_ (){
-  :;: "enter function ${FUNCNAME[0]}";:
+_Fn_find_IFS_delimd_strings_ (){
+  :;: "${C5}enter ${FUNCNAME[0]}${C0}";:
 
   local ec input loc - #\
     #&& set -x
@@ -204,7 +204,7 @@ function _Fn_find_IFS_delimd_strings_ (){
         -e $'\n'"${input}"$'\n' 2> /dev/null
   )
 
-  :;: "exit function ${FUNCNAME[0]}" ;:
+  :;: "${C5}exit ${FUNCNAME[0]}${C0}" ;:
 }
 
 
