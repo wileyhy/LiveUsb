@@ -63,8 +63,8 @@ _Fn_get_files_ (){
     shift
   fi
 
-  printf '%bTest %d%b\n'      "${C5}" "$((++II))" "${C0}"
-  printf '\t%bName:%b\t%s\n'  "${C5}" "${nam}"    "${C0}"
+  printf '%bTest %d%b\n'      "${C5}" "${C0}" "$((  ++II  ))"
+  printf '\t%bName:%b\t%s\n'  "${C5}" "${C0}" "${nam}"
 
   input=$1
   lin=${lin:=}
@@ -94,8 +94,8 @@ _Fn_get_files_ (){
     exit "0${ec}"
   fi
 
-  printf '\t%bInput:%b\t%s\n' "${C5}" "${input}"      "${C0}"
-  printf '\t%bCount:%b\t%d\n' "${C5}" "${#files[@]}"  "${C0}"
+  printf '\t%bInput:%b\t%s\n' "${C5}" "${C0}" "${input}"
+  printf '\t%bCount:%b\t%d\n' "${C5}" "${C0}" "${#files[@]}"
 
   for ff in "${!files[@]}"
   do
