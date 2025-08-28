@@ -50,6 +50,7 @@ then
     then
       break
     fi
+    parms_changed=n
 
     # Handle mashed up options, ie, '-AG' as '-A -G'
     for PP in "${!pos_parms[@]}"
