@@ -165,8 +165,7 @@ _Fn_fnd_chars_ (){
 
   # Search
   mapfile -d "" -t files < <(
-    sudo find / -nowarn -name '*'"${input}"'*' -print0 2>&1 \
-      | grep -szEve ^'find: .* Permission denied'$
+    sudo find / -nowarn -name '*'"${input}"'*' -print0 2> /dev/null \
   )
 
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
@@ -201,21 +200,18 @@ _Fn_fnd_IFS_delimd_strings_ (){
   # Gather
   mapfile -C 0000000 -d "" -t files < <(
     sudo find -nowarn / -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep -szEve ^'find: .* Permission denied'$ \
       | grep --color=always -sz \
         -Fe     "${input}"      2> /dev/null
   )
 
   mapfile -C 1000000 -d "" -t files < <(
     sudo find -nowarn / -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep -szEve ^'find: .* Permission denied'$ \
       | grep --color=always -swz \
         -Fe     "${input}"      2> /dev/null
   )
 
   mapfile -C 2000000 -d "" -t files < <(
     sudo find / -nowarn -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep -szEve ^'find: .* Permission denied'$ \
       | grep --color=always -sz \
         -Ee '\<'"${input}"'\>'  \
         -e  '\b'"${input}"'\b'  \
@@ -233,7 +229,6 @@ _Fn_fnd_IFS_delimd_strings_ (){
 
   mapfile -C 3000000 -d "" -t files < <(
     sudo find / -nowarn -name '*'"${input}"'*' -print0 2> /dev/null \
-      | grep -szEve ^'find: .* Permission denied'$ \
       | grep --color=always -swz \
         -Ee '\<'"${input}"'\>'  \
         -e  '\b'"${input}"'\b'  \
