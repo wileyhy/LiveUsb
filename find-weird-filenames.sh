@@ -110,8 +110,10 @@ function _Fn_get_files_ (){
     exit "0${ec}"
   fi
 
+  printf 'Input string: %s\n' "${input}"
   printf 'File count: %d\n' "${#files[@]}"
   : printf '<%s>\n' "${files[@]}"
+  echo
   return 00
 
   :;: "exit function ${FUNCNAME[0]}" ;:
