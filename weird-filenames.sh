@@ -41,9 +41,15 @@ function _Fn_help_ (){
 if [[ $# -gt 0 ]]
 then
   pos_parms=( "$@" )
+  parms_changed=n
 
   for ((  YS=0; YS<=5; YS++  ))
   do
+
+    if [[ ${parms_changed} == n ]]
+    then
+      break
+    fi
 
     # Handle mashed up options, ie, '-AG' as '-A -G'
     for PP in "${!pos_parms[@]}"
@@ -67,6 +73,7 @@ then
           pos_parms+=( ${pos_parms[PP]:0:1} )
           pos_parms+=( ${pos_parms[PP]:1}   )
           unset "pos_parms[PP]"
+          parms_changed=y
 
             declare -p pos_parms PP LINENO #<>
 
