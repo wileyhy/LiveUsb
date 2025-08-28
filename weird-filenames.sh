@@ -53,6 +53,7 @@ then
     
     if [[ ${len_pp} -gt 1 ]]
     then
+      : $? #<>
       for ((  QQ=0; QQ <= ( len_pp - 1 ); QQ++  ))
       do
         pos_parms+=( ${pos_parms[PP]:0:1} )
@@ -60,6 +61,8 @@ then
       done
 
       unset "pos_parms[PP]"
+    else
+      : $? #<>
     fi
   done \
     && unset PP
