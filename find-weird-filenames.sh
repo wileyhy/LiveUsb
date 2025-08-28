@@ -35,8 +35,8 @@ _Fn_get_line_nos_
 function _Fn_get_files_ (){
   :;: "enter function ${FUNCNAME[0]}";:
 
-  local - ec input lin nam #\
-    #&& set -x
+  local - ec input lin nam \
+    && set -x
 
   if [[ $# -eq 3 ]]
   then
