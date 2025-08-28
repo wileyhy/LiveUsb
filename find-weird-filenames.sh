@@ -57,6 +57,7 @@ _Fn_print_elapsed_t_ (){
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
 
+  sleep 3 #<>
   _Fn_print_elapsed_t_ #<>
   exit "${LINENO}" #<>
 
