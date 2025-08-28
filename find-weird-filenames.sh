@@ -37,8 +37,8 @@ function _Fn_get_files_ (){
 
     : ampersand: "$@"
 
-  local - ec input lin nam #\
-    #&& set -x
+  local - ec input lin nam \
+    && set -x
 
   if [[ $# -eq 3 ]]
   then
@@ -169,17 +169,17 @@ function _Fn_find_IFS_delimd_strings_ (){
 
 
 
-# Characters illegal for filenames in Linux
+# Characters illegal f\or filenames in Linux
 # /
-_Fn_get_files_ forward-slash_ascii '-/'
-_Fn_get_files_ forward-slash_hex '--\x2f'
-_Fn_get_files_ forward-slash_octal '--\057'
+#_Fn_get_files_ forward-slash_ascii '-/'
+#_Fn_get_files_ forward-slash_hex '--\x2f'
+#_Fn_get_files_ forward-slash_octal '--\057'
 
   #exit "${LINENO}"
   #set -x
 
 # <NUL>
-_Fn_get_files_ null_ascii-c $'\\0'
+_Fn_get_files_ null_ascii-c $'\\0' # Note: leading hyphen breaks <null>
 _Fn_get_files_ null_hex '--\x00'
 
   exit "${LINENO}"
