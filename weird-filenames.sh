@@ -30,7 +30,7 @@ pr_per=y                export pr_per #             - Interactive
 # Options
 
 : Define _Fn_help_
-function _Fn_help (){
+function _Fn_help_ (){
   printf '\n\tweird-filenames.sh\n'
   printf '\t  -A  Automated   / print full report\n'
   printf '\t  -I  Interactive / print per test [Default]\n'
