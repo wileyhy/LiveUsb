@@ -149,7 +149,7 @@ function _Fn_find_IFS_delimd_strings_ (){
 
   mapfile -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0 2>&1 \
-      | grep -Ez                \
+      | grep -E -z --color=always \
         -e  '\<'"${input}"'\>'  \
         -e  '\b'"${input}"'\b'  \
         -e  '\W'"${input}"'\W'  \
