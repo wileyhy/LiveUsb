@@ -38,7 +38,7 @@ function _Fn_get_line_nos_ (){
 
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
-function _Fn_get_line_nos_ #<>
+_Fn_get_line_nos_ #<>
 
 
 : Define _Fn_print_elapsed_t_
