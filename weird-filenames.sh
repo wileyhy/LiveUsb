@@ -17,14 +17,13 @@ sudo -v
 
 # Variables
 
-T0=$( date '+%s' )      export T0   # Time
-II=0                    export II   # Index
-C0=$( tput sgr0 )       export C0   # Colors  - B&W
-C5=$( tput setaf 5 )    export C5   #         - Blue
-C46=$( tput setaf 46 )  export C46  #         - Yello
-
-print_per_search=y
-pr_all=n
+T0=$( date '+%s' )      export T0     # Time
+II=0                    export II     # Index
+C0=$( tput sgr0 )       export C0     # Colors  - B&W
+C5=$( tput setaf 5 )    export C5     #         - Blue
+C46=$( tput setaf 46 )  export C46    #         - Yellow
+pr_all=n                export pr_all # CLI Options - Full report
+pr_per=y                export pr_per #             - Interactive
 
 
 
