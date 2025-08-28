@@ -21,12 +21,12 @@ C0=$( tput sgr0 )     export C0
 # This f\unction, if activated, will let the script print line numbers
 # indicating where the f\unction \Fn_get_files_ was called
 _Fn_get_line_nos_ (){
-  :;: "${C5}enter ${FUNCNAME[0]}${C0}";:
+  :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   shopt -s expand_aliases
   alias _Fn_get_files_='_Fn_get_files_ "${LINENO}" '
 
-  :;: "${C5}exit ${FUNCNAME[0]}${C0}" ;:
+  :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
 #_Fn_get_line_nos_
 
@@ -37,7 +37,7 @@ _Fn_get_line_nos_ (){
 #        _Fn_get_files_ --eval
 #
 _Fn_get_files_ (){
-  :;: "${C5}enter ${FUNCNAME[0]}${C0}";:
+  :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
     : ampersand: "$@"
 
@@ -102,7 +102,7 @@ _Fn_get_files_ (){
   echo
   return 00
 
-  :;: "${C5}exit ${FUNCNAME[0]}${C0}" ;:
+  :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
 
 
@@ -110,7 +110,7 @@ _Fn_get_files_ (){
 # Usage: _Fn_find_chars_ "${input}"
 #
 _Fn_find_chars_ (){
-  :;: "${C5}enter ${FUNCNAME[0]}${C0}";:
+  :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local ec input - #\
     #&& set -x
@@ -131,7 +131,7 @@ _Fn_find_chars_ (){
     sudo find / -name '*'"${input}"'*' -print0
   )
 
-  :;: "${C5}exit ${FUNCNAME[0]}${C0}" ;:
+  :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
 
 
@@ -139,7 +139,7 @@ _Fn_find_chars_ (){
 # Usage: _Fn_find_IFS_delimd_strings_ "${input}" "${lin}"
 #
 _Fn_find_IFS_delimd_strings_ (){
-  :;: "${C5}enter ${FUNCNAME[0]}${C0}";:
+  :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local ec input loc - #\
     #&& set -x
@@ -204,7 +204,7 @@ _Fn_find_IFS_delimd_strings_ (){
         -e $'\n'"${input}"$'\n' 2> /dev/null
   )
 
-  :;: "${C5}exit ${FUNCNAME[0]}${C0}" ;:
+  :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
 
 
