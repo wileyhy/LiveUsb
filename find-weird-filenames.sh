@@ -199,8 +199,8 @@ function _Fn_get_files_ (){
 
     #<> Debug: Set the loop limit for how many file names to print to
     #<>   something r\eadable
-    if [[ "${#files[@]}" -ge 10 ]]; then limit=10; #<>
-    fi #<>
+    #if [[ "${#files[@]}" -ge 10 ]]; then limit=10; #<>
+    #fi #<>
   
   # Print, each file with index number
   if [[ ${limit} != 0 ]]
