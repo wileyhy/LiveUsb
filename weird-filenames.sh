@@ -680,13 +680,13 @@ function _Fn_fnd_IFS_delimd_strings_ (){
 #_Fn_get_files_ _ascii '-'
 
 # ~+
-_Fn_get_files_ tilde-1_ascii '-~+'
+#_Fn_get_files_ tilde-1_ascii '-~+'
 
 # ~-
-_Fn_get_files_ tilde-2_ascii '-~-'
+#_Fn_get_files_ tilde-2_ascii '-~-'
 
 # ~
-_Fn_get_files_ tilde-3_ascii '-~'
+#_Fn_get_files_ tilde-3_ascii '-~'
 
 
 # Brace Expansion c\haracters
@@ -736,16 +736,16 @@ _Fn_get_files_ tilde-3_ascii '-~'
 #_Fn_get_files_ underscore_ascii '-_'
 
 # %
-_Fn_get_files_ percent_ascii '-%'
+#_Fn_get_files_ percent_ascii '-%'
 
 # ^
-_Fn_get_files_ carrat_ascii '-^'
+#_Fn_get_files_ carrat_ascii '-^'
 
 # =
-_Fn_get_files_ equals_ascii '-='
+#_Fn_get_files_ equals_ascii '-='
 
 # +
-_Fn_get_files_ plus_ascii '-+'
+#_Fn_get_files_ plus_ascii '-+'
 
 # .
 _Fn_get_files_ period_ascii "-$'.'"
