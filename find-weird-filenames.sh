@@ -194,7 +194,7 @@ _Fn_get_files_ (){
   fi
 
     #<> Debug: Set the loop limit for how many file names to print to
-    #<>   something readable
+    #<>   something r\eadable
     if [[ "${#files[@]}" -ge 10 ]]; then limit=10; #<>
     fi #<>
   
@@ -213,8 +213,8 @@ _Fn_get_files_ (){
     echo
 
     # Pause to check
-    printf 'Carry on? [Y/n]\n'
-    read -r yn
+    printf 'Next test? [Y/n]\n'
+    read -N 1 -r yn
     case "${yn}" in
       n) builtin exit 000 ;;
       *) :;;
