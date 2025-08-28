@@ -81,9 +81,9 @@ function _Fn_get_files_ (){
     exit "0${ec}"
   fi
 
-  printf 'Test name: %s\n' "${nam}"
-  printf 'Input string: %s\n' "${input}"
-  printf 'File count: %d\n' "${#files[@]}"
+  printf 'Test name:\t%s\n' "${nam}"
+  printf 'Input string:\t%s\n' "${input}"
+  printf 'File count:\t%d\n' "${#files[@]}"
   : printf '<%s>\n' "${files[@]}"
   echo
   return 00
