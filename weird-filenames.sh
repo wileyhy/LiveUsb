@@ -56,11 +56,21 @@ then
 fi
 
   echo "${!Clr*}"
-  exit "${LINENO}"
 
 if [[ ${in_clr} = n ]]
-then :
+then
+  # Note: intentional use of word splitting
+  colors=( ${!Clr*} )
+  declare -n CC
+  for CC in "${colors[@]}"
+  do
+    CC=
+  done
+
+    declare -p ${!Clr*}
 fi  
+
+  exit "${LINENO}"
 
 
 ######### # # ######### # # #########
