@@ -41,7 +41,7 @@ function _Fn_help_ (){
 if [[ $# -gt 0 ]]
 then
   pos_parms=( "$@" )
-  parms_changed=n
+  parms_changed=y
 
   for ((  YS=0; YS<=5; YS++  ))
   do
