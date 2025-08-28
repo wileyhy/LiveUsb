@@ -209,6 +209,14 @@ _Fn_get_files_ (){
     && unset ff
   echo 
 
+  # Pause to check
+  printf 'Carry on? [Y/n]\n'
+  read -r yn
+  case "${yn}" in
+    n) builtin exit 000 ;;
+    *) :;;
+  esac
+
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
 
