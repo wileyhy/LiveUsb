@@ -15,6 +15,7 @@ sudo -v
 
 
 # Variables
+T0=$( date '+%s' )    export T0
 II=0                  export II
 C5=$( tput setaf 5 )  export C5
 C0=$( tput sgr0 )     export C0
@@ -38,6 +39,26 @@ _Fn_get_line_nos_ (){
 #_Fn_get_line_nos_ #<>
 
 
+: Define _Fn_print_elapsed_t_
+# 
+# Usage: _Fn_print_elapsed_t_
+_Fn_print_elapsed_t_ (){
+  :;: "${C5}start ${FUNCNAME[0]}${C0}";:
+
+  local - now
+  set -x
+  now=$((  $( date '+%s' ) - T0  ))
+
+  printf '%dh:%dm:%ds\n' \
+    $((  ( now - ( now % 60**2 ) ) / 60**2  )) \
+    $((  ( ( now - ( now % 60 ) ) / 60 ) % 60  )) \
+    $((  now % 60  ))
+
+  :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
+}
+
+  _Fn_print_elapsed_t_ #<>
+  exit "${LINENO}" #<>
 
 : Define _Fn_get_files_
 # This f\unction runs regardless of whether a\liases are enabled; it
