@@ -43,7 +43,7 @@ then
   pos_parms=( "$@" )
   parms_changed=y
 
-  for ((  YS=0; YS<=5; YS++  ))
+  while true
   do
 
     if [[ ${parms_changed} == n ]]
