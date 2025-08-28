@@ -7,12 +7,13 @@
 
   set -x
   set -euo pipefail
-  shopt -s globstar extglob
+  #shopt -s globstar extglob
 
 
-#
 sudo -v
-II=0 export II
+II=0                  export II
+C5=$( tput setaf 5 )  export C5
+C0=$( tput sgr0 )     export C0
 
 
 
@@ -60,6 +61,7 @@ function _Fn_get_files_ (){
     : $?
   fi
 
+  printf '%bTest %d%b\n' "$((  ++II  ))"
   printf 'Test name:\t%s\n' "${nam}"
 
   input=$1
