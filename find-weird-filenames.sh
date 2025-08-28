@@ -6,7 +6,7 @@
 # being \Names\ according to Bash syntax rules.
 
   #<> Debugging
-  #set -x #<>
+  set -x #<>
   set -euo pipefail #<>
 
 
