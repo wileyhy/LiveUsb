@@ -35,7 +35,7 @@ _Fn_get_line_nos_
 function _Fn_get_files_ (){
   :;: "enter function ${FUNCNAME[0]}";:
 
-    echo ampersand: "$@"
+    : ampersand: "$@"
 
   local - ec input lin nam \
     && set -x
@@ -177,7 +177,7 @@ function _Fn_find_IFS_delimd_strings_ (){
 
 # <NUL>
 #_Fn_get_files_ null_ascii-c $'\\0'
-_Fn_get_files_ null_hex'--\x00'
+_Fn_get_files_ null_hex '--\x00'
 
   exit "${LINENO}"
   set -x
