@@ -641,11 +641,11 @@ function _Fn_fnd_IFS_delimd_strings_ (){
 # *
 _Fn_get_files_ asterisk_ascii "-$'*'"
 
-  builtin exit "${LINENO}" #<>
+  #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # ?
-_Fn_get_files_ question_ascii '-?'
+_Fn_get_files_ question_ascii "-$'?'"
 
 # [:
 #_Fn_get_files_ _ascii '-'
