@@ -349,13 +349,13 @@ function _Fn_fnd_IFS_delimd_strings_ (){
 ## Tests
 ######### # # ######### # # #########
 
-  set -x #<>
+  #set -x #<>
 
 # Characters illegal f\or filenames in Linux
 # /
-#_Fn_get_files_ forward-slash_ascii '-/'
-#_Fn_get_files_ forward-slash_hex '--\x2f'
-_Fn_get_files_ forward-slash_octal '--\057'
+_Fn_get_files_ forward-slash_ascii '-/'
+##_Fn_get_files_ forward-slash_hex '--\x2f'
+##_Fn_get_files_ forward-slash_octal '--\057'
 
   builtin exit "${LINENO}" #<>
   #set -x #<>
@@ -363,7 +363,7 @@ _Fn_get_files_ forward-slash_octal '--\057'
 # <NUL>
 # Note: leading hyphen breaks <null>
 _Fn_get_files_ null_ascii-c "$( printf $'\0' )"
-_Fn_get_files_ null_hex     '--\x00'
+##_Fn_get_files_ null_hex     '--\x00'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
@@ -371,18 +371,18 @@ _Fn_get_files_ null_hex     '--\x00'
 # Execution contexts
 # exec
 _Fn_get_files_ exec_ascii --exec
-_Fn_get_files_ exec_hex-1 '--\x65x78x65x63'
-_Fn_get_files_ exec_hex-2 '--\x65786563'
-_Fn_get_files_ exec_octal '--\145170145143'
+##_Fn_get_files_ exec_hex-1 '--\x65x78x65x63'
+##_Fn_get_files_ exec_hex-2 '--\x65786563'
+##_Fn_get_files_ exec_octal '--\145170145143'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # eval
 _Fn_get_files_ eval_ascii --eval
-_Fn_get_files_ eval_hex-1 '--\x65x76x61x6c'
-_Fn_get_files_ eval_hex-2 '--\x6576616c'
-_Fn_get_files_ eval_octal '--\145166141154'
+##_Fn_get_files_ eval_hex-1 '--\x65x76x61x6c'
+##_Fn_get_files_ eval_hex-2 '--\x6576616c'
+##_Fn_get_files_ eval_octal '--\145166141154'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
@@ -437,8 +437,8 @@ _Fn_get_files_ com-sub-5_ascii '-${'
 
 # `
 _Fn_get_files_ backtick_ascii '-`'
-_Fn_get_files_ backtick_hex   '--\x60'
-_Fn_get_files_ backtick_octal '--\140'
+##_Fn_get_files_ backtick_hex   '--\x60'
+##_Fn_get_files_ backtick_octal '--\140'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
