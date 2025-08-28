@@ -71,7 +71,7 @@ then
     declare -p ${!Clr*}
 fi  
 
-  exit "${LINENO}"
+  #exit "${LINENO}"
 
 
 ######### # # ######### # # #########
