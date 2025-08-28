@@ -42,7 +42,7 @@ if [[ $# -gt 0 ]]
 then
   pos_parms=( "$@" )
 
-  while true
+  for ((  YS=0; YS<=5; YS++  ))
   do
 
     # Handle mashed up options, ie, '-AG' as '-A -G'
