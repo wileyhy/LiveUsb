@@ -349,6 +349,8 @@ function _Fn_fnd_IFS_delimd_strings_ (){
 ## Tests
 ######### # # ######### # # #########
 
+  set -x #<>
+
 # Characters illegal f\or filenames in Linux
 # /
 #_Fn_get_files_ forward-slash_ascii '-/'
