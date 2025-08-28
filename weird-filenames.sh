@@ -73,6 +73,8 @@ then
 
   for RR in "${!pos_parms[@]}"
   do
+      declare -p RR pos_parms #<>
+
     case "-${RR}" in
       -A    ) pr_all=y pr_per=n ;;
       -G    ) in_clr=n          ;;
