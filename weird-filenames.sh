@@ -61,6 +61,7 @@ fi
 
 # This f\unction, if activated, will let the script print line numbers
 #   indicating where the f\unction \Fn_get_files_ was called.
+#
 function _Fn_get_line_nos_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
@@ -76,7 +77,9 @@ _Fn_get_line_nos_ #<>
 : Define _Fn_print_elapsed_t_
 
 # Print with each test header
+#
 # Usage: _Fn_print_elapsed_t_
+#
 function _Fn_print_elapsed_t_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
@@ -101,6 +104,7 @@ function _Fn_print_elapsed_t_ (){
 : Define _Fn_print_input_str_
 
 # Print, input string
+#
 # Usage: _Fn_print_input_str_ "${input}"
 #
 function _Fn_print_input_str_ (){
@@ -121,6 +125,7 @@ function _Fn_print_input_str_ (){
 
 # This f\unction runs regardless of whether a\liases are enabled; it
 #   calls one of two sub-f\unctions.
+#
 # Usage: _Fn_get_files_ -$'\n'
 #        _Fn_get_files_ --eval
 #
@@ -275,6 +280,7 @@ function _Fn_get_files_ (){
 : Define _Fn_fnd_chars_
 
 # Look for strings of certain characters.
+#
 # Usage: _Fn_fnd_chars_ "${input}"
 #
 function _Fn_fnd_chars_ (){
@@ -313,6 +319,7 @@ function _Fn_fnd_chars_ (){
 : Define _Fn_fnd_IFS_delimd_strings_
 
 # Look for \word\s.
+#
 # Usage: _Fn_fnd_IFS_delimd_strings_ "${input}" "${lin}"
 #
 function _Fn_fnd_IFS_delimd_strings_ (){
