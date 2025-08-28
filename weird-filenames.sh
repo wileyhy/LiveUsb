@@ -639,13 +639,13 @@ function _Fn_fnd_IFS_delimd_strings_ (){
 
 # Pathname expansion c\haracters (globs)
 # *
-_Fn_get_files_ asterisk_ascii "-$'*'"
+#_Fn_get_files_ asterisk_ascii "-$'*'"
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # ?
-_Fn_get_files_ question_ascii "-$'?'"
+#_Fn_get_files_ question_ascii "-$'?'"
 
 # [:
 #_Fn_get_files_ _ascii '-'
@@ -653,11 +653,17 @@ _Fn_get_files_ question_ascii "-$'?'"
 # :]
 #_Fn_get_files_ _ascii '-'
 
+  #builtin exit "${LINENO}" #<>
+  set -x #<>
+
 # [
 _Fn_get_files_ left_bracket_ascii '-['
 
 # ]
 _Fn_get_files_ right_bracket_ascii '-]'
+
+  builtin exit "${LINENO}" #<>
+  #set -x #<>
 
 
 # Bash 5.2 Extglobs
