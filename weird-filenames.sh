@@ -60,8 +60,13 @@ then
       : $? #<>
       for ((  QQ=0; QQ <= ( len_pp - 1 ); QQ++  ))
       do
+          declare -p pos_parms PP QQ LINENO #<>
+
         pos_parms+=( ${pos_parms[PP]:0:1} )
         pos_parms=(  [PP]=${pos_parms[PP]:1} )
+
+          declare -p pos_parms PP QQ LINENO #<>
+
       done
 
       unset "pos_parms[PP]"
