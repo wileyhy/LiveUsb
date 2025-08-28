@@ -23,7 +23,7 @@ C46=$( tput setaf 46 )  export C46
 
 
 # Traps
-trap 'trap - INT; printf 'Lineno: %d\n' "${LINENO}"; kill -s INT $$' INT
+trap 'trap - INT; echo Lineno: "${LINENO}"; kill -s INT $$' INT
 
 
 ######### # # ######### # # #########
