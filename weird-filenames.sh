@@ -40,7 +40,11 @@ function _Fn_help_ (){
   
 if [[ $# -gt 0 ]]
 then
-  pos_parms=( "$@" )
+  declare -A pos_parms
+  for pp in "$@"
+  do
+    pos_parms=( ["${pp}"]+=1 )
+  done
   parms_changed=y
 
   while true
