@@ -100,7 +100,7 @@ function _Fn_get_files_ (){
   fi
 
   printf 'File count: %d\n' "${#files[@]}"
-  printf '<%s>\n' "${files[@]}"
+  : printf '<%s>\n' "${files[@]}"
   return 00
 }
 
@@ -180,7 +180,7 @@ _Fn_get_files_ '--\x2f'
 
 # <NUL>
 #_Fn_get_files_ $'\\0'
-_Fn_get_files_ --x00
+_Fn_get_files_ '--\x00'
 
   exit "${LINENO}"
   set -x
