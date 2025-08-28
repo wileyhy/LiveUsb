@@ -23,14 +23,7 @@ C46=$( tput setaf 46 )  export C46
 
 
 # Traps
-
-: Define _Fn_trap_int_
-_Fn_trap_int_ (){
-  trap - INT
-  printf 'Lineno: %d\n' "${LINENO}"
-  kill -s INT $$
-} 
-trap '_Fn_trap_int_' INT
+trap 'trap - INT; printf 'Lineno: %d\n' "${LINENO}"; kill -s INT $$' INT
 
 
 ######### # # ######### # # #########
