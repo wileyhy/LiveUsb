@@ -169,9 +169,10 @@ _Fn_get_files_ (){
 
 
   # Print, count of found files. If there\s more than one, use yellow.
-  local file_count limit
+  local file_count limit yn
   file_count="${#files[@]}"
   limit=${file_count}
+  yn=skip
 
   printf '\t%bCount:%b\t' "${C5}" "${C0}" 
 
@@ -214,7 +215,7 @@ _Fn_get_files_ (){
 
     # Pause to check
     printf 'Next test? [Y/n]\n'
-    read -N 1 -r yn
+    read -N 1 -r -s -t 60 yn
     case "${yn}" in
       n) builtin exit 000 ;;
       *) :;;
