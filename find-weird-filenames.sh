@@ -350,92 +350,92 @@ _Fn_fnd_IFS_delimd_strings_ (){
 
 # Characters illegal f\or filenames in Linux
 # /
-_Fn_get_files_ forward-slash_ascii '-/'
-_Fn_get_files_ forward-slash_hex '--\x2f'
-_Fn_get_files_ forward-slash_octal '--\057'
+#_Fn_get_files_ forward-slash_ascii '-/'
+#_Fn_get_files_ forward-slash_hex '--\x2f'
+#_Fn_get_files_ forward-slash_octal '--\057'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # <NUL>
 # Note: leading hyphen breaks <null>
-_Fn_get_files_ null_ascii-c "$( printf $'\0' )"
-_Fn_get_files_ null_hex     '--\x00'
+#_Fn_get_files_ null_ascii-c "$( printf $'\0' )"
+#_Fn_get_files_ null_hex     '--\x00'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # Execution contexts
 # exec
-_Fn_get_files_ exec_ascii --exec
-_Fn_get_files_ exec_hex-1 '--\x65x78x65x63'
-_Fn_get_files_ exec_hex-2 '--\x65786563'
-_Fn_get_files_ exec_octal '--\145170145143'
+#_Fn_get_files_ exec_ascii --exec
+#_Fn_get_files_ exec_hex-1 '--\x65x78x65x63'
+#_Fn_get_files_ exec_hex-2 '--\x65786563'
+#_Fn_get_files_ exec_octal '--\145170145143'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # eval
-_Fn_get_files_ eval_ascii --eval
-_Fn_get_files_ eval_hex-1 '--\x65x76x61x6c'
-_Fn_get_files_ eval_hex-2 '--\x6576616c'
-_Fn_get_files_ eval_octal '--\145166141154'
+#_Fn_get_files_ eval_ascii --eval
+#_Fn_get_files_ eval_hex-1 '--\x65x76x61x6c'
+#_Fn_get_files_ eval_hex-2 '--\x6576616c'
+#_Fn_get_files_ eval_octal '--\145166141154'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # $((
-_Fn_get_files_ arith-expan-1_ascii '-$(('
+#_Fn_get_files_ arith-expan-1_ascii '-$(('
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # $(<
-_Fn_get_files_ com-sub-1_ascii '-$(<'
+#_Fn_get_files_ com-sub-1_ascii '-$(<'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # ${|
-_Fn_get_files_ com-sub-2_ascii '-${|'
+#_Fn_get_files_ com-sub-2_ascii '-${|'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # ${c
-_Fn_get_files_ com-sub-3_ascii '-${c'
+#_Fn_get_files_ com-sub-3_ascii '-${c'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # ((
-_Fn_get_files_ arith-expan-2a_ascii '-(('
+#_Fn_get_files_ arith-expan-2a_ascii '-(('
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # ))
-_Fn_get_files_ arith-expan-2b_ascii '-))'
+#_Fn_get_files_ arith-expan-2b_ascii '-))'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # $(
-_Fn_get_files_ com-sub-4_ascii '-$('
+#_Fn_get_files_ com-sub-4_ascii '-$('
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # ${
-_Fn_get_files_ com-sub-5_ascii '-${'
+#_Fn_get_files_ com-sub-5_ascii '-${'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # `
-_Fn_get_files_ backtick_ascii '-`'
-_Fn_get_files_ backtick_hex   '--\x60'
-_Fn_get_files_ backtick_octal '--\140'
+#_Fn_get_files_ backtick_ascii '-`'
+#_Fn_get_files_ backtick_hex   '--\x60'
+#_Fn_get_files_ backtick_octal '--\140'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
@@ -443,22 +443,22 @@ _Fn_get_files_ backtick_octal '--\140'
 
 # Bash 5.2 Control operators (which are not also single metac\haracters)
 # ;;&
-_Fn_get_files_ case-1_ascii '-;;&'
+#_Fn_get_files_ case-1_ascii '-;;&'
 
 # ;;
-_Fn_get_files_ case-2_ascii '-;;'
+#_Fn_get_files_ case-2_ascii '-;;'
 
 # ||
-_Fn_get_files_ if-or_ascii '-||'
+#_Fn_get_files_ if-or_ascii '-||'
 
 # &&
-_Fn_get_files_ if-and_ascii '-&&'
+#_Fn_get_files_ if-and_ascii '-&&'
 
 # ;&
-_Fn_get_files_ case-3_ascii '-;&'
+#_Fn_get_files_ case-3_ascii '-;&'
 
 # |&
-_Fn_get_files_ redir-01_ascii '-|&'
+#_Fn_get_files_ redir-01_ascii '-|&'
 
 
 # Bash 5.2 Redirection operators (which are not also single metac\haracters)
@@ -469,78 +469,78 @@ _Fn_get_files_ redir-01_ascii '-|&'
 #_Fn_get_files_ redir-03_ascii '-<&[0-9]+-'
 
 # <&-
-_Fn_get_files_ redir-04_ascii '-<&-'
+#_Fn_get_files_ redir-04_ascii '-<&-'
 
 # >&-
-_Fn_get_files_ redir-05_ascii '->&-'
+#_Fn_get_files_ redir-05_ascii '->&-'
 
 # <<<
-_Fn_get_files_ redir-06_ascii '-<<<'
+#_Fn_get_files_ redir-06_ascii '-<<<'
 
 # &>>
-_Fn_get_files_ redir-07_ascii '-&>>'
+#_Fn_get_files_ redir-07_ascii '-&>>'
 
 # <<-
-_Fn_get_files_ redir-08_ascii '-<<-'
+#_Fn_get_files_ redir-08_ascii '-<<-'
 
 # <<
-_Fn_get_files_ redir-09_ascii '-<<'
+#_Fn_get_files_ redir-09_ascii '-<<'
 
 # >>
-_Fn_get_files_ redir-10_ascii '->>'
+#_Fn_get_files_ redir-10_ascii '->>'
 
 # <&
-_Fn_get_files_ redir-11_ascii '-<&'
+#_Fn_get_files_ redir-11_ascii '-<&'
 
 # >&
-_Fn_get_files_ redir-12_ascii '->&'
+#_Fn_get_files_ redir-12_ascii '->&'
 
 # >|
-_Fn_get_files_ redir-13_ascii '->|'
+#_Fn_get_files_ redir-13_ascii '->|'
 
 # >&
-_Fn_get_files_ redir-14_ascii '->&'
+#_Fn_get_files_ redir-14_ascii '->&'
 
 # &>
-_Fn_get_files_ redir-15_ascii '-&>'
+#_Fn_get_files_ redir-15_ascii '-&>'
 
 
 # POSIX-2024 Shell metac\haracters
 
 # <newline> $'\n'
-_Fn_get_files_ newline_ascii "-$'\\n'"
+#_Fn_get_files_ newline_ascii "-$'\\n'"
 
 # <tab> $'\t'
-_Fn_get_files_ tab_ascii "-$'\\t'"
+#_Fn_get_files_ tab_ascii "-$'\\t'"
 
 # <space> " "
-_Fn_get_files_ space_ascii "-$' '"
+#_Fn_get_files_ space_ascii "-$' '"
 
 # &
-_Fn_get_files_ ampersand_ascii '-&'
+#_Fn_get_files_ ampersand_ascii '-&'
 
 # |
-_Fn_get_files_ pipe_ascii '-|'
+#_Fn_get_files_ pipe_ascii '-|'
 
 # ;
-_Fn_get_files_ semi-colon_ascii '-;'
+#_Fn_get_files_ semi-colon_ascii '-;'
 
 # <
-_Fn_get_files_ left-arrow_ascii '-<'
+#_Fn_get_files_ left-arrow_ascii '-<'
 
 # >
-_Fn_get_files_ right-arrow_ascii '->'
+#_Fn_get_files_ right-arrow_ascii '->'
 
 # (
-_Fn_get_files_ left-parenthesis_ascii '-('
+#_Fn_get_files_ left-parenthesis_ascii '-('
 
 # )
-_Fn_get_files_ right-parenthesis_ascii '-)'
+#_Fn_get_files_ right-parenthesis_ascii '-)'
 
 
 # POSIX-2024 Shell line continuation
 # \$'\n'
-_Fn_get_files_ line-continuation_ascii "-\\$'\\n'"
+#_Fn_get_files_ line-continuation_ascii "-\\$'\\n'"
 
 
 # POSIX-2024 Quoting c\haracters
