@@ -22,7 +22,8 @@ II=0                    export II     # Index
 C0=$( tput sgr0 )       export C0     # Colors  - B&W
 C5=$( tput setaf 5 )    export C5     #         - Blue
 C46=$( tput setaf 46 )  export C46    #         - Yellow
-pr_all=n                export pr_all # CLI Options - Full report
+in_clr=y                export in_clr # CLI Options - In color
+pr_all=n                export pr_all #             - Full report
 pr_per=y                export pr_per #             - Interactive
 
 
@@ -33,6 +34,7 @@ pr_per=y                export pr_per #             - Interactive
 function _Fn_help_ (){
   printf '\n\tweird-filenames.sh\n'
   printf '\t  -A  Automated   / print full report\n'
+  printf '\t  -G  Grayscale   / no color\n'
   printf '\t  -I  Interactive / print per test [Default]\n'
   printf '\t  -h  Help\n\n'
   builtin exit 002
@@ -45,6 +47,7 @@ then
     case "$PP" in
       --help|'-?' ) _Fn_help_         ;;
       -A          ) pr_all=y pr_per=n ;;
+      -G          ) in_clr=n          ;;
       -[Hh]       ) _Fn_help_         ;;
       -I          ) pr_per=y pr_all=n ;;
       *           ) _Fn_help_         ;;
@@ -52,6 +55,9 @@ then
   done
 fi
 
+if [[ ${in_clr} = n ]]
+then
+  
 
 
 ######### # # ######### # # #########
