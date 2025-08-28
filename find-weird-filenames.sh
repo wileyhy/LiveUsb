@@ -548,7 +548,7 @@ _Fn_fnd_IFS_delimd_strings_ (){
 _Fn_get_files_ ansi-c-quoting_ascii "-$'"
 
 # $"
-_Fn_get_files_ locale translation_ascii '-$"'
+_Fn_get_files_ locale-translation_ascii '-$"'
 
 # \
 _Fn_get_files_ backslash_ascii '-\'
