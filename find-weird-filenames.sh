@@ -201,7 +201,7 @@ _Fn_get_files_ '--\x2f'
 _Fn_get_files_ '--\057'
 
   #exit "${LINENO}"
-  set -x
+  #set -x
 
 # <NUL>
 #_Fn_get_files_ $'\\0'
