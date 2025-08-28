@@ -66,7 +66,7 @@ _Fn_print_elapsed_t_ (){
 # Print, input string
 # Usage: _Fn_print_input_str_ "${input}"
 #
-_Fn_print_elapsed_t_ (){
+_Fn_print_input_str_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
 
   local - input
