@@ -167,19 +167,23 @@ _Fn_get_files_ (){
   # Note, printing of the input string is performed in the two 
   #   sub-functions, after the value of \input is fully processed.
 
+
   # Print, count of found files. If there\s more than one, use yellow.
-  local file_count
+  local file_count limit
   file_count="${#files[@]}"
+  limit=${file_count}
+
   printf '\t%bCount:%b\t' "${C5}" "${C0}" 
 
-  if [[ file_count -gt 0 ]]
+  if [[ ${#file_count[@]} -gt 0 ]]
   then 
     : $? #<>
     printf '%b%d%b\n' "${C46}" "${file_count}" "${C0}" 
 
-  elif [[ file_count -eq 0 ]]
+  elif [[ ${#file_count[@]} -eq 0 ]]
   then
     : $? #<>
+    limit=0
     printf '0\n'
 
   else
@@ -189,33 +193,33 @@ _Fn_get_files_ (){
       "${lin:-${LINENO}}"
   fi
 
+    #<> Debug: Set the loop limit for how many file names to print to
+    #<>   something readable
+    if [[ "${#files[@]}" -ge 10 ]]; then limit=10; #<>
+    fi #<>
+  
   # Print, each file with index number
-  local limit
-  if [[ "${#files[@]}" -ge 10 ]]
+  if [[ ${limit} != 0 ]]
   then
-    limit=10
-  else
-    limit="${#files[@]}"
+    # Bug: \nounset\ doesn\t allow for a gap between \ff\ and \=0\ 
+    for ((  ff=0;  ff <= ( $limit - 1 );  ff++  ))
+    do
+        #declare -p ff #<>
+
+      printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
+        | grep -s --color=always -e "${input}" 2> /dev/null
+    done \
+      && unset ff
+    echo
+
+    # Pause to check
+    printf 'Carry on? [Y/n]\n'
+    read -r yn
+    case "${yn}" in
+      n) builtin exit 000 ;;
+      *) :;;
+    esac
   fi
- 
-  # Bug: \nounset\ doesn\t allow for a gap between \ff\ and \=0\ 
-  for ((  ff=0;  ff <= ( $limit - 1 );  ff++  ))
-  do
-      #declare -p ff #<>
-
-    printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
-      | grep -s --color=always -e "${input}" 2> /dev/null
-  done \
-    && unset ff
-  echo 
-
-  # Pause to check
-  printf 'Carry on? [Y/n]\n'
-  read -r yn
-  case "${yn}" in
-    n) builtin exit 000 ;;
-    *) :;;
-  esac
 
   :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
 }
