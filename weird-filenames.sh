@@ -35,6 +35,7 @@ function _Fn_help_ (){
   printf '\t  -A  Automated   / print full report\n'
   printf '\t  -I  Interactive / print per test [Default]\n'
   printf '\t  -h  Help\n\n'
+  builtin exit 000
 }
 
 if [[ $# -gt 0 ]]
