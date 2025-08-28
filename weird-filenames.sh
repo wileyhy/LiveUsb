@@ -257,7 +257,6 @@ function _Fn_get_files_ (){
         | grep -s --color=always -Fe "${input}" 2> /dev/null
     done \
       && unset ff
-    echo
 
     # Pause to check
     if   [[ ${pr_all} == n ]] \
