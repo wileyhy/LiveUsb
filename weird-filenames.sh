@@ -19,9 +19,9 @@ sudo -v
 
 T0=$( date '+%s' )      export T0     # Time
 II=0                    export II     # Index
-Co0=$( tput sgr0 )       export Co0     # Colors  - B&W
-Co5=$( tput setaf 5 )    export Co5     #         - Blue
-Co46=$( tput setaf 46 )  export Co46    #         - Yellow
+Clr0=$( tput sgr0 )       export Clr0     # Colors  - B&W
+Clr5=$( tput setaf 5 )    export Clr5     #         - Blue
+Clr46=$( tput setaf 46 )  export Clr46    #         - Yellow
 in_clr=y                export in_clr # CLI Options - In color
 pr_all=n                export pr_all #             - Full report
 pr_per=y                export pr_per #             - Interactive
@@ -73,12 +73,12 @@ fi
 #   indicating where the f\unction \Fn_get_files_ was called.
 #
 function _Fn_get_line_nos_ (){
-  :;: "${Co5}start ${FUNCNAME[0]}${Co0}";:
+  :;: "${Clr5}start ${FUNCNAME[0]}${Clr0}";:
 
   shopt -s expand_aliases
   alias _Fn_get_files_='_Fn_get_files_ "${LINENO}" '
 
-  :;: "${Co5}finish ${FUNCNAME[0]}${Co0}" ;:
+  :;: "${Clr5}finish ${FUNCNAME[0]}${Clr0}" ;:
 }
 _Fn_get_line_nos_ #<>
 
@@ -91,7 +91,7 @@ _Fn_get_line_nos_ #<>
 # Usage: _Fn_print_elapsed_t_
 #
 function _Fn_print_elapsed_t_ (){
-  :;: "${Co5}start ${FUNCNAME[0]}${Co0}";:
+  :;: "${Clr5}start ${FUNCNAME[0]}${Clr0}";:
 
   local - now
   #set -x
@@ -102,7 +102,7 @@ function _Fn_print_elapsed_t_ (){
     $((  ( ( now - ( now % 60 ) ) / 60 ) % 60  )) \
     $((  now % 60  ))
 
-  :;: "${Co5}finish ${FUNCNAME[0]}${Co0}" ;:
+  :;: "${Clr5}finish ${FUNCNAME[0]}${Clr0}" ;:
 }
 
   #sleep 3 #<>
@@ -118,15 +118,15 @@ function _Fn_print_elapsed_t_ (){
 # Usage: _Fn_print_input_str_ "${input}"
 #
 function _Fn_print_input_str_ (){
-  :;: "${Co5}start ${FUNCNAME[0]}${Co0}";:
+  :;: "${Clr5}start ${FUNCNAME[0]}${Clr0}";:
 
   local - input
   #set -x
   input=$1
 
-  printf '\t%bInput:%b\t%s\n' "${Co5}" "${Co0}" "${input}"
+  printf '\t%bInput:%b\t%s\n' "${Clr5}" "${Clr0}" "${input}"
 
-  :;: "${Co5}finish ${FUNCNAME[0]}${Co0}" ;:
+  :;: "${Clr5}finish ${FUNCNAME[0]}${Clr0}" ;:
 }
 
 
@@ -142,7 +142,7 @@ function _Fn_print_input_str_ (){
 # Bug? without the \function keyword, bash r\eads Fn definition as alias
 #   call?
 function _Fn_get_files_ (){
-  :;: "${Co5}start ${FUNCNAME[0]}${Co0}";:
+  :;: "${Clr5}start ${FUNCNAME[0]}${Clr0}";:
 
   local - ec ff input lin nam
   #set -x #<>
@@ -175,9 +175,9 @@ function _Fn_get_files_ (){
   fi
 
   # Print per-test header
-  printf '\n%bTest:%b %d\n'   "${Co5}" "${Co0}" "$((  ++II  ))"
-  printf '\t%bName:%b\t%s\n'  "${Co5}" "${Co0}" "${nam}"
-  printf '\t%bTime:%b\t%s\n'  "${Co5}" "${Co0}" "$( _Fn_print_elapsed_t_ )"
+  printf '\n%bTest:%b %d\n'   "${Clr5}" "${Clr0}" "$((  ++II  ))"
+  printf '\t%bName:%b\t%s\n'  "${Clr5}" "${Clr0}" "${nam}"
+  printf '\t%bTime:%b\t%s\n'  "${Clr5}" "${Clr0}" "$( _Fn_print_elapsed_t_ )"
 
   # More variables
   input=$1
@@ -229,12 +229,12 @@ function _Fn_get_files_ (){
   limit=${file_count}
   yn=skip
 
-  printf '\t%bCount:%b\t' "${Co5}" "${Co0}"
+  printf '\t%bCount:%b\t' "${Clr5}" "${Clr0}"
 
   if [[ ${file_count} -gt 0 ]]
   then
     : $? #<>
-    printf '%b%d%b\n' "${Co46}" "${file_count}" "${Co0}"
+    printf '%b%d%b\n' "${Clr46}" "${file_count}" "${Clr0}"
 
   elif [[ ${file_count} -eq 0 ]]
   then
@@ -282,7 +282,7 @@ function _Fn_get_files_ (){
     fi
   fi
 
-  :;: "${Co5}finish ${FUNCNAME[0]}${Co0}" ;:
+  :;: "${Clr5}finish ${FUNCNAME[0]}${Clr0}" ;:
 }
 
 
@@ -294,7 +294,7 @@ function _Fn_get_files_ (){
 # Usage: _Fn_fnd_chars_ "${input}"
 #
 function _Fn_fnd_chars_ (){
-  :;: "${Co5}start ${FUNCNAME[0]}${Co0}";:
+  :;: "${Clr5}start ${FUNCNAME[0]}${Clr0}";:
 
   local - ec input
   #set -x #<>
@@ -321,7 +321,7 @@ function _Fn_fnd_chars_ (){
     sudo find / -nowarn -name '*'"${input}"'*' -print0 2> /dev/null \
   )
 
-  :;: "${Co5}finish ${FUNCNAME[0]}${Co0}" ;:
+  :;: "${Clr5}finish ${FUNCNAME[0]}${Clr0}" ;:
 }
 
 
@@ -333,7 +333,7 @@ function _Fn_fnd_chars_ (){
 # Usage: _Fn_fnd_IFS_delimd_strings_ "${input}" "${lin}"
 #
 function _Fn_fnd_IFS_delimd_strings_ (){
-  :;: "${Co5}start ${FUNCNAME[0]}${Co0}";:
+  :;: "${Clr5}start ${FUNCNAME[0]}${Clr0}";:
 
   local - ec input loc
   #set -x #<>
@@ -403,7 +403,7 @@ function _Fn_fnd_IFS_delimd_strings_ (){
         -e $'\n'"${input}"$'\n' 2> /dev/null
   )
 
-  :;: "${Co5}finish ${FUNCNAME[0]}${Co0}" ;:
+  :;: "${Clr5}finish ${FUNCNAME[0]}${Clr0}" ;:
 }
 
 
