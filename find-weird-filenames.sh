@@ -5,7 +5,7 @@
 # At a certain point, it\s easier to clearlist all filenames as
 # being \Names\ according to Bash syntax rules.
 
-  set -x
+  #set -x
   set -euo pipefail
   #shopt -s globstar extglob
 
