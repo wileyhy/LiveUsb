@@ -46,7 +46,7 @@ then
   for PP in "${!pos_parms[@]}"
   do
 
-      declare -p pos_parms PP #<>
+      declare -p pos_parms PP LINENO #<>
 
     pos_parms=( [PP]=${pos_parms[PP]#-} ) # Remove leading hyphen
     len_pp=${#pos_parms[PP]}              # Get length of \PP
