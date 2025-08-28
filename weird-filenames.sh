@@ -351,11 +351,11 @@ function _Fn_fnd_IFS_delimd_strings_ (){
 
 # Characters illegal f\or filenames in Linux
 # /
-_Fn_get_files_ forward-slash_ascii '-/'
-_Fn_get_files_ forward-slash_hex '--\x2f'
+#_Fn_get_files_ forward-slash_ascii '-/'
+#_Fn_get_files_ forward-slash_hex '--\x2f'
 _Fn_get_files_ forward-slash_octal '--\057'
 
-  #builtin exit "${LINENO}" #<>
+  builtin exit "${LINENO}" #<>
   #set -x #<>
 
 # <NUL>
