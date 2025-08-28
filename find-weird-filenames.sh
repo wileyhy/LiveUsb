@@ -54,12 +54,12 @@ _Fn_get_files_ (){
   then
     ec=$?
     : "ec: $ec"
-    nam=$1
     printf 'Error, lines %d:%d: fn reqs x2 non-lineno arguments.\n' \
       "${lin:-${LINENO}}" "${LINENO}"
     exit "0${ec}"
   else
     : $?
+    nam=$1
   fi
 
   printf '%bTest %d%b\n' "$((  ++II  ))"
