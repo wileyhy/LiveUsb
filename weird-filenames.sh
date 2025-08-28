@@ -657,12 +657,12 @@ function _Fn_fnd_IFS_delimd_strings_ (){
   #set -x #<>
 
 # [
-_Fn_get_files_ left_bracket_ascii '-['
+#_Fn_get_files_ left_bracket_ascii '-['
 
 # ]
-_Fn_get_files_ right_bracket_ascii '-]'
+#_Fn_get_files_ right_bracket_ascii '-]'
 
-  builtin exit "${LINENO}" #<>
+  #builtin exit "${LINENO}" #<>
   #set -x #<>
 
 
