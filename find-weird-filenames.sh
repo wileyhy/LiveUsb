@@ -40,7 +40,7 @@ _Fn_get_line_nos_ (){
 
 
 : Define _Fn_print_elapsed_t_
-# 
+# Print with each test header
 # Usage: _Fn_print_elapsed_t_
 _Fn_print_elapsed_t_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
@@ -288,7 +288,7 @@ _Fn_get_files_ forward-slash_octal '--\057'
 # <NUL>
 # Note: leading hyphen breaks <null>
 _Fn_get_files_ null_ascii-c "$( printf $'\0' )"
-_Fn_get_files_ null_hex '--\x00'
+_Fn_get_files_ null_hex     '--\x00'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
@@ -362,7 +362,7 @@ _Fn_get_files_ com-sub-5_ascii '-${'
 
 # `
 _Fn_get_files_ backtick_ascii '-`'
-_Fn_get_files_ backtick_hex '--\x60'
+_Fn_get_files_ backtick_hex   '--\x60'
 _Fn_get_files_ backtick_octal '--\140'
 
   #builtin exit "${LINENO}" #<>
@@ -555,21 +555,21 @@ _Fn_get_files_ _ascii '-:'
 #_Fn_get_files_ _ascii '-'
 
 # {
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ left_brace_ascii '-{'
 
 # }
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ right_brace_ascii '-}'
 
 # !
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ bang_ascii '-!'
 
 
 # Pathname expansion c\haracters (globs)
 # *
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ asterisk_ascii '-*'
 
 # ?
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ question_ascii '-?'
 
 # [:
 #_Fn_get_files_ _ascii '-'
@@ -578,10 +578,10 @@ _Fn_get_files_ _ascii '-'
 #_Fn_get_files_ _ascii '-'
 
 # [
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ left_bracket_ascii '-['
 
 # ]
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ right_bracket_ascii '-]'
 
 
 # Bash 5.2 Extglobs
@@ -598,13 +598,13 @@ _Fn_get_files_ _ascii '-'
 #_Fn_get_files_ _ascii '-'
 
 # ~+
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ tilde-1_ascii '-~+'
 
 # ~-
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ tilde-2_ascii '-~-'
 
 # ~
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ tilde-3_ascii '-~'
 
 
 # Brace Expansion c\haracters
