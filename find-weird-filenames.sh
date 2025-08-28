@@ -202,9 +202,9 @@ function _Fn_find_IFS_delimd_strings_ (){
 
 # Characters illegal f\or filenames in Linux
 # /
-#_Fn_get_files_ forward-slash_ascii '-/'
-#_Fn_get_files_ forward-slash_hex '--\x2f'
-#_Fn_get_files_ forward-slash_octal '--\057'
+_Fn_get_files_ forward-slash_ascii '-/'
+_Fn_get_files_ forward-slash_hex '--\x2f'
+_Fn_get_files_ forward-slash_octal '--\057'
 
   #exit "${LINENO}"
   #set -x
@@ -220,18 +220,20 @@ _Fn_get_files_ null_hex '--\x00'
 # Execution contexts
 # exec
 _Fn_get_files_ exec_ascii --exec
-#_Fn_get_files_ exec_hex --exec
-#_Fn_get_files_ exec_octal --exec
+#_Fn_get_files_ exec_hex-1 '--\x65x78x65x63'
+#_Fn_get_files_ exec_hex-2 '--\x65786563'
+#_Fn_get_files_ exec_octal-1 '--\\\\'
+#_Fn_get_files_ exec_octal-2 '--\'
 
   exit "${LINENO}"
   set -x
 
 # eval
 _Fn_get_files_ eval_ascii --eval
-#_Fn_get_files_ eval_hex-1 --\x65x76x61x6c
-#_Fn_get_files_ eval_hex-2 --\x6576616c
-#_Fn_get_files_ eval_octal-1 --\145\166\141\154
-#_Fn_get_files_ eval_octal-2 --\145166141154
+_Fn_get_files_ eval_hex-1 '--\x65x76x61x6c'
+_Fn_get_files_ eval_hex-2 '--\x6576616c'
+_Fn_get_files_ eval_octal-1 '--\145\166\141\154'
+_Fn_get_files_ eval_octal-2 '--\145166141154'
 
   exit "${LINENO}"
   set -x
