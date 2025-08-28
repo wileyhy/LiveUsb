@@ -61,6 +61,24 @@ _Fn_print_elapsed_t_ (){
   #_Fn_print_elapsed_t_ #<>
   #exit "${LINENO}" #<>
 
+
+: Define _Fn_print_input_str_
+# Print, input string
+# Usage: _Fn_print_input_str_ "${input}"
+#
+_Fn_print_elapsed_t_ (){
+  :;: "${C5}start ${FUNCNAME[0]}${C0}";:
+
+  local - input
+  set -x
+  input=$1
+
+  printf '\t%bInput:%b\t%s\n' "${C5}" "${C0}" "${input}"
+
+  :;: "${C5}finish ${FUNCNAME[0]}${C0}" ;:
+}
+
+
 : Define _Fn_get_files_
 # This f\unction runs regardless of whether a\liases are enabled; it
 #   calls one of two sub-f\unctions.
@@ -145,8 +163,10 @@ _Fn_get_files_ (){
   # Reset array indices
   files=( "${files[@]}" )
 
-  # Print, input string and count of found files
-  printf '\t%bInput:%b\t%s\n' "${C5}" "${C0}" "${input}"
+  # Note, printing of the input string is performed in the two 
+  #   sub-functions, after the value of \input is fully processed.
+
+  # Print, count of found files
   printf '\t%bCount:%b\t%d\n' "${C5}" "${C0}" "${#files[@]}"
 
   # Print, each file with index number
@@ -186,6 +206,9 @@ _Fn_fnd_chars_ (){
     builtin exit "0${ec}"
   fi
 
+  # Print, input string  
+  _Fn_print_input_str_ "${input}"
+
   # Search
   mapfile -d "" -t files < <(
     sudo find / -nowarn -name '*'"${input}"'*' -print0 2> /dev/null \
@@ -219,6 +242,9 @@ _Fn_fnd_IFS_delimd_strings_ (){
       "${loc:-${LINENO}}"
     builtin exit "0${ec}"
   fi
+
+  # Print, input string  
+  _Fn_print_input_str_ "${input}"
 
   # Gather
   mapfile -C 0000000 -d "" -t files < <(
