@@ -263,7 +263,7 @@ function _Fn_get_files_ (){
       || [[ ${pr_per} == y ]]
     then
 
-      printf 'Next test? [Y/n]\n'
+      printf '\nNext test? [Y/n]\n'
       read -N 1 -r -s -t 600 yn
 
       case "${yn}" in
