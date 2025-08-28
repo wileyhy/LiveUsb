@@ -175,12 +175,12 @@ _Fn_get_files_ (){
 
   printf '\t%bCount:%b\t' "${C5}" "${C0}" 
 
-  if [[ ${#file_count[@]} -gt 0 ]]
+  if [[ ${file_count} -gt 0 ]]
   then 
     : $? #<>
     printf '%b%d%b\n' "${C46}" "${file_count}" "${C0}" 
 
-  elif [[ ${#file_count[@]} -eq 0 ]]
+  elif [[ ${file_count} -eq 0 ]]
   then
     : $? #<>
     limit=0
