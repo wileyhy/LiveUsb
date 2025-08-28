@@ -192,6 +192,8 @@ _Fn_get_files_ (){
   # Print, each file with index number
   for ((  ff=0;  ff<=10;  ff++  ))
   do
+      declare -p ff #<>
+
     printf '\t%d:\t<%s>\n' "${ff}" "${files[$ff]}" \
       | grep -s --color=always -e "${input}" 2> /dev/null
   done \
