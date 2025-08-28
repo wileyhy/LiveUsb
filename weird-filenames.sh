@@ -55,7 +55,7 @@ then
   done
 fi
 
-  echo "${!Co*}"
+  echo "${!Clr*}"
   exit "${LINENO}"
 
 if [[ ${in_clr} = n ]]
