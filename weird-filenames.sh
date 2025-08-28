@@ -271,12 +271,6 @@ function _Fn_get_files_ (){
         n) builtin exit 000 ;;
         *) :;;
       esac
-
-    else
-      local ec=$?
-      : "ec: $ec" #<>
-      printf 'Error, line %d: unreachable code.\n' \
-        "${lin:-${LINENO}}"
     fi
   fi
 
