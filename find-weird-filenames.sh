@@ -170,9 +170,11 @@ function _Fn_find_IFS_delimd_strings_ (){
 # Characters illegal for filenames in Linux
 # /
 #_Fn_get_files_ -'/'
+_Fn_get_files_ --x2f
 
 # <NUL>
-_Fn_get_files_ $'\\0'
+#_Fn_get_files_ $'\\0'
+_Fn_get_files_ --x00
 
   exit "${LINENO}"
   set -x
