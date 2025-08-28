@@ -33,6 +33,7 @@ ecco(){
   printf '%b' "$1" \
     | cat -Aen
 }
+export -f ecco
 
 
 # Usage: _Fn_get_files_ -$'\n'
