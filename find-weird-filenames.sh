@@ -10,7 +10,7 @@
   shopt -s globstar extglob
 
 
-
+# 
 sudo -v 
 
 
@@ -26,22 +26,6 @@ function _Fn_get_line_nos_ (){
 }
 _Fn_get_line_nos_
 
-
-
-# Usage: ecco STRING
-#
-#ecco(){
-  #:;: "enter function ${FUNCNAME[0]}";:
-
-  #printf '%b' "$1" \
-    #| xxd -ps
-#
-  #printf '%b' "$1" \
-    #| cat -A
-
-  #:;: "exit function ${FUNCNAME[0]}" ;:
-#}
-#export -f ecco
 
 
 : Define _Fn_get_files_
@@ -71,23 +55,6 @@ function _Fn_get_files_ (){
   fi
 
   input=$1
-  #ecco "${input}" \
-    #| awk '
-  #NR==1 {
-      #line1=$0
-    #} 
-  #NR==2 {
-      #line2=$0
-      #exit
-    #} 
-  #END {
-      #if (line1==line2) 
-        #print "Lines are identical"
-      #else 
-        #print "Lines are different"
-    #}'
-    #return 101
-
   local -a files
   files=( )
 
