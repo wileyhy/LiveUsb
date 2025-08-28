@@ -37,8 +37,8 @@ function _Fn_get_files_ (){
 
     : ampersand: "$@"
 
-  local - ec input lin nam \
-    && set -x
+  local - ec input lin nam #\
+    #&& set -x
 
   if [[ $# -eq 3 ]]
   then
