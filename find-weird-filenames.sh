@@ -2,10 +2,10 @@
 
 # find-weird-filenames.sh
 #
-# At a certain point, it\s easier to clearlist all filenames be 
-# \Names\ according to Bash syntax rules. 
+# At a certain point, it\s easier to clearlist all filenames as
+# being \Names\ according to Bash syntax rules. 
 
-  set -x
+  #set -x
   set -euo pipefail
   shopt -s globstar extglob
 
@@ -51,8 +51,8 @@ _Fn_get_line_nos_
 function _Fn_get_files_ (){
   :;: "enter function ${FUNCNAME[0]}";:
 
-  local - ec input lin \
-    && set -x
+  local - ec input lin #\
+    #&& set -x
   
   if [[ $# -eq 2 ]]
   then
@@ -123,8 +123,8 @@ function _Fn_get_files_ (){
 function _Fn_find_chars_ (){
   :;: "enter function ${FUNCNAME[0]}";:
 
-  local ec input - \
-    && set -x
+  local ec input - #\
+    #&& set -x
   input=$1
 
   if [[ ${input} == -[^-]* ]]
@@ -150,8 +150,8 @@ function _Fn_find_chars_ (){
 function _Fn_find_IFS_delimd_strings_ (){
   :;: "enter function ${FUNCNAME[0]}";:
 
-  local ec input loc - \
-    && set -x
+  local ec input loc - #\
+    #&& set -x
   input=$1
   loc=$2
 
