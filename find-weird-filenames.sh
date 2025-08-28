@@ -220,10 +220,10 @@ _Fn_get_files_ null_hex '--\x00'
 # Execution contexts
 # exec
 _Fn_get_files_ exec_ascii --exec
-#_Fn_get_files_ exec_hex-1 '--\x65x78x65x63'
-#_Fn_get_files_ exec_hex-2 '--\x65786563'
-#_Fn_get_files_ exec_octal-1 '--\\\\'
-#_Fn_get_files_ exec_octal-2 '--\'
+_Fn_get_files_ exec_hex-1 '--\x65x78x65x63'
+_Fn_get_files_ exec_hex-2 '--\x65786563'
+_Fn_get_files_ exec_octal-1 '--\145\170\145\143'
+_Fn_get_files_ exec_octal-2 '--\145170145143'
 
   exit "${LINENO}"
   set -x
