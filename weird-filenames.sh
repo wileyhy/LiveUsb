@@ -42,11 +42,11 @@ then
   for PP in "$@"
   do
     case "$PP" in
-      --help|'-?' ) _Fn_help_ ;;
-      -A          ) pr_all=y  ;;
-      -[Hh]       ) _Fn_help_ ;;
-      -I          ) pr_per=y  ;;
-      *           ) _Fn_help_ ;;
+      --help|'-?' ) _Fn_help_         ;;
+      -A          ) pr_all=y pr_per=n ;;
+      -[Hh]       ) _Fn_help_         ;;
+      -I          ) pr_per=y pr_all=n ;;
+      *           ) _Fn_help_         ;;
     esac
   done
 fi
