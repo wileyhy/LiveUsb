@@ -190,7 +190,15 @@ _Fn_get_files_ (){
   fi
 
   # Print, each file with index number
-  for ((  ff=0;  ff<=10;  ff++  ))
+  local limit
+  if [[ "${#files[@]}" -ge 10 ]]
+  then
+    limit=10
+  else
+    limit="${#files[@]}"
+  fi
+  
+  for ((  $ff = 0;  $ff <= $limit;  $ff++  ))
   do
       declare -p ff #<>
 
