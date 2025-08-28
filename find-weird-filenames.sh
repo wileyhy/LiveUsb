@@ -62,7 +62,7 @@ _Fn_get_files_ (){
     nam=$1
   fi
 
-  printf '%bTest %d%b\n' "$((  ++II  ))"
+  printf '%bTest %d%b\n' "${C5}" "$((  ++II  ))" "${C0}"
   printf 'Test name:\t%s\n' "${nam}"
 
   input=$1
