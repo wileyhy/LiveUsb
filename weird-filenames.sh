@@ -568,66 +568,66 @@ _Fn_get_files_ double-quote_ascii '-"'
 _Fn_get_files_ hash_ascii '-#'
 
 # ': ' colon comment(rare)
-_Fn_get_files_ _ascii '-:'
+_Fn_get_files_ colon_ascii '-:'
 
 
 # Bash 5.2 Reserved Words
 # function
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # coproc
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # select
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # until
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # while
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # case
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # done
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # elif
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # else
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # esac
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # then
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # time
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # for
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # [[
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # ]]
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # do
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # if
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # in
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # fi
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # {
 _Fn_get_files_ left_brace_ascii '-{'
@@ -650,10 +650,10 @@ _Fn_get_files_ asterisk_ascii "-$'*'"
 _Fn_get_files_ question_ascii "-$'?'"
 
 # [:
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ _ascii '-[:'
 
 # :]
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ _ascii '-:]'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
@@ -673,13 +673,13 @@ _Fn_get_files_ right_bracket_ascii '-]'
 
 # Tilde expansion c\haracters (globs)
 # ~+digit
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # ~-digit
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # ~digit
-_Fn_get_files_ _ascii '-'
+#_Fn_get_files_ _ascii '-'
 
 # ~+
 _Fn_get_files_ tilde-1_ascii '-~+'
@@ -693,18 +693,18 @@ _Fn_get_files_ tilde-3_ascii '-~'
 
 # Brace Expansion c\haracters
 # {,
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ _ascii '-{'
 
 # ,}
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ _ascii '-}'
 
 # ,
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ _ascii '-,'
 
 
 # Parameter Expansion c\haracters
 # ${
-_Fn_get_files_ _ascii '-'
+_Fn_get_files_ _ascii '-${'
 
 
 # Bash 5.2 Special Parameters
