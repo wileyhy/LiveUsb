@@ -639,7 +639,10 @@ function _Fn_fnd_IFS_delimd_strings_ (){
 
 # Pathname expansion c\haracters (globs)
 # *
-_Fn_get_files_ asterisk_ascii '-*'
+_Fn_get_files_ asterisk_ascii "-$'*'"
+
+  builtin exit "${LINENO}" #<>
+  #set -x #<>
 
 # ?
 _Fn_get_files_ question_ascii '-?'
