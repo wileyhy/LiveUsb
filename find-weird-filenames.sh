@@ -176,7 +176,8 @@ function _Fn_find_IFS_delimd_strings_ (){
         -e $'\n'"${input} "     \
         -e $'\n'"${input}"$'\t' \
         -e $'\n'"${input}"$'\n' 2> /dev/null
-    
+  )
+
   mapfile -C 3000000 -d "" -t files < <(
     sudo find / -name '*'"${input}"'*' -print0 2> /dev/null \
       | grep --color=always -swz \
