@@ -650,10 +650,10 @@ _Fn_get_files_ asterisk_ascii "-$'*'"
 _Fn_get_files_ question_ascii "-$'?'"
 
 # [:
-_Fn_get_files_ _ascii '-[:'
+_Fn_get_files_ collation-class-1_ascii '-[:'
 
 # :]
-_Fn_get_files_ _ascii '-:]'
+_Fn_get_files_ collation_class-2_ascii '-:]'
 
   #builtin exit "${LINENO}" #<>
   #set -x #<>
@@ -693,18 +693,18 @@ _Fn_get_files_ tilde-3_ascii '-~'
 
 # Brace Expansion c\haracters
 # {,
-_Fn_get_files_ _ascii '-{'
+_Fn_get_files_ brace-expansion-1_ascii '-{,'
 
 # ,}
-_Fn_get_files_ _ascii '-}'
+_Fn_get_files_ brace-expansion-2_ascii '-,}'
 
 # ,
-_Fn_get_files_ _ascii '-,'
+#_Fn_get_files_ comma_ascii '-,'
 
 
 # Parameter Expansion c\haracters
 # ${
-_Fn_get_files_ _ascii '-${'
+_Fn_get_files_ param-expans-1_ascii '-${'
 
 
 # Bash 5.2 Special Parameters
@@ -735,7 +735,7 @@ _Fn_get_files_ sp_zero_ascii '-$0'
 
 # Others
 # _
-_Fn_get_files_ underscore_ascii '-_'
+#_Fn_get_files_ underscore_ascii '-_'
 
 # %
 _Fn_get_files_ percent_ascii '-%'
