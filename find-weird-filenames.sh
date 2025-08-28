@@ -19,7 +19,7 @@ T0=$( date '+%s' )      export T0
 II=0                    export II
 C0=$( tput sgr0 )       export C0
 C5=$( tput setaf 5 )    export C5
-C46=$( tput setaf 46 )  export C5
+C46=$( tput setaf 46 )  export C46
 
 
 ######### # # ######### # # #########
