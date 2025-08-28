@@ -58,6 +58,9 @@ function _Fn_get_files_ (){
   fi
 
   input=$1
+  printf 'Test name:\t%s\n' "${nam}"
+  printf 'Input string:\t%s\n' "${input}"
+
   local -a files
   files=( )
 
@@ -84,8 +87,6 @@ function _Fn_get_files_ (){
     exit "0${ec}"
   fi
 
-  printf 'Test name:\t%s\n' "${nam}"
-  printf 'Input string:\t%s\n' "${input}"
   printf 'File count:\t%d\n' "${#files[@]}"
   for ff in "${!files[@]}"
   do
