@@ -87,7 +87,7 @@ function _Fn_print_input_str_ (){
 # Usage: _Fn_get_files_ -$'\n'
 #        _Fn_get_files_ --eval
 #
-# Bug? without the \function keyword, bash reads Fn definition as alias
+# Bug? without the \function keyword, bash r\eads Fn definition as alias
 #   call?
 function _Fn_get_files_ (){
   :;: "${C5}start ${FUNCNAME[0]}${C0}";:
@@ -218,7 +218,7 @@ function _Fn_get_files_ (){
 
     # Pause to check
     printf 'Next test? [Y/n]\n'
-    read -N 1 -r -s -t 60 yn
+    read -N 1 -r -s -t 600 yn
     case "${yn}" in
       n) builtin exit 000 ;;
       *) :;;
