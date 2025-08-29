@@ -69,7 +69,6 @@ then
         declare -p pos_parms PP LINENO #<>
         : "pos_parms[PP]: ${pos_parms[PP]}"
 
-      pos_parms+=( [PP]=${pos_parms[PP]##*-} )  # Remove leading hyphen(s)
       len_pp=${#pos_parms[PP]}                  # Get length of \PP
     
         declare -p pos_parms PP len_pp LINENO #<>
