@@ -49,10 +49,10 @@ then
     : $((  ii++  ))
 
   done
-  parms_changed=y
 
     set -x #<>
   
+  parms_changed=y
   while true
   do
 
