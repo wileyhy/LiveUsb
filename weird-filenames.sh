@@ -51,8 +51,6 @@ then
 
   done
 
-    set -x #<>
-  
   while true
   do
 
@@ -66,12 +64,12 @@ then
     for PP in "${!pos_parms[@]}"
     do
 
-        declare -p pos_parms PP parms_ch #<>
+        #declare -p pos_parms PP parms_ch #<>
         : "pos_parms[PP]: ${pos_parms[PP]}" #<>
 
       len_pp=${#pos_parms[PP]}                  # Get length of \PP
     
-        declare -p len_pp #<>
+        #declare -p len_pp #<>
         : "pos_parms[PP]: ${pos_parms[PP]}" #<>
 
       if [[ ${len_pp} -gt 1 ]]
@@ -85,7 +83,7 @@ then
           unset "pos_parms[PP]"
           parms_ch=y
 
-            declare -p pos_parms parms_ch #<>
+            #declare -p pos_parms parms_ch #<>
 
       else
         : $? #<>
@@ -96,6 +94,15 @@ then
 
   done
 
+  # Note: using an associative array would be faster
+  mapfile -t pos_parms < <(
+    printf '%s\n' "${pos_parms[@]}" \
+      | sort \
+      | uniq
+  )
+
+    set -x #<>
+  
   for RR in "${!pos_parms[@]}"
   do
       declare -p RR pos_parms #<>
