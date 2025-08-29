@@ -107,8 +107,8 @@ then
   
   for RR in "${!pos_parms[@]}"
   do
-      declare -p RR pos_parms #<>
-      : '-${pos_parms[RR]}:' "-${pos_parms[RR]}" #<>
+      #declare -p RR pos_parms #<>
+      #: '-${pos_parms[RR]}:' "-${pos_parms[RR]}" #<>
 
     case "-${pos_parms[RR]}" in
       -A    ) pr_all=y pr_per=n ;;
@@ -121,7 +121,7 @@ then
     && unset RR
 fi
 
-  exit "${LINENO}"
+  #exit "${LINENO}"
   #echo "${!Clr*}" #<>
   #set -x #<>
 
