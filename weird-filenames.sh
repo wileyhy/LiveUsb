@@ -40,12 +40,15 @@ function _Fn_help_ (){
   
 if [[ $# -gt 0 ]]
 then
-  pos_parms=( )
-  for pp in "$#"
+  pos_parms=( ) ii=0
+
+  for pp in "$@"
   do
       declare -p pp pos_parms #<>
+      : 'arobase:' "$@"
 
-    pos_parms+=( [pp]=${pos_parms[pp]##*-} )
+    pos_parms+=( [ii]=${pos_parms[ii]##*-} )
+    $((  ii++  ))
 
   done
   parms_changed=y
