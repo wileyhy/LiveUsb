@@ -42,7 +42,7 @@ then
 
   for pp in "$@"
   do
-      declare -p LINENO pp pos_parms #<>
+      #declare -p LINENO pp pos_parms #<>
       #: 'arobase:' "$@"
 
     pos_parms+=( [ii]=${pp##*-} )
