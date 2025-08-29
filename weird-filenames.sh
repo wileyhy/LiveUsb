@@ -40,17 +40,15 @@ function _Fn_help_ (){
   
 if [[ $# -gt 0 ]]
 then
-  declare -A pos_parms
-  for pp in "$@"
+  pos_parms=( )
+  for pp in "$#"
   do
-      declare -p pp #<>
+      declare -p pp pos_parms #<>
 
-      pos_parms+=( ((  pos_parms["${pp##*-}"]++ )) )
+    pos_parms+=( [pp]=${pos_parms[pp]##*-} )
+
   done
   parms_changed=y
-
-    declare -p pos_parms
-    exit "${LINENO}"
 
   while true
   do
