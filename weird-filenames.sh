@@ -19,6 +19,7 @@ Clr5=$( tput setaf 5 )    export Clr5     #         - Blue
 Clr46=$( tput setaf 46 )  export Clr46    #         - Yellow
 in_clr=y                  export in_clr   # CLI Options - In color
 grp_clr='--color=always'  export grp_clr  #             - 
+parms_ch=y                export parms_ch #             - Process CLI parms
 pr_all=n                  export pr_all   #             - Full report
 pr_per=y                  export pr_per   #             - Interactive
 
@@ -52,15 +53,14 @@ then
 
     set -x #<>
   
-  parms_changed=y
   while true
   do
 
-    if [[ ${parms_changed} == n ]]
+    if [[ ${parms_ch} == n ]]
     then
       break
     fi
-    parms_changed=n
+    parms_ch=n
 
     # Handle mashed up options, ie, '-AG' as '-A -G'
     for PP in "${!pos_parms[@]}"
@@ -83,7 +83,7 @@ then
           pos_parms+=( ${pos_parms[PP]:0:1} )
           pos_parms+=( ${pos_parms[PP]:1}   )
           unset "pos_parms[PP]"
-          parms_changed=y
+          parms_ch=y
 
             declare -p pos_parms PP LINENO #<>
 
