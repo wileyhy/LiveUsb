@@ -85,9 +85,10 @@ then
   done
 
   # Note: using an associative array would be faster
+  # Note: \sort -R\: ;-p
   mapfile -t pos_parms < <(
     printf '%s\n' "${pos_parms[@]}" \
-      | sort \
+      | sort -R \
       | uniq
   )
 
