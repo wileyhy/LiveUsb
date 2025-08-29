@@ -10,6 +10,7 @@
   set -euo pipefail #<>
 
 
+
 # Variables
 
 T0=$( date '+%s' )        export T0       # Time
@@ -43,9 +44,6 @@ then
 
   for pp in "$@"
   do
-      #declare -p LINENO pp pos_parms #<>
-      #: 'arobase:' "$@" #<>
-
     pos_parms+=( [ii]=${pp##*-} )
     : $((  ii++  ))
 
@@ -65,27 +63,17 @@ then
     for PP in "${!pos_parms[@]}"
     do
 
-        #declare -p pos_parms PP parms_ch #<>
-        #: "pos_parms[PP]: ${pos_parms[PP]}" #<>
-
       # Get length of \PP
       len_pp=${#pos_parms[PP]}                  
     
-        #declare -p len_pp #<>
-        #: "pos_parms[PP]: ${pos_parms[PP]}" #<>
-
       if [[ ${len_pp} -gt 1 ]]
       then
         : $? #<>
-
-            #declare -p pos_parms #<>
 
           pos_parms+=( ${pos_parms[PP]:0:1} )
           pos_parms+=( ${pos_parms[PP]:1}   )
           unset "pos_parms[PP]"
           parms_ch=y
-
-            #declare -p pos_parms parms_ch #<>
 
       else
         : $? #<>
@@ -103,13 +91,8 @@ then
       | uniq
   )
 
-    #set -x #<>
-  
   for RR in "${!pos_parms[@]}"
   do
-      #declare -p RR pos_parms #<>
-      #: '-${pos_parms[RR]}:' "-${pos_parms[RR]}" #<>
-
     case "-${pos_parms[RR]}" in
       -A    ) pr_all=y pr_per=n ;;
       -G    ) in_clr=n          ;;
@@ -121,7 +104,7 @@ then
     && unset RR
 fi
 
-  #exit "${LINENO}"
+  #exit "${LINENO}" #<>
   #echo "${!Clr*}" #<>
   #set -x #<>
 
