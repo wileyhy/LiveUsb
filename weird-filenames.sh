@@ -66,26 +66,26 @@ then
     for PP in "${!pos_parms[@]}"
     do
 
-        declare -p pos_parms PP LINENO #<>
+        declare -p pos_parms PP #<>
         : "pos_parms[PP]: ${pos_parms[PP]}"
 
       len_pp=${#pos_parms[PP]}                  # Get length of \PP
     
-        declare -p pos_parms PP len_pp LINENO #<>
+        declare -p pos_parms len_pp #<>
         : "pos_parms[PP]: ${pos_parms[PP]}"
 
       if [[ ${len_pp} -gt 1 ]]
       then
         : $? #<>
 
-            declare -p pos_parms PP LINENO #<>
+            declare -p pos_parms #<>
 
           pos_parms+=( ${pos_parms[PP]:0:1} )
           pos_parms+=( ${pos_parms[PP]:1}   )
           unset "pos_parms[PP]"
           parms_ch=y
 
-            declare -p pos_parms PP LINENO #<>
+            declare -p pos_parms #<>
 
       else
         : $? #<>
