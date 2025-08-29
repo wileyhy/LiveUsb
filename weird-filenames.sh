@@ -89,6 +89,7 @@ then
 
       else
         : $? #<>
+        continue
       fi
     done \
       && unset PP
