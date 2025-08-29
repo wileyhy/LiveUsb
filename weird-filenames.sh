@@ -47,7 +47,7 @@ then
       declare -p pp pos_parms #<>
       : 'arobase:' "$@"
 
-    pos_parms+=( [ii]=${pos_parms[ii]##*-} )
+    pos_parms+=( [ii]=${pp##*-} )
     $((  ii++  ))
 
   done
