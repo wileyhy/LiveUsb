@@ -88,7 +88,7 @@ then
   # Note: \sort -R\: ;-p
   mapfile -t pos_parms < <(
     printf '%s\n' "${pos_parms[@]}" \
-      | sort -R \
+      | sort \
       | uniq
   )
 
