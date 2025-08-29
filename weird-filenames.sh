@@ -48,7 +48,7 @@ then
       : 'arobase:' "$@"
 
     pos_parms+=( [ii]=${pp##*-} )
-    ((  ii++  ))
+    : ((  ii++  ))
 
   done
   parms_changed=y
