@@ -36,8 +36,6 @@ function _Fn_help_ (){
   builtin exit 002
 }
 
-  set -x #<>
-  
 if [[ $# -gt 0 ]]
 then
   pos_parms=( ) ii=0
@@ -53,6 +51,8 @@ then
   done
   parms_changed=y
 
+    set -x #<>
+  
   while true
   do
 
