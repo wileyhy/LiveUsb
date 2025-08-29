@@ -134,6 +134,7 @@ fi
 
 
 # \sudo\ is required
+reset
 sudo -v
 
 
