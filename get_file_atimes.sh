@@ -1,13 +1,15 @@
 #!/bin/bash
 
-
+# Bug, extglob not necc for entire script 
 shopt -s extglob
 
   #set -x #<>
   set -euo pipefail #<>
 
 
-  
+# Bug, all of these variable names shoul be descriptive and in English.
+# Only use letters ($AA) for temporary variables.
+
 # Variables
 AA=$(  date '+%F' )
 CC=/dev/shm
@@ -24,9 +26,11 @@ NN=${CC}/rpm-qa_o_${AA}.bak
 ZZ=${DD}/ZZ_find_tmpfile
 
 
+# Bug, this entire script needs comments
 
 # Reset the filesystem
-sudo -v
+sudo -v # Bug, add an || clause
+
 if sudo test -d "${DD}"
 then
 
@@ -39,6 +43,8 @@ fi
 # shellcheck disable=SC2174
 mkdir -p -m 0700 "${DD}" \
   || exit "${LINENO}"
+
+# Bug, move function definition to header
 
 # Usage: `_Fn_rpm_qa_ "${LINENO}"`
 function _Fn_rpm_qa_ (){
@@ -59,6 +65,7 @@ then
     _Fn_rpm_qa_ "${LINENO}"
   fi
 else
+  # Bug, put this function at the top of the block
   _Fn_rpm_qa_ "${LINENO}"
 fi
 
@@ -72,7 +79,8 @@ fi
   #exit "${LINENO}" #<>
   #set -x #<>
 
-  
+
+  # Bug, again, comments. Can \bash -c\ include comments?
 
 # Clean the filesystem - remove broken symlinks
 sudo bash -O globstar -c \
@@ -103,6 +111,7 @@ sudo bash -O globstar -c \
       done \
         && unset yy' >> "${MM}"
 
+# Comments
 if [[ -f ${MM} ]] \
   && [[ ! -s ${MM} ]]
 then
@@ -116,7 +125,7 @@ fi
   
 
 # Get the dirs
-unset all_dirs
+unset all_dirs # Bug, unnecessary 
 all_dirs=( /* )
 
 for yy in "${!all_dirs[@]}"
@@ -127,7 +136,7 @@ do
     unset "all_dirs[yy]"
   fi
 done \
-  && unset yy
+  && unset yy # Unnecessary 
 
 declare -p all_dirs > "${FF}" \
   || exit "${LINENO}"
@@ -136,7 +145,6 @@ declare -p all_dirs > "${FF}" \
   #exit "${LINENO}" #<>
   set -x #<>
 
-  
 
 # Get the files
 unset all_files
@@ -171,8 +179,9 @@ do
     && rm -f -v "${ZZ}"
 
 done \
-  && unset DIR
+  && unset DIR # Unnecessary 
 
+# Bug, use a function 
 sudo test -f "${ZZ}" \
   && rm -f -v "${ZZ}"
 
@@ -181,6 +190,7 @@ sudo test -f "${ZZ}" \
   set -x #<>
 
 
+# Bug, add \sudo -v\
 
 # Canonicalize all the paths
 set +e
@@ -230,7 +240,7 @@ do
     exit "${LINENO}"
   fi
 done \
-  && unset qq
+  && unset qq # Unnecessary 
 
 set -e
 
@@ -254,6 +264,7 @@ full_count_allFiles=${#all_files[@]}
   exit "${LINENO}" #<>
   set -x #<>
 
+# Bug, comments
 
 ## Get all the atimes
 
