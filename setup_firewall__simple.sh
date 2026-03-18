@@ -1,5 +1,10 @@
 #!/bin/bash
+# setup_firewall__simple.sh
 
+
+# Bug, test for presence of \firewall-cmd\.
+
+# Bug, later versions of \firewall-cmd\ do not have lockdown mode.
 
 if [[ "$(firewall-cmd --query-lockdown)" = "yes" ]]
 then
@@ -7,13 +12,20 @@ then
   exit 3
 fi
 
+# Bug, add \|| exit\ or similar 
 sudo -v
 
 set -Caeux
 
+# Bug, this script needs traps
+
+# Bug, the script must account for both runtime and permanent states.
+
 firewall-cmd --state
 
 firewall-cmd --list-all
+
+# Bug, lack of tests
 
 firewall-cmd --get-log-denied 
 sudo firewall-cmd --set-log-denied=unicast 
@@ -27,11 +39,15 @@ firewall-cmd --get-default-zone
 
 firewall-cmd --list-all
 
+# Bug, interface names is not predictable
+
 firewall-cmd --zone=drop --list-interfaces 
 sudo firewall-cmd --zone=drop --add-interface=wlo1
 firewall-cmd --zone=drop --list-interfaces 
 
 firewall-cmd --list-all
+
+# Bug, hardcoded MAC addresses
 
 firewall-cmd --zone=drop --list-sources
 sudo firewall-cmd --zone=drop --add-source=ea:9a:c9:f3:a6:7d
