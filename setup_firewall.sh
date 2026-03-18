@@ -3,13 +3,18 @@
 
   ## Checklist
 
+# Bug, drop the line numbers and aliases, or put them in a separate and optional source file.
+# Bug, switch to full word variable and function names.
+
 ## Aliases
 ## Note, Creating an alias with a timeout option for all commands? ...is not allowed with firewall-cmd
 declare -nx nL=L\INENO
 shopt -s expand_aliases
 alias firewall-cmd='LN="${nL}"; firewall-cmd'
 
+# Bug, remove any+all quote-ish characters from comments.
 
+# See also separate data file.
 ## Exit codes are very useful with `firewall-cmd`, so...
 g_ro_firewall_command_error_codes=(
   [1]="QUERY_FAIL" [2]="WRONG_CLI_OPTION" [11]="ALREADY_ENABLED" [12]="NOT_ENABLED" [13]="COMMAND_FAILED"
@@ -34,8 +39,13 @@ g_ro_firewall_command_error_codes=(
   [204]="MISSING_ADDR" [205]="MISSING_NAME" [206]="MISSING_SETTING" [207]="MISSING_FAMILY"
   [251]="RUNNING_BUT_FAILED" [252]="NOT_RUNNING" [253]="NOT_AUTHORIZED" [254]="UNKNOWN_ERROR"
 )
+
+# Bug, is \readonly\ unnecessary for this script?
 readonly -a g_ro_firewall_command_error_codes
 
+# Bug, use single bracket test unless double bracket functionality is to be used.
+# Bug, rewrite logic structures to include xtrace comments 
+# Bug, re \l_varname\, lower case L looks too much like the number one.
 
 ## Functions
 :;: "Define fn_fwcmd_exit()";:
@@ -72,19 +82,22 @@ trap fn_fwcmd_exit EXIT
 
 #### Network connectivity should be disconnected, radio should be off, etc
 
+# Bug, lack of tests
+
 ## Is NetworkManager running?
 systemctl is-active NetworkManager.service
   #+  "active"
 nmcli -t -f RUNNING general
   #+  "running"
 
-
+# Bug, another \readonly\
 
 custom_svc_file_nm=stop-network-manager.service
 custm_svc_f="/etc/systemd/system/${custom_svc_file_nm}"
 tmp_f="/tmp/${custom_svc_file_nm}" readonly tmp_f
 tmp_time=$( date '+%Y-%m-%d %H:%M:%S.%N' )
 
+# ToDo, add coments
 for FF in "${tmp_f}" "${custm_svc_f}"
 do
 	if [[ -e ${FF} ]]
@@ -93,6 +106,8 @@ do
 		sudo rm -fv "${FF}"
 	fi
 done
+
+# Bug, all of this research should go into a separate file.
 
 while true
 do	
