@@ -2,7 +2,7 @@
 # setup_firewall()
 
   ## Checklist
-
+ 
 # Bug, drop the line numbers and aliases, or put them in a separate and optional source file.
 # Bug, switch to full word variable and function names.
 
@@ -40,7 +40,7 @@ g_ro_firewall_command_error_codes=(
   [251]="RUNNING_BUT_FAILED" [252]="NOT_RUNNING" [253]="NOT_AUTHORIZED" [254]="UNKNOWN_ERROR"
 )
 
-# Bug, is \readonly\ unnecessary for this script?
+# Bug, is \readonly\ necessary for this script?
 readonly -a g_ro_firewall_command_error_codes
 
 # Bug, use single bracket test unless double bracket functionality is to be used.
@@ -107,8 +107,9 @@ do
 	fi
 done
 
-# Bug, all of this research should go into a separate file.
+# Bug, all of this research should go into a separate file
 
+# How do various system utilities effect atimes?
 while true
 do	
 	## Note these times are all observed from an F39 instance in which "relatime" is the kernel's 
@@ -140,7 +141,9 @@ do
 	## "relatime": again, running `stat` has zero effect on any of the x4 timestamps
 	stat_of_file_t=$( stat -c%x "${tmp_f}" ); stat_of_file_t="${stat_of_file_t% *}"
 	stat "${tmp_f}"
-	
+
+	# Bug, needs comments 
+	# stat -c%h is hardlinks, and %x is atime human readable 
 	if 
 		[[ "$( stat -c%h "${tmp_f}" )" -ne 1 ]] ||
 		! [[ ${stat_of_file_t} = "${tmp_time}" ]]
@@ -148,7 +151,7 @@ do
 		red_flag=b
 		rm -f "${tmp_f}"
 		if [[ ${red_flag} =~ "bbb" ]]
-		then 
+		then
 			echo Emergency
 			exit "${LINENO}"
 		continue
